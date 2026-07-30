@@ -244,12 +244,25 @@ function openAdminModal(id) {
 
     document.getElementById('adminEditModal').classList.remove('hidden');
 
-    // Initialize or update Admin Leaflet Map
+    // Initialize or update Admin Leaflet Map (Restricted to UIN SSC Campus Bounds)
     setTimeout(() => {
         if (typeof L !== 'undefined') {
+            const uinSscBounds = L.latLngBounds(
+                L.latLng(-6.745000, 108.545000),
+                L.latLng(-6.730000, 108.560000)
+            );
+
             if (!adminMapInstance) {
-                adminMapInstance = L.map('adminMap').setView([reportLat, reportLng], 17);
+                adminMapInstance = L.map('adminMap', {
+                    center: [reportLat, reportLng],
+                    zoom: 17,
+                    minZoom: 16,
+                    maxZoom: 19,
+                    maxBounds: uinSscBounds,
+                    maxBoundsViscosity: 1.0
+                });
                 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    minZoom: 16,
                     maxZoom: 19,
                     attribution: '&copy; OpenStreetMap & UIN SSC'
                 }).addTo(adminMapInstance);
