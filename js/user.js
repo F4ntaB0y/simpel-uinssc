@@ -286,7 +286,7 @@ function isInsideCampus(lat, lng) {
     return CAMPUS_ZONES.some(zone => isPointInSinglePolygon(pt, zone.polygon));
 }
 
-// Leaflet Map Picker Initialization (High Precision Multi-Zone Enabled)
+// Leaflet Map Picker Initialization (Masked, Center of All Zones & Comfortable Zoom 16-19)
 function initMapPicker() {
     const container = document.getElementById('mapPicker');
     if (!container || typeof L === 'undefined') return;
@@ -296,48 +296,77 @@ function initMapPicker() {
             mapPickerInstance.remove();
         }
 
-        mapPickerInstance = L.map('mapPicker', {
-            center: [DEFAULT_CAMPUS_CENTER.lat, DEFAULT_CAMPUS_CENTER.lng],
-            zoom: 17,
-            minZoom: 8,
-            maxZoom: 21
-        });
-
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            maxZoom: 21,
-            maxNativeZoom: 19,
-            attribution: '&copy; OpenStreetMap & UIN SSC'
-        }).addTo(mapPickerInstance);
-
-        // Highlight All Campus Zones Polygons
+        // Feature Group untuk Menghitung Center & Bounds Seluruh 4 Zona Kampus
         const polygonGroup = L.featureGroup();
-        CAMPUS_ZONES.forEach(zone => {
-            const poly = L.polygon(zone.polygon, {
-                color: '#c59235',
-                weight: 3,
-                fillColor: '#005a36',
-                fillOpacity: 0.35
-            }).addTo(mapPickerInstance);
-
-            poly.bindTooltip(`<b>${zone.name}</b>`, { permanent: false, direction: 'center' });
+        CAMPUS_ZONES.forEach(z => {
+            const poly = L.polygon(z.polygon);
             polygonGroup.addLayer(poly);
         });
 
-        if (CAMPUS_ZONES.length > 0) {
-            mapPickerInstance.fitBounds(polygonGroup.getBounds(), { padding: [25, 25] });
-        }
+        const combinedBounds = polygonGroup.getBounds();
+        const centerAll = combinedBounds.getCenter();
 
-        // Marker Pin Titik Kerusakan
+        // Update default pin marker ke center tengah seluruh 4 zona kampus
+        currentLat = centerAll.lat.toFixed(6);
+        currentLng = centerAll.lng.toFixed(6);
+        updateCoordinatesDisplay(currentLat, currentLng);
+
+        // Map Initialization dengan Zoom Nyaman (Min 15, Max 19)
+        mapPickerInstance = L.map('mapPicker', {
+            center: [centerAll.lat, centerAll.lng],
+            zoom: 17,
+            minZoom: 15,
+            maxZoom: 19,
+            maxBounds: combinedBounds.pad(0.12),
+            maxBoundsViscosity: 0.8
+        });
+
+        // OpenStreetMap Layer
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            minZoom: 15,
+            maxZoom: 19,
+            attribution: '&copy; OpenStreetMap & UIN SSC'
+        }).addTo(mapPickerInstance);
+
+        // 1. Render Dark Mask Overlay (Shades everything outside ALL 4 UIN SSC campus zones)
+        const outerWorld = [[90, -180], [90, 180], [-90, 180], [-90, -180]];
+        const campusHoles = CAMPUS_ZONES.map(z => z.polygon);
+
+        L.polygon([outerWorld, ...campusHoles], {
+            color: '#c59235',
+            weight: 3,
+            dashArray: '6, 6',
+            fillColor: '#04140d',
+            fillOpacity: 0.72,
+            interactive: false
+        }).addTo(mapPickerInstance);
+
+        // 2. Render Highlight Polygons untuk Setiap Zona Kampus
+        CAMPUS_ZONES.forEach(zone => {
+            const poly = L.polygon(zone.polygon, {
+                color: '#c59235',
+                weight: 2,
+                fillColor: '#005a36',
+                fillOpacity: 0.25
+            }).addTo(mapPickerInstance);
+
+            poly.bindTooltip(`<b>${zone.name}</b>`, { permanent: false, direction: 'center' });
+        });
+
+        // Auto Fit Bounds ke Seluruh Zona Kampus UIN SSC
+        mapPickerInstance.fitBounds(combinedBounds, { padding: [20, 20] });
+
+        // Marker Pin Titik Kerusakan di Tengah Kampus
         mapMarkerInstance = L.marker([currentLat, currentLng], { draggable: true }).addTo(mapPickerInstance);
-        mapMarkerInstance.bindPopup('<b>Titik Lokasi UIN SSC</b><br>Geser pin ke lokasi presisi fasilitas rusak.').openPopup();
+        mapMarkerInstance.bindPopup('<b>Pusat Lokasi Kampus UIN SSC</b><br>Geser pin ke titik lokasi fasilitas rusak.').openPopup();
 
-        // Marker Drag Event
+        // Marker Drag Event dengan Validasi Zona Kampus
         mapMarkerInstance.on('dragend', function () {
             const pos = mapMarkerInstance.getLatLng();
             if (!isInsideCampus(pos.lat, pos.lng)) {
-                mapMarkerInstance.setLatLng([DEFAULT_CAMPUS_CENTER.lat, DEFAULT_CAMPUS_CENTER.lng]);
-                updateCoordinatesDisplay(DEFAULT_CAMPUS_CENTER.lat, DEFAULT_CAMPUS_CENTER.lng);
-                showToast('Pin dikembalikan! Titik lokasi harus di dalam area Kampus UIN SSC.', 'error');
+                mapMarkerInstance.setLatLng([centerAll.lat, centerAll.lng]);
+                updateCoordinatesDisplay(centerAll.lat, centerAll.lng);
+                showToast('Pin dikembalikan! Titik lokasi harus berada di salah satu zona gedung UIN SSC.', 'error');
             } else {
                 updateCoordinatesDisplay(pos.lat, pos.lng);
             }
@@ -351,7 +380,7 @@ function initMapPicker() {
             }
 
             if (!isInsideCampus(e.latlng.lat, e.latlng.lng)) {
-                showToast('Titik lokasi harus berada di dalam area Kampus UIN SSC!', 'error');
+                showToast('Titik lokasi harus berada di dalam salah satu zona gedung UIN SSC!', 'error');
             } else {
                 mapMarkerInstance.setLatLng(e.latlng);
                 updateCoordinatesDisplay(e.latlng.lat, e.latlng.lng);

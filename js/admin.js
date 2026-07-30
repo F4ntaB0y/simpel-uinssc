@@ -244,7 +244,7 @@ function openAdminModal(id) {
 
     document.getElementById('adminEditModal').classList.remove('hidden');
 
-    // Initialize or update Admin Leaflet Map (High Zoom & Multi-Zone Enabled)
+    // Initialize or update Admin Leaflet Map (Masked, Center of All Zones & Comfortable Zoom)
     setTimeout(() => {
         if (typeof L !== 'undefined') {
             const CAMPUS_ZONES = [
@@ -389,21 +389,34 @@ function openAdminModal(id) {
                 adminMapInstance = L.map('adminMap', {
                     center: [reportLat, reportLng],
                     zoom: 17,
-                    minZoom: 8,
-                    maxZoom: 21
+                    minZoom: 15,
+                    maxZoom: 19
                 });
                 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                    maxZoom: 21,
-                    maxNativeZoom: 19,
+                    minZoom: 15,
+                    maxZoom: 19,
                     attribution: '&copy; OpenStreetMap & UIN SSC'
+                }).addTo(adminMapInstance);
+
+                // Render Dark Mask Overlay
+                const outerWorld = [[90, -180], [90, 180], [-90, 180], [-90, -180]];
+                const campusHoles = CAMPUS_ZONES.map(z => z.polygon);
+
+                L.polygon([outerWorld, ...campusHoles], {
+                    color: '#c59235',
+                    weight: 3,
+                    dashArray: '6, 6',
+                    fillColor: '#04140d',
+                    fillOpacity: 0.72,
+                    interactive: false
                 }).addTo(adminMapInstance);
 
                 CAMPUS_ZONES.forEach(z => {
                     L.polygon(z.polygon, {
                         color: '#c59235',
-                        weight: 3,
+                        weight: 2,
                         fillColor: '#005a36',
-                        fillOpacity: 0.35
+                        fillOpacity: 0.25
                     }).addTo(adminMapInstance);
                 });
 
