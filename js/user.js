@@ -22,8 +22,8 @@ let lastTicketCode = '';
 // Leaflet Map State
 let mapPickerInstance = null;
 let mapMarkerInstance = null;
-let currentLat = -6.735007;
-let currentLng = 108.533680;
+let currentLat = -6.735117;
+let currentLng = 108.533722;
 
 const PRESET_IMAGES = {
     ac: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="400" height="250" viewBox="0 0 400 250" fill="%23e2e8f0"><rect width="400" height="250" fill="%23f1f5f9"/><rect x="50" y="40" width="300" height="120" rx="10" fill="%23cbd5e1" stroke="%2394a3b8" stroke-width="3"/><rect x="70" y="130" width="260" height="15" fill="%2364748b"/><text x="200" y="90" font-family="sans-serif" font-weight="bold" font-size="16" fill="%23475569" text-anchor="middle">AIR CONDITIONER (AC) - MENETES</text><path d="M 120 160 Q 120 190 120 210 M 200 160 Q 200 190 200 210 M 280 160 Q 280 190 280 210" stroke="%2338bdf8" stroke-width="4" stroke-dasharray="6,6"/></svg>',
@@ -107,7 +107,7 @@ function loadReports() {
     if (saved) {
         try {
             reportsData = JSON.parse(saved);
-        } catch(e) {
+        } catch (e) {
             reportsData = [...DEFAULT_SEED_DATA];
         }
     } else {
@@ -121,22 +121,43 @@ function saveReports() {
 }
 
 // ==========================================================================
-// BATAS GEOGRAFIS MULTI-ZONA KAMPUS UIN SSC CIREBON (KOORDINAT PRESISI Kampus Utama)
+// BATAS GEOGRAFIS MULTI-ZONA KAMPUS UIN SSC CIREBON (PRESISI MULTI-TITIK)
 // ==========================================================================
 const CAMPUS_ZONES = [
     {
         id: 'kampus_utama',
-        name: 'Zona Kampus Utama UIN SSC',
+        name: 'Zona 1: Kampus Utama UIN SSC (Jl. Perjuangan)',
         polygon: [
-            [-6.735667, 108.532944], // 6°44'08.4"S 108°31'58.6"E (Barat Daya)
-            [-6.734694, 108.532972], // 6°44'04.9"S 108°31'58.7"E (Barat Laut)
-            [-6.734194, 108.534444], // 6°44'03.1"S 108°32'04.0"E (Timur Laut)
-            [-6.735472, 108.534361]  // 6°44'07.7"S 108°32'03.7"E (Tenggara)
+            [-6.735667, 108.532944], // 6°44'08.4"S 108°31'58.6"E
+            [-6.734694, 108.532972], // 6°44'04.9"S 108°31'58.7"E
+            [-6.734194, 108.534444], // 6°44'03.1"S 108°32'04.0"E
+            [-6.735472, 108.534361], // 6°44'07.7"S 108°32'03.7"E
+            [-6.735556, 108.533889]  // 6°44'08.0"S 108°32'02.0"E
+        ]
+    },
+    {
+        id: 'fitk',
+        name: 'Zona 2: Area Gedung FITK & Tarbiyah',
+        polygon: [
+            [-6.738000, 108.553000],
+            [-6.738000, 108.558500],
+            [-6.743500, 108.558500],
+            [-6.743500, 108.553000]
+        ]
+    },
+    {
+        id: 'fdki_pasca',
+        name: 'Zona 3: Area Gedung FDKI & Pascasarjana',
+        polygon: [
+            [-6.731500, 108.547000],
+            [-6.731500, 108.552500],
+            [-6.737000, 108.552500],
+            [-6.737000, 108.547000]
         ]
     }
 ];
 
-const DEFAULT_CAMPUS_CENTER = { lat: -6.735007, lng: 108.533680 };
+const DEFAULT_CAMPUS_CENTER = { lat: -6.735117, lng: 108.533722 };
 
 // Algoritma Presisi Ray-Casting Point-in-Polygon
 function isPointInSinglePolygon(point, vs) {
@@ -196,7 +217,7 @@ function initMapPicker() {
         mapMarkerInstance = L.marker([currentLat, currentLng], { draggable: true }).addTo(mapPickerInstance);
         mapMarkerInstance.bindPopup('<b>Area Kampus UIN SSC</b><br>Geser pin ke lokasi gedung terdekat.').openPopup();
 
-        mapMarkerInstance.on('dragend', function() {
+        mapMarkerInstance.on('dragend', function () {
             const pos = mapMarkerInstance.getLatLng();
             if (!isInsideCampus(pos.lat, pos.lng)) {
                 mapMarkerInstance.setLatLng([DEFAULT_CAMPUS_CENTER.lat, DEFAULT_CAMPUS_CENTER.lng]);
@@ -207,7 +228,7 @@ function initMapPicker() {
             }
         });
 
-        mapPickerInstance.on('click', function(e) {
+        mapPickerInstance.on('click', function (e) {
             if (!isInsideCampus(e.latlng.lat, e.latlng.lng)) {
                 showToast('Titik lokasi harus berada di dalam salah satu zona gedung UIN SSC!', 'error');
             } else {
@@ -295,7 +316,7 @@ function handleFileChange(event) {
     if (!file) return;
 
     const reader = new FileReader();
-    reader.onload = function(e) {
+    reader.onload = function (e) {
         selectedImage = e.target.result;
         document.getElementById('dropzoneText').classList.add('hidden');
         document.getElementById('previewBox').classList.remove('hidden');
@@ -305,7 +326,7 @@ function handleFileChange(event) {
 }
 
 function removeFoto(event) {
-    if(event) event.stopPropagation();
+    if (event) event.stopPropagation();
     selectedImage = '';
     document.getElementById('fileInput').value = '';
     document.getElementById('imgPreview').src = '';
@@ -336,7 +357,7 @@ function handlePublicFormSubmit(event) {
     const ticketCode = `TRK-${year}-${Math.floor(100 + Math.random() * 900)}`;
 
     const now = new Date();
-    const timeStr = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')} ${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
+    const timeStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
 
     const newReport = {
         id: ticketCode,
@@ -365,7 +386,7 @@ function handlePublicFormSubmit(event) {
     lastTicketCode = ticketCode;
     document.getElementById('createdTicketDisplay').innerText = ticketCode;
     document.getElementById('successModal').classList.remove('hidden');
-    
+
     document.getElementById('publicReportForm').reset();
     removeFoto();
     handleKategoriChange();
@@ -419,15 +440,15 @@ function doSearchTicket() {
             </div>
 
             <div class="timeline-track">
-                <div class="t-step ${r.status==='Diajukan'||r.status==='Diproses'||r.status==='Selesai'?'completed':''}">
+                <div class="t-step ${r.status === 'Diajukan' || r.status === 'Diproses' || r.status === 'Selesai' ? 'completed' : ''}">
                     <div class="t-icon"><i class="fa-solid fa-paper-plane"></i></div>
                     <div style="font-size:12px; font-weight:700;">Diajukan</div>
                 </div>
-                <div class="t-step ${r.status==='Diproses'||r.status==='Selesai'?(r.status==='Selesai'?'completed':'active'):''}">
+                <div class="t-step ${r.status === 'Diproses' || r.status === 'Selesai' ? (r.status === 'Selesai' ? 'completed' : 'active') : ''}">
                     <div class="t-icon"><i class="fa-solid fa-screws-tilting"></i></div>
                     <div style="font-size:12px; font-weight:700;">Dalam Perbaikan</div>
                 </div>
-                <div class="t-step ${r.status==='Selesai'?'completed':''}">
+                <div class="t-step ${r.status === 'Selesai' ? 'completed' : ''}">
                     <div class="t-icon"><i class="fa-solid fa-circle-check"></i></div>
                     <div style="font-size:12px; font-weight:700;">Selesai</div>
                 </div>
@@ -510,7 +531,7 @@ function printTicketPDF(ticketId) {
     printWin.document.close();
 }
 
-function showToast(msg, type='info') {
+function showToast(msg, type = 'info') {
     const box = document.getElementById('toastBox');
     if (!box) return;
     const t = document.createElement('div');
