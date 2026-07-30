@@ -244,29 +244,23 @@ function openAdminModal(id) {
 
     document.getElementById('adminEditModal').classList.remove('hidden');
 
-    // Initialize or update Admin Leaflet Map (Masked & Restricted to Multi-Zone UIN SSC Campus Area)
+    // Initialize or update Admin Leaflet Map
     setTimeout(() => {
         if (typeof L !== 'undefined') {
-            const CAMPUS_ZONES = [
-                {
-                    id: 'kampus_utama',
-                    name: 'Kampus Utama UIN SSC Cirebon',
-                    polygon: [
-                        [-6.735667, 108.532944], // 6°44'08.4"S 108°31'58.6"E
-                        [-6.734694, 108.532972], // 6°44'04.9"S 108°31'58.7"E
-                        [-6.734194, 108.534444], // 6°44'03.1"S 108°32'04.0"E
-                        [-6.735472, 108.534361], // 6°44'07.7"S 108°32'03.7"E
-                        [-6.735556, 108.533889], // 6°44'08.0"S 108°32'02.0"E
-                        [-6.735722, 108.533361]  // 6°44'08.6"S 108°32'00.1"E
-                    ]
-                }
+            const CAMPUS_POLYGON_POINTS = [
+                [-6.735667, 108.532944],
+                [-6.734694, 108.532972],
+                [-6.734194, 108.534444],
+                [-6.735472, 108.534361],
+                [-6.735556, 108.533889],
+                [-6.735722, 108.533361]
             ];
 
             if (!adminMapInstance) {
                 adminMapInstance = L.map('adminMap', {
                     center: [reportLat, reportLng],
-                    zoom: 16,
-                    minZoom: 14,
+                    zoom: 17,
+                    minZoom: 15,
                     maxZoom: 19
                 });
                 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -274,22 +268,16 @@ function openAdminModal(id) {
                     attribution: '&copy; OpenStreetMap & UIN SSC'
                 }).addTo(adminMapInstance);
 
-                // Render Inverted Mask Overlay (Shades everything outside ALL UIN SSC campus zones)
-                const outerWorld = [[90, -180], [90, 180], [-90, 180], [-90, -180]];
-                const campusHoles = CAMPUS_ZONES.map(z => z.polygon);
-
-                L.polygon([outerWorld, ...campusHoles], {
+                const campusPoly = L.polygon(CAMPUS_POLYGON_POINTS, {
                     color: '#c59235',
                     weight: 3,
-                    dashArray: '6, 6',
-                    fillColor: '#04140d',
-                    fillOpacity: 0.75,
-                    interactive: false
+                    fillColor: '#005a36',
+                    fillOpacity: 0.3
                 }).addTo(adminMapInstance);
 
                 adminMarkerInstance = L.marker([reportLat, reportLng]).addTo(adminMapInstance);
             } else {
-                adminMapInstance.setView([reportLat, reportLng], 16);
+                adminMapInstance.setView([reportLat, reportLng], 17);
                 adminMarkerInstance.setLatLng([reportLat, reportLng]);
             }
             adminMarkerInstance.bindPopup(`<b>Lokasi Kerusakan: ${escapeHtml(report.ruangan)}</b><br>ID: ${report.id}`).openPopup();
