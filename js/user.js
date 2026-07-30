@@ -26,17 +26,10 @@ let currentLat = -6.735000;
 let currentLng = 108.533600;
 
 // ==========================================================================
-// BATAS GEOGRAFIS PRESISI KAMPUS UTAMA UIN SSC CIREBON
-// Berdasarkan koordinat resmi perimeter Kampus Utama UIN SSC Cirebon
+// BATAS GEOGRAFIS PRESISI KAMPUS UIN SSC CIREBON
+// (Dikosongkan agar Anda dapat mem-masking & menggambar polygon sendiri secara manual)
 // ==========================================================================
-const CAMPUS_POLYGON_POINTS = [
-    [-6.735667, 108.532944], // 6°44'08.4"S 108°31'58.6"E
-    [-6.734694, 108.532972], // 6°44'04.9"S 108°31'58.7"E
-    [-6.734194, 108.534444], // 6°44'03.1"S 108°32'04.0"E
-    [-6.735472, 108.534361], // 6°44'07.7"S 108°32'03.7"E
-    [-6.735556, 108.533889], // 6°44'08.0"S 108°32'02.0"E
-    [-6.735722, 108.533361]  // 6°44'08.6"S 108°32'00.1"E
-];
+let CAMPUS_POLYGON_POINTS = [];
 
 const DEFAULT_CAMPUS_CENTER = { lat: -6.735000, lng: 108.533600 };
 
@@ -137,6 +130,9 @@ function saveReports() {
 
 // Pengecekan apakah koordinat berada di dalam area batas Kampus UIN SSC
 function isInsideCampus(lat, lng) {
+    if (isDrawModeActive || CAMPUS_POLYGON_POINTS.length === 0) {
+        return true; // Bebas menempatkan titik saat mode gambar aktif atau polygon kosong
+    }
     const latNum = parseFloat(lat);
     const lngNum = parseFloat(lng);
     
@@ -145,7 +141,7 @@ function isInsideCampus(lat, lng) {
             lngNum >= 108.531500 && lngNum <= 108.536000);
 }
 
-// Leaflet Map Picker Initialization (Restricted to UIN SSC Campus Area)
+// Leaflet Map Picker Initialization (High Precision Zoom Enabled)
 function initMapPicker() {
     const container = document.getElementById('mapPicker');
     if (!container || typeof L === 'undefined') return;
@@ -155,36 +151,37 @@ function initMapPicker() {
             mapPickerInstance.remove();
         }
 
-        // Initialize Map centered at UIN SSC Main Campus
+        // Initialize Map centered at UIN SSC Main Campus with High Zoom capabilities (up to zoom 21)
         mapPickerInstance = L.map('mapPicker', {
             center: [DEFAULT_CAMPUS_CENTER.lat, DEFAULT_CAMPUS_CENTER.lng],
             zoom: 17,
-            minZoom: 15,
-            maxZoom: 19
+            minZoom: 8,
+            maxZoom: 21
         });
 
-        // OpenStreetMap Layer
+        // OpenStreetMap Layer with maxNativeZoom 19 & maxZoom 21 for deep zooming
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            maxZoom: 19,
+            maxZoom: 21,
+            maxNativeZoom: 19,
             attribution: '&copy; OpenStreetMap & UIN SSC'
         }).addTo(mapPickerInstance);
 
-        // Highlight Polygon Area Kampus Utama UIN SSC
-        const campusPolygon = L.polygon(CAMPUS_POLYGON_POINTS, {
-            color: '#c59235',
-            weight: 4,
-            fillColor: '#005a36',
-            fillOpacity: 0.35
-        }).addTo(mapPickerInstance);
+        // Jika polygon sudah diisi, tampilkan highlight & fit bounds
+        if (CAMPUS_POLYGON_POINTS.length > 0) {
+            const campusPolygon = L.polygon(CAMPUS_POLYGON_POINTS, {
+                color: '#c59235',
+                weight: 4,
+                fillColor: '#005a36',
+                fillOpacity: 0.35
+            }).addTo(mapPickerInstance);
 
-        campusPolygon.bindTooltip('<b>Wilayah Kampus Utama UIN SSC</b>', { permanent: false, direction: 'center' });
-
-        // Auto Fit Bounds ke Area Kampus UIN SSC
-        mapPickerInstance.fitBounds(campusPolygon.getBounds(), { padding: [20, 20] });
+            campusPolygon.bindTooltip('<b>Wilayah Kampus UIN SSC</b>', { permanent: false, direction: 'center' });
+            mapPickerInstance.fitBounds(campusPolygon.getBounds(), { padding: [20, 20] });
+        }
 
         // Marker Pin Titik Kerusakan
         mapMarkerInstance = L.marker([currentLat, currentLng], { draggable: true }).addTo(mapPickerInstance);
-        mapMarkerInstance.bindPopup('<b>Titik Kerusakan UIN SSC</b><br>Geser pin ke lokasi presisi fasilitas rusak.').openPopup();
+        mapMarkerInstance.bindPopup('<b>Titik Lokasi UIN SSC</b><br>Geser pin ke lokasi presisi fasilitas rusak.').openPopup();
 
         // Marker Drag Event
         mapMarkerInstance.on('dragend', function () {

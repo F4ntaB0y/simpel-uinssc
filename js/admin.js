@@ -244,35 +244,20 @@ function openAdminModal(id) {
 
     document.getElementById('adminEditModal').classList.remove('hidden');
 
-    // Initialize or update Admin Leaflet Map
+    // Initialize or update Admin Leaflet Map (High Zoom Enabled)
     setTimeout(() => {
         if (typeof L !== 'undefined') {
-            const CAMPUS_POLYGON_POINTS = [
-                [-6.735667, 108.532944],
-                [-6.734694, 108.532972],
-                [-6.734194, 108.534444],
-                [-6.735472, 108.534361],
-                [-6.735556, 108.533889],
-                [-6.735722, 108.533361]
-            ];
-
             if (!adminMapInstance) {
                 adminMapInstance = L.map('adminMap', {
                     center: [reportLat, reportLng],
                     zoom: 17,
-                    minZoom: 15,
-                    maxZoom: 19
+                    minZoom: 8,
+                    maxZoom: 21
                 });
                 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                    maxZoom: 19,
+                    maxZoom: 21,
+                    maxNativeZoom: 19,
                     attribution: '&copy; OpenStreetMap & UIN SSC'
-                }).addTo(adminMapInstance);
-
-                const campusPoly = L.polygon(CAMPUS_POLYGON_POINTS, {
-                    color: '#c59235',
-                    weight: 3,
-                    fillColor: '#005a36',
-                    fillOpacity: 0.3
                 }).addTo(adminMapInstance);
 
                 adminMarkerInstance = L.marker([reportLat, reportLng]).addTo(adminMapInstance);
