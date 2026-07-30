@@ -200,6 +200,11 @@ function initMapPicker() {
 
         // Map Click Event
         mapPickerInstance.on('click', function (e) {
+            if (isDrawModeActive) {
+                handleMapClickForPolygon(e.latlng.lat, e.latlng.lng);
+                return;
+            }
+
             if (!isInsideCampus(e.latlng.lat, e.latlng.lng)) {
                 showToast('Titik lokasi harus berada di dalam area Kampus UIN SSC!', 'error');
             } else {
@@ -209,6 +214,108 @@ function initMapPicker() {
         });
     } catch (err) {
         console.error('Error init map:', err);
+    }
+}
+
+// ==========================================================================
+// INTERACTIVE POLYGON DESIGNER TOOL (ALAT PENGUMPUL KOORDINAT INTERAKTIF)
+// ==========================================================================
+let isDrawModeActive = false;
+let drawnPoints = [];
+let drawnPolygonLayer = null;
+let drawnMarkers = [];
+
+function togglePolygonDrawMode() {
+    isDrawModeActive = !isDrawModeActive;
+    const btn = document.getElementById('btnToggleDrawMode');
+    const tools = document.getElementById('drawModeTools');
+
+    if (isDrawModeActive) {
+        btn.classList.add('active');
+        btn.style.background = 'var(--gold)';
+        btn.style.color = '#fff';
+        btn.innerHTML = '<i class="fa-solid fa-check"></i> Selesai / Nonaktifkan Mode';
+        tools.classList.remove('hidden');
+        showToast('Mode Gambar Polygon Aktif! Klik sudut-sudut kampus pada peta.', 'info');
+    } else {
+        btn.classList.remove('active');
+        btn.style.background = '';
+        btn.style.color = '';
+        btn.innerHTML = '<i class="fa-solid fa-pen-ruler"></i> Aktifkan Mode Gambar Polygon';
+        tools.classList.add('hidden');
+    }
+}
+
+function handleMapClickForPolygon(lat, lng) {
+    if (!isDrawModeActive) return false;
+
+    const latFixed = parseFloat(lat.toFixed(6));
+    const lngFixed = parseFloat(lng.toFixed(6));
+    drawnPoints.push([latFixed, lngFixed]);
+
+    if (typeof L !== 'undefined' && mapPickerInstance) {
+        const ptMarker = L.circleMarker([latFixed, lngFixed], {
+            radius: 5,
+            color: '#f59e0b',
+            fillColor: '#f59e0b',
+            fillOpacity: 1
+        }).addTo(mapPickerInstance);
+        drawnMarkers.push(ptMarker);
+
+        if (drawnPolygonLayer) {
+            mapPickerInstance.removeLayer(drawnPolygonLayer);
+        }
+        if (drawnPoints.length >= 2) {
+            drawnPolygonLayer = L.polygon(drawnPoints, {
+                color: '#f59e0b',
+                weight: 3,
+                dashArray: '4, 4',
+                fillColor: '#005a36',
+                fillOpacity: 0.35
+            }).addTo(mapPickerInstance);
+        }
+    }
+
+    updatePolygonCodeOutput();
+    return true;
+}
+
+function clearDrawnPolygon() {
+    drawnPoints = [];
+    if (drawnPolygonLayer && mapPickerInstance) {
+        mapPickerInstance.removeLayer(drawnPolygonLayer);
+        drawnPolygonLayer = null;
+    }
+    drawnMarkers.forEach(m => m.remove());
+    drawnMarkers = [];
+    updatePolygonCodeOutput();
+    showToast('Semua titik polygon dibersihkan.', 'info');
+}
+
+function updatePolygonCodeOutput() {
+    const area = document.getElementById('polygonOutputCode');
+    if (!area) return;
+
+    if (drawnPoints.length === 0) {
+        area.value = 'const CAMPUS_POLYGON_POINTS = [];';
+        return;
+    }
+
+    let code = 'const CAMPUS_POLYGON_POINTS = [\n';
+    drawnPoints.forEach((pt, idx) => {
+        const isLast = idx === drawnPoints.length - 1;
+        code += `    [${pt[0]}, ${pt[1]}]${isLast ? '' : ','} // Titik ${idx + 1}\n`;
+    });
+    code += '];';
+
+    area.value = code;
+}
+
+function copyPolygonCode() {
+    const area = document.getElementById('polygonOutputCode');
+    if (area && area.value) {
+        navigator.clipboard.writeText(area.value);
+        showToast('Array Kode Polygon berhasil disalin ke clipboard!', 'success');
     }
 }
 
