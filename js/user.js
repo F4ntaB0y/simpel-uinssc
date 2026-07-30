@@ -22,8 +22,29 @@ let lastTicketCode = '';
 // Leaflet Map State
 let mapPickerInstance = null;
 let mapMarkerInstance = null;
-let currentLat = -6.735117;
-let currentLng = 108.533722;
+let currentLat = -6.735000;
+let currentLng = 108.533600;
+
+// ==========================================================================
+// BATAS GEOGRAFIS PRESISI KAMPUS UIN SSC CIREBON
+// Berdasarkan koordinat resmi perimeter Kampus Utama UIN SSC Cirebon
+// ==========================================================================
+const CAMPUS_ZONES = [
+    {
+        id: 'kampus_utama',
+        name: 'Kampus Utama UIN SSC Cirebon',
+        polygon: [
+            [-6.735667, 108.532944], // 6°44'08.4"S 108°31'58.6"E
+            [-6.734694, 108.532972], // 6°44'04.9"S 108°31'58.7"E
+            [-6.734194, 108.534444], // 6°44'03.1"S 108°32'04.0"E
+            [-6.735472, 108.534361], // 6°44'07.7"S 108°32'03.7"E
+            [-6.735556, 108.533889], // 6°44'08.0"S 108°32'02.0"E
+            [-6.735722, 108.533361]  // 6°44'08.6"S 108°32'00.1"E
+        ]
+    }
+];
+
+const DEFAULT_CAMPUS_CENTER = { lat: -6.735000, lng: 108.533600 };
 
 const PRESET_IMAGES = {
     ac: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="400" height="250" viewBox="0 0 400 250" fill="%23e2e8f0"><rect width="400" height="250" fill="%23f1f5f9"/><rect x="50" y="40" width="300" height="120" rx="10" fill="%23cbd5e1" stroke="%2394a3b8" stroke-width="3"/><rect x="70" y="130" width="260" height="15" fill="%2364748b"/><text x="200" y="90" font-family="sans-serif" font-weight="bold" font-size="16" fill="%23475569" text-anchor="middle">AIR CONDITIONER (AC) - MENETES</text><path d="M 120 160 Q 120 190 120 210 M 200 160 Q 200 190 200 210 M 280 160 Q 280 190 280 210" stroke="%2338bdf8" stroke-width="4" stroke-dasharray="6,6"/></svg>',
@@ -120,44 +141,7 @@ function saveReports() {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(reportsData));
 }
 
-// ==========================================================================
-// BATAS GEOGRAFIS MULTI-ZONA KAMPUS UIN SSC CIREBON (PRESISI MULTI-TITIK)
-// ==========================================================================
-const CAMPUS_ZONES = [
-    {
-        id: 'kampus_utama',
-        name: 'Zona 1: Kampus Utama UIN SSC (Jl. Perjuangan)',
-        polygon: [
-            [-6.735667, 108.532944], // 6°44'08.4"S 108°31'58.6"E
-            [-6.734694, 108.532972], // 6°44'04.9"S 108°31'58.7"E
-            [-6.734194, 108.534444], // 6°44'03.1"S 108°32'04.0"E
-            [-6.735472, 108.534361], // 6°44'07.7"S 108°32'03.7"E
-            [-6.735556, 108.533889]  // 6°44'08.0"S 108°32'02.0"E
-        ]
-    },
-    {
-        id: 'fitk',
-        name: 'Zona 2: Area Gedung FITK & Tarbiyah',
-        polygon: [
-            [-6.738000, 108.553000],
-            [-6.738000, 108.558500],
-            [-6.743500, 108.558500],
-            [-6.743500, 108.553000]
-        ]
-    },
-    {
-        id: 'fdki_pasca',
-        name: 'Zona 3: Area Gedung FDKI & Pascasarjana',
-        polygon: [
-            [-6.731500, 108.547000],
-            [-6.731500, 108.552500],
-            [-6.737000, 108.552500],
-            [-6.737000, 108.547000]
-        ]
-    }
-];
-
-const DEFAULT_CAMPUS_CENTER = { lat: -6.735117, lng: 108.533722 };
+const DEFAULT_CAMPUS_CENTER = { lat: -6.735000, lng: 108.533600 };
 
 // Algoritma Presisi Ray-Casting Point-in-Polygon
 function isPointInSinglePolygon(point, vs) {
