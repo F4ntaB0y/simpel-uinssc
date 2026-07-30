@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIMPEL UIN SSC | System Information Pelaporan Fasilitas Kampus</title>
+    <link rel="icon" type="image/png" href="assets/img/favicon.png">
+    <!-- Google Fonts & Font Awesome Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/user.css">
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <header class="navbar">
+        <div class="container navbar-content">
+            <a href="index.html" class="brand">
+                <div class="brand-icon">
+                    <img src="assets/img/logo.png" alt="UIN SSC Logo" class="brand-logo-img">
+                </div>
+                <div class="brand-text">
+                    <span class="brand-title">SIMPEL UIN SSC</span>
+                    <span class="brand-subtitle">Pelaporan Fasilitas Kampus UIN SSC</span>
+                </div>
+            </a>
+
+            <div class="nav-links">
+                <button class="nav-link-btn" onclick="toggleTheme()" title="Ubah Tema Mode">
+                    <i class="fa-solid fa-moon" id="themeIcon"></i>
+                </button>
+                <a href="pages/user.html" class="nav-link-btn">
+                    <i class="fa-solid fa-pen-to-square"></i> Portal Pelapor
+                </a>
+                <a href="pages/admin.html" class="nav-link-btn nav-admin-link">
+                    <i class="fa-solid fa-user-shield"></i> Portal Admin Sarpras
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="container" style="padding-top: 50px; padding-bottom: 80px;">
+        
+        <!-- Main Landing Hero -->
+        <div class="hero-user" style="max-width: 900px;">
+            <div class="pill-badge">
+                <i class="fa-solid fa-shield-halved"></i> UIN Siber Syekh Nurjati Cirebon
+            </div>
+            <h1 style="font-size: 42px;">Sistem Informasi Pelaporan & Pemeliharaan Fasilitas Kampus</h1>
+            <p style="font-size: 17px; margin-top: 10px;">Platform terpadu untuk kemudahan pelaporan fasilitas rusak, pelacakan tiket perbaikan berbasis GPS, dan pengelolaan sarpras kampus secara efisien.</p>
+        </div>
+
+        <!-- Launcher Gateway Grid Cards -->
+        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 30px; max-width: 960px; margin: 40px auto 0 auto;">
+            
+            <!-- Gateway Card 1: User Portal -->
+            <div class="glass-card" style="padding: 40px; text-align: left; display: flex; flex-direction: column; justify-content: space-between;">
+                <div>
+                    <div style="width: 60px; height: 60px; border-radius: 16px; background: rgba(197,146,53,0.15); border: 2px solid var(--gold); color: var(--gold); display: flex; align-items: center; justify-content: center; font-size: 28px; margin-bottom: 20px;">
+                        <i class="fa-solid fa-bullhorn"></i>
+                    </div>
+                    <h2 style="font-size: 24px; font-weight: 800; margin-bottom: 10px;">Portal Pelapor Publik</h2>
+                    <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 24px;">Khusus Mahasiswa, Dosen, & Staf Kampus untuk membuat laporan kerusakan fasilitas, mengambil lokasi GPS presisi, dan melacak tiket perbaikan.</p>
+                </div>
+                <a href="pages/user.html" class="btn btn-primary" style="width: 100%; justify-content: center;">
+                    <i class="fa-solid fa-paper-plane"></i> Buka Portal Pelapor <i class="fa-solid fa-arrow-right"></i>
+                </a>
+            </div>
+
+            <!-- Gateway Card 2: Admin Dashboard -->
+            <div class="glass-card" style="padding: 40px; text-align: left; display: flex; flex-direction: column; justify-content: space-between;">
+                <div>
+                    <div style="width: 60px; height: 60px; border-radius: 16px; background: rgba(0,90,54,0.3); border: 2px solid #2dd4bf; color: #2dd4bf; display: flex; align-items: center; justify-content: center; font-size: 28px; margin-bottom: 20px;">
+                        <i class="fa-solid fa-chart-line"></i>
+                    </div>
+                    <h2 style="font-size: 24px; font-weight: 800; margin-bottom: 10px;">Dashboard Admin Sarpras</h2>
+                    <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 24px;">Khusus Tim Sarpras & Teknisi Pemeliharaan untuk mengelola status laporan, melihat peta posisi kerusakan, menugaskan teknisi, & export rekap CSV.</p>
+                </div>
+                <a href="pages/admin.html" class="btn btn-secondary" style="width: 100%; justify-content: center; border-color: var(--gold); color: var(--gold);">
+                    <i class="fa-solid fa-sliders"></i> Buka Dashboard Admin <i class="fa-solid fa-arrow-right"></i>
+                </a>
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer style="border-top: 1px solid var(--border-color); padding: 24px 0; text-align: center; font-size: 13px; color: var(--text-muted); margin-top: auto;">
+        <div class="container">
+            &copy; 2026 UIN Siber Syekh Nurjati Cirebon (UIN SSC). Proyek Sertifikasi Web Developer SKKNI BNSP.
+        </div>
+    </footer>
+
+    <script>
+        function toggleTheme() {
+            const current = document.documentElement.getAttribute('data-theme') || 'dark';
+            const next = current === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', next);
+            localStorage.setItem('SIMPEL_FK_THEME', next);
+        }
+        document.documentElement.setAttribute('data-theme', localStorage.getItem('SIMPEL_FK_THEME') || 'dark');
+    </script>
+</body>
+</html>

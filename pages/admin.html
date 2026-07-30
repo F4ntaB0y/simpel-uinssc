@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIMPEL UIN SSC | Dashboard Admin & Sarpras Kampus</title>
+    <link rel="icon" type="image/png" href="../assets/img/favicon.png">
+    <!-- Google Fonts & Font Awesome Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Leaflet.js Interactive Map CSS & JS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <link rel="stylesheet" href="../css/user.css">
+    <link rel="stylesheet" href="../css/admin.css">
+</head>
+<body>
+
+    <div class="admin-wrapper">
+        <!-- Sidebar Navigation -->
+        <aside class="admin-sidebar">
+            <a href="admin.html" class="sidebar-brand">
+                <div class="brand-icon">
+                    <img src="../assets/img/logo.png" alt="UIN SSC Logo" class="brand-logo-img">
+                </div>
+                <div class="brand-text">
+                    <span class="brand-title">SIMPEL UIN SSC</span>
+                    <span class="brand-subtitle">Sarpras Control Center</span>
+                </div>
+            </a>
+
+            <ul class="sidebar-menu">
+                <li>
+                    <a href="admin.html" class="active">
+                        <i class="fa-solid fa-chart-pie"></i> <span>Dashboard Utama</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="user.html" target="_blank">
+                        <i class="fa-solid fa-arrow-up-right-from-square"></i> <span>Portal Pelapor</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="../index.html">
+                        <i class="fa-solid fa-house"></i> <span>Beranda Gateway</span>
+                    </a>
+                </li>
+            </ul>
+
+            <div class="sidebar-footer">
+                <button class="nav-link-btn" style="width:100%; justify-content:flex-start;" onclick="toggleTheme()">
+                    <i class="fa-solid fa-moon" id="adminThemeIcon"></i> <span>Tampilan Dark/Light</span>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="admin-main">
+            <!-- Header Topbar -->
+            <div class="admin-header">
+                <div>
+                    <h1 style="font-size: 26px; font-weight: 800;">Dashboard Pengelolaan Sarpras UIN SSC</h1>
+                    <p style="color:var(--text-muted); font-size: 14px;">Pantau, verifikasi, dan tindak lanjuti laporan kerusakan fasilitas seluruh kampus.</p>
+                </div>
+                <div style="display:flex; gap:12px;">
+                    <button class="btn btn-secondary" onclick="exportCSV()"><i class="fa-solid fa-file-csv"></i> Export CSV</button>
+                    <button class="btn btn-secondary" onclick="resetDemoData()"><i class="fa-solid fa-rotate-left"></i> Reset Demo</button>
+                </div>
+            </div>
+
+            <!-- KPI Metric Cards -->
+            <div class="admin-kpi-grid">
+                <div class="kpi-box">
+                    <div class="kpi-box-icon icon-blue"><i class="fa-solid fa-folder-open"></i></div>
+                    <div class="kpi-box-info">
+                        <span class="kpi-num" id="kpiTotal">0</span>
+                        <span class="kpi-title">Total Laporan</span>
+                    </div>
+                </div>
+
+                <div class="kpi-box">
+                    <div class="kpi-box-icon icon-amber"><i class="fa-solid fa-clock"></i></div>
+                    <div class="kpi-box-info">
+                        <span class="kpi-num" id="kpiPending">0</span>
+                        <span class="kpi-title">Menunggu Verifikasi</span>
+                    </div>
+                </div>
+
+                <div class="kpi-box">
+                    <div class="kpi-box-icon icon-cyan"><i class="fa-solid fa-screwdriver-wrench"></i></div>
+                    <div class="kpi-box-info">
+                        <span class="kpi-num" id="kpiProses">0</span>
+                        <span class="kpi-title">Dalam Perbaikan</span>
+                    </div>
+                </div>
+
+                <div class="kpi-box">
+                    <div class="kpi-box-icon icon-emerald"><i class="fa-solid fa-circle-check"></i></div>
+                    <div class="kpi-box-info">
+                        <span class="kpi-num" id="kpiSelesai">0</span>
+                        <span class="kpi-title">Perbaikan Selesai</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Visual Analytics Chart Section -->
+            <div class="chart-container-card">
+                <h3 style="font-size:16px; font-weight:800; margin-bottom:16px; display:flex; align-items:center; gap:8px;">
+                    <i class="fa-solid fa-chart-column" style="color:var(--gold);"></i> Statistik Kerusakan Per Gedung Kampus UIN SSC
+                </h3>
+                <div style="height: 180px; width:100%; display:flex; align-items:flex-end; gap:20px; padding-top:20px;" id="chartBarContainer">
+                    <!-- Bars Rendered by JS -->
+                </div>
+            </div>
+
+            <!-- Table Filter & Data Card -->
+            <div class="table-card">
+                <div class="table-toolbar">
+                    <div class="filter-group">
+                        <label style="font-size:13px;"><i class="fa-solid fa-filter"></i> Filter Status:</label>
+                        <select id="filterStatus" onchange="renderAdminTable()" style="padding:8px 12px; font-size:13px;">
+                            <option value="ALL">Semua Status</option>
+                            <option value="Diajukan">Diajukan</option>
+                            <option value="Diproses">Diproses</option>
+                            <option value="Selesai">Selesai</option>
+                            <option value="Ditolak">Ditolak</option>
+                        </select>
+
+                        <label style="font-size:13px; margin-left:12px;"><i class="fa-solid fa-building"></i> Gedung:</label>
+                        <select id="filterGedung" onchange="renderAdminTable()" style="padding:8px 12px; font-size:13px;">
+                            <option value="ALL">Semua Gedung</option>
+                            <option value="Gedung Rektorat UIN SSC">Gedung Rektorat</option>
+                            <option value="Fakultas Ilmu Tarbiyah (FITK)">FITK</option>
+                            <option value="Fakultas Syariah & Ekonomi (FSEI)">FSEI</option>
+                            <option value="Fakultas Ushuluddin & Adab (FUAD)">FUAD</option>
+                            <option value="Laboratorium Terpadu & Pusat ICT">Lab ICT</option>
+                            <option value="Gedung Perpustakaan Pusat">Perpustakaan</option>
+                        </select>
+                    </div>
+
+                    <div style="min-width:240px;" class="input-wrapper">
+                        <i class="fa-solid fa-search"></i>
+                        <input type="text" id="searchInput" placeholder="Cari tiket, pelapor, lokasi..." onkeyup="renderAdminTable()" style="padding:8px 12px 8px 38px; font-size:13px;">
+                    </div>
+                </div>
+
+                <div style="overflow-x:auto;">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>Kode Tiket</th>
+                                <th>Tanggal</th>
+                                <th>Pelapor</th>
+                                <th>Lokasi / Ruang</th>
+                                <th>Kategori</th>
+                                <th>Urgensi</th>
+                                <th>Status</th>
+                                <th>Teknisi</th>
+                                <th style="text-align:center;">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="adminTableBody">
+                            <!-- Rows Rendered Dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Edit Modal Admin -->
+    <div id="adminEditModal" class="modal-overlay hidden">
+        <div class="modal-content" style="max-width:600px; text-align:left;">
+            <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--border-color); padding-bottom:16px; margin-bottom:20px;">
+                <h3 style="font-size:18px; font-weight:800;"><i class="fa-solid fa-sliders"></i> Kelola Tiket <span id="modalTicketCode" style="color:var(--gold); font-family:monospace;">TRK-000</span></h3>
+                <button class="btn-act" onclick="closeAdminModal()"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>Ubah Status:</label>
+                    <select id="modalStatusSelect" style="font-weight:700;">
+                        <option value="Diajukan">Diajukan</option>
+                        <option value="Diproses">Diproses (Perbaikan)</option>
+                        <option value="Selesai">Selesai</option>
+                        <option value="Ditolak">Ditolak</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Tugaskan Teknisi:</label>
+                    <input type="text" id="modalTeknisiInput" placeholder="Contoh: Pak Bambang (HVAC)">
+                </div>
+
+                <div class="form-group full-width">
+                    <label>Catatan Sarpras / Update Progress:</label>
+                    <textarea id="modalCatatanInput" rows="3" placeholder="Masukkan instruksi atau perkembangan perbaikan..."></textarea>
+                </div>
+            </div>
+
+            <div id="modalReportInfo" style="margin-top:20px; background:rgba(255,255,255,0.03); padding:16px; border-radius:10px; font-size:13px; border:1px solid var(--border-color);">
+                <!-- Details injected by JS -->
+            </div>
+
+            <!-- Admin Map Container -->
+            <div style="margin-top:16px;">
+                <label style="font-size:13px; font-weight:700; display:block; margin-bottom:6px;"><i class="fa-solid fa-map-location-dot" style="color:var(--gold);"></i> Peta Lokasi Presisi Kerusakan:</label>
+                <div id="adminMap" class="map-box" style="height: 200px;"></div>
+            </div>
+
+            <div style="margin-top:24px; display:flex; justify-content:flex-end; gap:10px;">
+                <button class="btn btn-secondary" onclick="closeAdminModal()">Batal</button>
+                <button class="btn btn-primary" onclick="saveReportUpdates()"><i class="fa-solid fa-floppy-disk"></i> Simpan Perubahan</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div id="toastBox" class="toast-box"></div>
+
+    <script src="../js/admin.js"></script>
+</body>
+</html>
