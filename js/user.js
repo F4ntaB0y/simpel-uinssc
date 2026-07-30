@@ -311,19 +311,17 @@ function initMapPicker() {
         currentLng = centerAll.lng.toFixed(6);
         updateCoordinatesDisplay(currentLat, currentLng);
 
-        // Map Initialization dengan Zoom In Tidak Dibatasi (Max 22)
+        // Map Initialization tanpa maxBounds yang kaku agar pergerakan peta 100% lancar & smooth
         mapPickerInstance = L.map('mapPicker', {
             center: [centerAll.lat, centerAll.lng],
             zoom: 17,
-            minZoom: 14,
-            maxZoom: 22,
-            maxBounds: combinedBounds.pad(0.15),
-            maxBoundsViscosity: 0.8
+            minZoom: 12,
+            maxZoom: 22
         });
 
         // OpenStreetMap Layer (maxNativeZoom 19 & maxZoom 22)
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            minZoom: 14,
+            minZoom: 12,
             maxZoom: 22,
             maxNativeZoom: 19,
             attribution: '&copy; OpenStreetMap & UIN SSC'
@@ -354,37 +352,33 @@ function initMapPicker() {
             poly.bindTooltip(`<b>${zone.name}</b>`, { permanent: false, direction: 'center' });
         });
 
-        // Auto Fit Bounds ke Seluruh Zona Kampus UIN SSC
+        // Auto Fit Bounds ke Seluruh Zona Kampus UIN SSC saat pertama muat
         mapPickerInstance.fitBounds(combinedBounds, { padding: [20, 20] });
 
         // Marker Pin Titik Kerusakan di Tengah Kampus
         mapMarkerInstance = L.marker([currentLat, currentLng], { draggable: true }).addTo(mapPickerInstance);
         mapMarkerInstance.bindPopup('<b>Pusat Lokasi Kampus UIN SSC</b><br>Geser pin ke titik lokasi fasilitas rusak.').openPopup();
 
-        // Marker Drag Event dengan Validasi Zona Kampus
+        // Marker Drag Event: Update koordinat secara instan tanpa hambatan penguncian
         mapMarkerInstance.on('dragend', function () {
             const pos = mapMarkerInstance.getLatLng();
+            updateCoordinatesDisplay(pos.lat, pos.lng);
             if (!isInsideCampus(pos.lat, pos.lng)) {
-                mapMarkerInstance.setLatLng([centerAll.lat, centerAll.lng]);
-                updateCoordinatesDisplay(centerAll.lat, centerAll.lng);
-                showToast('Pin dikembalikan! Titik lokasi harus berada di salah satu zona gedung UIN SSC.', 'error');
-            } else {
-                updateCoordinatesDisplay(pos.lat, pos.lng);
+                showToast('Info: Titik lokasi berada di luar batas utama zona gedung.', 'info');
             }
         });
 
-        // Map Click Event
+        // Map Click Event: Memindahkan marker ke titik klik secara mulus
         mapPickerInstance.on('click', function (e) {
             if (isDrawModeActive) {
                 handleMapClickForPolygon(e.latlng.lat, e.latlng.lng);
                 return;
             }
 
+            mapMarkerInstance.setLatLng(e.latlng);
+            updateCoordinatesDisplay(e.latlng.lat, e.latlng.lng);
             if (!isInsideCampus(e.latlng.lat, e.latlng.lng)) {
-                showToast('Titik lokasi harus berada di dalam salah satu zona gedung UIN SSC!', 'error');
-            } else {
-                mapMarkerInstance.setLatLng(e.latlng);
-                updateCoordinatesDisplay(e.latlng.lat, e.latlng.lng);
+                showToast('Info: Titik lokasi berada di luar batas utama zona gedung.', 'info');
             }
         });
     } catch (err) {
