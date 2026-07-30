@@ -26,10 +26,85 @@ let currentLat = -6.735000;
 let currentLng = 108.533600;
 
 // ==========================================================================
-// BATAS GEOGRAFIS PRESISI KAMPUS UIN SSC CIREBON
-// (Dikosongkan agar Anda dapat mem-masking & menggambar polygon sendiri secara manual)
+// BATAS GEOGRAFIS MULTI-ZONA PRESISI KAMPUS UIN SSC CIREBON
+// (Hasil Pengumpulan Visual Polygon Designer oleh User)
 // ==========================================================================
-let CAMPUS_POLYGON_POINTS = [];
+const CAMPUS_ZONES = [
+    {
+        id: 'kampus_utama',
+        name: 'Area Kampus Utama UIN SSC',
+        polygon: [
+            [-6.735695, 108.532945], // Titik 1
+            [-6.73554, 108.532951],  // Titik 2
+            [-6.734701, 108.532972], // Titik 3
+            [-6.734682, 108.533112], // Titik 4
+            [-6.734624, 108.53332],  // Titik 5
+            [-6.734562, 108.533575], // Titik 6
+            [-6.734567, 108.53362],  // Titik 7
+            [-6.734515, 108.533695], // Titik 8
+            [-6.734471, 108.533874], // Titik 9
+            [-6.734414, 108.533961], // Titik 10
+            [-6.734394, 108.534022], // Titik 11
+            [-6.734399, 108.534065], // Titik 12
+            [-6.734371, 108.534125], // Titik 13
+            [-6.734366, 108.534182], // Titik 14
+            [-6.734407, 108.534234], // Titik 15
+            [-6.73448, 108.534317],  // Titik 16
+            [-6.7345, 108.534375],   // Titik 17
+            [-6.734521, 108.534437], // Titik 18
+            [-6.734671, 108.534431], // Titik 19
+            [-6.735007, 108.534409], // Titik 20
+            [-6.735415, 108.534381], // Titik 21
+            [-6.735451, 108.534382], // Titik 22
+            [-6.735521, 108.53438],  // Titik 23
+            [-6.735512, 108.53407],  // Titik 24
+            [-6.735526, 108.533833], // Titik 25
+            [-6.735557, 108.533747], // Titik 26
+            [-6.735653, 108.533445], // Titik 27
+            [-6.735686, 108.533301]  // Titik 28
+        ]
+    },
+    {
+        id: 'gedung_cyber',
+        name: 'Area Gedung Cyber UIN SSC',
+        polygon: [
+            [-6.736657, 108.532119], // Titik 1
+            [-6.736606, 108.531878], // Titik 2
+            [-6.73677, 108.53183],   // Titik 3
+            [-6.736749, 108.531772], // Titik 4
+            [-6.736835, 108.531742], // Titik 5
+            [-6.736923, 108.531803], // Titik 6
+            [-6.737017, 108.531812], // Titik 7
+            [-6.73707, 108.531856],  // Titik 8
+            [-6.73708, 108.531886],  // Titik 9
+            [-6.737129, 108.531861], // Titik 10
+            [-6.737092, 108.531802], // Titik 11
+            [-6.737039, 108.531783], // Titik 12
+            [-6.736963, 108.531763], // Titik 13
+            [-6.736919, 108.531755], // Titik 14
+            [-6.736881, 108.531717], // Titik 15
+            [-6.736885, 108.531289], // Titik 16
+            [-6.7369, 108.531247],   // Titik 17
+            [-6.736982, 108.530953], // Titik 18
+            [-6.737375, 108.530886], // Titik 19
+            [-6.737385, 108.530941], // Titik 20
+            [-6.737541, 108.530991], // Titik 21
+            [-6.737511, 108.531333], // Titik 22
+            [-6.737449, 108.531372], // Titik 23
+            [-6.737551, 108.531723], // Titik 24
+            [-6.737597, 108.531716], // Titik 25
+            [-6.737653, 108.531777], // Titik 26
+            [-6.737658, 108.531806], // Titik 27
+            [-6.737356, 108.531826], // Titik 28
+            [-6.737369, 108.531927], // Titik 29
+            [-6.737172, 108.531927], // Titik 30
+            [-6.737124, 108.531959], // Titik 31
+            [-6.73717, 108.531992],  // Titik 32
+            [-6.737206, 108.532054], // Titik 33
+            [-6.736907, 108.532081]  // Titik 34
+        ]
+    }
+];
 
 const DEFAULT_CAMPUS_CENTER = { lat: -6.735000, lng: 108.533600 };
 
@@ -128,20 +203,29 @@ function saveReports() {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(reportsData));
 }
 
-// Pengecekan apakah koordinat berada di dalam area batas Kampus UIN SSC
-function isInsideCampus(lat, lng) {
-    if (isDrawModeActive || CAMPUS_POLYGON_POINTS.length === 0) {
-        return true; // Bebas menempatkan titik saat mode gambar aktif atau polygon kosong
+// Algoritma Ray-Casting untuk 1 Polygon
+function isPointInSinglePolygon(point, vs) {
+    const x = point[0], y = point[1];
+    let inside = false;
+    for (let i = 0, j = vs.length - 1; i < vs.length; j = i++) {
+        const xi = vs[i][0], yi = vs[i][1];
+        const xj = vs[j][0], yj = vs[j][1];
+        const intersect = ((yi > y) !== (yj > y)) &&
+            (x < (xj - xi) * (y - yi) / (yj - yi) + xi);
+        if (intersect) inside = !inside;
     }
-    const latNum = parseFloat(lat);
-    const lngNum = parseFloat(lng);
-    
-    // Bounds box toleransi area kampus UIN SSC
-    return (latNum >= -6.737000 && latNum <= -6.733500 &&
-            lngNum >= 108.531500 && lngNum <= 108.536000);
+    return inside;
 }
 
-// Leaflet Map Picker Initialization (High Precision Zoom Enabled)
+// Memeriksa apakah titik berada di SALAH SATU zona kampus UIN SSC
+function isInsideCampus(lat, lng) {
+    if (isDrawModeActive) return true;
+    if (CAMPUS_ZONES.length === 0) return true;
+    const pt = [parseFloat(lat), parseFloat(lng)];
+    return CAMPUS_ZONES.some(zone => isPointInSinglePolygon(pt, zone.polygon));
+}
+
+// Leaflet Map Picker Initialization (High Precision Multi-Zone Enabled)
 function initMapPicker() {
     const container = document.getElementById('mapPicker');
     if (!container || typeof L === 'undefined') return;
@@ -151,7 +235,6 @@ function initMapPicker() {
             mapPickerInstance.remove();
         }
 
-        // Initialize Map centered at UIN SSC Main Campus with High Zoom capabilities (up to zoom 21)
         mapPickerInstance = L.map('mapPicker', {
             center: [DEFAULT_CAMPUS_CENTER.lat, DEFAULT_CAMPUS_CENTER.lng],
             zoom: 17,
@@ -159,24 +242,28 @@ function initMapPicker() {
             maxZoom: 21
         });
 
-        // OpenStreetMap Layer with maxNativeZoom 19 & maxZoom 21 for deep zooming
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             maxZoom: 21,
             maxNativeZoom: 19,
             attribution: '&copy; OpenStreetMap & UIN SSC'
         }).addTo(mapPickerInstance);
 
-        // Jika polygon sudah diisi, tampilkan highlight & fit bounds
-        if (CAMPUS_POLYGON_POINTS.length > 0) {
-            const campusPolygon = L.polygon(CAMPUS_POLYGON_POINTS, {
+        // Highlight All Campus Zones Polygons
+        const polygonGroup = L.featureGroup();
+        CAMPUS_ZONES.forEach(zone => {
+            const poly = L.polygon(zone.polygon, {
                 color: '#c59235',
-                weight: 4,
+                weight: 3,
                 fillColor: '#005a36',
                 fillOpacity: 0.35
             }).addTo(mapPickerInstance);
 
-            campusPolygon.bindTooltip('<b>Wilayah Kampus UIN SSC</b>', { permanent: false, direction: 'center' });
-            mapPickerInstance.fitBounds(campusPolygon.getBounds(), { padding: [20, 20] });
+            poly.bindTooltip(`<b>${zone.name}</b>`, { permanent: false, direction: 'center' });
+            polygonGroup.addLayer(poly);
+        });
+
+        if (CAMPUS_ZONES.length > 0) {
+            mapPickerInstance.fitBounds(polygonGroup.getBounds(), { padding: [25, 25] });
         }
 
         // Marker Pin Titik Kerusakan
