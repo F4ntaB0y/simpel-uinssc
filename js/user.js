@@ -120,16 +120,27 @@ function saveReports() {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(reportsData));
 }
 
-// Leaflet Map Picker Initialization (Restricted to UIN SSC Campus Area)
+// Batas Geografis Presisi Kampus UIN SSC Cirebon
+const CAMPUS_BOUNDS = {
+    minLat: -6.741000,
+    maxLat: -6.734000,
+    minLng: 108.549500,
+    maxLng: 108.556500,
+    defaultLat: -6.737400,
+    defaultLng: 108.553100
+};
+
+function isInsideCampus(lat, lng) {
+    return lat >= CAMPUS_BOUNDS.minLat && 
+           lat <= CAMPUS_BOUNDS.maxLat && 
+           lng >= CAMPUS_BOUNDS.minLng && 
+           lng <= CAMPUS_BOUNDS.maxLng;
+}
+
+// Leaflet Map Picker Initialization (Restricted & Masked to UIN SSC Campus Area)
 function initMapPicker() {
     const container = document.getElementById('mapPicker');
     if (!container || typeof L === 'undefined') return;
-
-    // Batas Wilayah Peta Kampus UIN SSC Cirebon
-    const uinSscBounds = L.latLngBounds(
-        L.latLng(-6.755000, 108.535000), // South-West
-        L.latLng(-6.720000, 108.575000)  // North-East
-    );
 
     try {
         if (mapPickerInstance) {
@@ -139,10 +150,8 @@ function initMapPicker() {
         mapPickerInstance = L.map('mapPicker', {
             center: [currentLat, currentLng],
             zoom: 17,
-            minZoom: 14,
-            maxZoom: 19,
-            maxBounds: uinSscBounds,
-            maxBoundsViscosity: 0.8
+            minZoom: 15,
+            maxZoom: 19
         });
 
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -150,17 +159,45 @@ function initMapPicker() {
             attribution: '&copy; OpenStreetMap & UIN SSC'
         }).addTo(mapPickerInstance);
 
-        mapMarkerInstance = L.marker([currentLat, currentLng], { draggable: true }).addTo(mapPickerInstance);
-        mapMarkerInstance.bindPopup('<b>Titik Kerusakan Kampus UIN SSC</b><br>Geser pin ini ke lokasi presisi.').openPopup();
+        // Render Inverted Mask Overlay (Shades everything outside UIN SSC campus in dark tint)
+        const outerWorld = [[90, -180], [90, 180], [-90, 180], [-90, -180]];
+        const campusHole = [
+            [CAMPUS_BOUNDS.maxLat, CAMPUS_BOUNDS.minLng],
+            [CAMPUS_BOUNDS.maxLat, CAMPUS_BOUNDS.maxLng],
+            [CAMPUS_BOUNDS.minLat, CAMPUS_BOUNDS.maxLng],
+            [CAMPUS_BOUNDS.minLat, CAMPUS_BOUNDS.minLng]
+        ];
 
-        mapMarkerInstance.on('dragend', function(e) {
-            const position = mapMarkerInstance.getLatLng();
-            updateCoordinatesDisplay(position.lat, position.lng);
+        L.polygon([outerWorld, campusHole], {
+            color: '#c59235',
+            weight: 3,
+            dashArray: '6, 6',
+            fillColor: '#04140d',
+            fillOpacity: 0.75,
+            interactive: false
+        }).addTo(mapPickerInstance);
+
+        mapMarkerInstance = L.marker([currentLat, currentLng], { draggable: true }).addTo(mapPickerInstance);
+        mapMarkerInstance.bindPopup('<b>Area Kampus UIN SSC</b><br>Geser pin ini ke titik fasilitas rusak.').openPopup();
+
+        mapMarkerInstance.on('dragend', function() {
+            const pos = mapMarkerInstance.getLatLng();
+            if (!isInsideCampus(pos.lat, pos.lng)) {
+                mapMarkerInstance.setLatLng([CAMPUS_BOUNDS.defaultLat, CAMPUS_BOUNDS.defaultLng]);
+                updateCoordinatesDisplay(CAMPUS_BOUNDS.defaultLat, CAMPUS_BOUNDS.defaultLng);
+                showToast('Pin dikembalikan! Titik lokasi hanya boleh di dalam area Kampus UIN SSC.', 'error');
+            } else {
+                updateCoordinatesDisplay(pos.lat, pos.lng);
+            }
         });
 
         mapPickerInstance.on('click', function(e) {
-            mapMarkerInstance.setLatLng(e.latlng);
-            updateCoordinatesDisplay(e.latlng.lat, e.latlng.lng);
+            if (!isInsideCampus(e.latlng.lat, e.latlng.lng)) {
+                showToast('Titik lokasi hanya boleh berada di dalam area Kampus UIN SSC!', 'error');
+            } else {
+                mapMarkerInstance.setLatLng(e.latlng);
+                updateCoordinatesDisplay(e.latlng.lat, e.latlng.lng);
+            }
         });
     } catch (err) {
         console.error('Error init map:', err);
