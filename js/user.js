@@ -120,21 +120,31 @@ function saveReports() {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(reportsData));
 }
 
-// Batas Geografis Presisi Kampus UIN SSC Cirebon
-const CAMPUS_BOUNDS = {
-    minLat: -6.741000,
-    maxLat: -6.734000,
-    minLng: 108.549500,
-    maxLng: 108.556500,
-    defaultLat: -6.737400,
-    defaultLng: 108.553100
-};
+// ==========================================================================
+// BATAS GEOGRAFIS PRESISI KAMPUS UIN SSC CIREBON (DAPAT DISESUAIKAN MANUAL)
+// Silakan tambah/ubah titik [Latitude, Longitude] mengelilingi batas kampus.
+// ==========================================================================
+const CAMPUS_POLYGON = [
+    [-6.734000, 108.549500], // Titik 1 (Sudut Utara-Barat)
+    [-6.734000, 108.556500], // Titik 2 (Sudut Utara-Timur)
+    [-6.741000, 108.556500], // Titik 3 (Sudut Selatan-Timur)
+    [-6.741000, 108.549500]  // Titik 4 (Sudut Selatan-Barat)
+];
 
+const DEFAULT_CAMPUS_CENTER = { lat: -6.737400, lng: 108.553100 };
+
+// Algoritma Presisi Ray-Casting Point-in-Polygon
 function isInsideCampus(lat, lng) {
-    return lat >= CAMPUS_BOUNDS.minLat && 
-           lat <= CAMPUS_BOUNDS.maxLat && 
-           lng >= CAMPUS_BOUNDS.minLng && 
-           lng <= CAMPUS_BOUNDS.maxLng;
+    const x = parseFloat(lat), y = parseFloat(lng);
+    let inside = false;
+    for (let i = 0, j = CAMPUS_POLYGON.length - 1; i < CAMPUS_POLYGON.length; j = i++) {
+        const xi = CAMPUS_POLYGON[i][0], yi = CAMPUS_POLYGON[i][1];
+        const xj = CAMPUS_POLYGON[j][0], yj = CAMPUS_POLYGON[j][1];
+        const intersect = ((yi > y) !== (yj > y)) &&
+            (x < (xj - xi) * (y - yi) / (yj - yi) + xi);
+        if (intersect) inside = !inside;
+    }
+    return inside;
 }
 
 // Leaflet Map Picker Initialization (Restricted & Masked to UIN SSC Campus Area)
@@ -159,16 +169,10 @@ function initMapPicker() {
             attribution: '&copy; OpenStreetMap & UIN SSC'
         }).addTo(mapPickerInstance);
 
-        // Render Inverted Mask Overlay (Shades everything outside UIN SSC campus in dark tint)
+        // Render Inverted Mask Overlay (Shades everything outside UIN SSC campus polygon)
         const outerWorld = [[90, -180], [90, 180], [-90, 180], [-90, -180]];
-        const campusHole = [
-            [CAMPUS_BOUNDS.maxLat, CAMPUS_BOUNDS.minLng],
-            [CAMPUS_BOUNDS.maxLat, CAMPUS_BOUNDS.maxLng],
-            [CAMPUS_BOUNDS.minLat, CAMPUS_BOUNDS.maxLng],
-            [CAMPUS_BOUNDS.minLat, CAMPUS_BOUNDS.minLng]
-        ];
 
-        L.polygon([outerWorld, campusHole], {
+        L.polygon([outerWorld, CAMPUS_POLYGON], {
             color: '#c59235',
             weight: 3,
             dashArray: '6, 6',
@@ -183,8 +187,8 @@ function initMapPicker() {
         mapMarkerInstance.on('dragend', function() {
             const pos = mapMarkerInstance.getLatLng();
             if (!isInsideCampus(pos.lat, pos.lng)) {
-                mapMarkerInstance.setLatLng([CAMPUS_BOUNDS.defaultLat, CAMPUS_BOUNDS.defaultLng]);
-                updateCoordinatesDisplay(CAMPUS_BOUNDS.defaultLat, CAMPUS_BOUNDS.defaultLng);
+                mapMarkerInstance.setLatLng([DEFAULT_CAMPUS_CENTER.lat, DEFAULT_CAMPUS_CENTER.lng]);
+                updateCoordinatesDisplay(DEFAULT_CAMPUS_CENTER.lat, DEFAULT_CAMPUS_CENTER.lng);
                 showToast('Pin dikembalikan! Titik lokasi hanya boleh di dalam area Kampus UIN SSC.', 'error');
             } else {
                 updateCoordinatesDisplay(pos.lat, pos.lng);

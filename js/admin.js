@@ -247,12 +247,12 @@ function openAdminModal(id) {
     // Initialize or update Admin Leaflet Map (Masked & Restricted to UIN SSC Campus Area)
     setTimeout(() => {
         if (typeof L !== 'undefined') {
-            const CAMPUS_BOUNDS = {
-                minLat: -6.741000,
-                maxLat: -6.734000,
-                minLng: 108.549500,
-                maxLng: 108.556500
-            };
+            const CAMPUS_POLYGON = [
+                [-6.734000, 108.549500],
+                [-6.734000, 108.556500],
+                [-6.741000, 108.556500],
+                [-6.741000, 108.549500]
+            ];
 
             if (!adminMapInstance) {
                 adminMapInstance = L.map('adminMap', {
@@ -266,16 +266,10 @@ function openAdminModal(id) {
                     attribution: '&copy; OpenStreetMap & UIN SSC'
                 }).addTo(adminMapInstance);
 
-                // Render Inverted Mask Overlay (Shades everything outside UIN SSC campus in dark tint)
+                // Render Inverted Mask Overlay (Shades everything outside UIN SSC campus polygon)
                 const outerWorld = [[90, -180], [90, 180], [-90, 180], [-90, -180]];
-                const campusHole = [
-                    [CAMPUS_BOUNDS.maxLat, CAMPUS_BOUNDS.minLng],
-                    [CAMPUS_BOUNDS.maxLat, CAMPUS_BOUNDS.maxLng],
-                    [CAMPUS_BOUNDS.minLat, CAMPUS_BOUNDS.maxLng],
-                    [CAMPUS_BOUNDS.minLat, CAMPUS_BOUNDS.minLng]
-                ];
 
-                L.polygon([outerWorld, campusHole], {
+                L.polygon([outerWorld, CAMPUS_POLYGON], {
                     color: '#c59235',
                     weight: 3,
                     dashArray: '6, 6',
