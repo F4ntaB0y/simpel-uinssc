@@ -101,8 +101,15 @@
             const next = current === 'dark' ? 'light' : 'dark';
             document.documentElement.setAttribute('data-theme', next);
             localStorage.setItem('SIMPEL_FK_THEME', next);
+            const icon = document.getElementById('themeIcon');
+            if (icon) icon.className = next === 'dark' ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
         }
-        document.documentElement.setAttribute('data-theme', localStorage.getItem('SIMPEL_FK_THEME') || 'dark');
+        (function() {
+            const saved = localStorage.getItem('SIMPEL_FK_THEME') || 'dark';
+            document.documentElement.setAttribute('data-theme', saved);
+            const icon = document.getElementById('themeIcon');
+            if (icon) icon.className = saved === 'dark' ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
+        })();
     </script>
 </body>
 </html>

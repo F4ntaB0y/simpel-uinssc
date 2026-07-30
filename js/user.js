@@ -88,7 +88,7 @@ function initTheme() {
 }
 
 function toggleTheme() {
-    const current = document.documentElement.getAttribute('data-theme');
+    const current = document.documentElement.getAttribute('data-theme') || 'dark';
     const next = current === 'dark' ? 'light' : 'dark';
     document.documentElement.setAttribute('data-theme', next);
     localStorage.setItem(THEME_KEY, next);
@@ -120,53 +120,51 @@ function saveReports() {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(reportsData));
 }
 
-// Leaflet Map Picker Initialization (Restricted to UIN SSC Campus Bounds)
+// Leaflet Map Picker Initialization (Restricted to UIN SSC Campus Area)
 function initMapPicker() {
     const container = document.getElementById('mapPicker');
     if (!container || typeof L === 'undefined') return;
 
     // Batas Wilayah Peta Kampus UIN SSC Cirebon
     const uinSscBounds = L.latLngBounds(
-        L.latLng(-6.745000, 108.545000), // South-West
-        L.latLng(-6.730000, 108.560000)  // North-East
+        L.latLng(-6.755000, 108.535000), // South-West
+        L.latLng(-6.720000, 108.575000)  // North-East
     );
 
-    mapPickerInstance = L.map('mapPicker', {
-        center: [currentLat, currentLng],
-        zoom: 17,
-        minZoom: 16,
-        maxZoom: 19,
-        maxBounds: uinSscBounds,
-        maxBoundsViscosity: 1.0
-    });
-
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        minZoom: 16,
-        maxZoom: 19,
-        attribution: '&copy; OpenStreetMap & UIN SSC'
-    }).addTo(mapPickerInstance);
-
-    mapMarkerInstance = L.marker([currentLat, currentLng], { draggable: true }).addTo(mapPickerInstance);
-
-    mapMarkerInstance.bindPopup('<b>Titik Kerusakan Kampus UIN SSC</b><br>Geser pin ini ke lokasi presisi.').openPopup();
-
-    mapMarkerInstance.on('dragend', function(e) {
-        let position = mapMarkerInstance.getLatLng();
-        // Pastikan marker tidak keluar dari batas kampus
-        if (!uinSscBounds.contains(position)) {
-            mapMarkerInstance.setLatLng([currentLat, currentLng]);
-            showToast('Marker dikembalikan ke dalam area Kampus UIN SSC', 'info');
-            position = mapMarkerInstance.getLatLng();
+    try {
+        if (mapPickerInstance) {
+            mapPickerInstance.remove();
         }
-        updateCoordinatesDisplay(position.lat, position.lng);
-    });
-        updateCoordinatesDisplay(position.lat, position.lng);
-    });
 
-    mapPickerInstance.on('click', function(e) {
-        mapMarkerInstance.setLatLng(e.latlng);
-        updateCoordinatesDisplay(e.latlng.lat, e.latlng.lng);
-    });
+        mapPickerInstance = L.map('mapPicker', {
+            center: [currentLat, currentLng],
+            zoom: 17,
+            minZoom: 14,
+            maxZoom: 19,
+            maxBounds: uinSscBounds,
+            maxBoundsViscosity: 0.8
+        });
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '&copy; OpenStreetMap & UIN SSC'
+        }).addTo(mapPickerInstance);
+
+        mapMarkerInstance = L.marker([currentLat, currentLng], { draggable: true }).addTo(mapPickerInstance);
+        mapMarkerInstance.bindPopup('<b>Titik Kerusakan Kampus UIN SSC</b><br>Geser pin ini ke lokasi presisi.').openPopup();
+
+        mapMarkerInstance.on('dragend', function(e) {
+            const position = mapMarkerInstance.getLatLng();
+            updateCoordinatesDisplay(position.lat, position.lng);
+        });
+
+        mapPickerInstance.on('click', function(e) {
+            mapMarkerInstance.setLatLng(e.latlng);
+            updateCoordinatesDisplay(e.latlng.lat, e.latlng.lng);
+        });
+    } catch (err) {
+        console.error('Error init map:', err);
+    }
 }
 
 function updateCoordinatesDisplay(lat, lng) {
