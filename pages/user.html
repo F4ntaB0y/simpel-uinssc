@@ -153,25 +153,25 @@
                     <!-- Map & Coordinates GPS Section -->
                     <div class="form-group full-width" style="margin-top: 6px;">
                         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-                            <label><i class="fa-solid fa-crosshairs" style="color:var(--gold);"></i> Koordinat & Titik Peta Presisi <span class="req">*</span></label>
+                            <label><i class="fa-solid fa-crosshairs" style="color:var(--gold);"></i> Lokasi Peta & Koordinat Presisi <span class="req">*</span></label>
                             <button type="button" class="chip-btn" onclick="getCurrentGPSLocation()" style="background:var(--primary); color:#fff; border-color:var(--gold);">
                                 <i class="fa-solid fa-location-crosshairs"></i> Gunakan Lokasi GPS Saya
                             </button>
                         </div>
 
+                        <div id="mapPicker" class="map-box"></div>
+                        <small style="color:var(--text-muted); font-size:12px; margin-top:6px; margin-bottom:10px; display:block;"><i class="fa-solid fa-circle-info"></i> Klik atau geser marker pin pada peta kampus untuk menentukan titik presisi lokasi kerusakan.</small>
+
                         <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px; margin-bottom:10px;">
                             <div class="input-wrapper">
                                 <i class="fa-solid fa-map-pin"></i>
-                                <input type="text" id="latInput" placeholder="Latitude (misal: -6.7374)" value="-6.737400" readonly>
+                                <input type="text" id="latInput" placeholder="Latitude (misal: -6.7350)" value="-6.735000" readonly>
                             </div>
                             <div class="input-wrapper">
                                 <i class="fa-solid fa-map-pin"></i>
-                                <input type="text" id="lngInput" placeholder="Longitude (misal: 108.5531)" value="108.553100" readonly>
+                                <input type="text" id="lngInput" placeholder="Longitude (misal: 108.5336)" value="108.533600" readonly>
                             </div>
                         </div>
-
-                        <div id="mapPicker" class="map-box"></div>
-                        <small style="color:var(--text-muted); font-size:12px; margin-top:6px; display:block;"><i class="fa-solid fa-circle-info"></i> Klik atau geser marker pin pada peta kampus untuk menentukan titik presisi lokasi kerusakan.</small>
 
                         <!-- Interactive Polygon Collector Tool for Developers (Hidden for Production) -->
                         <div class="hidden" style="margin-top: 14px; border: 1px dashed var(--gold); padding: 14px; border-radius: 12px; background: rgba(197, 146, 53, 0.06);">

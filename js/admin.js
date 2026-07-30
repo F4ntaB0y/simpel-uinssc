@@ -389,12 +389,13 @@ function openAdminModal(id) {
                 adminMapInstance = L.map('adminMap', {
                     center: [reportLat, reportLng],
                     zoom: 17,
-                    minZoom: 15,
-                    maxZoom: 19
+                    minZoom: 14,
+                    maxZoom: 22
                 });
                 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                    minZoom: 15,
-                    maxZoom: 19,
+                    minZoom: 14,
+                    maxZoom: 22,
+                    maxNativeZoom: 19,
                     attribution: '&copy; OpenStreetMap & UIN SSC'
                 }).addTo(adminMapInstance);
 

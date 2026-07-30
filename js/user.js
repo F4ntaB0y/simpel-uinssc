@@ -311,20 +311,21 @@ function initMapPicker() {
         currentLng = centerAll.lng.toFixed(6);
         updateCoordinatesDisplay(currentLat, currentLng);
 
-        // Map Initialization dengan Zoom Nyaman (Min 15, Max 19)
+        // Map Initialization dengan Zoom In Tidak Dibatasi (Max 22)
         mapPickerInstance = L.map('mapPicker', {
             center: [centerAll.lat, centerAll.lng],
             zoom: 17,
-            minZoom: 15,
-            maxZoom: 19,
-            maxBounds: combinedBounds.pad(0.12),
+            minZoom: 14,
+            maxZoom: 22,
+            maxBounds: combinedBounds.pad(0.15),
             maxBoundsViscosity: 0.8
         });
 
-        // OpenStreetMap Layer
+        // OpenStreetMap Layer (maxNativeZoom 19 & maxZoom 22)
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            minZoom: 15,
-            maxZoom: 19,
+            minZoom: 14,
+            maxZoom: 22,
+            maxNativeZoom: 19,
             attribution: '&copy; OpenStreetMap & UIN SSC'
         }).addTo(mapPickerInstance);
 
