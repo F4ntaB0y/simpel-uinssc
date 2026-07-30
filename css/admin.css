@@ -1,5 +1,5 @@
 /* ==========================================================================
-   SIMPEL UIN SSC - DEDICATED ADMIN DASHBOARD STYLING
+   SIMPEL UIN SSC - DEDICATED ADMIN DASHBOARD STYLING (ULTRA RESPONSIVE)
    Location: css/admin.css
    ========================================================================== */
 
@@ -19,6 +19,7 @@
     position: fixed;
     height: 100vh;
     z-index: 90;
+    transition: var(--transition);
 }
 
 .sidebar-brand {
@@ -70,6 +71,7 @@
     flex: 1;
     padding: 32px;
     max-width: calc(100vw - 270px);
+    transition: var(--transition);
 }
 
 .admin-header {
@@ -77,6 +79,8 @@
     justify-content: space-between;
     align-items: center;
     margin-bottom: 28px;
+    gap: 16px;
+    flex-wrap: wrap;
 }
 
 /* KPI Cards Grid */
@@ -113,6 +117,7 @@
     align-items: center;
     justify-content: center;
     font-size: 22px;
+    flex-shrink: 0;
 }
 
 .icon-blue { background: rgba(197, 146, 53, 0.18); color: var(--gold); }
@@ -163,12 +168,14 @@
     display: flex;
     gap: 12px;
     align-items: center;
+    flex-wrap: wrap;
 }
 
 .admin-table {
     width: 100%;
     border-collapse: collapse;
     font-size: 13.5px;
+    min-width: 800px;
 }
 
 .admin-table th {
@@ -252,9 +259,76 @@
     border-color: #ef4444;
 }
 
+/* ==========================================================================
+   ADMIN RESPONSIVE MEDIA QUERIES (TABLET & MOBILE)
+   ========================================================================== */
+
 @media (max-width: 1024px) {
-    .admin-sidebar { width: 80px; padding: 16px 8px; }
-    .sidebar-brand span, .sidebar-menu span { display: none; }
-    .admin-main { margin-left: 80px; max-width: calc(100vw - 80px); }
-    .admin-kpi-grid { grid-template-columns: repeat(2, 1fr); }
+    .admin-wrapper {
+        flex-direction: column;
+    }
+
+    .admin-sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+        padding: 16px 20px;
+        border-right: none;
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    .sidebar-brand {
+        margin-bottom: 12px;
+        padding-bottom: 12px;
+    }
+
+    .sidebar-menu {
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    .sidebar-menu li a {
+        padding: 8px 14px;
+        font-size: 13px;
+    }
+
+    .sidebar-footer {
+        padding-top: 10px;
+        border-top: none;
+    }
+
+    .admin-main {
+        margin-left: 0;
+        max-width: 100%;
+        padding: 20px 16px;
+    }
+
+    .admin-kpi-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 600px) {
+    .admin-kpi-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .filter-group {
+        width: 100%;
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .filter-group select {
+        width: 100%;
+    }
+
+    .table-toolbar {
+        padding: 16px;
+    }
+
+    .admin-header h1 {
+        font-size: 20px;
+    }
 }
