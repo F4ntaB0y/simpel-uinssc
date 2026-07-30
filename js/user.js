@@ -121,25 +121,51 @@ function saveReports() {
 }
 
 // ==========================================================================
-// BATAS GEOGRAFIS PRESISI KAMPUS UIN SSC CIREBON (DAPAT DISESUAIKAN MANUAL)
-// Silakan tambah/ubah titik [Latitude, Longitude] mengelilingi batas kampus.
+// BATAS GEOGRAFIS MULTI-ZONA KAMPUS UIN SSC CIREBON (TERPISAH PER GEDUNG)
+// Bebas tambah/ubah zona gedung kampus yang lokasinya terpisah di Cirebon.
 // ==========================================================================
-const CAMPUS_POLYGON = [
-    [-6.734000, 108.549500], // Titik 1 (Sudut Utara-Barat)
-    [-6.734000, 108.556500], // Titik 2 (Sudut Utara-Timur)
-    [-6.741000, 108.556500], // Titik 3 (Sudut Selatan-Timur)
-    [-6.741000, 108.549500]  // Titik 4 (Sudut Selatan-Barat)
+const CAMPUS_ZONES = [
+    {
+        id: 'cyber_rektorat',
+        name: 'Zona Kampus Utama & Cyber / Rektorat',
+        polygon: [
+            [-6.734000, 108.549500],
+            [-6.734000, 108.556500],
+            [-6.741000, 108.556500],
+            [-6.741000, 108.549500]
+        ]
+    },
+    {
+        id: 'fitk',
+        name: 'Zona Gedung FITK & Tarbiyah',
+        polygon: [
+            [-6.738000, 108.553000],
+            [-6.738000, 108.558500],
+            [-6.743500, 108.558500],
+            [-6.743500, 108.553000]
+        ]
+    },
+    {
+        id: 'fdki_pasca',
+        name: 'Zona Gedung FDKI & Pascasarjana',
+        polygon: [
+            [-6.731500, 108.547000],
+            [-6.731500, 108.552500],
+            [-6.737000, 108.552500],
+            [-6.737000, 108.547000]
+        ]
+    }
 ];
 
 const DEFAULT_CAMPUS_CENTER = { lat: -6.737400, lng: 108.553100 };
 
 // Algoritma Presisi Ray-Casting Point-in-Polygon
-function isInsideCampus(lat, lng) {
-    const x = parseFloat(lat), y = parseFloat(lng);
+function isPointInSinglePolygon(point, vs) {
+    const x = point[0], y = point[1];
     let inside = false;
-    for (let i = 0, j = CAMPUS_POLYGON.length - 1; i < CAMPUS_POLYGON.length; j = i++) {
-        const xi = CAMPUS_POLYGON[i][0], yi = CAMPUS_POLYGON[i][1];
-        const xj = CAMPUS_POLYGON[j][0], yj = CAMPUS_POLYGON[j][1];
+    for (let i = 0, j = vs.length - 1; i < vs.length; j = i++) {
+        const xi = vs[i][0], yi = vs[i][1];
+        const xj = vs[j][0], yj = vs[j][1];
         const intersect = ((yi > y) !== (yj > y)) &&
             (x < (xj - xi) * (y - yi) / (yj - yi) + xi);
         if (intersect) inside = !inside;
@@ -147,7 +173,13 @@ function isInsideCampus(lat, lng) {
     return inside;
 }
 
-// Leaflet Map Picker Initialization (Restricted & Masked to UIN SSC Campus Area)
+// Memeriksa apakah titik berada di SALAH SATU zona kampus UIN SSC
+function isInsideCampus(lat, lng) {
+    const pt = [parseFloat(lat), parseFloat(lng)];
+    return CAMPUS_ZONES.some(zone => isPointInSinglePolygon(pt, zone.polygon));
+}
+
+// Leaflet Map Picker Initialization (Restricted & Masked to Multi-Zone UIN SSC Campus Area)
 function initMapPicker() {
     const container = document.getElementById('mapPicker');
     if (!container || typeof L === 'undefined') return;
@@ -159,8 +191,8 @@ function initMapPicker() {
 
         mapPickerInstance = L.map('mapPicker', {
             center: [currentLat, currentLng],
-            zoom: 17,
-            minZoom: 15,
+            zoom: 16,
+            minZoom: 14,
             maxZoom: 19
         });
 
@@ -169,10 +201,11 @@ function initMapPicker() {
             attribution: '&copy; OpenStreetMap & UIN SSC'
         }).addTo(mapPickerInstance);
 
-        // Render Inverted Mask Overlay (Shades everything outside UIN SSC campus polygon)
+        // Render Inverted Mask Overlay (Shades everything outside ALL UIN SSC campus zones)
         const outerWorld = [[90, -180], [90, 180], [-90, 180], [-90, -180]];
+        const campusHoles = CAMPUS_ZONES.map(z => z.polygon);
 
-        L.polygon([outerWorld, CAMPUS_POLYGON], {
+        L.polygon([outerWorld, ...campusHoles], {
             color: '#c59235',
             weight: 3,
             dashArray: '6, 6',
@@ -182,14 +215,14 @@ function initMapPicker() {
         }).addTo(mapPickerInstance);
 
         mapMarkerInstance = L.marker([currentLat, currentLng], { draggable: true }).addTo(mapPickerInstance);
-        mapMarkerInstance.bindPopup('<b>Area Kampus UIN SSC</b><br>Geser pin ini ke titik fasilitas rusak.').openPopup();
+        mapMarkerInstance.bindPopup('<b>Area Kampus UIN SSC</b><br>Geser pin ke lokasi gedung terdekat.').openPopup();
 
         mapMarkerInstance.on('dragend', function() {
             const pos = mapMarkerInstance.getLatLng();
             if (!isInsideCampus(pos.lat, pos.lng)) {
                 mapMarkerInstance.setLatLng([DEFAULT_CAMPUS_CENTER.lat, DEFAULT_CAMPUS_CENTER.lng]);
                 updateCoordinatesDisplay(DEFAULT_CAMPUS_CENTER.lat, DEFAULT_CAMPUS_CENTER.lng);
-                showToast('Pin dikembalikan! Titik lokasi hanya boleh di dalam area Kampus UIN SSC.', 'error');
+                showToast('Pin dikembalikan! Titik lokasi harus berada di salah satu zona gedung UIN SSC.', 'error');
             } else {
                 updateCoordinatesDisplay(pos.lat, pos.lng);
             }
@@ -197,7 +230,7 @@ function initMapPicker() {
 
         mapPickerInstance.on('click', function(e) {
             if (!isInsideCampus(e.latlng.lat, e.latlng.lng)) {
-                showToast('Titik lokasi hanya boleh berada di dalam area Kampus UIN SSC!', 'error');
+                showToast('Titik lokasi harus berada di dalam salah satu zona gedung UIN SSC!', 'error');
             } else {
                 mapMarkerInstance.setLatLng(e.latlng);
                 updateCoordinatesDisplay(e.latlng.lat, e.latlng.lng);

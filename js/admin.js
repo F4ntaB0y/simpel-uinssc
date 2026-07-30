@@ -244,21 +244,41 @@ function openAdminModal(id) {
 
     document.getElementById('adminEditModal').classList.remove('hidden');
 
-    // Initialize or update Admin Leaflet Map (Masked & Restricted to UIN SSC Campus Area)
+    // Initialize or update Admin Leaflet Map (Masked & Restricted to Multi-Zone UIN SSC Campus Area)
     setTimeout(() => {
         if (typeof L !== 'undefined') {
-            const CAMPUS_POLYGON = [
-                [-6.734000, 108.549500],
-                [-6.734000, 108.556500],
-                [-6.741000, 108.556500],
-                [-6.741000, 108.549500]
+            const CAMPUS_ZONES = [
+                {
+                    polygon: [
+                        [-6.734000, 108.549500],
+                        [-6.734000, 108.556500],
+                        [-6.741000, 108.556500],
+                        [-6.741000, 108.549500]
+                    ]
+                },
+                {
+                    polygon: [
+                        [-6.738000, 108.553000],
+                        [-6.738000, 108.558500],
+                        [-6.743500, 108.558500],
+                        [-6.743500, 108.553000]
+                    ]
+                },
+                {
+                    polygon: [
+                        [-6.731500, 108.547000],
+                        [-6.731500, 108.552500],
+                        [-6.737000, 108.552500],
+                        [-6.737000, 108.547000]
+                    ]
+                }
             ];
 
             if (!adminMapInstance) {
                 adminMapInstance = L.map('adminMap', {
                     center: [reportLat, reportLng],
-                    zoom: 17,
-                    minZoom: 15,
+                    zoom: 16,
+                    minZoom: 14,
                     maxZoom: 19
                 });
                 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -266,10 +286,11 @@ function openAdminModal(id) {
                     attribution: '&copy; OpenStreetMap & UIN SSC'
                 }).addTo(adminMapInstance);
 
-                // Render Inverted Mask Overlay (Shades everything outside UIN SSC campus polygon)
+                // Render Inverted Mask Overlay (Shades everything outside ALL UIN SSC campus zones)
                 const outerWorld = [[90, -180], [90, 180], [-90, 180], [-90, -180]];
+                const campusHoles = CAMPUS_ZONES.map(z => z.polygon);
 
-                L.polygon([outerWorld, CAMPUS_POLYGON], {
+                L.polygon([outerWorld, ...campusHoles], {
                     color: '#c59235',
                     weight: 3,
                     dashArray: '6, 6',
@@ -280,7 +301,7 @@ function openAdminModal(id) {
 
                 adminMarkerInstance = L.marker([reportLat, reportLng]).addTo(adminMapInstance);
             } else {
-                adminMapInstance.setView([reportLat, reportLng], 17);
+                adminMapInstance.setView([reportLat, reportLng], 16);
                 adminMarkerInstance.setLatLng([reportLat, reportLng]);
             }
             adminMarkerInstance.bindPopup(`<b>Lokasi Kerusakan: ${escapeHtml(report.ruangan)}</b><br>ID: ${report.id}`).openPopup();
