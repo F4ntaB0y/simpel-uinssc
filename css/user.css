@@ -594,6 +594,12 @@ input:focus, select:focus, textarea:focus {
     border: 1px solid var(--border-color);
     box-shadow: var(--shadow-sm);
     z-index: 1;
+    background: #04140d !important;
+}
+
+.leaflet-container {
+    background: #04140d !important;
+    background-color: #04140d !important;
 }
 
 /* Toast Container */
