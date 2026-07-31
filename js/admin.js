@@ -139,6 +139,146 @@ const DEFAULT_SEED_DATA = [
         catatanAdmin: 'Penggantian seal kran baru telah selesai dikerjakan.',
         tanggalLapor: '2026-07-25 11:00',
         tanggalUpdate: '2026-07-26 10:15'
+    },
+    {
+        id: 'TRK-2026-004',
+        namaPelapor: 'Ahmad Fauzi, M.T.',
+        nimNip: '1990041501',
+        peranPelapor: 'Staf',
+        kontakPelapor: '081399887766',
+        gedung: 'Gedung Rektorat UINSSC',
+        ruangan: 'Ruang Rapat Utama Lt. 3',
+        lat: '-6.735200',
+        lng: '108.533200',
+        kategori: 'Kelistrikan & Lampu',
+        urgensi: 'Tinggi',
+        deskripsi: 'Lampu LED ceiling berkedip terus dan menimbulkan suara dengung saat rapat berlangsung.',
+        foto: '',
+        status: 'Diproses',
+        teknisi: 'Joko (Kelistrikan)',
+        catatanAdmin: 'Driver ballast LED replacement sedang disiapkan oleh tim kelistrikan.',
+        tanggalLapor: '2026-07-29 13:45',
+        tanggalUpdate: '2026-07-29 16:10'
+    },
+    {
+        id: 'TRK-2026-005',
+        namaPelapor: 'Nabila Putri',
+        nimNip: '210203045',
+        peranPelapor: 'Mahasiswa',
+        kontakPelapor: '082155443322',
+        gedung: 'Fakultas Ilmu Tarbiyah (FITK)',
+        ruangan: 'Ruang Dosen Tarbiyah Lt. 2',
+        lat: '-6.734800',
+        lng: '108.533500',
+        kategori: 'Jaringan & Internet',
+        urgensi: 'Darurat',
+        deskripsi: 'Access Point WiFi lokasi FITK lantai 2 tidak memancarkan sinyal SSID kampus.',
+        foto: '',
+        status: 'Diajukan',
+        teknisi: 'Belum Ditunjuk',
+        catatanAdmin: 'Menunggu pengecekan switch jaringan ICT.',
+        tanggalLapor: '2026-07-31 10:00',
+        tanggalUpdate: '2026-07-31 10:00'
+    },
+    {
+        id: 'TRK-2026-006',
+        namaPelapor: 'Dedi Kurniawan',
+        nimNip: '1988022003',
+        peranPelapor: 'Staf',
+        kontakPelapor: '087811223344',
+        gedung: 'Fakultas Syariah & Ekonomi (FSEI)',
+        ruangan: 'Selasar Utama Lt. 1',
+        lat: '-6.735400',
+        lng: '108.533700',
+        kategori: 'Bangunan & Infrastruktur',
+        urgensi: 'Sedang',
+        deskripsi: 'Ubin keramik selasar pecah terangkat membahayakan mahasiswa yang melintas.',
+        foto: '',
+        status: 'Selesai',
+        teknisi: 'Sukarman (Sipil/Bangunan)',
+        catatanAdmin: 'Pemasangan keramik pengganti dan semen perekat telah selesai rapi.',
+        tanggalLapor: '2026-07-20 14:10',
+        tanggalUpdate: '2026-07-22 09:30'
+    },
+    {
+        id: 'TRK-2026-007',
+        namaPelapor: 'Dewi Lestari',
+        nimNip: '220501099',
+        peranPelapor: 'Mahasiswa',
+        kontakPelapor: '089677889900',
+        gedung: 'Fakultas Ushuluddin & Adab (FUAD)',
+        ruangan: 'Ruang Seminar 102',
+        lat: '-6.734500',
+        lng: '108.534000',
+        kategori: 'Pintu & Jendela',
+        urgensi: 'Rendah',
+        deskripsi: 'Engsel pintu kayu belakang macet kencang dan kunci engsel sulit diputar.',
+        foto: '',
+        status: 'Diajukan',
+        teknisi: 'Belum Ditunjuk',
+        catatanAdmin: 'Laporan tercatat di log perbaikan rutin.',
+        tanggalLapor: '2026-07-31 11:20',
+        tanggalUpdate: '2026-07-31 11:20'
+    },
+    {
+        id: 'TRK-2026-008',
+        namaPelapor: 'Rizky Pratama',
+        nimNip: '230102077',
+        peranPelapor: 'Mahasiswa',
+        kontakPelapor: '081299001122',
+        gedung: 'Gedung Perpustakaan Pusat',
+        ruangan: 'Ruang Baca & Komputer Lt. 2',
+        lat: '-6.735600',
+        lng: '108.534200',
+        kategori: 'Kelistrikan & Lampu',
+        urgensi: 'Tinggi',
+        deskripsi: 'Stop kontak meja belajar nomor 5 percikan api kecil saat colokan dilepas.',
+        foto: '',
+        status: 'Diproses',
+        teknisi: 'Joko (Kelistrikan)',
+        catatanAdmin: 'Stop kontak diisolasi sementara dan stop kontak baru disiapkan.',
+        tanggalLapor: '2026-07-30 15:30',
+        tanggalUpdate: '2026-07-30 17:00'
+    },
+    {
+        id: 'TRK-2026-009',
+        namaPelapor: 'Ust. Farhan Ridwan',
+        nimNip: '1979061201',
+        peranPelapor: 'Dosen',
+        kontakPelapor: '085211447788',
+        gedung: 'Gedung Pascasarjana & Ma\'had',
+        ruangan: 'Aula Utama Pascasarjana',
+        lat: '-6.734800',
+        lng: '108.530800',
+        kategori: 'Proyektor & Sound System',
+        urgensi: 'Sedang',
+        deskripsi: 'Mic wireless podium sering mendengung (feedback noise) tinggi.',
+        foto: '',
+        status: 'Selesai',
+        teknisi: 'Hendra (Audio System)',
+        catatanAdmin: 'Penyetelan mixer audio dan peredam frekuensi equalizer selesai.',
+        tanggalLapor: '2026-07-24 08:00',
+        tanggalUpdate: '2026-07-24 11:30'
+    },
+    {
+        id: 'TRK-2026-010',
+        namaPelapor: 'Tri Handoko',
+        nimNip: '200301144',
+        peranPelapor: 'Mahasiswa',
+        kontakPelapor: '083811992233',
+        gedung: 'Kampus 2 Saladara UINSSC',
+        ruangan: 'Ruang Serbaguna Lt. 1',
+        lat: '-6.744000',
+        lng: '108.525600',
+        kategori: 'Bangunan & Infrastruktur',
+        urgensi: 'Tinggi',
+        deskripsi: 'Terdapat rembesan air hujan dari atap saat hujan deras di dekat panggung utama.',
+        foto: '',
+        status: 'Diajukan',
+        teknisi: 'Belum Ditunjuk',
+        catatanAdmin: 'Diserahkan ke tim logistik Kampus 2 Saladara.',
+        tanggalLapor: '2026-07-31 07:15',
+        tanggalUpdate: '2026-07-31 07:15'
     }
 ];
 
@@ -259,8 +399,13 @@ function loadReports() {
     if (saved) {
         try {
             reportsData = JSON.parse(saved);
+            if (!Array.isArray(reportsData) || reportsData.length < 5) {
+                reportsData = [...DEFAULT_SEED_DATA];
+                saveReports();
+            }
         } catch(e) {
             reportsData = [...DEFAULT_SEED_DATA];
+            saveReports();
         }
     } else {
         reportsData = [...DEFAULT_SEED_DATA];
