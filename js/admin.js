@@ -23,6 +23,26 @@ let adminMapInstance = null;
 let adminMarkerInstance = null;
 let adminOverviewMapInstance = null;
 let adminOverviewMarkersGroup = null;
+let currentAdminMapMode = 'pin'; // 'pin' or 'heatmap'
+
+function toggleAdminMapMode() {
+    currentAdminMapMode = (currentAdminMapMode === 'pin') ? 'heatmap' : 'pin';
+    const btn = document.getElementById('mapModeToggleBtn');
+    if (btn) {
+        if (currentAdminMapMode === 'heatmap') {
+            btn.innerHTML = `<i class="fa-solid fa-fire" style="color:#f87171;"></i> Mode: Heatmap Kerusakan (Klik utk Pin)`;
+            btn.style.background = 'rgba(239, 68, 68, 0.2)';
+            btn.style.color = '#f87171';
+            btn.style.borderColor = '#ef4444';
+        } else {
+            btn.innerHTML = `<i class="fa-solid fa-location-dot"></i> Mode: Pin Marker (Klik Mode Heatmap)`;
+            btn.style.background = 'rgba(197, 146, 53, 0.15)';
+            btn.style.color = 'var(--gold)';
+            btn.style.borderColor = 'var(--gold)';
+        }
+    }
+    renderAdminTable();
+}
 
 const DEFAULT_SEED_DATA = [
     {
@@ -552,31 +572,81 @@ function renderAdminOverviewMarkers(itemsToRender = reportsData) {
         if (rep.status === 'Selesai') color = '#22c55e'; // Green
         if (rep.status === 'Ditolak') color = '#64748b'; // Slate
 
-        const marker = L.circleMarker([lat, lng], {
-            radius: 10,
-            fillColor: color,
-            color: '#ffffff',
-            weight: 2.5,
-            opacity: 1,
-            fillOpacity: 0.95
-        });
-
         bounds.extend([lat, lng]);
 
-        const popupHtml = `
-            <div style="font-family:'Plus Jakarta Sans',sans-serif; color:#0f172a; padding:6px; min-width:200px;">
-                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
-                    <span style="font-size:11px; font-weight:800; color:#c59235;">${escapeHtml(rep.id)}</span>
-                    <span style="display:inline-block; font-size:10px; font-weight:700; padding:2px 8px; border-radius:10px; background:${color}; color:#ffffff;">${escapeHtml(rep.status)}</span>
-                </div>
-                <h4 style="margin:2px 0 6px 0; font-size:14px; font-weight:800; color:#005a36;">${escapeHtml(rep.kategori)}</h4>
-                <p style="font-size:12px; margin-bottom:8px; color:#475569;"><i class="fa-solid fa-location-dot" style="color:#c59235;"></i> ${escapeHtml(rep.gedung)} (${escapeHtml(rep.ruangan)})</p>
-                <button onclick="openAdminModal('${rep.id}')" style="width:100%; padding:7px 10px; background:#005a36; color:#ffffff; border:none; border-radius:6px; font-weight:700; font-size:12px; cursor:pointer; box-shadow: 0 2px 8px rgba(0,90,54,0.3);"><i class="fa-solid fa-pen-to-square"></i> Process Laporan Ini</button>
-            </div>
-        `;
+        if (currentAdminMapMode === 'heatmap') {
+            // Render 3-layer radial heat intensity glow circles
+            let heatRadius = 35;
+            let glowColor = '#ef4444';
+            if (rep.urgensi === 'Darurat') { heatRadius = 55; glowColor = '#dc2626'; }
+            else if (rep.urgensi === 'Tinggi') { heatRadius = 45; glowColor = '#f97316'; }
+            else if (rep.urgensi === 'Sedang') { heatRadius = 35; glowColor = '#f59e0b'; }
+            else { heatRadius = 25; glowColor = '#3b82f6'; }
 
-        marker.bindPopup(popupHtml);
-        adminOverviewMarkersGroup.addLayer(marker);
+            // Outer Heat Layer
+            const heatOuter = L.circle([lat, lng], {
+                radius: heatRadius,
+                fillColor: glowColor,
+                fillOpacity: 0.25,
+                stroke: false
+            });
+            // Mid Heat Core
+            const heatMid = L.circle([lat, lng], {
+                radius: Math.round(heatRadius * 0.6),
+                fillColor: '#f97316',
+                fillOpacity: 0.5,
+                stroke: false
+            });
+            // Hotspot Core Pin
+            const heatCore = L.circleMarker([lat, lng], {
+                radius: 7,
+                fillColor: '#ffffff',
+                color: glowColor,
+                weight: 3,
+                fillOpacity: 1
+            });
+
+            const heatPopupHtml = `
+                <div style="font-family:'Plus Jakarta Sans',sans-serif; color:#0f172a; padding:6px; min-width:180px;">
+                    <div style="font-size:11px; font-weight:800; color:#ef4444; margin-bottom:2px;"><i class="fa-solid fa-fire"></i> KLUSTER KERUSAKAN (${escapeHtml(rep.urgensi).toUpperCase()})</div>
+                    <h4 style="margin:2px 0 4px 0; font-size:14px; font-weight:800; color:#005a36;">${escapeHtml(rep.kategori)}</h4>
+                    <p style="font-size:12px; margin-bottom:8px; color:#475569;"><i class="fa-solid fa-building" style="color:#c59235;"></i> ${escapeHtml(rep.gedung)} (${escapeHtml(rep.ruangan)})</p>
+                    <button onclick="openAdminModal('${rep.id}')" style="width:100%; padding:6px 10px; background:#ef4444; color:#ffffff; border:none; border-radius:6px; font-weight:700; font-size:11px; cursor:pointer;"><i class="fa-solid fa-magnifying-glass"></i> Inspeksi Kluster Ini</button>
+                </div>
+            `;
+
+            heatOuter.bindPopup(heatPopupHtml);
+            heatCore.bindPopup(heatPopupHtml);
+
+            adminOverviewMarkersGroup.addLayer(heatOuter);
+            adminOverviewMarkersGroup.addLayer(heatMid);
+            adminOverviewMarkersGroup.addLayer(heatCore);
+        } else {
+            // Standard Pin Marker
+            const marker = L.circleMarker([lat, lng], {
+                radius: 10,
+                fillColor: color,
+                color: '#ffffff',
+                weight: 2.5,
+                opacity: 1,
+                fillOpacity: 0.95
+            });
+
+            const popupHtml = `
+                <div style="font-family:'Plus Jakarta Sans',sans-serif; color:#0f172a; padding:6px; min-width:200px;">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+                        <span style="font-size:11px; font-weight:800; color:#c59235;">${escapeHtml(rep.id)}</span>
+                        <span style="display:inline-block; font-size:10px; font-weight:700; padding:2px 8px; border-radius:10px; background:${color}; color:#ffffff;">${escapeHtml(rep.status)}</span>
+                    </div>
+                    <h4 style="margin:2px 0 6px 0; font-size:14px; font-weight:800; color:#005a36;">${escapeHtml(rep.kategori)}</h4>
+                    <p style="font-size:12px; margin-bottom:8px; color:#475569;"><i class="fa-solid fa-location-dot" style="color:#c59235;"></i> ${escapeHtml(rep.gedung)} (${escapeHtml(rep.ruangan)})</p>
+                    <button onclick="openAdminModal('${rep.id}')" style="width:100%; padding:7px 10px; background:#005a36; color:#ffffff; border:none; border-radius:6px; font-weight:700; font-size:12px; cursor:pointer; box-shadow: 0 2px 8px rgba(0,90,54,0.3);"><i class="fa-solid fa-pen-to-square"></i> Process Laporan Ini</button>
+                </div>
+            `;
+
+            marker.bindPopup(popupHtml);
+            adminOverviewMarkersGroup.addLayer(marker);
+        }
     });
 
     if (itemsToRender.length > 0 && bounds.isValid()) {
