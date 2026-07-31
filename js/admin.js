@@ -284,21 +284,28 @@ function renderKPIs() {
     document.getElementById('kpiSelesai').innerText = selesai;
 }
 
-function renderChart() {
+function renderChart(itemsToRender = reportsData) {
     const container = document.getElementById('chartBarContainer');
     if (!container) return;
 
     const buildings = [
-        { name: 'Rektorat', key: 'Rektorat' },
-        { name: 'FITK', key: 'FITK' },
-        { name: 'FSEI', key: 'FSEI' },
-        { name: 'FUAD', key: 'FUAD' },
-        { name: 'Lab ICT', key: 'ICT' },
-        { name: 'Perpustakaan', key: 'Perpustakaan' }
+        { name: 'Rektorat', keys: ['Rektorat'] },
+        { name: 'FITK', keys: ['FITK', 'Tarbiyah'] },
+        { name: 'FSEI', keys: ['FSEI', 'Syariah'] },
+        { name: 'FUAD', keys: ['FUAD', 'Ushuluddin'] },
+        { name: 'Lab ICT', keys: ['ICT', 'Laboratorium'] },
+        { name: 'Perpus', keys: ['Perpustakaan'] },
+        { name: 'Cyber', keys: ['Cyber'] },
+        { name: 'Seberang', keys: ['Seberang'] },
+        { name: 'Pasca/Ma\'had', keys: ['Pascasarjana', "Ma'had"] },
+        { name: 'Saladara', keys: ['Saladara'] }
     ];
 
     const counts = buildings.map(b => {
-        return reportsData.filter(r => r.gedung.includes(b.key)).length;
+        return itemsToRender.filter(r => {
+            const g = (r.gedung || '').toLowerCase();
+            return b.keys.some(k => g.includes(k.toLowerCase()));
+        }).length;
     });
 
     const maxCount = Math.max(...counts, 1);
@@ -306,11 +313,12 @@ function renderChart() {
     container.innerHTML = buildings.map((b, idx) => {
         const val = counts[idx];
         const heightPct = Math.round((val / maxCount) * 100);
+        const barColor = val > 0 ? 'linear-gradient(to top, #005a36, #c59235)' : 'rgba(255,255,255,0.08)';
         return `
             <div style="flex:1; display:flex; flex-direction:column; align-items:center; height:100%; justify-content:flex-end;">
-                <span style="font-size:12px; font-weight:800; margin-bottom:6px; color:var(--gold);">${val}</span>
-                <div style="width:100%; max-width:42px; background:linear-gradient(to top, #005a36, #c59235); height:${Math.max(heightPct, 8)}%; border-radius:6px 6px 0 0; transition:height 0.4s ease; box-shadow:0 4px 10px rgba(197,146,53,0.3);"></div>
-                <span style="font-size:11px; color:var(--text-muted); margin-top:8px; white-space:nowrap;">${b.name}</span>
+                <span style="font-size:11px; font-weight:800; margin-bottom:4px; color:${val > 0 ? 'var(--gold)' : 'var(--text-muted)'};">${val}</span>
+                <div style="width:100%; max-width:28px; background:${barColor}; height:${Math.max(heightPct, 6)}%; border-radius:4px 4px 0 0; transition:height 0.4s ease; box-shadow:${val > 0 ? '0 4px 10px rgba(197,146,53,0.3)' : 'none'};" title="${b.name}: ${val} Laporan"></div>
+                <span style="font-size:10px; font-weight:700; color:var(--text-muted); margin-top:6px; text-align:center; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; width:100%;" title="${b.name}">${b.name}</span>
             </div>
         `;
     }).join('');
@@ -333,8 +341,9 @@ function renderAdminTable() {
 
     const tbody = document.getElementById('adminTableBody');
     
-    // Update marker pada peta GIS admin secara real-time berdasarkan filter aktif
+    // Update marker peta GIS & Grafik Statistik secara real-time berdasarkan filter aktif
     renderAdminOverviewMarkers(filtered);
+    renderChart(filtered);
 
     if (filtered.length === 0) {
         tbody.innerHTML = `<tr><td colspan="9" style="text-align:center; padding:30px; color:var(--text-muted);">Tidak ada data laporan yang cocok.</td></tr>`;
