@@ -125,8 +125,25 @@ function toggleTheme() {
 }
 
 function handleLogout() {
+    showToast('🔑 Anda telah berhasil keluar dari Dashboard Admin. Mengalihkan...', 'info');
     localStorage.removeItem('SIMPEL_AUTH_SESSION');
-    window.location.href = '../index.html';
+    setTimeout(() => {
+        window.location.href = '../index.html';
+    }, 1200);
+}
+
+function showToast(msg, type = 'info') {
+    const box = document.getElementById('toastBox');
+    if (!box) return;
+    const t = document.createElement('div');
+    t.className = `toast toast-${type}`;
+    let iconClass = 'fa-solid fa-circle-info';
+    if (type === 'success') iconClass = 'fa-solid fa-circle-check';
+    if (type === 'error') iconClass = 'fa-solid fa-circle-exclamation';
+
+    t.innerHTML = `<i class="${iconClass}"></i> ${msg}`;
+    box.appendChild(t);
+    setTimeout(() => t.remove(), 3200);
 }
 
 function updateThemeIcon(theme) {
