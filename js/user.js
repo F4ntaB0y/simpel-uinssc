@@ -647,14 +647,17 @@ let isMaskEnabled = true;
 function toggleCampusMask() {
     if (!mapPickerInstance || !campusMaskPolygon) return;
     const btn = document.getElementById('toggleMaskBtn');
+    const container = document.getElementById('mapPicker');
     if (isMaskEnabled) {
         mapPickerInstance.removeLayer(campusMaskPolygon);
         isMaskEnabled = false;
+        if (container) container.style.background = '#e5e7eb';
         if (btn) btn.innerHTML = `<i class="fa-solid fa-eye" style="color:var(--gold);"></i> Tampilkan Masking`;
         showToast('Masking gelap latar belakang dinonaktifkan', 'info');
     } else {
         campusMaskPolygon.addTo(mapPickerInstance);
         isMaskEnabled = true;
+        if (container) container.style.background = '#04140d';
         if (btn) btn.innerHTML = `<i class="fa-solid fa-eye-slash" style="color:var(--gold);"></i> Sembunyikan Masking`;
         showToast('Masking gelap latar belakang diaktifkan', 'info');
     }

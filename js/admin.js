@@ -693,14 +693,17 @@ let isAdminMaskEnabled = true;
 function toggleAdminCampusMask() {
     if (!adminOverviewMapInstance || !adminOverviewMaskPolygon) return;
     const btn = document.getElementById('adminMaskToggleBtn');
+    const container = document.getElementById('adminOverviewMap');
     if (isAdminMaskEnabled) {
         adminOverviewMapInstance.removeLayer(adminOverviewMaskPolygon);
         isAdminMaskEnabled = false;
+        if (container) container.style.background = '#e5e7eb';
         if (btn) btn.innerHTML = `<i class="fa-solid fa-eye"></i> Tampilkan Masking`;
         showToast('Masking gelap peta admin dinonaktifkan', 'info');
     } else {
         adminOverviewMaskPolygon.addTo(adminOverviewMapInstance);
         isAdminMaskEnabled = true;
+        if (container) container.style.background = '#04140d';
         if (btn) btn.innerHTML = `<i class="fa-solid fa-eye-slash"></i> Sembunyikan Masking`;
         showToast('Masking gelap peta admin diaktifkan', 'info');
     }
