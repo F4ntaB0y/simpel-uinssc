@@ -696,12 +696,12 @@ function toggleAdminCampusMask() {
     if (isAdminMaskEnabled) {
         adminOverviewMapInstance.removeLayer(adminOverviewMaskPolygon);
         isAdminMaskEnabled = false;
-        if (btn) btn.innerHTML = `<i class="fa-solid fa-eye" style="color:var(--gold);"></i> Tampilkan Masking`;
+        if (btn) btn.innerHTML = `<i class="fa-solid fa-eye"></i> Tampilkan Masking`;
         showToast('Masking gelap peta admin dinonaktifkan', 'info');
     } else {
         adminOverviewMaskPolygon.addTo(adminOverviewMapInstance);
         isAdminMaskEnabled = true;
-        if (btn) btn.innerHTML = `<i class="fa-solid fa-eye-slash" style="color:var(--gold);"></i> Sembunyikan Masking`;
+        if (btn) btn.innerHTML = `<i class="fa-solid fa-eye-slash"></i> Sembunyikan Masking`;
         showToast('Masking gelap peta admin diaktifkan', 'info');
     }
 }
