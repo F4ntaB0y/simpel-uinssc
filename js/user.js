@@ -537,11 +537,11 @@ function initMapPicker() {
             attribution: '&copy; OpenStreetMap & UINSSC'
         }).addTo(mapPickerInstance);
 
-        // 1. Render Dark Mask Overlay (Shades everything outside ALL 4 UINSSC campus zones)
+        // 1. Render Dark Mask Overlay
         const outerWorld = [[90, -180], [90, 180], [-90, 180], [-90, -180]];
         const campusHoles = CAMPUS_ZONES.map(z => z.polygon);
 
-        L.polygon([outerWorld, ...campusHoles], {
+        campusMaskPolygon = L.polygon([outerWorld, ...campusHoles], {
             color: '#c59235',
             weight: 3,
             dashArray: '6, 6',
@@ -639,6 +639,25 @@ function focusMapToCampus() {
     const combinedBounds = polygonGroup.getBounds();
     mapPickerInstance.fitBounds(combinedBounds, { padding: [30, 30] });
     showToast('📍 Kamera terfokus kembali ke area Kampus UINSSC', 'info');
+}
+
+let campusMaskPolygon = null;
+let isMaskEnabled = true;
+
+function toggleCampusMask() {
+    if (!mapPickerInstance || !campusMaskPolygon) return;
+    const btn = document.getElementById('toggleMaskBtn');
+    if (isMaskEnabled) {
+        mapPickerInstance.removeLayer(campusMaskPolygon);
+        isMaskEnabled = false;
+        if (btn) btn.innerHTML = `<i class="fa-solid fa-eye"></i> Tampilkan Masking`;
+        showToast('Masking gelap latar belakang dinonaktifkan', 'info');
+    } else {
+        campusMaskPolygon.addTo(mapPickerInstance);
+        isMaskEnabled = true;
+        if (btn) btn.innerHTML = `<i class="fa-solid fa-eye-slash"></i> Sembunyikan Masking`;
+        showToast('Masking gelap latar belakang diaktifkan', 'info');
+    }
 }
 
 // ==========================================================================

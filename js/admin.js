@@ -687,6 +687,25 @@ function focusAdminMapToCampus() {
     showToast('📍 Kamera Peta Admin terfokus kembali ke area Kampus UINSSC', 'info');
 }
 
+let adminOverviewMaskPolygon = null;
+let isAdminMaskEnabled = true;
+
+function toggleAdminCampusMask() {
+    if (!adminOverviewMapInstance || !adminOverviewMaskPolygon) return;
+    const btn = document.getElementById('adminMaskToggleBtn');
+    if (isAdminMaskEnabled) {
+        adminOverviewMapInstance.removeLayer(adminOverviewMaskPolygon);
+        isAdminMaskEnabled = false;
+        if (btn) btn.innerHTML = `<i class="fa-solid fa-eye"></i> Tampilkan Masking`;
+        showToast('Masking gelap peta admin dinonaktifkan', 'info');
+    } else {
+        adminOverviewMaskPolygon.addTo(adminOverviewMapInstance);
+        isAdminMaskEnabled = true;
+        if (btn) btn.innerHTML = `<i class="fa-solid fa-eye-slash"></i> Sembunyikan Masking`;
+        showToast('Masking gelap peta admin diaktifkan', 'info');
+    }
+}
+
 function initAdminOverviewMap() {
     const container = document.getElementById('adminOverviewMap');
     if (!container || typeof L === 'undefined') return;
@@ -729,7 +748,7 @@ function initAdminOverviewMap() {
                 [-90, -180]
             ];
             const holes = CAMPUS_ZONES.map(z => z.polygon);
-            L.polygon([outerCoords, ...holes], {
+            adminOverviewMaskPolygon = L.polygon([outerCoords, ...holes], {
                 color: '#005a36',
                 weight: 2,
                 fillColor: '#04140d',

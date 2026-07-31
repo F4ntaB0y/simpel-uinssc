@@ -168,6 +168,9 @@
                         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; flex-wrap:wrap; gap:8px;">
                             <label><i class="fa-solid fa-crosshairs" style="color:var(--gold);"></i> Lokasi Peta & Koordinat Presisi <span class="req">*</span></label>
                             <div style="display:flex; gap:8px; flex-wrap:wrap;">
+                                <button type="button" id="toggleMaskBtn" class="chip-btn" onclick="toggleCampusMask()" style="background:rgba(255,255,255,0.08); color:var(--text-main); border-color:var(--border-color);">
+                                    <i class="fa-solid fa-eye-slash"></i> Sembunyikan Masking
+                                </button>
                                 <button type="button" class="chip-btn" onclick="focusMapToCampus()" style="background:rgba(197,146,53,0.15); color:var(--gold); border-color:var(--gold);">
                                     <i class="fa-solid fa-building-flag"></i> Fokus ke Area Kampus
                                 </button>
