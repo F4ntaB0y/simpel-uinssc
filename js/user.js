@@ -650,12 +650,12 @@ function toggleCampusMask() {
     if (isMaskEnabled) {
         mapPickerInstance.removeLayer(campusMaskPolygon);
         isMaskEnabled = false;
-        if (btn) btn.innerHTML = `<i class="fa-solid fa-eye"></i> Tampilkan Masking`;
+        if (btn) btn.innerHTML = `<i class="fa-solid fa-eye" style="color:var(--gold);"></i> Tampilkan Masking`;
         showToast('Masking gelap latar belakang dinonaktifkan', 'info');
     } else {
         campusMaskPolygon.addTo(mapPickerInstance);
         isMaskEnabled = true;
-        if (btn) btn.innerHTML = `<i class="fa-solid fa-eye-slash"></i> Sembunyikan Masking`;
+        if (btn) btn.innerHTML = `<i class="fa-solid fa-eye-slash" style="color:var(--gold);"></i> Sembunyikan Masking`;
         showToast('Masking gelap latar belakang diaktifkan', 'info');
     }
 }
