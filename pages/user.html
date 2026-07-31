@@ -30,7 +30,10 @@
                 </div>
             </a>
 
-            <div class="nav-links">
+            <div class="nav-links" style="display:flex; align-items:center; gap:10px;">
+                <span id="userBadgeDisplay" style="font-size: 12px; font-weight: 700; color: var(--gold); background: rgba(197,146,53,0.12); border: 1px solid var(--gold); padding: 5px 12px; border-radius: 20px; display: inline-flex; align-items: center; gap: 6px;">
+                    <i class="fa-solid fa-circle-user"></i> <span id="userBadgeName">Pelapor</span>
+                </span>
                 <button class="nav-link-btn" onclick="toggleTheme()" title="Ubah Tema Mode">
                     <i class="fa-solid fa-moon" id="themeIcon"></i>
                 </button>

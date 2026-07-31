@@ -251,7 +251,15 @@ function checkUserAuth() {
     const sessionRaw = localStorage.getItem('SIMPEL_AUTH_SESSION');
     if (!sessionRaw) {
         window.location.href = '../index.html';
+        return;
     }
+    try {
+        const sess = JSON.parse(sessionRaw);
+        const el = document.getElementById('userBadgeName');
+        if (el && sess.username) {
+            el.textContent = `Pelapor (${sess.username})`;
+        }
+    } catch (e) {}
 }
 
 function initTheme() {

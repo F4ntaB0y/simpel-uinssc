@@ -104,6 +104,11 @@ function checkAdminAuth() {
         const sess = JSON.parse(sessionRaw);
         if (sess.role !== 'admin') {
             window.location.href = '../index.html';
+            return;
+        }
+        const el = document.getElementById('adminBadgeName');
+        if (el && sess.username) {
+            el.textContent = `Admin (${sess.username})`;
         }
     } catch (e) {
         window.location.href = '../index.html';
