@@ -433,37 +433,32 @@ function renderChart(itemsToRender = reportsData) {
     const container = document.getElementById('chartBarContainer');
     if (!container) return;
 
-    const buildings = [
-        { name: 'Rektorat', keys: ['Rektorat'] },
-        { name: 'FITK', keys: ['FITK', 'Tarbiyah'] },
-        { name: 'FSEI', keys: ['FSEI', 'Syariah'] },
-        { name: 'FUAD', keys: ['FUAD', 'Ushuluddin'] },
-        { name: 'Lab ICT', keys: ['ICT', 'Laboratorium'] },
-        { name: 'Perpus', keys: ['Perpustakaan'] },
-        { name: 'Cyber', keys: ['Cyber'] },
-        { name: 'Seberang', keys: ['Seberang'] },
-        { name: 'Pasca/Ma\'had', keys: ['Pascasarjana', "Ma'had"] },
-        { name: 'Saladara', keys: ['Saladara'] }
+    const zones = [
+        { name: 'Kampus Utama', keys: ['Rektorat', 'FITK', 'Tarbiyah', 'FSEI', 'Syariah', 'FUAD', 'Ushuluddin', 'ICT', 'Laboratorium', 'Perpustakaan', 'Auditorium', 'Utama'] },
+        { name: 'Gedung Cyber', keys: ['Cyber', 'IT'] },
+        { name: 'Gedung Seberang', keys: ['Seberang'] },
+        { name: 'Pascasarjana & Ma\'had', keys: ['Pascasarjana', "Ma'had"] },
+        { name: 'Kampus 2 Saladara', keys: ['Saladara'] }
     ];
 
-    const counts = buildings.map(b => {
+    const counts = zones.map(z => {
         return itemsToRender.filter(r => {
             const g = (r.gedung || '').toLowerCase();
-            return b.keys.some(k => g.includes(k.toLowerCase()));
+            return z.keys.some(k => g.includes(k.toLowerCase()));
         }).length;
     });
 
     const maxCount = Math.max(...counts, 1);
 
-    container.innerHTML = buildings.map((b, idx) => {
+    container.innerHTML = zones.map((z, idx) => {
         const val = counts[idx];
         const heightPct = Math.round((val / maxCount) * 100);
         const barColor = val > 0 ? 'linear-gradient(to top, #005a36, #c59235)' : 'rgba(255,255,255,0.08)';
         return `
             <div style="flex:1; display:flex; flex-direction:column; align-items:center; height:100%; justify-content:flex-end;">
-                <span style="font-size:11px; font-weight:800; margin-bottom:4px; color:${val > 0 ? 'var(--gold)' : 'var(--text-muted)'};">${val}</span>
-                <div style="width:100%; max-width:28px; background:${barColor}; height:${Math.max(heightPct, 6)}%; border-radius:4px 4px 0 0; transition:height 0.4s ease; box-shadow:${val > 0 ? '0 4px 10px rgba(197,146,53,0.3)' : 'none'};" title="${b.name}: ${val} Laporan"></div>
-                <span style="font-size:10px; font-weight:700; color:var(--text-muted); margin-top:6px; text-align:center; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; width:100%;" title="${b.name}">${b.name}</span>
+                <span style="font-size:13px; font-weight:800; margin-bottom:6px; color:${val > 0 ? 'var(--gold)' : 'var(--text-muted)'};">${val} Laporan</span>
+                <div style="width:100%; max-width:55px; background:${barColor}; height:${Math.max(heightPct, 8)}%; border-radius:6px 6px 0 0; transition:height 0.4s ease; box-shadow:${val > 0 ? '0 4px 12px rgba(197,146,53,0.35)' : 'none'};" title="${z.name}: ${val} Laporan Kerusakan"></div>
+                <span style="font-size:12px; font-weight:700; color:var(--text-main); margin-top:8px; text-align:center; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; width:100%;" title="${z.name}">${z.name}</span>
             </div>
         `;
     }).join('');
