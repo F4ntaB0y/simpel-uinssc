@@ -277,6 +277,10 @@ function renderAdminTable() {
     });
 
     const tbody = document.getElementById('adminTableBody');
+    
+    // Update marker pada peta GIS admin secara real-time berdasarkan filter aktif
+    renderAdminOverviewMarkers(filtered);
+
     if (filtered.length === 0) {
         tbody.innerHTML = `<tr><td colspan="9" style="text-align:center; padding:30px; color:var(--text-muted);">Tidak ada data laporan yang cocok.</td></tr>`;
         return;
@@ -563,11 +567,13 @@ function initAdminOverviewMap() {
     }
 }
 
-function renderAdminOverviewMarkers() {
+function renderAdminOverviewMarkers(itemsToRender = reportsData) {
     if (!adminOverviewMapInstance || !adminOverviewMarkersGroup) return;
     adminOverviewMarkersGroup.clearLayers();
 
-    reportsData.forEach(rep => {
+    const bounds = L.latLngBounds();
+
+    itemsToRender.forEach(rep => {
         let lat = parseFloat(rep.lat || '-6.735000');
         let lng = parseFloat(rep.lng || '108.533800');
         
@@ -592,6 +598,8 @@ function renderAdminOverviewMarkers() {
             fillOpacity: 0.95
         });
 
+        bounds.extend([lat, lng]);
+
         const popupHtml = `
             <div style="font-family:'Plus Jakarta Sans',sans-serif; color:#0f172a; padding:6px; min-width:200px;">
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
@@ -607,6 +615,10 @@ function renderAdminOverviewMarkers() {
         marker.bindPopup(popupHtml);
         adminOverviewMarkersGroup.addLayer(marker);
     });
+
+    if (itemsToRender.length > 0 && bounds.isValid()) {
+        adminOverviewMapInstance.fitBounds(bounds.pad(0.35));
+    }
 }
 
 function sendWANotificationSim() {
