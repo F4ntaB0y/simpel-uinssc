@@ -125,19 +125,32 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="gedung">Pilih Gedung / Area <span class="req">*</span></label>
+                        <label for="gedung">Pilih Kawasan & Gedung Kampus <span class="req">*</span></label>
                         <div class="input-wrapper">
                             <i class="fa-solid fa-building"></i>
-                            <select id="gedung" required>
-                                <option value="">-- Pilih Gedung --</option>
-                                <option value="Gedung Rektorat UIN SSC">Gedung Rektorat UIN SSC</option>
-                                <option value="Fakultas Ilmu Tarbiyah (FITK)">Fakultas Ilmu Tarbiyah (FITK)</option>
-                                <option value="Fakultas Syariah & Ekonomi (FSEI)">Fakultas Syariah & Ekonomi (FSEI)</option>
-                                <option value="Fakultas Ushuluddin & Adab (FUAD)">Fakultas Ushuluddin & Adab (FUAD)</option>
-                                <option value="Laboratorium Terpadu & Pusat ICT">Laboratorium Terpadu & Pusat ICT</option>
-                                <option value="Gedung Perpustakaan Pusat">Gedung Perpustakaan Pusat</option>
-                                <option value="Gedung Pascasarjana UIN SSC">Gedung Pascasarjana UIN SSC</option>
-                                <option value="Auditorium & Student Center">Auditorium & Student Center</option>
+                            <select id="gedung" required onchange="handleGedungSelectChange()">
+                                <option value="">-- Pilih Kawasan / Gedung Kampus --</option>
+                                <optgroup label="Kampus Utama UIN SSC">
+                                    <option value="Gedung Rektorat UIN SSC" data-zone="kampus_utama">Gedung Rektorat UIN SSC</option>
+                                    <option value="Fakultas Ilmu Tarbiyah (FITK)" data-zone="kampus_utama">Fakultas Ilmu Tarbiyah (FITK)</option>
+                                    <option value="Fakultas Syariah & Ekonomi (FSEI)" data-zone="kampus_utama">Fakultas Syariah & Ekonomi (FSEI)</option>
+                                    <option value="Fakultas Ushuluddin & Adab (FUAD)" data-zone="kampus_utama">Fakultas Ushuluddin & Adab (FUAD)</option>
+                                    <option value="Laboratorium Terpadu & Pusat ICT" data-zone="kampus_utama">Laboratorium Terpadu & Pusat ICT</option>
+                                    <option value="Gedung Perpustakaan Pusat" data-zone="kampus_utama">Gedung Perpustakaan Pusat</option>
+                                    <option value="Auditorium & Student Center" data-zone="kampus_utama">Auditorium & Student Center</option>
+                                </optgroup>
+                                <optgroup label="Gedung Cyber UIN SSC">
+                                    <option value="Gedung Cyber & Pusat IT" data-zone="gedung_cyber">Gedung Cyber & Pusat IT</option>
+                                </optgroup>
+                                <optgroup label="Gedung Seberang Kampus Utama">
+                                    <option value="Gedung Seberang Kampus Utama" data-zone="gedung_seberang">Gedung Seberang Kampus Utama</option>
+                                </optgroup>
+                                <optgroup label="Pascasarjana & Ma'had">
+                                    <option value="Gedung Pascasarjana & Ma'had" data-zone="pascasarjana_mahad">Gedung Pascasarjana & Ma'had</option>
+                                </optgroup>
+                                <optgroup label="Kampus Saladara UIN SSC">
+                                    <option value="Kampus 2 Saladara UIN SSC" data-zone="area_saladara">Kampus 2 Saladara UIN SSC</option>
+                                </optgroup>
                             </select>
                         </div>
                     </div>
@@ -173,8 +186,8 @@
                             </div>
                         </div>
 
-                        <!-- Interactive Polygon Collector Tool for Developers -->
-                        <div style="margin-top: 14px; border: 1px dashed var(--gold); padding: 14px; border-radius: 12px; background: rgba(197, 146, 53, 0.06);">
+                        <!-- Interactive Polygon Collector Tool for Developers (Hidden for Production) -->
+                        <div class="hidden" style="margin-top: 14px; border: 1px dashed var(--gold); padding: 14px; border-radius: 12px; background: rgba(197, 146, 53, 0.06);">
                             <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
                                 <span style="font-size:13px; font-weight:700; color:var(--gold);">
                                     <i class="fa-solid fa-draw-polygon"></i> Alat Pembuat Polygon Area Kampus (Polygon Designer)

@@ -407,6 +407,39 @@ function initMapPicker() {
     }
 }
 
+// Smart Map Camera Navigation saat pengguna memilih Kawasan / Gedung
+function handleGedungSelectChange() {
+    const select = document.getElementById('gedung');
+    if (!select || !mapPickerInstance) return;
+
+    const selectedOpt = select.options[select.selectedIndex];
+    const zoneId = selectedOpt ? selectedOpt.getAttribute('data-zone') : null;
+
+    if (zoneId) {
+        const targetZone = CAMPUS_ZONES.find(z => z.id === zoneId);
+        if (targetZone) {
+            const poly = L.polygon(targetZone.polygon);
+            const bounds = poly.getBounds();
+            const center = bounds.getCenter();
+
+            // Animasi kamera terbang ke kawasan kampus yang dipilih
+            mapPickerInstance.flyToBounds(bounds, {
+                padding: [30, 30],
+                duration: 1.2,
+                maxZoom: 18
+            });
+
+            // Pindahkan pin marker ke tengah kawasan gedung yang dipilih
+            if (mapMarkerInstance) {
+                mapMarkerInstance.setLatLng([center.lat, center.lng]);
+                updateCoordinatesDisplay(center.lat, center.lng);
+                mapMarkerInstance.bindPopup(`<b>${escapeHtml(selectedOpt.value)}</b><br>Kamera & titik lokasi disesuaikan ke area gedung ini.`).openPopup();
+            }
+            showToast(`Fokus peta dipindahkan ke ${targetZone.name}.`, 'info');
+        }
+    }
+}
+
 // ==========================================================================
 // INTERACTIVE POLYGON DESIGNER TOOL (ALAT PENGUMPUL KOORDINAT INTERAKTIF)
 // ==========================================================================
