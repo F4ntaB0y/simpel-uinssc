@@ -597,7 +597,14 @@ input:focus, select:focus, textarea:focus {
     background: #04140d !important;
 }
 
-.leaflet-container {
+/* Leaflet Seamless Dark Canvas (100% Mengeliminasi Area Putih/Flicker) */
+.map-box,
+#mapPicker,
+.leaflet-container,
+.leaflet-map-pane,
+.leaflet-tile-pane,
+.leaflet-tile-container,
+.leaflet-tile {
     background: #04140d !important;
     background-color: #04140d !important;
 }

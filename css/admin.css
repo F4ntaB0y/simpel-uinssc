@@ -336,9 +336,13 @@
     }
 }
 
-/* Leaflet Dark Background Fix (Prevents white flashing/gaps when zooming out) */
+/* Leaflet Seamless Dark Canvas (100% Mengeliminasi Area Putih/Flicker) */
 #adminMap,
-.leaflet-container {
+.leaflet-container,
+.leaflet-map-pane,
+.leaflet-tile-pane,
+.leaflet-tile-container,
+.leaflet-tile {
     background: #04140d !important;
     background-color: #04140d !important;
 }

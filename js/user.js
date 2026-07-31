@@ -332,29 +332,42 @@ function initMapPicker() {
         currentLng = centerAll.lng.toFixed(6);
         updateCoordinatesDisplay(currentLat, currentLng);
 
-        // Map Initialization dengan Pembatasan Area Kamera (Agar Tidak Tersesat Keluar Kampus Saat Zoom Out)
+        // Map Initialization terfokus pada ke-5 kawasan kampus UIN SSC (minZoom: 14 & maxBounds agar tidak bisa nyasar)
         mapPickerInstance = L.map('mapPicker', {
             center: [centerAll.lat, centerAll.lng],
-            zoom: 17,
-            minZoom: 15,
+            zoom: 16,
+            minZoom: 14,
             maxZoom: 22,
             maxBounds: combinedBounds.pad(0.35),
-            maxBoundsViscosity: 0.9
+            maxBoundsViscosity: 1.0
         });
 
-        // OpenStreetMap Layer
+        // OpenStreetMap Layer (minZoom 14 & maxZoom 22)
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            minZoom: 15,
+            minZoom: 14,
             maxZoom: 22,
             maxNativeZoom: 19,
             attribution: '&copy; OpenStreetMap & UIN SSC'
         }).addTo(mapPickerInstance);
 
-        // Render Garis Batas Wilayah Polygons untuk Setiap Kawasan Kampus (Tanpa Masking Hitam)
+        // 1. Render Dark Mask Overlay (Shades everything outside ALL 4 UIN SSC campus zones)
+        const outerWorld = [[90, -180], [90, 180], [-90, 180], [-90, -180]];
+        const campusHoles = CAMPUS_ZONES.map(z => z.polygon);
+
+        L.polygon([outerWorld, ...campusHoles], {
+            color: '#c59235',
+            weight: 3,
+            dashArray: '6, 6',
+            fillColor: '#04140d',
+            fillOpacity: 0.72,
+            interactive: false
+        }).addTo(mapPickerInstance);
+
+        // 2. Render Highlight Polygons untuk Setiap Zona Kampus
         CAMPUS_ZONES.forEach(zone => {
             const poly = L.polygon(zone.polygon, {
                 color: '#c59235',
-                weight: 3,
+                weight: 2,
                 fillColor: '#005a36',
                 fillOpacity: 0.25
             }).addTo(mapPickerInstance);
