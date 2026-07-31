@@ -97,14 +97,12 @@ document.addEventListener('DOMContentLoaded', () => {
 function checkAdminAuth() {
     const sessionRaw = localStorage.getItem('SIMPEL_AUTH_SESSION');
     if (!sessionRaw) {
-        alert('Akses Ditolak! Silakan login terlebih dahulu melalui pintu login.');
         window.location.href = '../index.html';
         return;
     }
     try {
         const sess = JSON.parse(sessionRaw);
         if (sess.role !== 'admin') {
-            alert('Akses Ditolak! Halaman ini khusus untuk Administrator Sarpras.');
             window.location.href = '../index.html';
         }
     } catch (e) {
@@ -128,7 +126,6 @@ function toggleTheme() {
 
 function handleLogout() {
     localStorage.removeItem('SIMPEL_AUTH_SESSION');
-    alert('Anda telah keluar dari Dashboard Admin.');
     window.location.href = '../index.html';
 }
 

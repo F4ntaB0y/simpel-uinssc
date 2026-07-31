@@ -250,7 +250,6 @@ document.addEventListener('DOMContentLoaded', () => {
 function checkUserAuth() {
     const sessionRaw = localStorage.getItem('SIMPEL_AUTH_SESSION');
     if (!sessionRaw) {
-        alert('Akses Ditolak! Silakan login terlebih dahulu melalui pintu login.');
         window.location.href = '../index.html';
     }
 }
@@ -271,10 +270,7 @@ function toggleTheme() {
 
 function handleLogout() {
     localStorage.removeItem('SIMPEL_AUTH_SESSION');
-    showToast('Anda telah keluar. Mengalihkan ke pintu login...', 'info');
-    setTimeout(() => {
-        window.location.href = '../index.html';
-    }, 600);
+    window.location.href = '../index.html';
 }
 
 function updateThemeIcon(theme) {
