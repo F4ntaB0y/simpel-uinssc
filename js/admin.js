@@ -677,6 +677,16 @@ function escapeHtml(str) {
 
 
 
+function focusAdminMapToCampus() {
+    if (!adminOverviewMapInstance || CAMPUS_ZONES.length === 0) return;
+    const polygonGroup = L.featureGroup();
+    CAMPUS_ZONES.forEach(z => {
+        polygonGroup.addLayer(L.polygon(z.polygon));
+    });
+    adminOverviewMapInstance.fitBounds(polygonGroup.getBounds(), { padding: [30, 30] });
+    showToast('📍 Kamera Peta Admin terfokus kembali ke area Kampus UINSSC', 'info');
+}
+
 function initAdminOverviewMap() {
     const container = document.getElementById('adminOverviewMap');
     if (!container || typeof L === 'undefined') return;
@@ -700,14 +710,12 @@ function initAdminOverviewMap() {
             adminOverviewMapInstance = L.map('adminOverviewMap', {
                 center: [centerAll.lat, centerAll.lng],
                 zoom: 16,
-                minZoom: 14,
-                maxZoom: 22,
-                maxBounds: combinedBounds.pad(0.35),
-                maxBoundsViscosity: 1.0
+                minZoom: 2,
+                maxZoom: 22
             });
 
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                minZoom: 14,
+                minZoom: 2,
                 maxZoom: 22,
                 maxNativeZoom: 19,
                 attribution: '&copy; OpenStreetMap & UINSSC'

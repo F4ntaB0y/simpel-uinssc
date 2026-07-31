@@ -521,19 +521,17 @@ function initMapPicker() {
         currentLng = centerAll.lng.toFixed(6);
         updateCoordinatesDisplay(currentLat, currentLng);
 
-        // Map Initialization terfokus pada ke-5 kawasan kampus UINSSC (minZoom: 14 & maxBounds agar tidak bisa nyasar)
+        // Map Initialization (Bebas Pan & Zoom dengan tombol penuntun ke area kampus)
         mapPickerInstance = L.map('mapPicker', {
             center: [centerAll.lat, centerAll.lng],
             zoom: 16,
-            minZoom: 14,
-            maxZoom: 22,
-            maxBounds: combinedBounds.pad(0.35),
-            maxBoundsViscosity: 1.0
+            minZoom: 2,
+            maxZoom: 22
         });
 
-        // OpenStreetMap Layer (minZoom 14 & maxZoom 22)
+        // OpenStreetMap Layer
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            minZoom: 14,
+            minZoom: 2,
             maxZoom: 22,
             maxNativeZoom: 19,
             attribution: '&copy; OpenStreetMap & UINSSC'
@@ -629,6 +627,18 @@ function handleGedungSelectChange() {
             showToast(`Fokus peta dipindahkan ke ${targetZone.name}.`, 'info');
         }
     }
+}
+
+function focusMapToCampus() {
+    if (!mapPickerInstance || CAMPUS_ZONES.length === 0) return;
+    const polygonGroup = L.featureGroup();
+    CAMPUS_ZONES.forEach(z => {
+        const poly = L.polygon(z.polygon);
+        polygonGroup.addLayer(poly);
+    });
+    const combinedBounds = polygonGroup.getBounds();
+    mapPickerInstance.fitBounds(combinedBounds, { padding: [30, 30] });
+    showToast('📍 Kamera terfokus kembali ke area Kampus UINSSC', 'info');
 }
 
 // ==========================================================================

@@ -165,11 +165,16 @@
 
                     <!-- Map & Coordinates GPS Section -->
                     <div class="form-group full-width" style="margin-top: 6px;">
-                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; flex-wrap:wrap; gap:8px;">
                             <label><i class="fa-solid fa-crosshairs" style="color:var(--gold);"></i> Lokasi Peta & Koordinat Presisi <span class="req">*</span></label>
-                            <button type="button" class="chip-btn" onclick="getCurrentGPSLocation()" style="background:var(--primary); color:#fff; border-color:var(--gold);">
-                                <i class="fa-solid fa-location-crosshairs"></i> Gunakan Lokasi GPS Saya
-                            </button>
+                            <div style="display:flex; gap:8px; flex-wrap:wrap;">
+                                <button type="button" class="chip-btn" onclick="focusMapToCampus()" style="background:rgba(197,146,53,0.15); color:var(--gold); border-color:var(--gold);">
+                                    <i class="fa-solid fa-building-flag"></i> Fokus ke Area Kampus
+                                </button>
+                                <button type="button" class="chip-btn" onclick="getCurrentGPSLocation()" style="background:var(--primary); color:#fff; border-color:var(--gold);">
+                                    <i class="fa-solid fa-location-crosshairs"></i> Gunakan Lokasi GPS Saya
+                                </button>
+                            </div>
                         </div>
 
                         <div id="mapPicker" class="map-box" style="background: #04140d !important;"></div>
