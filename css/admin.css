@@ -336,20 +336,10 @@
     }
 }
 
-/* Leaflet Seamless Dark Canvas (100% Mengeliminasi Area/Kedipan Putih saat Drag/Zoom) */
+/* Leaflet Seamless Dark Canvas */
 #adminMap,
 .leaflet-container,
-.leaflet-container *,
-.leaflet-pane,
-.leaflet-pane *,
 .leaflet-map-pane,
-.leaflet-tile-pane,
-.leaflet-layer,
-.leaflet-tile-container,
-.leaflet-tile,
-.leaflet-zoom-anim,
-.leaflet-pan-anim,
-.leaflet-zoom-animated {
-    background: #04140d !important;
+.leaflet-tile-pane {
     background-color: #04140d !important;
 }
