@@ -1,16 +1,16 @@
 /* ==========================================================================
-   SIMPEL UIN SSC - USER PORTAL STYLESHEET (FULLY RESPONSIVE & MOBILE-FIRST)
+   SIMPEL UINSSC - USER PORTAL STYLESHEET (FULLY RESPONSIVE & MOBILE-FIRST)
    Location: css/user.css
    ========================================================================== */
 
 :root {
-    /* UIN SSC Official Logo Palette */
-    --primary: #005a36;               /* Deep UIN SSC Emerald Green */
+    /* UINSSC Official Logo Palette */
+    --primary: #005a36;               /* Deep UINSSC Emerald Green */
     --primary-hover: #004227;
     --primary-light: rgba(0, 90, 54, 0.14);
     --primary-glow: rgba(0, 90, 54, 0.4);
 
-    --gold: #c59235;                  /* UIN SSC Star & Dome Metallic Gold */
+    --gold: #c59235;                  /* UINSSC Star & Dome Metallic Gold */
     --gold-hover: #a67725;
     --gold-light: rgba(197, 146, 53, 0.18);
     --gold-glow: rgba(197, 146, 53, 0.35);

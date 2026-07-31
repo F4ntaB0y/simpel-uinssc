@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SIMPEL UIN SSC | Dashboard Admin & Sarpras Kampus</title>
+    <title>SIMPEL UINSSC | Dashboard Admin & Sarpras Kampus</title>
     <link rel="icon" type="image/png" href="../assets/img/favicon.png">
     <!-- Google Fonts & Font Awesome Icons -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -23,11 +23,11 @@
         <aside class="admin-sidebar">
             <a href="admin.html" class="sidebar-brand">
                 <div class="brand-icon">
-                    <img src="../assets/img/logo.png" alt="UIN SSC Logo" class="brand-logo-img">
+                    <img src="../assets/img/logo.png" alt="UINSSC Logo" class="brand-logo-img">
                 </div>
                 <div class="brand-text">
-                    <span class="brand-title">SIMPEL UIN SSC</span>
-                    <span class="brand-subtitle">Sarpras Control Center</span>
+                    <span class="brand-title">SIMPEL UINSSC</span>
+                    <span class="brand-subtitle">Sarpras & Pemeliharaan</span>
                 </div>
             </a>
 
@@ -56,7 +56,7 @@
             <!-- Header Topbar -->
             <div class="admin-header">
                 <div>
-                    <h1 style="font-size: 26px; font-weight: 800;">Dashboard Pengelolaan Sarpras UIN SSC</h1>
+                    <h1 style="font-size: 26px; font-weight: 800;">Dashboard Pengelolaan Sarpras UINSSC</h1>
                     <p style="color:var(--text-muted); font-size: 14px;">Pantau, verifikasi, dan tindak lanjuti laporan kerusakan fasilitas seluruh kampus.</p>
                 </div>
                 <div style="display:flex; gap:12px; flex-wrap:wrap; align-items:center;">
@@ -107,7 +107,7 @@
             <!-- Visual Analytics Chart Section -->
             <div class="chart-container-card">
                 <h3 style="font-size:16px; font-weight:800; margin-bottom:16px; display:flex; align-items:center; gap:8px;">
-                    <i class="fa-solid fa-chart-column" style="color:var(--gold);"></i> Grafik Statistik Kerusakan Per Gedung Kampus UIN SSC
+                    <i class="fa-solid fa-chart-column" style="color:var(--gold);"></i> Grafik Statistik Kerusakan Per Gedung Kampus UINSSC
                 </h3>
                 <div style="height: 180px; width:100%; display:flex; align-items:flex-end; gap:20px; padding-top:20px;" id="chartBarContainer">
                     <!-- Bars Rendered by JS -->
@@ -118,7 +118,7 @@
             <div class="glass-card" style="padding: 24px; margin-bottom: 24px;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 10px;">
                     <h3 style="font-size: 16px; font-weight: 800; display: flex; align-items: center; gap: 8px; margin: 0;">
-                        <i class="fa-solid fa-map-location-dot" style="color: var(--gold);"></i> Peta GIS Sebaran Titik Kerusakan Fasilitas Kampus UIN SSC
+                        <i class="fa-solid fa-map-location-dot" style="color: var(--gold);"></i> Peta GIS Sebaran Titik Kerusakan Fasilitas Kampus UINSSC
                     </h3>
                     <div style="display: flex; gap: 12px; font-size: 12px; font-weight: 700; background: rgba(0,0,0,0.2); padding: 6px 14px; border-radius: 20px; border: 1px solid var(--border-color);">
                         <span style="display: inline-flex; align-items: center; gap: 5px; color: #ef4444;"><i class="fa-solid fa-circle"></i> Diajukan</span>
@@ -145,8 +145,8 @@
                         <label style="font-size:13px; margin-left:12px;"><i class="fa-solid fa-building"></i> Gedung:</label>
                         <select id="filterGedung" onchange="renderAdminTable()" style="padding:8px 12px; font-size:13px;">
                             <option value="ALL">Semua Kawasan & Gedung</option>
-                            <optgroup label="Kampus Utama UIN SSC">
-                                <option value="Gedung Rektorat UIN SSC">Gedung Rektorat UIN SSC</option>
+                            <optgroup label="Kampus Utama UINSSC">
+                                <option value="Gedung Rektorat UINSSC">Gedung Rektorat UINSSC</option>
                                 <option value="Fakultas Ilmu Tarbiyah (FITK)">Fakultas Ilmu Tarbiyah (FITK)</option>
                                 <option value="Fakultas Syariah & Ekonomi (FSEI)">Fakultas Syariah & Ekonomi (FSEI)</option>
                                 <option value="Fakultas Ushuluddin & Adab (FUAD)">Fakultas Ushuluddin & Adab (FUAD)</option>
@@ -154,8 +154,8 @@
                                 <option value="Gedung Perpustakaan Pusat">Gedung Perpustakaan Pusat</option>
                                 <option value="Auditorium & Student Center">Auditorium & Student Center</option>
                             </optgroup>
-                            <optgroup label="Gedung Cyber UIN SSC">
-                                <option value="Gedung Cyber UIN SSC">Gedung Cyber UIN SSC</option>
+                            <optgroup label="Gedung Cyber UINSSC">
+                                <option value="Gedung Cyber UINSSC">Gedung Cyber UINSSC</option>
                                 <option value="Gedung Cyber & Pusat IT">Gedung Cyber & Pusat IT</option>
                             </optgroup>
                             <optgroup label="Gedung Seberang Kampus Utama">
@@ -165,8 +165,8 @@
                             <optgroup label="Pascasarjana & Ma'had">
                                 <option value="Gedung Pascasarjana & Ma'had">Gedung Pascasarjana & Ma'had</option>
                             </optgroup>
-                            <optgroup label="Kampus Saladara UIN SSC">
-                                <option value="Kampus 2 Saladara UIN SSC">Kampus 2 Saladara UIN SSC</option>
+                            <optgroup label="Kampus Saladara UINSSC">
+                                <option value="Kampus 2 Saladara UINSSC">Kampus 2 Saladara UINSSC</option>
                             </optgroup>
                         </select>
                     </div>

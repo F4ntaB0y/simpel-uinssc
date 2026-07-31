@@ -1,5 +1,5 @@
 /**
- * SIMPEL UIN SSC - Public User Portal Script
+ * SIMPEL UINSSC - Public User Portal Script
  * Location: js/user.js
  * --------------------------------------------------------------------------
  * MEMENUHI 6 UNIT KOMPETENSI SKKNI BNSP WEB DEVELOPER:
@@ -26,13 +26,13 @@ let currentLat = -6.735000;
 let currentLng = 108.533600;
 
 // ==========================================================================
-// BATAS GEOGRAFIS MULTI-ZONA PRESISI KAMPUS UIN SSC CIREBON
+// BATAS GEOGRAFIS MULTI-ZONA PRESISI KAMPUS UINSSC CIREBON
 // (Hasil Pengumpulan Visual Polygon Designer oleh User)
 // ==========================================================================
 const CAMPUS_ZONES = [
     {
         id: 'kampus_utama',
-        name: 'Area Kampus Utama UIN SSC',
+        name: 'Area Kampus Utama UINSSC',
         polygon: [
             [-6.735695, 108.532945], // Titik 1
             [-6.73554, 108.532951],  // Titik 2
@@ -66,7 +66,7 @@ const CAMPUS_ZONES = [
     },
     {
         id: 'gedung_cyber',
-        name: 'Area Gedung Cyber UIN SSC',
+        name: 'Area Gedung Cyber UINSSC',
         polygon: [
             [-6.736657, 108.532119], // Titik 1
             [-6.736606, 108.531878], // Titik 2
@@ -132,7 +132,7 @@ const CAMPUS_ZONES = [
     },
     {
         id: 'pascasarjana_mahad',
-        name: 'Area Pascasarjana & Ma\'had UIN SSC',
+        name: 'Area Pascasarjana & Ma\'had UINSSC',
         polygon: [
             [-6.735741, 108.532103], // Titik 1
             [-6.735328, 108.532041], // Titik 2
@@ -167,7 +167,7 @@ const CAMPUS_ZONES = [
     },
     {
         id: 'area_saladara',
-        name: 'Area Kampus Saladara UIN SSC',
+        name: 'Area Kampus Saladara UINSSC',
         polygon: [
             [-6.74438, 108.525562],  // Titik 1
             [-6.744371, 108.525831], // Titik 2
@@ -323,7 +323,7 @@ function isPointInSinglePolygon(point, vs) {
     return inside;
 }
 
-// Memeriksa apakah titik berada di SALAH SATU zona kampus UIN SSC
+// Memeriksa apakah titik berada di SALAH SATU zona kampus UINSSC
 function isInsideCampus(lat, lng) {
     if (isDrawModeActive) return true;
     if (CAMPUS_ZONES.length === 0) return true;
@@ -356,7 +356,7 @@ function initMapPicker() {
         currentLng = centerAll.lng.toFixed(6);
         updateCoordinatesDisplay(currentLat, currentLng);
 
-        // Map Initialization terfokus pada ke-5 kawasan kampus UIN SSC (minZoom: 14 & maxBounds agar tidak bisa nyasar)
+        // Map Initialization terfokus pada ke-5 kawasan kampus UINSSC (minZoom: 14 & maxBounds agar tidak bisa nyasar)
         mapPickerInstance = L.map('mapPicker', {
             center: [centerAll.lat, centerAll.lng],
             zoom: 16,
@@ -371,10 +371,10 @@ function initMapPicker() {
             minZoom: 14,
             maxZoom: 22,
             maxNativeZoom: 19,
-            attribution: '&copy; OpenStreetMap & UIN SSC'
+            attribution: '&copy; OpenStreetMap & UINSSC'
         }).addTo(mapPickerInstance);
 
-        // 1. Render Dark Mask Overlay (Shades everything outside ALL 4 UIN SSC campus zones)
+        // 1. Render Dark Mask Overlay (Shades everything outside ALL 4 UINSSC campus zones)
         const outerWorld = [[90, -180], [90, 180], [-90, 180], [-90, -180]];
         const campusHoles = CAMPUS_ZONES.map(z => z.polygon);
 
@@ -399,12 +399,12 @@ function initMapPicker() {
             poly.bindTooltip(`<b>${zone.name}</b>`, { permanent: false, direction: 'center' });
         });
 
-        // Auto Fit Bounds ke Seluruh Zona Kampus UIN SSC saat pertama muat
+        // Auto Fit Bounds ke Seluruh Zona Kampus UINSSC saat pertama muat
         mapPickerInstance.fitBounds(combinedBounds, { padding: [20, 20] });
 
         // Marker Pin Titik Kerusakan di Tengah Kampus
         mapMarkerInstance = L.marker([currentLat, currentLng], { draggable: true }).addTo(mapPickerInstance);
-        mapMarkerInstance.bindPopup('<b>Pusat Lokasi Kampus UIN SSC</b><br>Geser pin ke titik lokasi fasilitas rusak.').openPopup();
+        mapMarkerInstance.bindPopup('<b>Pusat Lokasi Kampus UINSSC</b><br>Geser pin ke titik lokasi fasilitas rusak.').openPopup();
 
         // Marker Drag Event: Update koordinat secara instan tanpa hambatan penguncian
         mapMarkerInstance.on('dragend', function () {
@@ -598,7 +598,7 @@ function getCurrentGPSLocation() {
         },
         (error) => {
             console.warn('GPS Error', error);
-            showToast('Gagal mengambil lokasi GPS. Menutup ke posisi default UIN SSC.', 'error');
+            showToast('Gagal mengambil lokasi GPS. Menutup ke posisi default UINSSC.', 'error');
         },
         { enableHighAccuracy: true, timeout: 10000 }
     );
@@ -702,7 +702,7 @@ function handlePublicFormSubmit(event) {
         foto: selectedImage || PRESET_IMAGES.ac,
         status: 'Diajukan',
         teknisi: 'Belum Ditunjuk',
-        catatanAdmin: 'Laporan telah diteruskan ke tim pemeliharaan Sarpras Kampus UIN SSC.',
+        catatanAdmin: 'Laporan telah diteruskan ke tim pemeliharaan Sarpras Kampus UINSSC.',
         tanggalLapor: timeStr,
         tanggalUpdate: timeStr
     };
@@ -806,7 +806,7 @@ function printTicketPDF(ticketId) {
         <!DOCTYPE html>
         <html>
         <head>
-            <title>Bukti Pelaporan Fasilitas UIN SSC - ${report.id}</title>
+            <title>Bukti Pelaporan Fasilitas UINSSC - ${report.id}</title>
             <style>
                 body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; padding: 40px; color: #005a36; line-height: 1.6; }
                 .header { text-align: center; border-bottom: 3px double #c59235; padding-bottom: 20px; margin-bottom: 30px; }
@@ -824,8 +824,8 @@ function printTicketPDF(ticketId) {
         <body>
             <div class="header">
                 <img src="../assets/img/logo.png" class="logo">
-                <h1 class="title">UIN SIBER SYEKH NURJATI CIREBON (UIN SSC)</h1>
-                <p class="sub">Sistem Informasi Pelaporan & Pemeliharaan Fasilitas Kampus (SIMPEL UIN SSC)</p>
+                <h1 class="title">UIN SIBER SYEKH NURJATI CIREBON (UINSSC)</h1>
+                <p class="sub">Sistem Informasi Pelaporan & Pemeliharaan Fasilitas Kampus (SIMPEL UINSSC)</p>
             </div>
 
             <div class="ticket-box">
@@ -848,7 +848,7 @@ function printTicketPDF(ticketId) {
             </table>
 
             <div class="footer">
-                Dokumen ini diterbitkan secara resmi oleh SIMPEL UIN SSC.<br>
+                Dokumen ini diterbitkan secara resmi oleh SIMPEL UINSSC.<br>
                 &copy; 2026 UIN Siber Syekh Nurjati Cirebon. All Rights Reserved.
             </div>
             <script>window.onload = function() { window.print(); }</script>

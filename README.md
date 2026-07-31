@@ -1,4 +1,4 @@
-# 🏛️ SIMPEL UIN SSC - Sistem Informasi Pelaporan Fasilitas Kampus
+# 🏛️ SIMPEL UINSSC - Sistem Informasi Pelaporan Fasilitas Kampus
 
 > **Sistem Informasi Pelaporan & Pemeliharaan Fasilitas Kampus UIN Siber Syekh Nurjati Cirebon**  
 > Dibuat untuk memenuhi **6 Unit Kompetensi SKKNI BNSP (Web Developer / Junior Web Developer)**.
@@ -9,7 +9,7 @@
 
 | No | Unit Kompetensi SKKNI | Implementasi Pada Proyek |
 | :--- | :--- | :--- |
-| **1** | **Mengimplementasikan User Interface** | HTML5 Semantic Elements (`<header>`, `<main>`, `<nav>`, `<aside>`, `<form>`), Responsive Layout (Desktop/Tablet/Mobile), UIN SSC Emerald & Gold Theme, Glassmorphic Cards. |
+| **1** | **Mengimplementasikan User Interface** | HTML5 Semantic Elements (`<header>`, `<main>`, `<nav>`, `<aside>`, `<form>`), Responsive Layout (Desktop/Tablet/Mobile), UINSSC Emerald & Gold Theme, Glassmorphic Cards. |
 | **2** | **Menerapkan perintah eksekusi bahasa pemrograman berbasis teks, grafik, dan multimedia** | Pengolahan teks/string (Sanitasi `escapeHtml`), Dynamic *Bar Chart Analytics* per gedung, Peta Interaktif `Leaflet.js` & Upload Foto `FileReader API`. |
 | **3** | **Menyusun fungsi, file atau sumber daya pemrograman yang lain dalam organisasi yang rapih** | Berkas terpisah & terstruktur: `index.html`, `assets/img/`, `css/`, `js/`, dan `pages/`. |
 | **4** | **Menulis kode dengan prinsip sesuai guidelines dan best practices** | Konvensi `camelCase`, pencegahan kerentanan XSS Injection, JSDoc header comments, & WAI-ARIA form accessibility. |
@@ -26,7 +26,7 @@ c:\Users\ASUS\OneDrive\Desktop\BNSP\
 ├── index.html            # Gateway / System Launcher Beranda Utama
 ├── assets/               # 📁 Resource Image Assets
 │   └── img/
-│       ├── logo.png      # Logo Resmi Kampus UIN SSC
+│       ├── logo.png      # Logo Resmi Kampus UINSSC
 │       └── favicon.png   # Favicon Tab Browser
 ├── css/                  # 📁 Stylesheets CSS
 │   ├── user.css          # Styling Portal Pelapor (User Side)
@@ -44,9 +44,9 @@ c:\Users\ASUS\OneDrive\Desktop\BNSP\
 ## ✨ Fitur Utama Aplikasi
 
 - 🌐 **Separated User & Admin Portals**: Pemisahan portal publik pelapor (`pages/user.html`) dan dashboard pengelola sarpras (`pages/admin.html`).
-- 🎨 **UIN SSC Branding Theme**: Warna khas identitas logo UIN SSC (*Deep Emerald Green #005A36 & Metallic Gold #C59235*).
+- 🎨 **UINSSC Branding Theme**: Warna khas identitas logo UINSSC (*Deep Emerald Green #005A36 & Metallic Gold #C59235*).
 - 🗺️ **GIS Map & GPS Geolocation**: Peta interaktif Leaflet.js dengan fitur penentu titik presisi lokasi kerusakan dan pengunci GPS otomatis.
-- 🖨️ **Cetak Bukti PDF Tiket**: Fitur cetak dokumen PDF tiket pelaporan resmi berlogo UIN SSC.
+- 🖨️ **Cetak Bukti PDF Tiket**: Fitur cetak dokumen PDF tiket pelaporan resmi berlogo UINSSC.
 - 📊 **Dynamic Bar Chart Analytics**: Visualisasi grafik statistik laporan kerusakan fasilitas per gedung kampus secara real-time.
 - 📥 **Export CSV Data**: Mengunduh rekap data laporan untuk laporan bulanan sarpras.
 
@@ -69,4 +69,4 @@ c:\Users\ASUS\OneDrive\Desktop\BNSP\
 
 ---
 
-&copy; 2026 UIN Siber Syekh Nurjati Cirebon (UIN SSC). All Rights Reserved.
+&copy; 2026 UIN Siber Syekh Nurjati Cirebon (UINSSC). All Rights Reserved.
