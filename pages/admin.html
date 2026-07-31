@@ -240,6 +240,21 @@
                 <!-- Details injected by JS -->
             </div>
 
+            <!-- Upload / Update Foto Bukti Perbaikan -->
+            <div style="margin-top:16px; background:rgba(255,255,255,0.03); padding:16px; border-radius:10px; border:1px solid var(--border-color);">
+                <label style="font-size:13px; font-weight:700; display:block; margin-bottom:8px;"><i class="fa-solid fa-camera" style="color:var(--gold);"></i> Foto Kerusakan & Update Bukti Hasil Perbaikan:</label>
+                <div style="display:flex; gap:16px; align-items:center; flex-wrap:wrap;">
+                    <div id="modalFotoPreview" style="width:120px; height:80px; border-radius:8px; border:1px dashed var(--border-color); background:rgba(0,0,0,0.2); overflow:hidden; display:flex; align-items:center; justify-content:center;">
+                        <span style="font-size:11px; color:var(--text-muted);">Belum ada foto</span>
+                    </div>
+                    <div style="flex:1; min-width:180px;">
+                        <input type="file" id="modalFotoInput" accept="image/*" onchange="handleAdminFotoUpload(event)" style="font-size:12px; margin-bottom:6px;">
+                        <div style="font-size:11px; color:var(--text-muted);">Pilih file gambar baru untuk memperbarui atau mengganti foto bukti perbaikan sarpras.</div>
+                        <button type="button" onclick="clearAdminFoto()" style="margin-top:6px; background:none; border:none; color:#ef4444; font-size:11px; font-weight:700; cursor:pointer; padding:0;"><i class="fa-solid fa-trash"></i> Hapus Foto Ini</button>
+                    </div>
+                </div>
+            </div>
+
             <!-- Admin Map Container -->
             <div style="margin-top:16px;">
                 <label style="font-size:13px; font-weight:700; display:block; margin-bottom:6px;"><i class="fa-solid fa-map-location-dot" style="color:var(--gold);"></i> Peta Lokasi Presisi Kerusakan:</label>

@@ -24,6 +24,41 @@ let adminMarkerInstance = null;
 let adminOverviewMapInstance = null;
 let adminOverviewMarkersGroup = null;
 let currentAdminMapMode = 'pin'; // 'pin' or 'heatmap'
+let currentAdminFoto = '';
+
+function renderAdminFotoPreview() {
+    const previewContainer = document.getElementById('modalFotoPreview');
+    if (!previewContainer) return;
+    if (currentAdminFoto) {
+        previewContainer.innerHTML = `<img src="${currentAdminFoto}" alt="Foto Bukti" style="width:100%; height:100%; object-fit:cover; border-radius:6px; cursor:pointer;" onclick="window.open('${currentAdminFoto}')" title="Klik untuk lihat ukuran penuh">`;
+    } else {
+        previewContainer.innerHTML = `<span style="font-size:11px; color:var(--text-muted);">Belum ada foto</span>`;
+    }
+}
+
+function handleAdminFotoUpload(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    if (file.size > 5 * 1024 * 1024) {
+        showToast('Ukuran foto terlalu besar. Maksimal 5MB.', 'error');
+        return;
+    }
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        currentAdminFoto = e.target.result;
+        renderAdminFotoPreview();
+        showToast('Foto bukti perbaikan berhasil diunggah!', 'success');
+    };
+    reader.readAsDataURL(file);
+}
+
+function clearAdminFoto() {
+    currentAdminFoto = '';
+    const fileInput = document.getElementById('modalFotoInput');
+    if (fileInput) fileInput.value = '';
+    renderAdminFotoPreview();
+    showToast('Foto bukti perbaikan dihapus.', 'info');
+}
 
 function toggleAdminMapMode() {
     currentAdminMapMode = (currentAdminMapMode === 'pin') ? 'heatmap' : 'pin';
@@ -336,6 +371,11 @@ function openAdminModal(id) {
     if (!report) return;
 
     editingId = id;
+    currentAdminFoto = report.foto || '';
+    const fileInput = document.getElementById('modalFotoInput');
+    if (fileInput) fileInput.value = '';
+    renderAdminFotoPreview();
+
     document.getElementById('modalTicketCode').innerText = report.id;
     document.getElementById('modalStatusSelect').value = report.status;
     document.getElementById('modalTeknisiInput').value = report.teknisi;
@@ -420,6 +460,7 @@ function saveReportUpdates() {
     reportsData[idx].status = document.getElementById('modalStatusSelect').value;
     reportsData[idx].teknisi = document.getElementById('modalTeknisiInput').value.trim() || 'Belum Ditunjuk';
     reportsData[idx].catatanAdmin = document.getElementById('modalCatatanInput').value.trim();
+    reportsData[idx].foto = currentAdminFoto;
     reportsData[idx].tanggalUpdate = timeStr;
 
     saveReports();

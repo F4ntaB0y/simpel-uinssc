@@ -786,6 +786,12 @@ function doSearchTicket() {
                 <p style="margin-top:6px;"><strong>Deskripsi:</strong> ${r.deskripsi}</p>
                 <p style="margin-top:6px;"><strong>Teknisi:</strong> ${r.teknisi}</p>
                 <p style="margin-top:4px;"><strong>Update Sarpras:</strong> ${r.catatanAdmin}</p>
+                ${r.foto ? `
+                <div style="margin-top:12px; border-top:1px dashed var(--border-color); padding-top:10px;">
+                    <strong style="display:block; margin-bottom:6px;"><i class="fa-solid fa-camera" style="color:var(--gold);"></i> Foto Bukti / Perbaikan:</strong>
+                    <img src="${r.foto}" alt="Foto Kerusakan" style="max-width:180px; max-height:120px; border-radius:8px; border:1px solid var(--border-color); cursor:pointer; object-fit:cover;" onclick="window.open('${r.foto}')" title="Klik untuk memperbesar gambar">
+                </div>
+                ` : ''}
             </div>
 
             <div style="margin-top:16px; display:flex; justify-content:flex-end;">
