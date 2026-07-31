@@ -241,10 +241,19 @@ const DEFAULT_SEED_DATA = [
 ];
 
 document.addEventListener('DOMContentLoaded', () => {
+    checkUserAuth();
     initTheme();
     loadReports();
     initMapPicker();
 });
+
+function checkUserAuth() {
+    const sessionRaw = localStorage.getItem('SIMPEL_AUTH_SESSION');
+    if (!sessionRaw) {
+        alert('Akses Ditolak! Silakan login terlebih dahulu melalui pintu login.');
+        window.location.href = '../index.html';
+    }
+}
 
 function initTheme() {
     const saved = localStorage.getItem(THEME_KEY) || 'dark';
