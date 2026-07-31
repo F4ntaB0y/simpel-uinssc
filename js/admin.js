@@ -410,33 +410,20 @@ function openAdminModal(id) {
                 adminMapInstance = L.map('adminMap', {
                     center: [reportLat, reportLng],
                     zoom: 17,
-                    minZoom: 12,
+                    minZoom: 15,
                     maxZoom: 22
                 });
                 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                    minZoom: 12,
+                    minZoom: 15,
                     maxZoom: 22,
                     maxNativeZoom: 19,
                     attribution: '&copy; OpenStreetMap & UIN SSC'
                 }).addTo(adminMapInstance);
 
-                // Render Dark Mask Overlay
-                const outerWorld = [[90, -180], [90, 180], [-90, 180], [-90, -180]];
-                const campusHoles = CAMPUS_ZONES.map(z => z.polygon);
-
-                L.polygon([outerWorld, ...campusHoles], {
-                    color: '#c59235',
-                    weight: 3,
-                    dashArray: '6, 6',
-                    fillColor: '#04140d',
-                    fillOpacity: 0.72,
-                    interactive: false
-                }).addTo(adminMapInstance);
-
                 CAMPUS_ZONES.forEach(z => {
                     L.polygon(z.polygon, {
                         color: '#c59235',
-                        weight: 2,
+                        weight: 3,
                         fillColor: '#005a36',
                         fillOpacity: 0.25
                     }).addTo(adminMapInstance);

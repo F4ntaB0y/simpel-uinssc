@@ -332,40 +332,29 @@ function initMapPicker() {
         currentLng = centerAll.lng.toFixed(6);
         updateCoordinatesDisplay(currentLat, currentLng);
 
-        // Map Initialization tanpa maxBounds yang kaku agar pergerakan peta 100% lancar & smooth
+        // Map Initialization dengan Pembatasan Area Kamera (Agar Tidak Tersesat Keluar Kampus Saat Zoom Out)
         mapPickerInstance = L.map('mapPicker', {
             center: [centerAll.lat, centerAll.lng],
             zoom: 17,
-            minZoom: 12,
-            maxZoom: 22
+            minZoom: 15,
+            maxZoom: 22,
+            maxBounds: combinedBounds.pad(0.35),
+            maxBoundsViscosity: 0.9
         });
 
-        // OpenStreetMap Layer (maxNativeZoom 19 & maxZoom 22)
+        // OpenStreetMap Layer
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            minZoom: 12,
+            minZoom: 15,
             maxZoom: 22,
             maxNativeZoom: 19,
             attribution: '&copy; OpenStreetMap & UIN SSC'
         }).addTo(mapPickerInstance);
 
-        // 1. Render Dark Mask Overlay (Shades everything outside ALL 4 UIN SSC campus zones)
-        const outerWorld = [[90, -180], [90, 180], [-90, 180], [-90, -180]];
-        const campusHoles = CAMPUS_ZONES.map(z => z.polygon);
-
-        L.polygon([outerWorld, ...campusHoles], {
-            color: '#c59235',
-            weight: 3,
-            dashArray: '6, 6',
-            fillColor: '#04140d',
-            fillOpacity: 0.72,
-            interactive: false
-        }).addTo(mapPickerInstance);
-
-        // 2. Render Highlight Polygons untuk Setiap Zona Kampus
+        // Render Garis Batas Wilayah Polygons untuk Setiap Kawasan Kampus (Tanpa Masking Hitam)
         CAMPUS_ZONES.forEach(zone => {
             const poly = L.polygon(zone.polygon, {
                 color: '#c59235',
-                weight: 2,
+                weight: 3,
                 fillColor: '#005a36',
                 fillOpacity: 0.25
             }).addTo(mapPickerInstance);
