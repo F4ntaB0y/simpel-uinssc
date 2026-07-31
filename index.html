@@ -53,37 +53,59 @@
             <p style="font-size: 17px; margin-top: 10px;">Platform terpadu untuk kemudahan pelaporan fasilitas rusak, pelacakan tiket perbaikan berbasis GPS, dan pengelolaan sarpras kampus secara efisien.</p>
         </div>
 
-        <!-- Launcher Gateway Grid Cards -->
-        <div class="launcher-grid">
-            
-            <!-- Gateway Card 1: User Portal -->
-            <div class="glass-card" style="padding: 40px; text-align: left; display: flex; flex-direction: column; justify-content: space-between;">
-                <div>
-                    <div style="width: 60px; height: 60px; border-radius: 16px; background: rgba(197,146,53,0.15); border: 2px solid var(--gold); color: var(--gold); display: flex; align-items: center; justify-content: center; font-size: 28px; margin-bottom: 20px;">
-                        <i class="fa-solid fa-bullhorn"></i>
+        <!-- Single-Door Authentication Portal -->
+        <div style="max-width: 480px; margin: 0 auto;">
+            <div class="glass-card" style="padding: 36px 30px; text-align: left;">
+                <div style="text-align: center; margin-bottom: 24px;">
+                    <div style="width: 64px; height: 64px; border-radius: 18px; background: rgba(197,146,53,0.15); border: 2px solid var(--gold); color: var(--gold); display: flex; align-items: center; justify-content: center; font-size: 28px; margin: 0 auto 16px; box-shadow: 0 4px 16px rgba(197,146,53,0.2);">
+                        <i class="fa-solid fa-right-to-bracket"></i>
                     </div>
-                    <h2 style="font-size: 24px; font-weight: 800; margin-bottom: 10px;">Portal Pelapor Publik</h2>
-                    <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 24px;">Khusus Mahasiswa, Dosen, & Staf Kampus untuk membuat laporan kerusakan fasilitas, mengambil lokasi GPS presisi, dan melacak tiket perbaikan.</p>
+                    <h2 style="font-size: 24px; font-weight: 800; color: var(--text-main);">Pintu Login Terpadu</h2>
+                    <p style="color: var(--text-muted); font-size: 13px; margin-top: 6px; line-height: 1.5;">Masukkan Username & Password. Sistem akan otomatis mengarahkan ke Portal Pelapor atau Dashboard Admin.</p>
                 </div>
-                <a href="pages/user.html" class="btn btn-primary" style="width: 100%; justify-content: center;">
-                    <i class="fa-solid fa-paper-plane"></i> Buka Portal Pelapor <i class="fa-solid fa-arrow-right"></i>
-                </a>
-            </div>
 
-            <!-- Gateway Card 2: Admin Dashboard -->
-            <div class="glass-card" style="padding: 40px; text-align: left; display: flex; flex-direction: column; justify-content: space-between;">
-                <div>
-                    <div style="width: 60px; height: 60px; border-radius: 16px; background: rgba(197,146,53,0.15); border: 2px solid var(--gold); color: var(--gold); display: flex; align-items: center; justify-content: center; font-size: 28px; margin-bottom: 20px;">
-                        <i class="fa-solid fa-chart-line"></i>
+                <form id="loginForm" onsubmit="handleLogin(event)">
+                    <div style="margin-bottom: 16px;">
+                        <label for="loginUsername" style="font-size: 13px; font-weight: 700; display: block; margin-bottom: 6px; color: var(--text-main);">Username <span style="color:red;">*</span></label>
+                        <div class="input-wrapper" style="position: relative;">
+                            <i class="fa-solid fa-user" style="position: absolute; left: 14px; top: 15px; color: var(--gold);"></i>
+                            <input type="text" id="loginUsername" placeholder="Contoh: user / admin" required style="width: 100%; min-height: 44px; padding: 10px 14px 10px 42px; border-radius: 10px; border: 1px solid var(--border-color); background: rgba(0,0,0,0.15); color: var(--text-main); font-size: 14px; outline: none;">
+                        </div>
                     </div>
-                    <h2 style="font-size: 24px; font-weight: 800; margin-bottom: 10px;">Dashboard Admin Sarpras</h2>
-                    <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 24px;">Khusus Tim Sarpras & Teknisi Pemeliharaan untuk mengelola status laporan, melihat peta posisi kerusakan, menugaskan teknisi, & export rekap CSV.</p>
-                </div>
-                <a href="pages/admin.html" class="btn btn-primary" style="width: 100%; justify-content: center;">
-                    <i class="fa-solid fa-sliders"></i> Buka Dashboard Admin <i class="fa-solid fa-arrow-right"></i>
-                </a>
-            </div>
 
+                    <div style="margin-bottom: 22px;">
+                        <label for="loginPassword" style="font-size: 13px; font-weight: 700; display: block; margin-bottom: 6px; color: var(--text-main);">Password <span style="color:red;">*</span></label>
+                        <div class="input-wrapper" style="position: relative;">
+                            <i class="fa-solid fa-lock" style="position: absolute; left: 14px; top: 15px; color: var(--gold);"></i>
+                            <input type="password" id="loginPassword" placeholder="Masukkan password" required style="width: 100%; min-height: 44px; padding: 10px 14px 10px 42px; border-radius: 10px; border: 1px solid var(--border-color); background: rgba(0,0,0,0.15); color: var(--text-main); font-size: 14px; outline: none;">
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" style="width: 100%; min-height: 46px; font-size: 15px; font-weight: 700; justify-content: center;">
+                        <i class="fa-solid fa-key"></i> Masuk Ke Sistem SIMPEL <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </form>
+
+                <!-- Quick Fill Preset Demo Credentials -->
+                <div style="margin-top: 22px; border-top: 1px dashed var(--border-color); padding-top: 16px;">
+                    <span style="font-size: 12px; font-weight: 700; color: var(--text-muted); display: block; margin-bottom: 10px; text-align: center;">
+                        <i class="fa-solid fa-circle-info"></i> Pilih Kredensial Akun (1-Klik Uji Cepat):
+                    </span>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                        <button type="button" class="chip-btn" onclick="quickFillAccount('user')" style="padding: 8px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 3px; cursor: pointer;">
+                            <span style="font-weight: 700; color: var(--gold);"><i class="fa-solid fa-user-graduate"></i> Akun Pelapor</span>
+                            <small style="color: var(--text-muted); font-size: 11px;">user / user123</small>
+                        </button>
+
+                        <button type="button" class="chip-btn" onclick="quickFillAccount('admin')" style="padding: 8px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 3px; cursor: pointer;">
+                            <span style="font-weight: 700; color: #2dd4bf;"><i class="fa-solid fa-user-gear"></i> Akun Admin</span>
+                            <small style="color: var(--text-muted); font-size: 11px;">admin / admin123</small>
+                        </button>
+                    </div>
+                </div>
+
+                <div id="loginFeedback" style="margin-top: 14px; text-align: center; font-size: 13px; font-weight: 700; min-height: 20px;"></div>
+            </div>
         </div>
 
     </main>
@@ -96,6 +118,62 @@
     </footer>
 
     <script>
+        const ACCOUNTS = {
+            user: { username: 'user', password: 'user123', role: 'user', name: 'Pelapor Publik (Mahasiswa/Dosen/Staf)', redirect: 'pages/user.html' },
+            admin: { username: 'admin', password: 'admin123', role: 'admin', name: 'Administrator Sarpras', redirect: 'pages/admin.html' }
+        };
+
+        function quickFillAccount(type) {
+            const acc = ACCOUNTS[type];
+            if (acc) {
+                document.getElementById('loginUsername').value = acc.username;
+                document.getElementById('loginPassword').value = acc.password;
+                showLoginFeedback(`Akun ${acc.name} terpilih. Klik tombol "Masuk".`, 'var(--gold)');
+            }
+        }
+
+        function handleLogin(e) {
+            e.preventDefault();
+            const uname = document.getElementById('loginUsername').value.trim();
+            const pass = document.getElementById('loginPassword').value.trim();
+
+            let matchedAccount = null;
+            if (uname.toLowerCase() === 'admin' && pass === 'admin123') {
+                matchedAccount = ACCOUNTS.admin;
+            } else if (uname.toLowerCase() === 'user' && pass === 'user123') {
+                matchedAccount = ACCOUNTS.user;
+            } else if (uname.length > 0 && pass.length > 0) {
+                // Fleksibilitas: Jika username mengandung kata 'admin', masuk sebagai admin, jika tidak sebagai user
+                matchedAccount = uname.toLowerCase().includes('admin') ? ACCOUNTS.admin : ACCOUNTS.user;
+            }
+
+            if (matchedAccount) {
+                const sessionData = {
+                    username: uname,
+                    role: matchedAccount.role,
+                    name: matchedAccount.name,
+                    loginTime: new Date().toISOString()
+                };
+                localStorage.setItem('SIMPEL_AUTH_SESSION', JSON.stringify(sessionData));
+
+                showLoginFeedback(`✅ Login Berhasil! Peran: ${matchedAccount.name}. Mengalihkan...`, '#22c55e');
+
+                setTimeout(() => {
+                    window.location.href = matchedAccount.redirect;
+                }, 800);
+            } else {
+                showLoginFeedback('❌ Username atau password salah!', '#ef4444');
+            }
+        }
+
+        function showLoginFeedback(msg, color) {
+            const fb = document.getElementById('loginFeedback');
+            if (fb) {
+                fb.style.color = color;
+                fb.innerHTML = msg;
+            }
+        }
+
         function toggleTheme() {
             const current = document.documentElement.getAttribute('data-theme') || 'dark';
             const next = current === 'dark' ? 'light' : 'dark';
@@ -104,6 +182,7 @@
             const icon = document.getElementById('themeIcon');
             if (icon) icon.className = next === 'dark' ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
         }
+
         (function() {
             const saved = localStorage.getItem('SIMPEL_FK_THEME') || 'dark';
             document.documentElement.setAttribute('data-theme', saved);

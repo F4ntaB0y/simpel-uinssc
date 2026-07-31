@@ -47,6 +47,11 @@
                         <i class="fa-solid fa-house"></i> <span>Beranda Gateway</span>
                     </a>
                 </li>
+                <li>
+                    <a href="javascript:void(0)" onclick="handleLogout()" style="color: #ef4444;">
+                        <i class="fa-solid fa-right-from-bracket"></i> <span>Keluar / Logout</span>
+                    </a>
+                </li>
             </ul>
 
             <div class="sidebar-footer">
@@ -64,9 +69,10 @@
                     <h1 style="font-size: 26px; font-weight: 800;">Dashboard Pengelolaan Sarpras UIN SSC</h1>
                     <p style="color:var(--text-muted); font-size: 14px;">Pantau, verifikasi, dan tindak lanjuti laporan kerusakan fasilitas seluruh kampus.</p>
                 </div>
-                <div style="display:flex; gap:12px;">
+                <div style="display:flex; gap:12px; flex-wrap:wrap;">
                     <button class="btn btn-secondary" onclick="exportCSV()"><i class="fa-solid fa-file-csv"></i> Export CSV</button>
                     <button class="btn btn-secondary" onclick="resetDemoData()"><i class="fa-solid fa-rotate-left"></i> Reset Demo</button>
+                    <button class="btn btn-secondary" onclick="handleLogout()" style="color:#ef4444; border-color:rgba(239,68,68,0.3);"><i class="fa-solid fa-right-from-bracket"></i> Keluar</button>
                 </div>
             </div>
 

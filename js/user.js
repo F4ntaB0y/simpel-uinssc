@@ -260,6 +260,14 @@ function toggleTheme() {
     updateThemeIcon(next);
 }
 
+function handleLogout() {
+    localStorage.removeItem('SIMPEL_AUTH_SESSION');
+    showToast('Anda telah keluar. Mengalihkan ke pintu login...', 'info');
+    setTimeout(() => {
+        window.location.href = '../index.html';
+    }, 600);
+}
+
 function updateThemeIcon(theme) {
     const icon = document.getElementById('themeIcon');
     if (icon) {

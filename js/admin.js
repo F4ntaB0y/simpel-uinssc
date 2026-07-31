@@ -107,6 +107,12 @@ function toggleTheme() {
     updateThemeIcon(next);
 }
 
+function handleLogout() {
+    localStorage.removeItem('SIMPEL_AUTH_SESSION');
+    alert('Anda telah keluar dari Dashboard Admin.');
+    window.location.href = '../index.html';
+}
+
 function updateThemeIcon(theme) {
     const icon = document.getElementById('adminThemeIcon');
     if (icon) {
