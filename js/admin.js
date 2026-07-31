@@ -21,6 +21,8 @@ let editingId = null;
 // Admin Map State
 let adminMapInstance = null;
 let adminMarkerInstance = null;
+let adminOverviewMapInstance = null;
+let adminOverviewMarkersGroup = null;
 
 const DEFAULT_SEED_DATA = [
     {
@@ -92,6 +94,7 @@ document.addEventListener('DOMContentLoaded', () => {
     renderKPIs();
     renderChart();
     renderAdminTable();
+    initAdminOverviewMap();
 });
 
 function checkAdminAuth() {
@@ -519,6 +522,7 @@ function saveReportUpdates() {
     renderKPIs();
     renderChart();
     renderAdminTable();
+    renderAdminOverviewMarkers();
     closeAdminModal();
     showToast(`Perubahan tiket ${editingId} berhasil disimpan!`, 'success');
 }
@@ -530,6 +534,7 @@ function deleteReport(id) {
         renderKPIs();
         renderChart();
         renderAdminTable();
+        renderAdminOverviewMarkers();
         showToast(`Laporan ${id} dihapus.`, 'info');
     }
 }
@@ -556,6 +561,7 @@ function resetDemoData() {
         renderKPIs();
         renderChart();
         renderAdminTable();
+        renderAdminOverviewMarkers();
         showToast('Data demo berhasil direset!', 'success');
     }
 }
@@ -573,4 +579,87 @@ function showToast(msg, type='info') {
 function escapeHtml(str) {
     if (!str) return '';
     return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
+/* Admin GIS Overview Damage Map */
+function initAdminOverviewMap() {
+    const container = document.getElementById('adminOverviewMap');
+    if (!container || typeof L === 'undefined') return;
+
+    try {
+        if (!adminOverviewMapInstance) {
+            adminOverviewMapInstance = L.map('adminOverviewMap', {
+                center: [-6.7355, 108.5329],
+                zoom: 16,
+                minZoom: 14,
+                maxZoom: 22
+            });
+
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                minZoom: 14,
+                maxZoom: 22,
+                maxNativeZoom: 19,
+                attribution: '&copy; OpenStreetMap & UIN SSC'
+            }).addTo(adminOverviewMapInstance);
+
+            adminOverviewMarkersGroup = L.featureGroup().addTo(adminOverviewMapInstance);
+        }
+
+        renderAdminOverviewMarkers();
+    } catch(e) {
+        console.warn('Overview map init error', e);
+    }
+}
+
+function renderAdminOverviewMarkers() {
+    if (!adminOverviewMapInstance || !adminOverviewMarkersGroup) return;
+    adminOverviewMarkersGroup.clearLayers();
+
+    const bounds = L.latLngBounds();
+
+    reportsData.forEach(rep => {
+        const lat = parseFloat(rep.lat || '-6.737400');
+        const lng = parseFloat(rep.lng || '108.553100');
+        if (isNaN(lat) || isNaN(lng)) return;
+
+        bounds.extend([lat, lng]);
+
+        let color = '#ef4444'; // Diajukan (Red)
+        if (rep.status === 'Diproses') color = '#f59e0b'; // Gold/Amber
+        if (rep.status === 'Selesai') color = '#22c55e'; // Green
+        if (rep.status === 'Ditolak') color = '#64748b'; // Slate
+
+        const marker = L.circleMarker([lat, lng], {
+            radius: 10,
+            fillColor: color,
+            color: '#ffffff',
+            weight: 2.5,
+            opacity: 1,
+            fillOpacity: 0.95
+        });
+
+        const popupHtml = `
+            <div style="font-family:'Plus Jakarta Sans',sans-serif; color:#0f172a; padding:6px; min-width:200px;">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+                    <span style="font-size:11px; font-weight:800; color:#c59235;">${escapeHtml(rep.id)}</span>
+                    <span style="display:inline-block; font-size:10px; font-weight:700; padding:2px 8px; border-radius:10px; background:${color}; color:#ffffff;">${escapeHtml(rep.status)}</span>
+                </div>
+                <h4 style="margin:2px 0 6px 0; font-size:14px; font-weight:800; color:#005a36;">${escapeHtml(rep.kategori)}</h4>
+                <p style="font-size:12px; margin-bottom:8px; color:#475569;"><i class="fa-solid fa-location-dot" style="color:#c59235;"></i> ${escapeHtml(rep.gedung)} (${escapeHtml(rep.ruangan)})</p>
+                <button onclick="openAdminModal('${rep.id}')" style="width:100%; padding:7px 10px; background:#005a36; color:#ffffff; border:none; border-radius:6px; font-weight:700; font-size:12px; cursor:pointer; box-shadow: 0 2px 8px rgba(0,90,54,0.3);"><i class="fa-solid fa-pen-to-square"></i> Process Laporan Ini</button>
+            </div>
+        `;
+
+        marker.bindPopup(popupHtml);
+        adminOverviewMarkersGroup.addLayer(marker);
+    });
+
+    if (reportsData.length > 0 && bounds.isValid()) {
+        adminOverviewMapInstance.fitBounds(bounds.pad(0.35));
+    }
+}
+
+function sendWANotificationSim() {
+    const teknisi = document.getElementById('modalTeknisiInput').value.trim() || 'Tim Sarpras';
+    showToast(`💬 Notifikasi WhatsApp berhasil dikirimkan ke ${teknisi}!`, 'success');
 }
