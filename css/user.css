@@ -597,14 +597,21 @@ input:focus, select:focus, textarea:focus {
     background: #04140d !important;
 }
 
-/* Leaflet Seamless Dark Canvas (100% Mengeliminasi Area Putih/Flicker) */
+/* Leaflet Seamless Dark Canvas (100% Mengeliminasi Area/Kedipan Putih saat Drag/Zoom) */
 .map-box,
 #mapPicker,
 .leaflet-container,
+.leaflet-container *,
+.leaflet-pane,
+.leaflet-pane *,
 .leaflet-map-pane,
 .leaflet-tile-pane,
+.leaflet-layer,
 .leaflet-tile-container,
-.leaflet-tile {
+.leaflet-tile,
+.leaflet-zoom-anim,
+.leaflet-pan-anim,
+.leaflet-zoom-animated {
     background: #04140d !important;
     background-color: #04140d !important;
 }
