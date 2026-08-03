@@ -394,27 +394,51 @@ function updateThemeIcon(theme) {
     }
 }
 
-function loadReports() {
+async function loadReports() {
+    try {
+        const res = await fetch('../api.php');
+        if (res.ok) {
+            const data = await res.json();
+            if (Array.isArray(data) && data.length > 0) {
+                reportsData = data;
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(reportsData));
+                renderKPIs();
+                renderChart();
+                renderAdminTable();
+                renderAdminOverviewMarkers();
+                return;
+            }
+        }
+    } catch (e) {
+        console.info('Pemberitahuan: API Laragon belum aktif, menggunakan mode offline localStorage.');
+    }
+
     const saved = localStorage.getItem(STORAGE_KEY);
     if (saved) {
         try {
             reportsData = JSON.parse(saved);
             if (!Array.isArray(reportsData) || reportsData.length < 5) {
                 reportsData = [...DEFAULT_SEED_DATA];
-                saveReports();
             }
         } catch(e) {
             reportsData = [...DEFAULT_SEED_DATA];
-            saveReports();
         }
     } else {
         reportsData = [...DEFAULT_SEED_DATA];
-        saveReports();
     }
 }
 
-function saveReports() {
+async function saveReports() {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(reportsData));
+    try {
+        await fetch('../api.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(reportsData)
+        });
+    } catch(e) {
+        console.info('Pemberitahuan: Gagal sync ke API Laragon MySQL (offline mode active).');
+    }
 }
 
 function renderKPIs() {
