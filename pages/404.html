@@ -11,13 +11,13 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="../css/user.css">
 </head>
-<body style="min-height: 100vh; display: flex; align-items: center; justify-content: center; background: var(--bg-dark); font-family: 'Plus Jakarta Sans', sans-serif; margin: 0; padding: 20px; box-sizing: border-box; transition: background 0.3s ease;">
+<body style="min-height: 100vh; display: flex; align-items: center; justify-content: center; background: var(--bg-body); font-family: 'Plus Jakarta Sans', sans-serif; margin: 0; padding: 20px; box-sizing: border-box; transition: background 0.3s ease; color: var(--text-main);">
 
-    <div style="max-width: 520px; width: 100%; text-align: center; background: var(--glass-bg); backdrop-filter: blur(16px); border: 1px solid var(--border-color); border-radius: 24px; padding: 40px 24px; box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3); position: relative;">
+    <div style="max-width: 520px; width: 100%; text-align: center; background: var(--bg-card); backdrop-filter: blur(16px); border: 1px solid var(--border-color); border-radius: 24px; padding: 40px 24px; box-shadow: var(--shadow-lg); position: relative; transition: all 0.3s ease;">
         
         <!-- Toggle Theme Button -->
         <button type="button" onclick="toggle404Theme()" class="chip-btn" style="position: absolute; top: 16px; right: 16px; background: rgba(197,146,53,0.15); color: var(--gold); border: 1px solid var(--gold); font-weight: 700; cursor: pointer; padding: 6px 12px; border-radius: 20px; font-size: 12px; display: inline-flex; align-items: center; gap: 6px;">
-            <i id="themeIcon404" class="fa-solid fa-sun"></i> Theme
+            <i id="themeIcon404" class="fa-solid fa-sun"></i> Mode
         </button>
 
         <div style="font-size: 80px; font-weight: 800; color: var(--gold); line-height: 1; letter-spacing: -2px; text-shadow: 0 0 30px rgba(197, 146, 53, 0.4);">
@@ -33,10 +33,10 @@
         </div>
 
         <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
-            <a href="../index.html" class="btn btn-primary" style="padding: 10px 24px; font-size: 14px; text-decoration: none; border-radius: 30px; display: inline-flex; align-items: center; gap: 8px;">
+            <a href="../index.html" class="btn btn-primary" style="padding: 10px 24px; font-size: 14px; text-decoration: none; border-radius: 30px; display: inline-flex; align-items: center; gap: 8px; color: #ffffff;">
                 <i class="fa-solid fa-house"></i> Kembali ke Beranda
             </a>
-            <a href="user.html" class="btn btn-secondary" style="padding: 10px 24px; font-size: 14px; text-decoration: none; border-radius: 30px; display: inline-flex; align-items: center; gap: 8px;">
+            <a href="user.html" class="btn btn-secondary" style="padding: 10px 24px; font-size: 14px; text-decoration: none; border-radius: 30px; display: inline-flex; align-items: center; gap: 8px; color: var(--text-main); border: 1px solid var(--border-color);">
                 <i class="fa-solid fa-headset"></i> Portal Pengaduan
             </a>
         </div>
