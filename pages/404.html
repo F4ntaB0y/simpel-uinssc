@@ -11,18 +11,23 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="../css/user.css">
 </head>
-<body style="min-height: 100vh; display: flex; align-items: center; justify-content: center; background: radial-gradient(circle at center, #062618 0%, #04140d 100%); font-family: 'Plus Jakarta Sans', sans-serif; margin: 0; padding: 20px; box-sizing: border-box;">
+<body style="min-height: 100vh; display: flex; align-items: center; justify-content: center; background: var(--bg-dark); font-family: 'Plus Jakarta Sans', sans-serif; margin: 0; padding: 20px; box-sizing: border-box; transition: background 0.3s ease;">
 
-    <div style="max-width: 520px; width: 100%; text-align: center; background: rgba(0, 90, 54, 0.25); backdrop-filter: blur(16px); border: 1px solid rgba(197, 146, 53, 0.3); border-radius: 24px; padding: 40px 24px; box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);">
+    <div style="max-width: 520px; width: 100%; text-align: center; background: var(--glass-bg); backdrop-filter: blur(16px); border: 1px solid var(--border-color); border-radius: 24px; padding: 40px 24px; box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3); position: relative;">
         
+        <!-- Toggle Theme Button -->
+        <button type="button" onclick="toggle404Theme()" class="chip-btn" style="position: absolute; top: 16px; right: 16px; background: rgba(197,146,53,0.15); color: var(--gold); border: 1px solid var(--gold); font-weight: 700; cursor: pointer; padding: 6px 12px; border-radius: 20px; font-size: 12px; display: inline-flex; align-items: center; gap: 6px;">
+            <i id="themeIcon404" class="fa-solid fa-sun"></i> Theme
+        </button>
+
         <div style="font-size: 80px; font-weight: 800; color: var(--gold); line-height: 1; letter-spacing: -2px; text-shadow: 0 0 30px rgba(197, 146, 53, 0.4);">
             404
         </div>
         
         <div style="margin-top: 16px; margin-bottom: 24px;">
             <i class="fa-solid fa-compass-drafting" style="font-size: 48px; color: var(--gold); margin-bottom: 12px; display: inline-block;"></i>
-            <h1 style="font-size: 22px; font-weight: 800; color: #ffffff; margin: 0 0 8px 0;">Halaman Tidak Ditemukan</h1>
-            <p style="font-size: 14px; color: #94a3b8; line-height: 1.6; margin: 0;">
+            <h1 style="font-size: 22px; font-weight: 800; color: var(--text-main); margin: 0 0 8px 0;">Halaman Tidak Ditemukan</h1>
+            <p style="font-size: 14px; color: var(--text-muted); line-height: 1.6; margin: 0;">
                 Maaf, halaman atau rute yang Anda tuju tidak berada dalam sistem SIMPEL UINSSC. Pastikan URL atau ID Tiket yang Anda ketikkan sudah benar.
             </p>
         </div>
@@ -37,5 +42,31 @@
         </div>
     </div>
 
+    <script>
+        const THEME_KEY = 'SIMPEL_UINSSC_THEME';
+
+        function init404Theme() {
+            const saved = localStorage.getItem(THEME_KEY) || 'dark';
+            document.documentElement.setAttribute('data-theme', saved);
+            updateIcon(saved);
+        }
+
+        function toggle404Theme() {
+            const current = document.documentElement.getAttribute('data-theme') || 'dark';
+            const next = current === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', next);
+            localStorage.setItem(THEME_KEY, next);
+            updateIcon(next);
+        }
+
+        function updateIcon(theme) {
+            const icon = document.getElementById('themeIcon404');
+            if (icon) {
+                icon.className = theme === 'dark' ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', init404Theme);
+    </script>
 </body>
 </html>
