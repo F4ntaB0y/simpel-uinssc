@@ -395,37 +395,47 @@ function updateThemeIcon(theme) {
 }
 
 async function loadReports() {
+    let loadedSuccess = false;
     try {
         const res = await fetch('../api.php');
         if (res.ok) {
-            const data = await res.json();
-            if (Array.isArray(data) && data.length > 0) {
-                reportsData = data;
-                localStorage.setItem(STORAGE_KEY, JSON.stringify(reportsData));
-                renderKPIs();
-                renderChart();
-                renderAdminTable();
-                renderAdminOverviewMarkers();
-                return;
+            const text = await res.text();
+            if (text.trim().startsWith('[')) { // Valid JSON Array from PHP
+                const data = JSON.parse(text);
+                if (Array.isArray(data) && data.length > 0) {
+                    reportsData = data;
+                    localStorage.setItem(STORAGE_KEY, JSON.stringify(reportsData));
+                    loadedSuccess = true;
+                }
             }
         }
     } catch (e) {
         console.info('Pemberitahuan: API Laragon belum aktif, menggunakan mode offline localStorage.');
     }
 
-    const saved = localStorage.getItem(STORAGE_KEY);
-    if (saved) {
-        try {
-            reportsData = JSON.parse(saved);
-            if (!Array.isArray(reportsData) || reportsData.length < 5) {
-                reportsData = [...DEFAULT_SEED_DATA];
+    if (!loadedSuccess) {
+        const saved = localStorage.getItem(STORAGE_KEY);
+        if (saved) {
+            try {
+                reportsData = JSON.parse(saved);
+                if (!Array.isArray(reportsData) || reportsData.length < 3) {
+                    reportsData = JSON.parse(JSON.stringify(DEFAULT_SEED_DATA));
+                    saveReports();
+                }
+            } catch(e) {
+                reportsData = JSON.parse(JSON.stringify(DEFAULT_SEED_DATA));
+                saveReports();
             }
-        } catch(e) {
-            reportsData = [...DEFAULT_SEED_DATA];
+        } else {
+            reportsData = JSON.parse(JSON.stringify(DEFAULT_SEED_DATA));
+            saveReports();
         }
-    } else {
-        reportsData = [...DEFAULT_SEED_DATA];
     }
+
+    renderKPIs();
+    renderChart();
+    renderAdminTable();
+    renderAdminOverviewMarkers();
 }
 
 async function saveReports() {
