@@ -29,10 +29,12 @@ let currentLng = 108.533600;
 // BATAS GEOGRAFIS MULTI-ZONA PRESISI KAMPUS UINSSC CIREBON
 // (Hasil Pengumpulan Visual Polygon Designer oleh User)
 // ==========================================================================
-const CAMPUS_ZONES = [
+const STORAGE_ZONES_KEY = 'SIMPEL_CAMPUS_ZONES';
+
+const DEFAULT_CAMPUS_ZONES = [
     {
         id: 'kampus_utama',
-        name: 'Area Kampus Utama UINSSC',
+        name: 'Kawasan Kampus Utama',
         polygon: [
             [-6.735695, 108.532945], // Titik 1
             [-6.73554, 108.532951],  // Titik 2
@@ -66,7 +68,7 @@ const CAMPUS_ZONES = [
     },
     {
         id: 'gedung_cyber',
-        name: 'Area Gedung Cyber UINSSC',
+        name: 'Kawasan Gedung Cyber',
         polygon: [
             [-6.736657, 108.532119], // Titik 1
             [-6.736606, 108.531878], // Titik 2
@@ -106,7 +108,7 @@ const CAMPUS_ZONES = [
     },
     {
         id: 'gedung_seberang',
-        name: 'Area Gedung Seberang Kampus Utama',
+        name: 'Kawasan Kampus Sebrang',
         polygon: [
             [-6.735765, 108.532911], // Titik 1
             [-6.735807, 108.532919], // Titik 2
@@ -132,7 +134,7 @@ const CAMPUS_ZONES = [
     },
     {
         id: 'pascasarjana_mahad',
-        name: 'Area Pascasarjana & Ma\'had UINSSC',
+        name: 'Kawasan Pascasarjana & Mahad',
         polygon: [
             [-6.735741, 108.532103], // Titik 1
             [-6.735328, 108.532041], // Titik 2
@@ -167,7 +169,7 @@ const CAMPUS_ZONES = [
     },
     {
         id: 'area_saladara',
-        name: 'Area Kampus Saladara UINSSC',
+        name: 'Kawasan Lab Saladara',
         polygon: [
             [-6.74438, 108.525562],  // Titik 1
             [-6.744371, 108.525831], // Titik 2
@@ -187,6 +189,31 @@ const CAMPUS_ZONES = [
         ]
     }
 ];
+
+function loadCampusZones() {
+    const raw = localStorage.getItem(STORAGE_ZONES_KEY);
+    if (raw) {
+        try {
+            const parsed = JSON.parse(raw);
+            if (Array.isArray(parsed) && parsed.length === 5) {
+                return parsed;
+            }
+        } catch(e) {
+            console.error('Gagal membaca geofencing tersimpan', e);
+        }
+    }
+    return JSON.parse(JSON.stringify(DEFAULT_CAMPUS_ZONES));
+}
+
+let CAMPUS_ZONES = loadCampusZones();
+
+// Sinkronisasi Real-Time Geofencing saat Super Admin menyimpan batas baru di tab sebelah
+window.addEventListener('storage', (e) => {
+    if (e.key === STORAGE_ZONES_KEY) {
+        CAMPUS_ZONES = loadCampusZones();
+        console.info('Batas Geofencing diperbarui dari Super Admin.');
+    }
+});
 
 const DEFAULT_CAMPUS_CENTER = { lat: -6.735000, lng: 108.533600 };
 
@@ -397,14 +424,89 @@ const DEFAULT_SEED_DATA = [
         catatanAdmin: 'Diserahkan ke tim logistik Kampus 2 Saladara.',
         tanggalLapor: '2026-07-31 07:15',
         tanggalUpdate: '2026-07-31 07:15'
+    },
+    {
+        id: 'TRK-2026-011',
+        namaPelapor: 'Kantin Berkah Sejahtera (Ibu Sumiati)',
+        nimNip: 'MTR-01',
+        peranPelapor: 'Mitra Kampus',
+        kontakPelapor: '081288990001',
+        gedung: 'Laboratorium Terpadu & Pusat ICT',
+        ruangan: 'Foodcourt / Kantin Barat Stand 04',
+        lat: '-6.735800',
+        lng: '108.534100',
+        kategori: 'Sanitasi & Toilet',
+        urgensi: 'Tinggi',
+        deskripsi: 'Pipa pembuangan wastafel cuci piring meluap sehingga air menggenang di selasar foodcourt kantin.',
+        foto: PRESET_IMAGES ? PRESET_IMAGES.toilet : '',
+        status: 'Diproses',
+        teknisi: 'Rahmat (Plumbing)',
+        catatanAdmin: 'Tim sanitasi sedang menangani sumbatan pipa air limbah kantin.',
+        tanggalLapor: '2026-08-01 10:15',
+        tanggalUpdate: '2026-08-01 11:30'
     }
 ];
+
+function escapeHtml(text) {
+    if (!text) return '';
+    return String(text)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+}
+
+function applyUserPortalContent() {
+    const raw = localStorage.getItem('SIMPEL_PORTAL_CONTENT_V1');
+    if (!raw) return;
+    try {
+        const data = JSON.parse(raw);
+        if (data.banner) {
+            const b = data.banner;
+            const badgeEl = document.getElementById('userHeroBannerBadge');
+            const titleEl = document.getElementById('userHeroBannerTitle');
+            const descEl = document.getElementById('userHeroBannerDesc');
+            const cardEl = document.getElementById('userHeroBanner');
+            const graphicEl = document.getElementById('userHeroBannerGraphic');
+
+            if (badgeEl && b.badge) badgeEl.innerHTML = `<i class="fa-solid fa-bookmark"></i> ${escapeHtml(b.badge)}`;
+            if (titleEl && b.title) titleEl.innerText = b.title;
+            if (descEl && b.desc) descEl.innerText = b.desc;
+            if (graphicEl && b.icon) graphicEl.innerHTML = `<i class="fa-solid ${escapeHtml(b.icon)}"></i>`;
+
+            if (cardEl) {
+                if (b.bgImage) {
+                    cardEl.style.backgroundImage = `linear-gradient(rgba(0, 54, 32, 0.75), rgba(0, 40, 22, 0.88)), url('${b.bgImage}')`;
+                    cardEl.style.backgroundSize = 'cover';
+                    cardEl.style.backgroundPosition = 'center';
+                } else {
+                    cardEl.style.backgroundImage = '';
+                    cardEl.style.backgroundSize = '';
+                    cardEl.style.backgroundPosition = '';
+                }
+            }
+        }
+    } catch (e) {
+        console.warn('Gagal memuat konten banner portal user:', e);
+    }
+}
 
 document.addEventListener('DOMContentLoaded', () => {
     checkUserAuth();
     initTheme();
-    loadReports();
+    applyUserPortalContent();
+    loadReports().then(() => {
+        updateMyReportsBadge();
+        updateUserKPIs();
+    });
     initMapPicker();
+});
+
+window.addEventListener('storage', (e) => {
+    if (e.key === 'SIMPEL_PORTAL_CONTENT_V1') {
+        applyUserPortalContent();
+    }
 });
 
 function checkUserAuth() {
@@ -416,8 +518,66 @@ function checkUserAuth() {
     try {
         const sess = JSON.parse(sessionRaw);
         const el = document.getElementById('userBadgeName');
-        if (el && sess.username) {
-            el.textContent = `Pelapor (${sess.username})`;
+        const displayName = sess.name || sess.username || 'Civitas UINSSC';
+        const isMitra = (sess.role === 'mitra');
+
+        if (el) {
+            if (isMitra) {
+                el.innerHTML = `<i class="fa-solid fa-handshake" style="color:#facc15; margin-right:4px;"></i> Mitra: ${escapeHtml(displayName)}`;
+                const userBadge = el.closest('.user-badge');
+                if (userBadge) {
+                    userBadge.style.borderColor = '#facc15';
+                    userBadge.style.background = 'rgba(250, 204, 21, 0.12)';
+                }
+            } else {
+                el.innerHTML = `<i class="fa-solid fa-graduation-cap" style="color:var(--gold); margin-right:4px;"></i> ${escapeHtml(displayName)}`;
+            }
+        }
+
+        prefillPelaporDataFromSession();
+
+        // Listener jika peran diganti manual
+        const peranSelect = document.getElementById('peranPelapor');
+        if (peranSelect) {
+            peranSelect.addEventListener('change', (e) => {
+                const icon = document.getElementById('peranIcon');
+                if (icon) {
+                    if (e.target.value === 'Mitra Kampus') {
+                        icon.className = 'fa-solid fa-handshake';
+                        icon.style.color = '#facc15';
+                    } else {
+                        icon.className = 'fa-solid fa-graduation-cap';
+                        icon.style.color = 'var(--gold)';
+                    }
+                }
+            });
+        }
+    } catch (e) {
+        console.warn('Gagal memproses sesi user:', e);
+    }
+}
+
+function prefillPelaporDataFromSession() {
+    const sessionRaw = localStorage.getItem('SIMPEL_AUTH_SESSION');
+    if (!sessionRaw) return;
+    try {
+        const sess = JSON.parse(sessionRaw);
+        const isMitra = (sess.role === 'mitra');
+        const namaInput = document.getElementById('namaPelapor');
+        const nimInput = document.getElementById('nimNip');
+        const kontakInput = document.getElementById('kontakPelapor');
+        const peranSelect = document.getElementById('peranPelapor');
+        const peranIcon = document.getElementById('peranIcon');
+
+        if (isMitra) {
+            if (namaInput) namaInput.value = sess.name || '';
+            if (nimInput) nimInput.value = sess.nimNip || sess.username || '';
+            if (kontakInput && sess.wa) kontakInput.value = sess.wa;
+            if (peranSelect) peranSelect.value = 'Mitra Kampus';
+            if (peranIcon) {
+                peranIcon.className = 'fa-solid fa-handshake';
+                peranIcon.style.color = '#facc15';
+            }
         }
     } catch (e) {}
 }
@@ -437,6 +597,34 @@ function toggleTheme() {
 }
 
 function handleLogout() {
+    if (typeof Swal !== 'undefined') {
+        Swal.fire({
+            title: 'Konfirmasi Keluar',
+            text: 'Apakah Anda yakin ingin keluar dari akun SIMPEL UINSSC?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#005a36',
+            cancelButtonColor: '#64748b',
+            confirmButtonText: '<i class="fa-solid fa-right-from-bracket"></i> Ya, Keluar',
+            cancelButtonText: 'Batal',
+            reverseButtons: true
+        }).then((result) => {
+            if (result.isConfirmed) {
+                localStorage.removeItem('SIMPEL_AUTH_SESSION');
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Sampai Jumpa!',
+                    text: 'Sesi Anda telah diakhiri dengan aman.',
+                    timer: 1100,
+                    showConfirmButton: false
+                });
+                setTimeout(() => {
+                    window.location.href = '../index.html';
+                }, 1100);
+            }
+        });
+        return;
+    }
     showToast('🔑 Anda telah berhasil keluar dari sistem. Mengalihkan ke pintu login...', 'info');
     localStorage.removeItem('SIMPEL_AUTH_SESSION');
     setTimeout(() => {
@@ -454,8 +642,8 @@ function updateThemeIcon(theme) {
 async function loadReports() {
     let loadedSuccess = false;
     try {
-        const res = await fetch('../api.php');
-        if (res.ok) {
+        const res = await fetch('../api/reports.php').catch(() => fetch('../api.php'));
+        if (res && res.ok) {
             const text = await res.text();
             if (text.trim().startsWith('[')) {
                 const data = JSON.parse(text);
@@ -493,11 +681,15 @@ async function loadReports() {
 async function saveReports() {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(reportsData));
     try {
-        await fetch('../api.php', {
+        await fetch('../api/reports.php', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(reportsData)
-        });
+        }).catch(() => fetch('../api.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(reportsData)
+        }));
     } catch(e) {
         console.info('Pemberitahuan: Gagal sync ke API Laragon MySQL (offline mode active).');
     }
@@ -545,10 +737,9 @@ function initMapPicker() {
         const combinedBounds = polygonGroup.getBounds();
         const centerAll = combinedBounds.getCenter();
 
-        // Update default pin marker ke center tengah seluruh 4 zona kampus
+        // Pin marker center tengah seluruh zona kampus (input koordinat tetap kosong sampai dipilih)
         currentLat = centerAll.lat.toFixed(6);
         currentLng = centerAll.lng.toFixed(6);
-        updateCoordinatesDisplay(currentLat, currentLng);
 
         // Map Initialization (Bebas Pan & Zoom dengan tombol penuntun ke area kampus)
         mapPickerInstance = L.map('mapPicker', {
@@ -566,16 +757,23 @@ function initMapPicker() {
             attribution: '&copy; OpenStreetMap & UINSSC'
         }).addTo(mapPickerInstance);
 
-        // 1. Render Dark Mask Overlay
-        const outerWorld = [[90, -180], [90, 180], [-90, 180], [-90, -180]];
+        // 1. Render White Mask Overlay (Default Masking Putih)
+        const outerWorld = [
+            [85.0511, -179.99],
+            [85.0511, 179.99],
+            [-85.0511, 179.99],
+            [-85.0511, -179.99]
+        ];
         const campusHoles = CAMPUS_ZONES.map(z => z.polygon);
+        const safeSvgRenderer = L.svg({ padding: 2.0 });
 
         campusMaskPolygon = L.polygon([outerWorld, ...campusHoles], {
+            renderer: safeSvgRenderer,
             color: '#c59235',
-            weight: 3,
-            dashArray: '6, 6',
-            fillColor: '#04140d',
-            fillOpacity: 0.72,
+            weight: 2.5,
+            dashArray: '5, 5',
+            fillColor: '#ffffff',
+            fillOpacity: 0.76,
             interactive: false
         }).addTo(mapPickerInstance);
 
@@ -585,7 +783,7 @@ function initMapPicker() {
                 color: '#c59235',
                 weight: 2,
                 fillColor: '#005a36',
-                fillOpacity: 0.25
+                fillOpacity: 0.2
             }).addTo(mapPickerInstance);
 
             poly.bindTooltip(`<b>${zone.name}</b>`, { permanent: false, direction: 'center' });
@@ -594,27 +792,30 @@ function initMapPicker() {
         // Auto Fit Bounds ke Seluruh Zona Kampus UINSSC saat pertama muat
         mapPickerInstance.fitBounds(combinedBounds, { padding: [20, 20] });
 
-        // Marker Pin Titik Kerusakan di Tengah Kampus
-        mapMarkerInstance = L.marker([currentLat, currentLng], { draggable: true }).addTo(mapPickerInstance);
-        mapMarkerInstance.bindPopup('<b>Pusat Lokasi Kampus UINSSC</b><br>Geser pin ke titik lokasi fasilitas rusak.').openPopup();
+        // Marker Pin Titik Kerusakan TIDAK dimunculkan secara default (menunggu klik / GPS / pilih kawasan)
+        mapMarkerInstance = null;
 
-        // Marker Drag Event: Update koordinat secara instan tanpa hambatan penguncian
-        mapMarkerInstance.on('dragend', function () {
-            const pos = mapMarkerInstance.getLatLng();
-            updateCoordinatesDisplay(pos.lat, pos.lng);
-            if (!isInsideCampus(pos.lat, pos.lng)) {
-                showToast('Info: Titik lokasi berada di luar batas utama zona gedung.', 'info');
-            }
-        });
-
-        // Map Click Event: Memindahkan marker ke titik klik secara mulus
+        // Map Click Event: Menempatkan / memindahkan marker ke titik klik secara presisi
         mapPickerInstance.on('click', function (e) {
             if (isDrawModeActive) {
                 handleMapClickForPolygon(e.latlng.lat, e.latlng.lng);
                 return;
             }
 
-            mapMarkerInstance.setLatLng(e.latlng);
+            if (!mapMarkerInstance) {
+                mapMarkerInstance = L.marker(e.latlng, { draggable: true }).addTo(mapPickerInstance);
+                mapMarkerInstance.bindPopup('<b>Titik Lokasi Kerusakan</b><br>Geser pin jika perlu menyesuaikan posisi presisi.').openPopup();
+                mapMarkerInstance.on('dragend', function () {
+                    const pos = mapMarkerInstance.getLatLng();
+                    updateCoordinatesDisplay(pos.lat, pos.lng);
+                    if (!isInsideCampus(pos.lat, pos.lng)) {
+                        showToast('Info: Titik lokasi berada di luar batas utama zona gedung.', 'info');
+                    }
+                });
+            } else {
+                mapMarkerInstance.setLatLng(e.latlng);
+            }
+
             updateCoordinatesDisplay(e.latlng.lat, e.latlng.lng);
             if (!isInsideCampus(e.latlng.lat, e.latlng.lng)) {
                 showToast('Info: Titik lokasi berada di luar batas utama zona gedung.', 'info');
@@ -647,15 +848,25 @@ function handleGedungSelectChange() {
                 maxZoom: 18
             });
 
-            // Pindahkan pin marker ke tengah kawasan gedung yang dipilih
-            if (mapMarkerInstance) {
+            // Pindahkan / buat pin marker ke tengah kawasan gedung yang dipilih
+            if (!mapMarkerInstance) {
+                mapMarkerInstance = L.marker([center.lat, center.lng], { draggable: true }).addTo(mapPickerInstance);
+                mapMarkerInstance.on('dragend', function () {
+                    const pos = mapMarkerInstance.getLatLng();
+                    updateCoordinatesDisplay(pos.lat, pos.lng);
+                    if (!isInsideCampus(pos.lat, pos.lng)) {
+                        showToast('Info: Titik lokasi berada di luar batas utama zona gedung.', 'info');
+                    }
+                });
+            } else {
                 mapMarkerInstance.setLatLng([center.lat, center.lng]);
-                updateCoordinatesDisplay(center.lat, center.lng);
-                mapMarkerInstance.bindPopup(`<b>${escapeHtml(selectedOpt.value)}</b><br>Kamera & titik lokasi disesuaikan ke area gedung ini.`).openPopup();
             }
+            updateCoordinatesDisplay(center.lat, center.lng);
+            mapMarkerInstance.bindPopup(`<b>${escapeHtml(selectedOpt.value)}</b><br>Kamera & titik lokasi disesuaikan ke area gedung ini.`).openPopup();
             showToast(`Fokus peta dipindahkan ke ${targetZone.name}.`, 'info');
         }
     }
+    checkDuplicateWarning();
 }
 
 function focusMapToCampus() {
@@ -680,15 +891,15 @@ function toggleCampusMask() {
     if (isMaskEnabled) {
         mapPickerInstance.removeLayer(campusMaskPolygon);
         isMaskEnabled = false;
-        if (container) container.style.background = '#e5e7eb';
+        if (container) container.style.background = '#ffffff';
         if (btn) btn.innerHTML = `<i class="fa-solid fa-eye" style="color:var(--gold);"></i> Tampilkan Masking`;
-        showToast('Masking gelap latar belakang dinonaktifkan', 'info');
+        showToast('Masking putih dinonaktifkan (Peta penuh)', 'info');
     } else {
         campusMaskPolygon.addTo(mapPickerInstance);
         isMaskEnabled = true;
-        if (container) container.style.background = '#04140d';
+        if (container) container.style.background = '#ffffff';
         if (btn) btn.innerHTML = `<i class="fa-solid fa-eye-slash" style="color:var(--gold);"></i> Sembunyikan Masking`;
-        showToast('Masking gelap latar belakang diaktifkan', 'info');
+        showToast('Masking putih fokus kampus diaktifkan', 'info');
     }
 }
 
@@ -815,10 +1026,18 @@ function getCurrentGPSLocation() {
             const lng = position.coords.longitude;
             updateCoordinatesDisplay(lat, lng);
 
-            if (mapPickerInstance && mapMarkerInstance) {
+            if (mapPickerInstance) {
                 mapPickerInstance.setView([lat, lng], 17);
-                mapMarkerInstance.setLatLng([lat, lng]);
-                mapMarkerInstance.bindPopup('<b>Lokasi GPS Anda Terunci!</b>').openPopup();
+                if (!mapMarkerInstance) {
+                    mapMarkerInstance = L.marker([lat, lng], { draggable: true }).addTo(mapPickerInstance);
+                    mapMarkerInstance.on('dragend', function () {
+                        const pos = mapMarkerInstance.getLatLng();
+                        updateCoordinatesDisplay(pos.lat, pos.lng);
+                    });
+                } else {
+                    mapMarkerInstance.setLatLng([lat, lng]);
+                }
+                mapMarkerInstance.bindPopup('<b>Lokasi GPS Anda Terunci!</b><br>Geser pin jika perlu disesuaikan.').openPopup();
             }
             showToast('Lokasi presisi GPS terdeteksi!', 'success');
         },
@@ -830,21 +1049,56 @@ function getCurrentGPSLocation() {
     );
 }
 
+function resetReportLocationMarker() {
+    if (mapMarkerInstance && mapPickerInstance) {
+        mapPickerInstance.removeLayer(mapMarkerInstance);
+        mapMarkerInstance = null;
+    }
+    currentLat = '';
+    currentLng = '';
+    const latInp = document.getElementById('latInput');
+    const lngInp = document.getElementById('lngInput');
+    if (latInp) latInp.value = '';
+    if (lngInp) lngInp.value = '';
+}
+
+function escapeHtml(str) {
+    if (!str) return '';
+    if (typeof DOMPurify !== 'undefined') {
+        return DOMPurify.sanitize(String(str));
+    }
+    return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
 function switchUserTab(tab) {
-    document.getElementById('tabLapor').classList.remove('active');
-    document.getElementById('tabLacak').classList.remove('active');
-    document.getElementById('sectionForm').classList.add('hidden');
-    document.getElementById('sectionLacak').classList.add('hidden');
+    const tabLapor = document.getElementById('tabLapor');
+    const tabRiwayat = document.getElementById('tabRiwayat');
+    const tabLacak = document.getElementById('tabLacak');
+    const secForm = document.getElementById('sectionForm');
+    const secRiwayat = document.getElementById('sectionRiwayat');
+    const secLacak = document.getElementById('sectionLacak');
+
+    if (tabLapor) tabLapor.classList.remove('active');
+    if (tabRiwayat) tabRiwayat.classList.remove('active');
+    if (tabLacak) tabLacak.classList.remove('active');
+
+    if (secForm) secForm.classList.add('hidden');
+    if (secRiwayat) secRiwayat.classList.add('hidden');
+    if (secLacak) secLacak.classList.add('hidden');
 
     if (tab === 'lapor') {
-        document.getElementById('tabLapor').classList.add('active');
-        document.getElementById('sectionForm').classList.remove('hidden');
+        if (tabLapor) tabLapor.classList.add('active');
+        if (secForm) secForm.classList.remove('hidden');
         if (mapPickerInstance) {
             setTimeout(() => mapPickerInstance.invalidateSize(), 300);
         }
+    } else if (tab === 'riwayat') {
+        if (tabRiwayat) tabRiwayat.classList.add('active');
+        if (secRiwayat) secRiwayat.classList.remove('hidden');
+        renderMyReportsHistory();
     } else {
-        document.getElementById('tabLacak').classList.add('active');
-        document.getElementById('sectionLacak').classList.remove('hidden');
+        if (tabLacak) tabLacak.classList.add('active');
+        if (secLacak) secLacak.classList.remove('hidden');
     }
 }
 
@@ -862,11 +1116,58 @@ function handleKategoriChange() {
         input.required = false;
         input.value = '';
     }
+    checkDuplicateWarning();
+}
+
+// Pencegahan Laporan Serupa / Duplikat (Smart Early Warning)
+function checkDuplicateWarning() {
+    const gedungEl = document.getElementById('gedung');
+    const ruanganEl = document.getElementById('ruangan');
+    const kategoriEl = document.getElementById('kategori');
+    const warnBox = document.getElementById('duplicateWarningBox');
+    const warnText = document.getElementById('duplicateWarningText');
+
+    if (!gedungEl || !ruanganEl || !kategoriEl || !warnBox || !warnText) return;
+
+    const gedung = gedungEl.value.trim();
+    const ruangan = ruanganEl.value.trim().toLowerCase();
+    let kategori = kategoriEl.value;
+    if (kategori === 'Lainnya') {
+        const custom = document.getElementById('kategoriLainnyaInput').value.trim();
+        if (custom) kategori = custom;
+    }
+
+    if (!gedung || !ruangan || !kategori || kategori === '') {
+        warnBox.classList.add('hidden');
+        return;
+    }
+
+    // Cari laporan aktif yang belum selesai di gedung & ruangan ini dengan kategori serupa
+    const matched = reportsData.filter(r => 
+        (r.status === 'Diajukan' || r.status === 'Diproses') &&
+        r.gedung === gedung &&
+        (r.ruangan.toLowerCase().includes(ruangan) || ruangan.includes(r.ruangan.toLowerCase())) &&
+        r.kategori.toLowerCase().includes(kategori.toLowerCase())
+    );
+
+    if (matched.length > 0) {
+        const first = matched[0];
+        warnText.innerHTML = `Laporan aktif terkait <strong>${escapeHtml(first.kategori)}</strong> di ruangan ini telah dilaporkan sebelumnya oleh <em>${escapeHtml(first.namaPelapor)}</em> (Tiket: <strong>${first.id}</strong>) berstatus <strong style="color:var(--gold);">${first.status}</strong>.<br>Ada total <strong>${matched.length} laporan</strong> serupa yang sedang ditangani.`;
+        warnBox.classList.remove('hidden');
+    } else {
+        warnBox.classList.add('hidden');
+    }
 }
 
 function handleFileChange(event) {
     const file = event.target.files[0];
     if (!file) return;
+
+    if (file.size > 5 * 1024 * 1024) {
+        showToast('⚠️ Ukuran foto melebihi batas 5MB!', 'error');
+        event.target.value = '';
+        return;
+    }
 
     const reader = new FileReader();
     reader.onload = function (e) {
@@ -874,6 +1175,7 @@ function handleFileChange(event) {
         document.getElementById('dropzoneText').classList.add('hidden');
         document.getElementById('previewBox').classList.remove('hidden');
         document.getElementById('imgPreview').src = selectedImage;
+        showToast('Foto bukti berhasil diunggah.', 'success');
     };
     reader.readAsDataURL(file);
 }
@@ -887,8 +1189,105 @@ function removeFoto(event) {
     document.getElementById('dropzoneText').classList.remove('hidden');
 }
 
-function handlePublicFormSubmit(event) {
+// Modal Tinjau Laporan Sebelum Dikirim (Pre-Submission Review)
+function openReviewBeforeSubmit() {
+    const form = document.getElementById('publicReportForm');
+    if (!form.checkValidity()) {
+        form.reportValidity();
+        return;
+    }
+
+    if (!selectedImage) {
+        showToast('⚠️ Foto bukti fisik kerusakan wajib diunggah!', 'error');
+        const dropzone = document.getElementById('uploadDropzoneBox');
+        if (dropzone) {
+            dropzone.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            dropzone.style.borderColor = '#ef4444';
+            dropzone.style.boxShadow = '0 0 16px rgba(239, 68, 68, 0.4)';
+            setTimeout(() => {
+                dropzone.style.borderColor = '';
+                dropzone.style.boxShadow = '';
+            }, 2500);
+        }
+        return;
+    }
+
+    const nama = document.getElementById('namaPelapor').value.trim();
+    const nim = document.getElementById('nimNip').value.trim();
+    const peran = document.getElementById('peranPelapor').value;
+    const kontak = document.getElementById('kontakPelapor').value.trim();
+    const gedung = document.getElementById('gedung').value;
+    const ruangan = document.getElementById('ruangan').value.trim();
+    let kategori = document.getElementById('kategori').value;
+    if (kategori === 'Lainnya') {
+        const customCat = document.getElementById('kategoriLainnyaInput').value.trim();
+        kategori = customCat ? `Lainnya (${customCat})` : 'Fasilitas Lainnya';
+    }
+    const urgensi = document.getElementById('urgensi').value;
+    const deskripsi = document.getElementById('deskripsi').value.trim();
+    const lat = document.getElementById('latInput').value || currentLat;
+    const lng = document.getElementById('lngInput').value || currentLng;
+
+    const content = document.getElementById('reviewModalContent');
+    content.innerHTML = `
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:12px;">
+            <div><span style="color:var(--text-muted); font-size:12px; display:block;">Pelapor:</span><strong>${escapeHtml(nama)}</strong> (${escapeHtml(nim)})</div>
+            <div><span style="color:var(--text-muted); font-size:12px; display:block;">Peran & Kontak:</span>${escapeHtml(peran)} - ${escapeHtml(kontak)}</div>
+            <div><span style="color:var(--text-muted); font-size:12px; display:block;">Lokasi Gedung:</span>${escapeHtml(gedung)}</div>
+            <div><span style="color:var(--text-muted); font-size:12px; display:block;">Ruangan:</span><strong>${escapeHtml(ruangan)}</strong></div>
+            <div><span style="color:var(--text-muted); font-size:12px; display:block;">Kategori Fasilitas:</span><strong style="color:var(--gold);">${escapeHtml(kategori)}</strong></div>
+            <div><span style="color:var(--text-muted); font-size:12px; display:block;">Tingkat Urgensi:</span><span class="dot-urgensi dot-${urgensi}"></span> <strong>${escapeHtml(urgensi)}</strong></div>
+        </div>
+        <div style="margin-bottom:12px; padding:8px 12px; background:rgba(0,0,0,0.1); border-radius:8px;">
+            <i class="fa-solid fa-map-pin" style="color:var(--gold);"></i> <strong>Koordinat Presisi GPS:</strong> <span style="font-family:monospace; color:var(--gold);">${lat}, ${lng}</span>
+        </div>
+        <div style="margin-bottom:14px;">
+            <span style="color:var(--text-muted); font-size:12px; display:block;">Deskripsi Kerusakan:</span>
+            <p style="background:rgba(0,0,0,0.15); padding:10px; border-radius:8px; margin-top:4px;">${escapeHtml(deskripsi)}</p>
+        </div>
+        <div>
+            <span style="color:var(--text-muted); font-size:12px; display:block; margin-bottom:6px;">Foto Bukti Fisik:</span>
+            <img src="${selectedImage}" alt="Foto Bukti" style="max-height:150px; border-radius:8px; border:1px solid var(--border-color); object-fit:cover;">
+        </div>
+    `;
+
+    document.getElementById('reviewModal').classList.remove('hidden');
+}
+
+function closeReviewModal() {
+    const m = document.getElementById('reviewModal');
+    if (m) m.classList.add('hidden');
+}
+
+function confirmSubmitReport() {
+    closeReviewModal();
+    const form = document.getElementById('publicReportForm');
+    if (form) {
+        form.requestSubmit();
+    }
+}
+
+// Anti-Spam & Submission Logic
+const SUBMIT_COOLDOWN_MS = 45 * 1000; // 45 Detik Cooldown Anti-Spam
+
+async function handlePublicFormSubmit(event) {
     event.preventDefault();
+
+    // 1. Wajib Gambar Check
+    if (!selectedImage) {
+        showToast('⚠️ Foto bukti fisik kerusakan wajib diunggah!', 'error');
+        const dropzone = document.getElementById('uploadDropzoneBox');
+        if (dropzone) {
+            dropzone.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            dropzone.style.borderColor = '#ef4444';
+            dropzone.style.boxShadow = '0 0 16px rgba(239, 68, 68, 0.4)';
+            setTimeout(() => {
+                dropzone.style.borderColor = '';
+                dropzone.style.boxShadow = '';
+            }, 2500);
+        }
+        return;
+    }
 
     const namaPelapor = document.getElementById('namaPelapor').value.trim();
     const nimNip = document.getElementById('nimNip').value.trim();
@@ -905,6 +1304,35 @@ function handlePublicFormSubmit(event) {
     }
     const urgensi = document.getElementById('urgensi').value;
     const deskripsi = document.getElementById('deskripsi').value.trim();
+
+    // 2. Anti-Spam: Rate Limit Cooldown
+    const lastSubmitTime = parseInt(localStorage.getItem('SIMPEL_LAST_SUBMIT_TIME') || '0', 10);
+    const nowMs = Date.now();
+    if (nowMs - lastSubmitTime < SUBMIT_COOLDOWN_MS) {
+        const remaining = Math.ceil((SUBMIT_COOLDOWN_MS - (nowMs - lastSubmitTime)) / 1000);
+        showToast(`⏳ Harap tunggu ${remaining} detik sebelum mengirim laporan baru (Perlindungan Anti-Spam).`, 'error');
+        return;
+    }
+
+    // 3. Anti-Spam: Cegah pelapor yang sama mengirim laporan ganda di ruangan & kategori yang sama saat masih aktif
+    const sameActiveReport = reportsData.find(r => 
+        r.nimNip.toLowerCase() === nimNip.toLowerCase() &&
+        r.gedung === gedung &&
+        r.ruangan.toLowerCase() === ruangan.toLowerCase() &&
+        r.kategori.toLowerCase() === kategori.toLowerCase() &&
+        (r.status === 'Diajukan' || r.status === 'Diproses')
+    );
+    if (sameActiveReport) {
+        showToast(`⚠️ Anda sudah memiliki laporan aktif (#${sameActiveReport.id}) untuk masalah ini. Cek tab 'Riwayat Laporan'.`, 'error');
+        return;
+    }
+
+    // 4. Loading state tombol kirim
+    const submitBtn = document.getElementById('btnSubmitReport');
+    if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Mengirim Laporan...';
+    }
 
     const year = new Date().getFullYear();
     const ticketCode = `TRK-${year}-${Math.floor(100 + Math.random() * 900)}`;
@@ -925,38 +1353,410 @@ function handlePublicFormSubmit(event) {
         kategori,
         urgensi,
         deskripsi,
-        foto: selectedImage || PRESET_IMAGES.ac,
+        foto: selectedImage,
         status: 'Diajukan',
         teknisi: 'Belum Ditunjuk',
-        catatanAdmin: 'Laporan telah diteruskan ke tim pemeliharaan Sarpras Kampus UINSSC.',
+        catatanAdmin: 'Laporan telah diterima dan diteruskan ke tim pemeliharaan Sarpras Kampus UINSSC.',
         tanggalLapor: timeStr,
         tanggalUpdate: timeStr
     };
 
     reportsData.unshift(newReport);
-    saveReports();
+    await saveReports();
+
+    // Catat timestamp dan tiket ke riwayat lokal
+    localStorage.setItem('SIMPEL_LAST_SUBMIT_TIME', String(nowMs));
+    saveMyTicketId(ticketCode);
 
     lastTicketCode = ticketCode;
     document.getElementById('createdTicketDisplay').innerText = ticketCode;
+    renderTicketQRCode(ticketCode);
     document.getElementById('successModal').classList.remove('hidden');
 
+    // Reset Form
     document.getElementById('publicReportForm').reset();
+    prefillPelaporDataFromSession();
+    resetReportLocationMarker();
     removeFoto();
     handleKategoriChange();
+    checkDuplicateWarning();
+
+    if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Kirim Laporan';
+    }
 }
 
-function closeSuccessModal() {
-    document.getElementById('successModal').classList.add('hidden');
-    switchUserTab('lacak');
-    document.getElementById('ticketSearchInput').value = lastTicketCode;
-    doSearchTicket();
+// Render QR Code untuk Tiket Pelaporan (QRCode.js)
+function renderTicketQRCode(ticketId) {
+    const box = document.getElementById('ticketQrBox');
+    if (!box) return;
+    box.innerHTML = '';
+    if (typeof QRCode !== 'undefined') {
+        try {
+            new QRCode(box, {
+                text: ticketId,
+                width: 100,
+                height: 100,
+                colorDark: "#005a36",
+                colorLight: "#ffffff",
+                correctLevel: QRCode.CorrectLevel.M
+            });
+        } catch(e) {
+            console.warn('QRCode error', e);
+            box.innerHTML = `<span style="font-family:monospace; font-weight:800; color:#005a36;">${escapeHtml(ticketId)}</span>`;
+        }
+    } else {
+        box.innerHTML = `<span style="font-family:monospace; font-weight:800; color:#005a36;">${escapeHtml(ticketId)}</span>`;
+    }
 }
 
 function copyCreatedCode() {
+    if (!lastTicketCode) return;
+    navigator.clipboard.writeText(lastTicketCode).then(() => {
+        showToast(`📋 Kode tiket ${lastTicketCode} berhasil disalin!`, 'success');
+    }).catch(() => {
+        showToast(`Kode tiket: ${lastTicketCode}`, 'info');
+    });
+}
+
+function closeSuccessModal() {
+    const modal = document.getElementById('successModal');
+    if (modal) modal.classList.add('hidden');
     if (lastTicketCode) {
-        navigator.clipboard.writeText(lastTicketCode);
-        showToast(`Kode Tiket ${lastTicketCode} berhasil disalin!`, 'success');
+        switchUserTab('lacak');
+        const input = document.getElementById('ticketSearchInput');
+        if (input) {
+            input.value = lastTicketCode;
+            doSearchTicket();
+        }
     }
+}
+
+// Unduh Dokumen PDF Resmi Tiket Pelaporan (html2pdf.js)
+function downloadOfficialTicketPDF(ticketId) {
+    const report = reportsData.find(r => r.id === ticketId);
+    if (!report) {
+        showToast('Data tiket tidak ditemukan.', 'error');
+        return;
+    }
+
+    if (typeof html2pdf === 'undefined') {
+        printTicketPDF(ticketId);
+        return;
+    }
+
+    showToast('📄 Sedang mengonversi tiket ke dokumen PDF resmi...', 'info');
+
+    const pdfContainer = document.createElement('div');
+    pdfContainer.id = 'tempPdfDownloadBox';
+    pdfContainer.style.position = 'absolute';
+    pdfContainer.style.left = '-9999px';
+    pdfContainer.style.top = '0';
+    pdfContainer.style.width = '750px';
+    pdfContainer.style.padding = '36px 40px';
+    pdfContainer.style.background = '#ffffff';
+    pdfContainer.style.color = '#0f172a';
+    pdfContainer.style.fontFamily = "'Plus Jakarta Sans', Arial, sans-serif";
+
+    pdfContainer.innerHTML = `
+        <div style="border-bottom: 3px double #c59235; padding-bottom: 16px; margin-bottom: 24px; display: flex; align-items: center; justify-content: space-between;">
+            <div style="display:flex; align-items:center; gap:16px;">
+                <img src="../assets/img/logo.png" style="height:64px;" onerror="this.style.display='none'">
+                <div>
+                    <h2 style="font-size: 18px; font-weight: 800; color: #005a36; margin: 0; text-transform: uppercase;">UIN Siber Syekh Nurjati Cirebon</h2>
+                    <p style="font-size: 12px; color: #64748b; margin: 3px 0 0 0; font-weight: 600;">Sistem Informasi Pelaporan & Pemeliharaan Sarpras Kampus (SIMPEL UINSSC)</p>
+                    <span style="font-size: 10px; color: #94a3b8;">Jl. Perjuangan, Sunyaragi, Kec. Kesambi, Kota Cirebon, Jawa Barat 45132</span>
+                </div>
+            </div>
+            <div style="text-align: right;">
+                <span style="font-size: 10px; font-weight: 700; color: #c59235; text-transform: uppercase; letter-spacing: 0.5px;">Dokumen Resmi</span>
+                <div style="font-family: monospace; font-size: 16px; font-weight: 800; color: #005a36;">${escapeHtml(report.id)}</div>
+            </div>
+        </div>
+
+        <div style="background: #f8fafc; border: 1.5px dashed #c59235; border-radius: 12px; padding: 18px 24px; margin-bottom: 24px; display: flex; justify-content: space-between; align-items: center;">
+            <div>
+                <span style="font-size: 11px; text-transform: uppercase; font-weight: 700; color: #64748b; letter-spacing: 0.5px;">Bukti Pengajuan Tiket Sarpras</span>
+                <div style="font-size: 26px; font-weight: 900; font-family: monospace; color: #005a36; margin: 2px 0;">${escapeHtml(report.id)}</div>
+                <div style="font-size: 12px; color: #475569;">Diajukan pada: <strong>${escapeHtml(report.tanggalLapor)}</strong></div>
+            </div>
+            <div style="text-align: center;">
+                <div style="background: #005a36; color: #ffffff; padding: 6px 16px; border-radius: 20px; font-size: 12px; font-weight: 800;">
+                    STATUS: ${escapeHtml(report.status).toUpperCase()}
+                </div>
+                <span style="font-size: 10px; color: #64748b; display: block; margin-top: 4px;">Urgensi: ${escapeHtml(report.urgensi)}</span>
+            </div>
+        </div>
+
+        <table style="width: 100%; border-collapse: collapse; margin-bottom: 24px; font-size: 13px;">
+            <tbody>
+                <tr style="border-bottom: 1px solid #e2e8f0;"><td style="padding: 10px; font-weight: 700; width: 30%; color: #475569; background: #f8fafc;">Nama Pelapor</td><td style="padding: 10px; color: #0f172a; font-weight: 700;">${escapeHtml(report.namaPelapor)} (${escapeHtml(report.nimNip)})</td></tr>
+                <tr style="border-bottom: 1px solid #e2e8f0;"><td style="padding: 10px; font-weight: 700; color: #475569; background: #f8fafc;">Status / Peran</td><td style="padding: 10px; color: #0f172a;">${escapeHtml(report.peranPelapor)} | Kontak: ${escapeHtml(report.kontakPelapor)}</td></tr>
+                <tr style="border-bottom: 1px solid #e2e8f0;"><td style="padding: 10px; font-weight: 700; color: #475569; background: #f8fafc;">Kawasan & Gedung</td><td style="padding: 10px; color: #0f172a; font-weight: 700;">${escapeHtml(report.gedung)}</td></tr>
+                <tr style="border-bottom: 1px solid #e2e8f0;"><td style="padding: 10px; font-weight: 700; color: #475569; background: #f8fafc;">Ruangan / Lokasi Spesifik</td><td style="padding: 10px; color: #0f172a;">${escapeHtml(report.ruangan)}</td></tr>
+                <tr style="border-bottom: 1px solid #e2e8f0;"><td style="padding: 10px; font-weight: 700; color: #475569; background: #f8fafc;">Koordinat GPS Geofencing</td><td style="padding: 10px; color: #c59235; font-family: monospace; font-weight: 700;">Lat: ${escapeHtml(report.lat || '-6.735000')}, Lng: ${escapeHtml(report.lng || '108.533600')}</td></tr>
+                <tr style="border-bottom: 1px solid #e2e8f0;"><td style="padding: 10px; font-weight: 700; color: #475569; background: #f8fafc;">Kategori Fasilitas</td><td style="padding: 10px; color: #005a36; font-weight: 800;">${escapeHtml(report.kategori)}</td></tr>
+                <tr style="border-bottom: 1px solid #e2e8f0;"><td style="padding: 10px; font-weight: 700; color: #475569; background: #f8fafc;">Rincian Masalah</td><td style="padding: 10px; color: #1e293b; line-height: 1.5;">${escapeHtml(report.deskripsi)}</td></tr>
+                <tr style="border-bottom: 1px solid #e2e8f0;"><td style="padding: 10px; font-weight: 700; color: #475569; background: #f8fafc;">Teknisi Ditunjuk</td><td style="padding: 10px; color: #0f172a; font-weight: 700;">${escapeHtml(report.teknisi)}</td></tr>
+                <tr><td style="padding: 10px; font-weight: 700; color: #475569; background: #f8fafc;">Catatan Tindak Lanjut</td><td style="padding: 10px; color: #1e293b;">${escapeHtml(report.catatanAdmin || 'Menunggu verifikasi lapangan.')}</td></tr>
+            </tbody>
+        </table>
+
+        <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-top: 32px; border-top: 1px solid #e2e8f0; padding-top: 20px;">
+            <div style="font-size: 11px; color: #64748b; line-height: 1.6;">
+                <strong style="color: #005a36;">Verifikasi Digital SIMPEL UINSSC:</strong><br>
+                1. Dokumen ini sah dan terdaftar dalam sistem database sarpras UINSSC.<br>
+                2. Tunjukkan kode tiket atau scan QR code kepada teknisi lapangan.<br>
+                Diterbitkan secara elektronik pada: ${new Date().toLocaleString('id-ID')}
+            </div>
+            <div style="text-align: center; min-width: 160px;">
+                <div style="font-size: 11px; color: #475569; margin-bottom: 8px;">Unit Sarana & Prasarana</div>
+                <div style="border-bottom: 1px dashed #94a3b8; height: 46px; display: flex; align-items: center; justify-content: center;">
+                    <span style="font-size: 11px; font-weight: 800; color: #005a36; letter-spacing: 1px;">[ TERVERIFIKASI SISTEM ]</span>
+                </div>
+                <div style="font-size: 11px; font-weight: 700; color: #0f172a; margin-top: 4px;">SIMPEL UINSSC Digital Sign</div>
+            </div>
+        </div>
+    `;
+
+    document.body.appendChild(pdfContainer);
+
+    const opt = {
+        margin: [8, 8, 8, 8],
+        filename: `TIKET_SARPRAS_UINSSC_${report.id}.pdf`,
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2, useCORS: true, logging: false },
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+    };
+
+    html2pdf().set(opt).from(pdfContainer).save().then(() => {
+        pdfContainer.remove();
+        showToast('✅ Berkas PDF resmi tiket berhasil diunduh!', 'success');
+    }).catch(err => {
+        console.error('PDF error', err);
+        pdfContainer.remove();
+        printTicketPDF(ticketId);
+    });
+}
+
+// Penyimpanan & Badge Riwayat Laporan Pengguna
+function saveMyTicketId(ticketId) {
+    try {
+        let myTickets = JSON.parse(localStorage.getItem('SIMPEL_MY_TICKETS') || '[]');
+        if (!myTickets.includes(ticketId)) {
+            myTickets.unshift(ticketId);
+            localStorage.setItem('SIMPEL_MY_TICKETS', JSON.stringify(myTickets));
+        }
+    } catch (e) {}
+    updateMyReportsBadge();
+}
+
+function updateMyReportsBadge() {
+    const badge = document.getElementById('myReportsBadge');
+    try {
+        const myTickets = JSON.parse(localStorage.getItem('SIMPEL_MY_TICKETS') || '[]');
+        if (badge) badge.innerText = myTickets.length;
+    } catch (e) {
+        if (badge) badge.innerText = '0';
+    }
+    updateUserKPIs();
+}
+
+// Sinkronisasi Angka Ringkasan 3 KPI Summary Cards
+function updateUserKPIs() {
+    let myTicketIds = [];
+    try {
+        myTicketIds = JSON.parse(localStorage.getItem('SIMPEL_MY_TICKETS') || '[]');
+    } catch (e) {
+        myTicketIds = [];
+    }
+
+    const myReports = reportsData.filter(r => myTicketIds.includes(r.id));
+    const isUserPersonal = myReports.length > 0;
+    const dataSource = isUserPersonal ? myReports : reportsData;
+
+    const totalEl = document.getElementById('userKpiTotal');
+    const prosesEl = document.getElementById('userKpiProses');
+    const selesaiEl = document.getElementById('userKpiSelesai');
+
+    const totalCount = dataSource.length;
+    const prosesCount = dataSource.filter(r => r.status === 'Diajukan' || r.status === 'Diproses').length;
+    const selesaiCount = dataSource.filter(r => r.status === 'Selesai').length;
+
+    if (totalEl) totalEl.innerText = totalCount;
+    if (prosesEl) prosesEl.innerText = prosesCount;
+    if (selesaiEl) selesaiEl.innerText = selesaiCount;
+
+    const labelTotalEl = document.querySelector('.card-accent-emerald .user-kpi-label');
+    if (labelTotalEl) {
+        labelTotalEl.innerText = isUserPersonal ? 'TOTAL LAPORAN SAYA' : 'TOTAL LAPORAN KAMPUS';
+    }
+}
+
+// Render Riwayat & Tinjau Laporan Saya
+function renderMyReportsHistory(nimFilter = null) {
+    const container = document.getElementById('myReportsListContainer');
+    if (!container) return;
+
+    let myTicketIds = [];
+    try {
+        myTicketIds = JSON.parse(localStorage.getItem('SIMPEL_MY_TICKETS') || '[]');
+    } catch (e) {
+        myTicketIds = [];
+    }
+
+    let myReports = [];
+    if (nimFilter) {
+        myReports = reportsData.filter(r => r.nimNip.toLowerCase() === nimFilter.toLowerCase());
+    } else {
+        // Ambil tiket yang ID-nya tercatat di local device
+        myReports = reportsData.filter(r => myTicketIds.includes(r.id));
+    }
+
+    if (myReports.length === 0) {
+        container.innerHTML = `
+            <div style="text-align:center; padding:50px 20px; color:var(--text-muted); background:rgba(0,0,0,0.05); border-radius:16px; border:1px dashed var(--border-color);">
+                <i class="fa-solid fa-folder-open" style="font-size:48px; margin-bottom:12px; opacity:0.6; color:var(--gold);"></i>
+                <h3 style="font-size:18px; color:var(--text-main); font-weight:700;">Belum Ada Riwayat Laporan</h3>
+                <p style="font-size:13px; margin-top:6px; max-width:480px; margin-left:auto; margin-right:auto;">
+                    ${nimFilter ? `Tidak ditemukan laporan untuk NIM "<strong>${escapeHtml(nimFilter)}</strong>".` : 'Anda belum pernah mengirim laporan di perangkat ini. Klik tombol di bawah untuk membuat laporan pertama Anda.'}
+                </p>
+                <div style="margin-top:16px;">
+                    <button class="btn btn-primary" onclick="switchUserTab('lapor')"><i class="fa-solid fa-plus"></i> Buat Laporan Baru</button>
+                </div>
+            </div>
+        `;
+        return;
+    }
+
+    container.innerHTML = myReports.map(r => `
+        <div class="history-card">
+            <div class="history-card-header">
+                <div>
+                    <span style="font-family:monospace; font-weight:800; font-size:16px; color:var(--gold);">${r.id}</span>
+                    <h3 style="font-size:16px; font-weight:800; margin-top:3px;">${escapeHtml(r.kategori)}</h3>
+                    <span style="font-size:12px; color:var(--text-muted);">
+                        <i class="fa-solid fa-calendar-days"></i> ${r.tanggalLapor} &nbsp;|&nbsp; 
+                        <i class="fa-solid fa-building"></i> ${escapeHtml(r.gedung)} (${escapeHtml(r.ruangan)})
+                    </span>
+                </div>
+                <div>
+                    <span class="badge" style="background:var(--primary-light); color:var(--gold); font-weight:800; padding:6px 14px; border-radius:20px; border:1px solid var(--gold); font-size:12px;">
+                        ${r.status}
+                    </span>
+                </div>
+            </div>
+
+            <div class="history-card-body">
+                <div>
+                    ${r.foto ? `
+                        <img src="${r.foto}" alt="Foto Bukti" style="width:100%; height:100px; object-fit:cover; border-radius:10px; border:1px solid var(--border-color); cursor:pointer;" onclick="openDetailReviewModal('${r.id}')" title="Klik untuk meninjau detail">
+                    ` : `
+                        <div style="width:100%; height:100px; background:rgba(0,0,0,0.2); border-radius:10px; display:flex; align-items:center; justify-content:center; color:var(--text-muted); font-size:11px;">
+                            Tanpa Foto
+                        </div>
+                    `}
+                </div>
+                <div>
+                    <p style="font-size:13px; color:var(--text-main); margin-bottom:8px; line-height:1.5;">
+                        <strong>Masalah:</strong> ${escapeHtml(r.deskripsi)}
+                    </p>
+                    <div style="font-size:12px; color:var(--text-muted); margin-bottom:12px;">
+                        <span><i class="fa-solid fa-user-gear" style="color:var(--gold);"></i> Teknisi: <strong>${escapeHtml(r.teknisi)}</strong></span>
+                        <span style="margin-left:14px;"><i class="fa-solid fa-comment-dots"></i> Update: ${escapeHtml(r.catatanAdmin || 'Menunggu verifikasi')}</span>
+                    </div>
+                    <div style="display:flex; gap:8px; flex-wrap:wrap;">
+                        <button class="btn btn-secondary" onclick="openDetailReviewModal('${r.id}')" style="padding:6px 14px; font-size:12px;">
+                            <i class="fa-solid fa-eye"></i> Tinjau Detail Laporan
+                        </button>
+                        <button class="btn btn-secondary" onclick="printTicketPDF('${r.id}')" style="padding:6px 14px; font-size:12px;">
+                            <i class="fa-solid fa-print"></i> Cetak Bukti PDF
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `).join('');
+}
+
+function searchMyReportsByNIM() {
+    const input = document.getElementById('filterMyReportNIM');
+    if (!input) return;
+    const nim = input.value.trim();
+    if (!nim) {
+        renderMyReportsHistory();
+        return;
+    }
+    renderMyReportsHistory(nim);
+}
+
+// Modal Detail Tinjau Laporan dari Riwayat
+function openDetailReviewModal(ticketId) {
+    const r = reportsData.find(item => item.id === ticketId);
+    if (!r) {
+        showToast('Data tiket tidak ditemukan.', 'error');
+        return;
+    }
+
+    document.getElementById('detailModalTicketCode').innerText = r.id;
+    document.getElementById('detailModalTitle').innerText = `${r.kategori} - ${r.ruangan}`;
+
+    const body = document.getElementById('detailModalBody');
+    body.innerHTML = `
+        <div style="margin-bottom:20px; border-bottom:1px dashed var(--border-color); padding-bottom:16px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:12px;">
+                <span style="font-size:13px; color:var(--text-muted);"><i class="fa-solid fa-clock"></i> Tanggal Pengajuan: <strong>${r.tanggalLapor}</strong></span>
+                <span class="badge" style="background:var(--primary-light); color:var(--gold); font-weight:800; padding:6px 14px; border-radius:20px; border:1px solid var(--gold);">${r.status}</span>
+            </div>
+
+            <!-- Timeline Status Perbaikan -->
+            <div class="timeline-track" style="margin:20px 0;">
+                <div class="t-step ${r.status === 'Diajukan' || r.status === 'Diproses' || r.status === 'Selesai' ? 'completed' : ''}">
+                    <div class="t-icon"><i class="fa-solid fa-paper-plane"></i></div>
+                    <div style="font-size:12px; font-weight:700;">Diajukan</div>
+                </div>
+                <div class="t-step ${r.status === 'Diproses' || r.status === 'Selesai' ? (r.status === 'Selesai' ? 'completed' : 'active') : ''}">
+                    <div class="t-icon"><i class="fa-solid fa-screwdriver-wrench"></i></div>
+                    <div style="font-size:12px; font-weight:700;">Perbaikan</div>
+                </div>
+                <div class="t-step ${r.status === 'Selesai' ? 'completed' : ''}">
+                    <div class="t-icon"><i class="fa-solid fa-circle-check"></i></div>
+                    <div style="font-size:12px; font-weight:700;">Selesai</div>
+                </div>
+            </div>
+        </div>
+
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px; font-size:13px; margin-bottom:16px;">
+            <div><strong>Nama Pelapor:</strong> ${escapeHtml(r.namaPelapor)}</div>
+            <div><strong>NIM / NIP:</strong> ${escapeHtml(r.nimNip)} (${escapeHtml(r.peranPelapor)})</div>
+            <div><strong>Gedung Kampus:</strong> ${escapeHtml(r.gedung)}</div>
+            <div><strong>Ruangan:</strong> ${escapeHtml(r.ruangan)}</div>
+            <div><strong>Tingkat Urgensi:</strong> <span class="dot-urgensi dot-${r.urgensi}"></span> ${escapeHtml(r.urgensi)}</div>
+            <div><strong>Teknisi Sarpras:</strong> <strong style="color:var(--gold);">${escapeHtml(r.teknisi)}</strong></div>
+        </div>
+
+        <div style="background:rgba(255,255,255,0.03); border:1px solid var(--border-color); border-radius:12px; padding:14px; font-size:13px; margin-bottom:16px;">
+            <p><strong><i class="fa-solid fa-location-dot" style="color:var(--gold);"></i> Titik GPS:</strong> Lat ${r.lat || '-6.735000'}, Lng ${r.lng || '108.533800'}</p>
+            <p style="margin-top:6px;"><strong>Deskripsi Kerusakan:</strong> ${escapeHtml(r.deskripsi)}</p>
+            <p style="margin-top:6px;"><strong>Catatan Penanganan Sarpras:</strong> ${escapeHtml(r.catatanAdmin || 'Belum ada catatan')}</p>
+        </div>
+
+        ${r.foto ? `
+            <div>
+                <strong style="font-size:13px; display:block; margin-bottom:8px;"><i class="fa-solid fa-image" style="color:var(--gold);"></i> Bukti Foto Kerusakan Fisik:</strong>
+                <img src="${r.foto}" alt="Bukti Foto" style="max-width:100%; max-height:220px; border-radius:10px; border:1px solid var(--border-color); cursor:pointer;" onclick="window.open('${r.foto}')" title="Klik untuk melihat foto resolusi penuh">
+            </div>
+        ` : ''}
+    `;
+
+    document.getElementById('detailModalPrintBtn').onclick = () => printTicketPDF(r.id);
+    document.getElementById('detailReviewModal').classList.remove('hidden');
+}
+
+function closeDetailReviewModal() {
+    const m = document.getElementById('detailReviewModal');
+    if (m) m.classList.add('hidden');
 }
 
 function doSearchTicket() {
@@ -1090,7 +1890,31 @@ function printTicketPDF(ticketId) {
     printWin.document.close();
 }
 
+// SweetAlert2 Toast Instance for User Portal
+const UserSwalToast = typeof Swal !== 'undefined' ? Swal.mixin({
+    toast: true,
+    position: 'top-end',
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+        toast.onmouseenter = Swal.stopTimer;
+        toast.onmouseleave = Swal.resumeTimer;
+    }
+}) : null;
+
 function showToast(msg, type = 'info') {
+    let swalIcon = type;
+    if (type === 'danger') swalIcon = 'error';
+
+    if (typeof Swal !== 'undefined' && UserSwalToast) {
+        UserSwalToast.fire({
+            icon: swalIcon,
+            title: msg
+        });
+        return;
+    }
+
     const box = document.getElementById('toastBox');
     if (!box) return;
     const t = document.createElement('div');

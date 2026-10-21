@@ -11,13 +11,44 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/user.css">
+    <!-- SweetAlert2 Latest CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- DOMPurify Security Sanitizer -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.1.6/purify.min.js"></script>
+    <style>
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-6px); }
+            40%, 80% { transform: translateX(6px); }
+        }
+        .captcha-box-wrapper {
+            display: grid;
+            grid-template-columns: 140px 42px 1fr;
+            gap: 8px;
+            align-items: center;
+        }
+        @media (max-width: 480px) {
+            .captcha-box-wrapper {
+                grid-template-columns: 1fr 42px;
+            }
+            .captcha-input-col {
+                grid-column: span 2;
+            }
+        }
+    </style>
 </head>
 <body>
+
+    <!-- Blurred Background Overlay (Gedung Cyber UINSSC) -->
+    <div class="login-bg-overlay">
+        <div class="login-bg-image" style="background-image: url('assets/img/gedungCyber.png');"></div>
+        <div class="login-bg-tint"></div>
+    </div>
 
     <!-- Header Navigation -->
     <header class="navbar">
         <div class="container navbar-content">
-            <a href="index.html" class="brand">
+            <a href="javascript:void(0)" class="brand" onclick="handleSecretLogoClick(event)" title="SIMPEL UINSSC">
                 <div class="brand-icon">
                     <img src="assets/img/logo.png" alt="UINSSC Logo" class="brand-logo-img">
                 </div>
@@ -28,136 +59,767 @@
             </a>
 
             <div class="nav-links">
-                <button class="nav-link-btn" onclick="toggleTheme()" title="Ubah Tema Mode">
+                <button class="nav-link-btn" onclick="toggleTheme()" title="Ubah Tema Dark/Light">
                     <i class="fa-solid fa-moon" id="themeIcon"></i>
                 </button>
-                <span style="font-size: 12px; font-weight: 700; color: var(--gold); background: rgba(197, 146, 53, 0.12); border: 1px solid var(--gold); padding: 6px 14px; border-radius: 20px; display: inline-flex; align-items: center; gap: 6px;">
-                    <i class="fa-solid fa-shield-halved"></i> Login Terproteksi
-                </span>
             </div>
         </div>
     </header>
 
-    <!-- Main Container -->
-    <main class="container" style="padding-top: 50px; padding-bottom: 80px;">
-        
-        <!-- Main Landing Hero -->
-        <div class="hero-user" style="max-width: 900px;">
-            <div class="pill-badge">
-                <i class="fa-solid fa-shield-halved"></i> UIN Siber Syekh Nurjati Cirebon
-            </div>
-            <h1 style="font-size: 42px;">Sistem Informasi Pelaporan & Pemeliharaan Fasilitas Kampus</h1>
-            <p style="font-size: 17px; margin-top: 10px;">Platform terpadu untuk kemudahan pelaporan fasilitas rusak, pelacakan tiket perbaikan berbasis GPS, dan pengelolaan sarpras kampus secara efisien.</p>
-        </div>
-
-        <!-- Single-Door Authentication Portal -->
-        <div style="max-width: 480px; margin: 0 auto;">
-            <div class="glass-card" style="padding: 36px 30px; text-align: left;">
-                <div style="text-align: center; margin-bottom: 24px;">
-                    <img src="assets/img/logo.png" alt="Logo UINSSC" style="height: 68px; margin: 0 auto 12px; display: block; object-fit: contain; filter: drop-shadow(0 4px 12px rgba(197, 146, 53, 0.3));">
-                    <div style="font-size: 14px; font-weight: 800; color: var(--gold); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px;">SIMPEL UINSSC</div>
-                    <h2 style="font-size: 24px; font-weight: 800; color: var(--text-main);">Login Akses Sistem</h2>
-                    <p style="color: var(--text-muted); font-size: 13px; margin-top: 6px; line-height: 1.5;">Silakan masukkan Username & Password untuk masuk ke dalam sistem.</p>
+    <!-- Main Container: Executive Split Portal -->
+    <main class="container">
+        <div class="login-portal-grid">
+            
+            <!-- Left Side: Institutional Identity & Key Features -->
+            <div class="login-hero-side">
+                <div class="login-inst-badge">
+                    <span class="status-live-dot"></span>
+                    <span>UIN Siber Syekh Nurjati Cirebon</span>
                 </div>
 
-                <form id="loginForm" onsubmit="handleLogin(event)">
-                    <div style="margin-bottom: 16px;">
-                        <label for="loginUsername" style="font-size: 13px; font-weight: 700; display: block; margin-bottom: 6px; color: var(--text-main);">Username <span style="color:red;">*</span></label>
-                        <div class="input-wrapper" style="position: relative;">
-                            <i class="fa-solid fa-user" style="position: absolute; left: 14px; top: 15px; color: var(--gold);"></i>
-                            <input type="text" id="loginUsername" placeholder="Masukkan username" required style="width: 100%; min-height: 44px; padding: 10px 14px 10px 42px; border-radius: 10px; border: 1px solid var(--border-color); background: rgba(0,0,0,0.15); color: var(--text-main); font-size: 14px; outline: none;">
+                <div>
+                    <h1 class="login-main-title">Sistem Informasi Pelaporan Fasilitas Kampus</h1>
+                    <p class="login-main-desc">Portal resmi civitas akademika untuk efisiensi pelaporan kerusakan sarpras, verifikasi geofencing GIS presisi, dan tindak lanjut perbaikan secara terpadu.</p>
+                </div>
+
+                <!-- Highlight Cards (Dapat diatur Super Admin) -->
+                <div class="login-features-list" id="loginFeaturesList">
+                    <div class="login-feature-item">
+                        <div class="login-feature-icon icon-emerald">
+                            <i class="fa-solid fa-map-location-dot"></i>
+                        </div>
+                        <div class="login-feature-text">
+                            <h4>Geofencing GIS Presisi 5 Zona</h4>
+                            <p>Validasi otomatis titik koordinat GPS di kawasan kampus guna mencegah laporan palsu.</p>
                         </div>
                     </div>
 
-                    <div style="margin-bottom: 22px;">
-                        <label for="loginPassword" style="font-size: 13px; font-weight: 700; display: block; margin-bottom: 6px; color: var(--text-main);">Password <span style="color:red;">*</span></label>
-                        <div class="input-wrapper" style="position: relative;">
-                            <i class="fa-solid fa-lock" style="position: absolute; left: 14px; top: 15px; color: var(--gold);"></i>
-                            <input type="password" id="loginPassword" placeholder="Masukkan password" required style="width: 100%; min-height: 44px; padding: 10px 14px 10px 42px; border-radius: 10px; border: 1px solid var(--border-color); background: rgba(0,0,0,0.15); color: var(--text-main); font-size: 14px; outline: none;">
+                    <div class="login-feature-item">
+                        <div class="login-feature-icon icon-amber">
+                            <i class="fa-solid fa-layer-group"></i>
+                        </div>
+                        <div class="login-feature-text">
+                            <h4>Smart Duplicate & Anti-Spam</h4>
+                            <p>Deteksi pintar laporan serupa di ruangan yang sama untuk efisiensi teknisi sarpras.</p>
                         </div>
                     </div>
 
-                    <button type="submit" class="btn btn-primary" style="width: 100%; min-height: 46px; font-size: 15px; font-weight: 700; justify-content: center;">
-                        <i class="fa-solid fa-key"></i> Masuk Ke Sistem <i class="fa-solid fa-arrow-right"></i>
-                    </button>
-                </form>
-
-                <!-- Quick Fill Preset Demo Credentials -->
-                <div style="margin-top: 22px; border-top: 1px dashed var(--border-color); padding-top: 16px;">
-                    <span style="font-size: 12px; font-weight: 700; color: var(--text-muted); display: block; margin-bottom: 10px; text-align: center;">
-                        <i class="fa-solid fa-circle-info"></i> Pilih Akun Uji Coba Cepat (1-Klik):
-                    </span>
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-                        <button type="button" class="chip-btn" onclick="quickFillAccount('user')" style="padding: 8px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 3px; cursor: pointer;">
-                            <span style="font-weight: 700; color: var(--gold);"><i class="fa-solid fa-user"></i> Akun Pengguna A</span>
-                            <small style="color: var(--text-muted); font-size: 11px;">user / user123</small>
-                        </button>
-
-                        <button type="button" class="chip-btn" onclick="quickFillAccount('admin')" style="padding: 8px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 3px; cursor: pointer;">
-                            <span style="font-weight: 700; color: #2dd4bf;"><i class="fa-solid fa-user-shield"></i> Akun Pengguna B</span>
-                            <small style="color: var(--text-muted); font-size: 11px;">admin / admin123</small>
-                        </button>
+                    <div class="login-feature-item">
+                        <div class="login-feature-icon icon-cyan">
+                            <i class="fa-solid fa-chart-line"></i>
+                        </div>
+                        <div class="login-feature-text">
+                            <h4>Transparansi Tracking & SLA</h4>
+                            <p>Pantau status perbaikan mulai dari Diajukan, Diproses teknisi, hingga Selesai tuntas.</p>
+                        </div>
                     </div>
                 </div>
 
-                <div id="loginFeedback" style="margin-top: 14px; text-align: center; font-size: 13px; font-weight: 700; min-height: 20px;"></div>
+                <!-- Video Profil Kampus UINSSC (Dapat diatur Super Admin) -->
+                <div id="loginVideoCard" class="login-video-card" style="margin-top: 14px; margin-bottom: 4px; background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 14px; backdrop-filter: blur(10px); transition: all 0.25s ease;">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                        <span style="display:inline-flex; align-items:center; gap:6px; font-size:11px; font-weight:800; color:#ef4444; background:rgba(239,68,68,0.12); border:1px solid rgba(239,68,68,0.25); padding:3px 10px; border-radius:9999px;">
+                            <i class="fa-brands fa-youtube"></i> PROFIL KAMPUS CYBER
+                        </span>
+                        <span style="font-size:11px; color:var(--text-muted); font-weight:600;"><i class="fa-solid fa-circle-play" style="color:var(--gold);"></i> Video Resmi</span>
+                    </div>
+                    <div style="position:relative; width:100%; padding-top:56.25%; border-radius:10px; overflow:hidden; background:#000; box-shadow:0 4px 18px rgba(0,0,0,0.35); border:1px solid rgba(255,255,255,0.08);">
+                        <iframe id="loginVideoIframe" style="position:absolute; top:0; left:0; width:100%; height:100%; border:0;" src="https://www.youtube.com/embed/bUhLVKdbRd0?rel=0" title="Profil Kampus UIN Siber Syekh Nurjati Cirebon" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                    </div>
+                    <div style="margin-top:8px;">
+                        <h4 id="loginVideoTitle" style="font-size:13.5px; font-weight:700; color:var(--text-main); margin:0 0 3px 0;">Profil Kampus UIN Siber Syekh Nurjati Cirebon</h4>
+                        <p id="loginVideoDesc" style="font-size:12px; color:var(--text-muted); margin:0; line-height:1.45;">Kenali lebih dekat fasilitas modern, ekosistem digital, dan layanan sarana prasarana kampus cyber.</p>
+                    </div>
+                </div>
             </div>
-        </div>
 
+            <!-- Right Side: High-End Glassmorphic Login Card -->
+            <div>
+                <div class="glass-card login-glass-card">
+                    <div style="text-align: center; margin-bottom: 22px;">
+                        <div style="width: 64px; height: 64px; background: #ffffff; border: 2px solid var(--gold); border-radius: 14px; margin: 0 auto 10px; display: flex; align-items: center; justify-content: center; padding: 5px; box-shadow: 0 4px 16px rgba(197, 146, 53, 0.2);">
+                            <img src="assets/img/logo.png" alt="Logo UINSSC" style="width: 100%; height: 100%; object-fit: contain;">
+                        </div>
+                        <div style="font-size: 12px; font-weight: 800; color: var(--gold); letter-spacing: 1.2px; text-transform: uppercase; margin-bottom: 3px;">SIMPEL UINSSC</div>
+                        <h2 style="font-size: 22px; font-weight: 800; color: var(--text-main); margin-bottom: 4px;">Portal Masuk Sistem</h2>
+                        <p style="color: var(--text-muted); font-size: 13px; line-height: 1.5;">Gunakan akun resmi kampus Anda untuk mengakses layanan.</p>
+                    </div>
+
+                    <form id="loginForm" onsubmit="handleLogin(event)">
+                        <!-- Username -->
+                        <div style="margin-bottom: 16px;">
+                            <label for="loginUsername" style="font-size: 13px; font-weight: 700; display: block; margin-bottom: 6px; color: var(--text-main);">
+                                <i class="fa-solid fa-user" style="color: var(--gold); margin-right: 4px;"></i> Username Pengguna <span style="color:#ef4444;">*</span>
+                            </label>
+                            <div class="login-input-wrapper">
+                                <i class="fa-solid fa-user login-input-icon"></i>
+                                <input type="text" id="loginUsername" class="login-input" placeholder="Masukkan username pengguna" required autocomplete="username">
+                            </div>
+                        </div>
+
+                        <!-- Password with Show/Hide Toggle -->
+                        <div style="margin-bottom: 16px;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                                <label for="loginPassword" style="font-size: 13px; font-weight: 700; color: var(--text-main);">
+                                    <i class="fa-solid fa-lock" style="color: var(--gold); margin-right: 4px;"></i> Kata Sandi <span style="color:#ef4444;">*</span>
+                                </label>
+                                <a href="javascript:void(0)" onclick="openHelpModal()" style="font-size: 12px; font-weight: 600; color: var(--gold); text-decoration: none;">Bantuan?</a>
+                            </div>
+                            <div class="login-input-wrapper">
+                                <i class="fa-solid fa-lock login-input-icon"></i>
+                                <input type="password" id="loginPassword" class="login-input" placeholder="Masukkan kata sandi" required autocomplete="current-password">
+                                <button type="button" class="btn-toggle-password" onclick="togglePasswordVisibility()" id="btnTogglePass" title="Tampilkan / Sembunyikan Kata Sandi">
+                                    <i class="fa-solid fa-eye" id="eyeIcon"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- CAPTCHA Security Verification -->
+                        <div style="margin-bottom: 16px;">
+                            <label for="loginCaptchaInput" style="font-size: 13px; font-weight: 700; display: block; margin-bottom: 6px; color: var(--text-main);">
+                                <i class="fa-solid fa-robot" style="color: var(--gold); margin-right: 4px;"></i> Kode CAPTCHA Keamanan <span style="color:#ef4444;">*</span>
+                            </label>
+                            
+                            <div class="captcha-box-wrapper">
+                                <!-- Canvas Captcha Display -->
+                                <div style="position: relative; border-radius: 8px; overflow: hidden; border: 1px solid var(--border-color); background: #ffffff; height: 42px; display: flex; align-items: center; justify-content: center; box-shadow: inset 0 1px 3px rgba(0,0,0,0.12);">
+                                    <canvas id="captchaCanvas" width="140" height="42" style="display: block; cursor: pointer;" onclick="generateCaptcha()" title="Klik untuk ganti kode CAPTCHA"></canvas>
+                                </div>
+                                
+                                <!-- Refresh Button -->
+                                <button type="button" class="btn-toggle-password" onclick="generateCaptcha()" id="btnRefreshCaptcha" title="Ganti Kode CAPTCHA Baru" style="position: static; width: 42px; height: 42px; background: rgba(255,255,255,0.06); border: 1px solid var(--border-color); border-radius: 8px; color: var(--gold); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.3s ease;">
+                                    <i class="fa-solid fa-rotate" id="captchaReloadIcon"></i>
+                                </button>
+                                
+                                <!-- Input Code -->
+                                <div class="login-input-wrapper captcha-input-col">
+                                    <input type="text" id="loginCaptchaInput" class="login-input" placeholder="Ketik CAPTCHA" required maxlength="5" autocomplete="off" style="text-transform: uppercase; font-weight: 700; letter-spacing: 3px; font-family: monospace; font-size: 13px; text-align: center;">
+                                </div>
+                            </div>
+                            <small style="font-size: 11px; color: var(--text-muted); margin-top: 4px; display: block;">
+                                Ketik 5 karakter yang tertera untuk memverifikasi Anda bukan bot.
+                            </small>
+                        </div>
+
+                        <!-- Remember session -->
+                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; font-size: 13px;">
+                            <label style="display: flex; align-items: center; gap: 8px; color: var(--text-muted); cursor: pointer; user-select: none;">
+                                <input type="checkbox" id="rememberMe" checked style="accent-color: var(--gold); width: 16px; height: 16px; cursor: pointer;">
+                                <span>Ingat Sesi Login</span>
+                            </label>
+                            <span style="color: #10b981; font-size: 12px; font-weight: 700; display: inline-flex; align-items: center; gap: 4px;">
+                                <i class="fa-solid fa-circle-check"></i> Server Siap
+                            </span>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <button type="submit" class="btn-login-submit" id="btnLoginSubmit">
+                            <span id="btnLoginText"><i class="fa-solid fa-right-to-bracket"></i> Masuk Ke Sistem</span>
+                            <i class="fa-solid fa-arrow-right" id="btnLoginArrow"></i>
+                        </button>
+                    </form>
+
+                    <!-- Quick Fill Preset Demo Credentials -->
+                    <div class="login-preset-box">
+                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+                            <span style="font-size: 12px; font-weight: 700; color: var(--text-muted);">
+                                <i class="fa-solid fa-bolt" style="color: var(--gold);"></i> Akun Demo Uji Coba Cepat (1-Klik):
+                            </span>
+                            <span style="font-size: 11px; color: var(--gold); font-weight: 700; background: rgba(197, 146, 53, 0.12); padding: 2px 8px; border-radius: 10px;">Siap Pakai</span>
+                        </div>
+
+                        <div class="login-preset-grid" style="grid-template-columns: repeat(3, 1fr);">
+                            <div class="login-preset-card" id="presetUserCard" onclick="quickFillAccount('user')" title="User: Mahasiswa/Dosen/Tendik pembuat pelaporan">
+                                <div class="preset-avatar preset-user">
+                                    <i class="fa-solid fa-graduation-cap"></i>
+                                </div>
+                                <div class="preset-info">
+                                    <span class="preset-role-name">Pelapor (User)</span>
+                                    <span style="font-size:10px; color:var(--gold); display:block; font-weight:700;">Mahasiswa / Civitas</span>
+                                    <span class="preset-cred">user / user123</span>
+                                </div>
+                            </div>
+
+                            <div class="login-preset-card" id="presetMitraCard" onclick="quickFillAccount('mitra')" title="Mitra: Pengelola Kantin, Bank, Vendor Rekanan Kampus (Dibuatkan Super Admin)">
+                                <div class="preset-avatar preset-mitra" style="background:rgba(234,179,8,0.15); color:#facc15;">
+                                    <i class="fa-solid fa-handshake"></i>
+                                </div>
+                                <div class="preset-info">
+                                    <span class="preset-role-name">Mitra Kampus</span>
+                                    <span style="font-size:10px; color:#facc15; display:block; font-weight:700;">Kantin / Vendor / Bank</span>
+                                    <span class="preset-cred">mitra / mitra123</span>
+                                </div>
+                            </div>
+
+                            <div class="login-preset-card" id="presetAdminCard" onclick="quickFillAccount('admin')" title="Admin: Yang menghubungkan petugas dengan user dan mengelola petugas">
+                                <div class="preset-avatar preset-admin">
+                                    <i class="fa-solid fa-user-shield"></i>
+                                </div>
+                                <div class="preset-info">
+                                    <span class="preset-role-name">Admin Sarpras</span>
+                                    <span style="font-size:10px; color:#2dd4bf; display:block; font-weight:700;">Pengelola Sarpras</span>
+                                    <span class="preset-cred">admin / admin123</span>
+                                </div>
+                            </div>
+
+                            <!-- Secret Super Admin Preset Card (Hidden by default, revealed via Secret Trigger) -->
+                            <div class="login-preset-card" id="presetSuperAdminCard" onclick="quickFillAccount('superadmin')" title="Super Admin (Rahasia): Yang mengatur siapa admin, petugas, dan mitra" style="display:none; grid-column:span 3; border-color:#facc15; background:rgba(250,204,21,0.08); animation: fadeIn 0.4s ease;">
+                                <div class="preset-avatar preset-superadmin">
+                                    <i class="fa-solid fa-user-shield"></i>
+                                </div>
+                                <div class="preset-info">
+                                    <span class="preset-role-name" style="color:#facc15;"><i class="fa-solid fa-key" style="font-size:10px;"></i> Super Admin (Mode Rahasia Terbuka)</span>
+                                    <span style="font-size:10px; color:#facc15; display:block; font-weight:700;">Pengatur Admin, Petugas &amp; Mitra</span>
+                                    <span class="preset-cred">superadmin / superadmin123</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Feedback Alert Container -->
+                    <div id="loginFeedback" style="margin-top: 14px; text-align: center; font-size: 13px; font-weight: 700; min-height: 22px; transition: all 0.3s ease;"></div>
+
+                    <!-- Card Security Guarantee Footer with Secret Super Admin Trigger -->
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 14px; padding-top: 12px; border-top: 1px dashed var(--border-color); font-size: 11px; color: var(--text-muted);">
+                        <span><i class="fa-solid fa-shield-halved" style="color: var(--gold); margin-right: 4px;"></i> Akses Terproteksi & Terenkripsi</span>
+                        <button type="button" id="secretSuperAdminBtn" onclick="triggerSecretSuperAdmin()" title="Akses Otoritas Rahasia" style="background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 11px; padding: 2px 6px; border-radius: 4px; opacity: 0.35; transition: all 0.3s ease;">
+                            <i class="fa-solid fa-shield-halved"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
     </main>
 
+    <!-- Help Modal -->
+    <div id="helpModal" class="modal-overlay hidden" onclick="closeHelpModalOnBackdrop(event)">
+        <div class="modal-card" style="max-width: 480px; padding: 26px; text-align: left;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+                <h3 style="font-size: 18px; font-weight: 800; color: var(--text-main); margin:0;">
+                    <i class="fa-solid fa-circle-question" style="color: var(--gold);"></i> Struktur Peran & Hak Akses
+                </h3>
+                <button type="button" onclick="closeHelpModal()" style="background: none; border: none; font-size: 18px; color: var(--text-muted); cursor: pointer;"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            
+            <p style="font-size: 13px; color: var(--text-muted); line-height: 1.5; margin-bottom: 14px;">
+                Sistem Informasi Pelaporan Fasilitas Kampus (SIMPEL UINSSC) membagi alur kerja operasional ke dalam 3 tingkatan peran resmi:
+            </p>
+
+            <div style="display:flex; flex-direction:column; gap:10px; margin-bottom:16px;">
+                <div style="background:rgba(255,255,255,0.03); border:1px solid var(--border-color); border-left:3px solid var(--gold); padding:10px 12px; border-radius:8px;">
+                    <strong style="font-size:12px; color:var(--gold); display:flex; align-items:center; gap:6px;">
+                        <i class="fa-solid fa-graduation-cap"></i> 1. User (Pelapor Kampus)
+                    </strong>
+                    <div style="font-size:12px; color:var(--text-muted); margin-top:2px;">
+                        Yang <strong>membuat pelaporan</strong> kerusakan sarana & prasarana kampus serta melacak proses penanganannya.
+                    </div>
+                </div>
+
+                <div style="background:rgba(45,212,191,0.06); border:1px solid rgba(45,212,191,0.3); border-left:3px solid #2dd4bf; padding:10px 12px; border-radius:8px;">
+                    <strong style="font-size:12px; color:#2dd4bf; display:flex; align-items:center; gap:6px;">
+                        <i class="fa-solid fa-user-shield"></i> 2. Admin (Admin Sarpras)
+                    </strong>
+                    <div style="font-size:12px; color:var(--text-muted); margin-top:2px;">
+                        Yang <strong>menghubungkan petugas dengan user</strong>: memverifikasi tiket, menugaskan petugas spesialis yang tepat, mengirim disposisi penugasan WhatsApp ke petugas, serta menyampaikan perkembangan status perbaikan ke user pelapor.
+                    </div>
+                </div>
+
+                <div style="background:rgba(250,204,21,0.06); border:1px solid rgba(250,204,21,0.3); border-left:3px solid #facc15; padding:10px 12px; border-radius:8px;">
+                    <strong style="font-size:12px; color:#facc15; display:flex; align-items:center; gap:6px;">
+                        <i class="fa-solid fa-shield-halved"></i> 3. Super Admin
+                    </strong>
+                    <div style="font-size:12px; color:var(--text-muted); margin-top:2px;">
+                        Yang <strong>mengatur siapa admin dan petugas</strong>: mendaftarkan, mengaktifkan/menonaktifkan akun Admin & Petugas lapangan, serta memegang hak eksklusif hapus tiket dan pembersihan database.
+                    </div>
+                </div>
+            </div>
+
+            <div style="background: rgba(197, 146, 53, 0.08); border: 1px solid var(--border-color); border-radius: 8px; padding: 10px 12px; font-size: 11px; margin-bottom: 14px;">
+                <strong>Akun Demo Uji Coba:</strong><br>
+                &bull; <code>user</code> / <code>user123</code> &bull; <code>admin</code> / <code>admin123</code> &bull; <code>superadmin</code> / <code>superadmin123</code>
+            </div>
+
+            <button class="btn btn-primary" onclick="closeHelpModal()" style="width: 100%; justify-content: center; font-size:13px;">Tutup Panduan</button>
+        </div>
+    </div>
+
     <!-- Footer -->
-    <footer style="border-top: 1px solid var(--border-color); padding: 24px 0; text-align: center; font-size: 13px; color: var(--text-muted); margin-top: auto;">
+    <footer style="border-top: 1px solid var(--border-color); padding: 22px 0; text-align: center; font-size: 13px; color: var(--text-muted); margin-top: auto; background: rgba(0,0,0,0.2); backdrop-filter: blur(8px);">
         <div class="container">
-            &copy; 2026 UIN Siber Syekh Nurjati Cirebon (UINSSC). Proyek Sertifikasi Web Developer SKKNI BNSP.
+            &copy; 2026 <strong>UIN Siber Syekh Nurjati Cirebon (UINSSC)</strong>. Bagian Pengelolaan Sarana & Prasarana Kampus.
         </div>
     </footer>
 
     <script>
+        const BRIDGE_API_BASE = 'https://bridge.uinssc.ac.id';
+
         const ACCOUNTS = {
             user: { username: 'user', password: 'user123', role: 'user', name: 'Pelapor Publik (Mahasiswa/Dosen/Staf)', redirect: 'pages/user.html' },
-            admin: { username: 'admin', password: 'admin123', role: 'admin', name: 'Administrator Sarpras', redirect: 'pages/admin.html' }
+            mitra: { username: 'mitra', password: 'mitra123', role: 'mitra', name: 'Kantin Berkah Sejahtera (Mitra Kampus)', redirect: 'pages/user.html', nimNip: 'MTR-01', bidang: 'Kantin Kampus & Pujasera', wa: '081288990001' },
+            admin: { username: 'admin', password: 'admin123', role: 'admin', name: 'Administrator Sarpras', redirect: 'pages/admin.html' },
+            superadmin: { username: 'superadmin', password: 'superadmin123', role: 'superadmin', name: 'Super Administrator Sarpras & IT', redirect: 'pages/admin.html' }
         };
 
-        function quickFillAccount(type) {
-            const acc = ACCOUNTS[type];
-            if (acc) {
-                document.getElementById('loginUsername').value = acc.username;
-                document.getElementById('loginPassword').value = acc.password;
-                showLoginFeedback('Kredensial diisikan. Klik tombol "Masuk Ke Sistem".', 'var(--gold)');
+        // SweetAlert2 Toast Mixin
+        const Toast = typeof Swal !== 'undefined' ? Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 2600,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.onmouseenter = Swal.stopTimer;
+                toast.onmouseleave = Swal.resumeTimer;
+            }
+        }) : null;
+
+        function showSweetToast(msg, icon = 'info') {
+            if (Toast) {
+                Toast.fire({ icon, title: msg });
             }
         }
 
-        function handleLogin(e) {
+        // ==========================================
+        // SISTEM KEAMANAN CAPTCHA LOGIN
+        // ==========================================
+        let currentCaptchaText = '';
+
+        function generateCaptcha() {
+            const canvas = document.getElementById('captchaCanvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            const width = canvas.width;
+            const height = canvas.height;
+
+            ctx.clearRect(0, 0, width, height);
+
+            // Karakter tanpa huruf/angka yang membingungkan
+            const chars = '23456789ABCDEFGHJKLMNPQRSTUVWXYZ';
+            let code = '';
+            for (let i = 0; i < 5; i++) {
+                code += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            currentCaptchaText = code;
+
+            // Background canvas gradasi halus
+            const bgGrad = ctx.createLinearGradient(0, 0, width, height);
+            bgGrad.addColorStop(0, '#f8fafc');
+            bgGrad.addColorStop(1, '#e2e8f0');
+            ctx.fillStyle = bgGrad;
+            ctx.fillRect(0, 0, width, height);
+
+            // Garis distorsi pengacak bot
+            for (let i = 0; i < 4; i++) {
+                ctx.strokeStyle = `rgba(${Math.floor(Math.random()*120)}, ${Math.floor(Math.random()*120)}, ${Math.floor(Math.random()*120)}, 0.35)`;
+                ctx.lineWidth = 1.2;
+                ctx.beginPath();
+                ctx.moveTo(Math.random() * width, Math.random() * height);
+                ctx.lineTo(Math.random() * width, Math.random() * height);
+                ctx.stroke();
+            }
+
+            // Titik noise acak
+            for (let i = 0; i < 28; i++) {
+                ctx.fillStyle = `rgba(${Math.floor(Math.random()*150)}, ${Math.floor(Math.random()*150)}, ${Math.floor(Math.random()*150)}, 0.45)`;
+                ctx.beginPath();
+                ctx.arc(Math.random() * width, Math.random() * height, Math.random() * 1.5, 0, Math.PI * 2);
+                ctx.fill();
+            }
+
+            // Teks karakter dengan rotasi & warna kontras
+            const colors = ['#005a36', '#854d0e', '#0f766e', '#1e293b', '#b45309', '#0369a1'];
+            ctx.textBaseline = 'middle';
+
+            for (let i = 0; i < code.length; i++) {
+                const char = code[i];
+                const fontSize = Math.floor(Math.random() * 5) + 20; // 20-25px
+                ctx.font = `bold ${fontSize}px 'Plus Jakarta Sans', monospace`;
+                ctx.fillStyle = colors[Math.floor(Math.random() * colors.length)];
+
+                const x = 14 + i * 24 + (Math.random() * 4 - 2);
+                const y = height / 2 + (Math.random() * 4 - 2);
+                const angle = (Math.random() - 0.5) * 0.35;
+
+                ctx.save();
+                ctx.translate(x, y);
+                ctx.rotate(angle);
+                ctx.fillText(char, 0, 0);
+                ctx.restore();
+            }
+
+            // Animasi putar ikon refresh
+            const reloadIcon = document.getElementById('captchaReloadIcon');
+            if (reloadIcon) {
+                reloadIcon.style.transition = 'transform 0.4s ease';
+                reloadIcon.style.transform = 'rotate(360deg)';
+                setTimeout(() => {
+                    reloadIcon.style.transition = 'none';
+                    reloadIcon.style.transform = 'rotate(0deg)';
+                }, 400);
+            }
+
+            const captchaInput = document.getElementById('loginCaptchaInput');
+            if (captchaInput) {
+                captchaInput.style.borderColor = 'var(--border-color)';
+            }
+        }
+
+        let secretClickCount = 0;
+        let secretClickTimer = null;
+
+        function handleSecretLogoClick(e) {
+            secretClickCount++;
+            clearTimeout(secretClickTimer);
+            secretClickTimer = setTimeout(() => { secretClickCount = 0; }, 1200);
+
+            if (secretClickCount >= 3) {
+                if (e) e.preventDefault();
+                secretClickCount = 0;
+                triggerSecretSuperAdmin();
+            }
+        }
+
+        // Shortcut keyboard rahasia: Ctrl + Shift + S atau Alt + S
+        document.addEventListener('keydown', (e) => {
+            if (((e.ctrlKey || e.metaKey) && e.shiftKey && e.key.toLowerCase() === 's') || (e.altKey && e.key.toLowerCase() === 's')) {
+                e.preventDefault();
+                triggerSecretSuperAdmin();
+            }
+        });
+
+        function triggerSecretSuperAdmin() {
+            const superCard = document.getElementById('presetSuperAdminCard');
+            if (superCard) {
+                superCard.style.display = 'flex';
+                superCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+
+            if (typeof Swal !== 'undefined') {
+                Swal.fire({
+                    icon: 'warning',
+                    title: '🔐 Akses Rahasia: Super Administrator',
+                    html: `
+                        <div style="text-align:left; font-size:13px; line-height:1.6; color:var(--text-main);">
+                            <p style="margin-bottom:8px;">Anda mengakses pintu otoritas tertinggi sistem fasilitas kampus UINSSC.</p>
+                            <div style="background:rgba(250,204,21,0.08); border:1px solid #facc15; border-radius:8px; padding:10px 14px; margin-bottom:12px;">
+                                <strong style="color:#facc15; display:flex; align-items:center; gap:6px;">
+                                    <i class="fa-solid fa-shield-halved"></i> Hak Otoritas Super Admin:
+                                </strong>
+                                <ul style="margin:6px 0 0 18px; padding:0; font-size:12px;">
+                                    <li><b>Mengatur siapa yang menjadi Admin</b> dan siapa Petugas</li>
+                                    <li>Wewenang reset demo & hapus tiket laporan</li>
+                                </ul>
+                            </div>
+                            <div style="font-size:12px; color:var(--text-muted); text-align:center;">
+                                Kredensial Rahasia: <code style="font-size:13px; color:#facc15; font-weight:700; background:rgba(0,0,0,0.3); padding:2px 8px; border-radius:4px;">superadmin / superadmin123</code>
+                            </div>
+                        </div>
+                    `,
+                    showCancelButton: true,
+                    confirmButtonText: '<i class="fa-solid fa-key"></i> Terapkan Kredensial',
+                    cancelButtonText: 'Batal',
+                    confirmButtonColor: '#c59235',
+                    cancelButtonColor: '#64748b'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        quickFillAccount('superadmin');
+                    }
+                });
+            } else {
+                quickFillAccount('superadmin');
+            }
+        }
+
+        function quickFillAccount(type) {
+            const acc = ACCOUNTS[type];
+            if (!acc) return;
+
+            document.querySelectorAll('.login-preset-card').forEach(c => c.classList.remove('active-preset'));
+            let activeCardId = 'presetUserCard';
+            if (type === 'mitra') activeCardId = 'presetMitraCard';
+            if (type === 'admin') activeCardId = 'presetAdminCard';
+            if (type === 'superadmin') activeCardId = 'presetSuperAdminCard';
+
+            const activeCard = document.getElementById(activeCardId);
+            if (activeCard) activeCard.classList.add('active-preset');
+
+            const unameInput = document.getElementById('loginUsername');
+            const passInput = document.getElementById('loginPassword');
+            unameInput.value = acc.username;
+            passInput.value = acc.password;
+
+            // Otomatis isikan kode CAPTCHA aktif agar demo 1-klik tetap instan & nyaman
+            const captchaInput = document.getElementById('loginCaptchaInput');
+            if (captchaInput && currentCaptchaText) {
+                captchaInput.value = currentCaptchaText;
+                captchaInput.style.borderColor = '#10b981';
+            }
+
+            unameInput.focus();
+            showLoginFeedback(`✨ Akun <strong>${acc.name}</strong> dipilih. Klik Masuk.`, 'var(--gold)');
+            showSweetToast(`Akun ${acc.name} dipilih`, 'info');
+        }
+
+        function togglePasswordVisibility() {
+            const passInput = document.getElementById('loginPassword');
+            const eyeIcon = document.getElementById('eyeIcon');
+            if (!passInput || !eyeIcon) return;
+
+            if (passInput.type === 'password') {
+                passInput.type = 'text';
+                eyeIcon.className = 'fa-solid fa-eye-slash';
+            } else {
+                passInput.type = 'password';
+                eyeIcon.className = 'fa-solid fa-eye';
+            }
+        }
+
+        async function handleLogin(e) {
             e.preventDefault();
             const uname = document.getElementById('loginUsername').value.trim();
             const pass = document.getElementById('loginPassword').value.trim();
 
-            let matchedAccount = null;
-            if (uname.toLowerCase() === 'admin' && pass === 'admin123') {
-                matchedAccount = ACCOUNTS.admin;
-            } else if (uname.toLowerCase() === 'user' && pass === 'user123') {
-                matchedAccount = ACCOUNTS.user;
-            } else if (uname.length > 0 && pass.length > 0) {
-                matchedAccount = uname.toLowerCase().includes('admin') ? ACCOUNTS.admin : ACCOUNTS.user;
+            // 0. Validasi Kode Keamanan CAPTCHA
+            const captchaInput = document.getElementById('loginCaptchaInput');
+            const userCaptcha = (captchaInput ? captchaInput.value : '').trim().toUpperCase();
+
+            if (!userCaptcha || userCaptcha !== currentCaptchaText) {
+                showLoginFeedback('❌ Kode CAPTCHA salah atau belum diisi. Silakan coba lagi.', '#ef4444');
+                if (captchaInput) {
+                    captchaInput.value = '';
+                    captchaInput.focus();
+                    captchaInput.style.borderColor = '#ef4444';
+                    captchaInput.style.animation = 'shake 0.4s ease';
+                    setTimeout(() => {
+                        captchaInput.style.animation = '';
+                    }, 400);
+                }
+                generateCaptcha();
+                return;
             }
 
-            if (matchedAccount) {
-                const sessionData = {
-                    username: uname,
-                    role: matchedAccount.role,
-                    name: matchedAccount.name,
-                    loginTime: new Date().toISOString()
-                };
-                localStorage.setItem('SIMPEL_AUTH_SESSION', JSON.stringify(sessionData));
+            const submitBtn = document.getElementById('btnLoginSubmit');
+            const btnText = document.getElementById('btnLoginText');
+            const btnArrow = document.getElementById('btnLoginArrow');
 
-                showLoginFeedback('✅ Login Berhasil! Memuat sistem...', '#22c55e');
+            const resetBtnState = () => {
+                if (submitBtn) {
+                    submitBtn.disabled = false;
+                    if (btnText) btnText.innerHTML = '<i class="fa-solid fa-right-to-bracket"></i> Masuk Ke Sistem';
+                    if (btnArrow) btnArrow.style.display = 'inline-block';
+                }
+            };
 
-                setTimeout(() => {
-                    window.location.href = matchedAccount.redirect;
-                }, 800);
-            } else {
-                showLoginFeedback('❌ Username atau password salah!', '#ef4444');
+            const setBtnLoading = (msg) => {
+                if (submitBtn) {
+                    submitBtn.disabled = true;
+                    if (btnText) btnText.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> ${msg}`;
+                    if (btnArrow) btnArrow.style.display = 'none';
+                }
+            };
+
+            // 1. Cek Akun Internal / Demo Cepat (Super Admin, Admin, Mitra, User)
+            if (uname.toLowerCase() === 'superadmin' && pass === 'superadmin123') {
+                setBtnLoading('Memverifikasi Hak Super Admin...');
+                saveSessionAndRedirect(ACCOUNTS.superadmin);
+                return;
+            }
+
+            if (uname.toLowerCase() === 'admin' && pass === 'admin123') {
+                setBtnLoading('Memverifikasi Akses Sarpras...');
+                saveSessionAndRedirect(ACCOUNTS.admin);
+                return;
+            }
+
+            if (uname.toLowerCase() === 'mitra' && pass === 'mitra123') {
+                setBtnLoading('Menyiapkan Portal Mitra Kampus...');
+                saveSessionAndRedirect(ACCOUNTS.mitra);
+                return;
+            }
+
+            if (uname.toLowerCase() === 'user' && pass === 'user123') {
+                setBtnLoading('Menyiapkan Portal Pelapor...');
+                saveSessionAndRedirect(ACCOUNTS.user);
+                return;
+            }
+
+            // 1b. Cek Akun Mitra / Personil Tambahan yang Dibuatkan oleh Super Admin di Database/LocalStorage
+            const savedStaffRaw = localStorage.getItem('SIMPEL_STAFF_ACCOUNTS_V1');
+            if (savedStaffRaw) {
+                try {
+                    const savedStaff = JSON.parse(savedStaffRaw);
+                    const matchedAccount = savedStaff.find(s => 
+                        (s.username && s.username.toLowerCase() === uname.toLowerCase()) || 
+                        (s.id && s.id.toLowerCase() === uname.toLowerCase())
+                    );
+                    if (matchedAccount) {
+                        const expectedPass = matchedAccount.password || 'mitra123';
+                        if (pass === expectedPass) {
+                            if (matchedAccount.status !== 'Aktif') {
+                                showLoginFeedback('❌ Akun ini sedang dinonaktifkan oleh Administrator Sarpras Kampus.', '#ef4444');
+                                if (typeof Swal !== 'undefined') {
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Akun Dinonaktifkan',
+                                        text: 'Status akun Anda saat ini sedang dinonaktifkan. Silakan hubungi Super Admin Sarpras Kampus.',
+                                        confirmButtonColor: '#c59235'
+                                    });
+                                }
+                                resetBtnState();
+                                return;
+                            }
+                            if (matchedAccount.role === 'mitra') {
+                                setBtnLoading('Menyiapkan Portal Mitra Kampus...');
+                                saveSessionAndRedirect({
+                                    username: matchedAccount.username || matchedAccount.id,
+                                    role: 'mitra',
+                                    name: matchedAccount.nama,
+                                    nimNip: matchedAccount.id,
+                                    bidang: matchedAccount.bidang,
+                                    wa: matchedAccount.wa,
+                                    peran: 'Mitra Kampus',
+                                    redirect: 'pages/user.html'
+                                });
+                                return;
+                            } else if (matchedAccount.role === 'admin') {
+                                setBtnLoading('Memverifikasi Akses Admin...');
+                                saveSessionAndRedirect({
+                                    username: matchedAccount.username || matchedAccount.id,
+                                    role: 'admin',
+                                    name: matchedAccount.nama,
+                                    nimNip: matchedAccount.id,
+                                    redirect: 'pages/admin.html'
+                                });
+                                return;
+                            }
+                        }
+                    }
+                } catch(e) {
+                    console.warn('Gagal membaca akun staf/mitra lokal:', e);
+                }
+            }
+
+            // 2. Hubungkan ke Server Kampus Resmi UINSSC (NIM/NIP Asli)
+            setBtnLoading('Menghubungi Server Kampus UINSSC...');
+            showLoginFeedback('🔄 Mengautentikasi ke database kampus...', '#06b6d4');
+
+            try {
+                const response = await fetch(`${BRIDGE_API_BASE}/api/v2/portal/login`, {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    body: new URLSearchParams({
+                        username: uname,
+                        password: pass
+                    })
+                });
+
+                const data = await response.json();
+                const token = data.data?.token || data.token;
+
+                if (response.ok && token) {
+                    // Ambil Profil Mahasiswa/Dosen
+                    let profilName = uname;
+                    let nimNip = uname;
+                    try {
+                        const profRes = await fetch(`${BRIDGE_API_BASE}/api/v2/profil`, {
+                            method: 'GET',
+                            headers: {
+                                'Authorization': `Bearer ${token}`,
+                                'Accept': 'application/json'
+                            }
+                        });
+                        if (profRes.ok) {
+                            const profData = await profRes.json();
+                            const info = profData.data || profData;
+                            profilName = info.nama || info.name || uname;
+                            nimNip = info.nim || info.nip || uname;
+                        }
+                    } catch(pe) {
+                        console.info('Gagal ambil detail profil, gunakan username.');
+                    }
+
+                    const campusUser = {
+                        username: uname,
+                        role: 'user',
+                        name: profilName,
+                        nimNip: nimNip,
+                        token: token,
+                        redirect: 'pages/user.html'
+                    };
+
+                    showLoginFeedback(`✅ Selamat Datang, <strong>${profilName}</strong>! Mengalihkan...`, '#22c55e');
+                    saveSessionAndRedirect(campusUser);
+                    return;
+                } else {
+                    const serverMsg = data.message || 'NIM/NIP atau kata sandi tidak cocok di database kampus.';
+                    showLoginFeedback(`❌ Autentikasi Kampus: ${serverMsg}`, '#ef4444');
+                    if (typeof Swal !== 'undefined') {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Autentikasi Gagal',
+                            text: serverMsg,
+                            confirmButtonColor: '#005a36'
+                        });
+                    }
+                    resetBtnState();
+                    highlightPasswordError();
+                }
+            } catch (err) {
+                console.warn('Gagal koneksi server kampus:', err);
+                const errMsg = 'Server autentikasi kampus tidak merespons atau kredensial salah. Gunakan akun demo di bawah.';
+                showLoginFeedback('⚠️ ' + errMsg, '#f59e0b');
+                if (typeof Swal !== 'undefined') {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Koneksi Server Kampus',
+                        text: errMsg,
+                        confirmButtonColor: '#c59235'
+                    });
+                }
+                resetBtnState();
+                highlightPasswordError();
+            }
+        }
+
+        function saveSessionAndRedirect(acc) {
+            const sessionData = {
+                username: acc.username,
+                role: acc.role,
+                name: acc.name,
+                nimNip: acc.nimNip || acc.username,
+                bidang: acc.bidang || '',
+                wa: acc.wa || '',
+                peran: acc.peran || (acc.role === 'mitra' ? 'Mitra Kampus' : 'User'),
+                token: acc.token || '',
+                loginTime: new Date().toISOString()
+            };
+            localStorage.setItem('SIMPEL_AUTH_SESSION', JSON.stringify(sessionData));
+
+            showLoginFeedback(`✅ Autentikasi Berhasil! Mengalihkan ke dashboard...`, '#22c55e');
+            if (typeof Swal !== 'undefined') {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Autentikasi Berhasil!',
+                    html: `Selamat datang, <b>${acc.name}</b>!<br><span style="font-size:13px; color:var(--text-muted);">Mempersiapkan sistem...</span>`,
+                    timer: 1000,
+                    showConfirmButton: false
+                });
+            }
+
+            setTimeout(() => {
+                window.location.href = acc.redirect;
+            }, 850);
+        }
+
+        function highlightPasswordError() {
+            const passInput = document.getElementById('loginPassword');
+            if (passInput) {
+                passInput.classList.add('input-error');
+                setTimeout(() => passInput.classList.remove('input-error'), 1800);
             }
         }
 
@@ -169,6 +831,22 @@
             }
         }
 
+        function openHelpModal() {
+            const modal = document.getElementById('helpModal');
+            if (modal) modal.classList.remove('hidden');
+        }
+
+        function closeHelpModal() {
+            const modal = document.getElementById('helpModal');
+            if (modal) modal.classList.add('hidden');
+        }
+
+        function closeHelpModalOnBackdrop(e) {
+            if (e.target.id === 'helpModal') {
+                closeHelpModal();
+            }
+        }
+
         function toggleTheme() {
             const current = document.documentElement.getAttribute('data-theme') || 'dark';
             const next = current === 'dark' ? 'light' : 'dark';
@@ -176,6 +854,7 @@
             localStorage.setItem('SIMPEL_FK_THEME', next);
             const icon = document.getElementById('themeIcon');
             if (icon) icon.className = next === 'dark' ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
+            generateCaptcha();
         }
 
         (function() {
@@ -184,6 +863,115 @@
             const icon = document.getElementById('themeIcon');
             if (icon) icon.className = saved === 'dark' ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
         })();
+
+        function escapeHtml(text) {
+            if (!text) return '';
+            return String(text)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
+        }
+
+        const DEFAULT_LOGIN_CONTENT = {
+            features: [
+                {
+                    id: 1,
+                    icon: 'fa-map-location-dot',
+                    colorClass: 'icon-emerald',
+                    title: 'Geofencing GIS Presisi 5 Zona',
+                    desc: 'Validasi otomatis titik koordinat GPS di kawasan kampus guna mencegah laporan palsu.'
+                },
+                {
+                    id: 2,
+                    icon: 'fa-layer-group',
+                    colorClass: 'icon-amber',
+                    title: 'Smart Duplicate & Anti-Spam',
+                    desc: 'Deteksi pintar laporan serupa di ruangan yang sama untuk efisiensi teknisi sarpras.'
+                },
+                {
+                    id: 3,
+                    icon: 'fa-chart-line',
+                    colorClass: 'icon-cyan',
+                    title: 'Transparansi Tracking & SLA',
+                    desc: 'Pantau status perbaikan mulai dari Diajukan, Diproses teknisi, hingga Selesai tuntas.'
+                }
+            ],
+            video: {
+                enabled: true,
+                title: 'Profil Kampus UIN Siber Syekh Nurjati Cirebon',
+                desc: 'Kenali lebih dekat fasilitas modern, ekosistem digital, dan layanan sarana prasarana kampus cyber.',
+                url: 'https://youtu.be/bUhLVKdbRd0?si=C6iIsdGNuLUB38Qa',
+                embedId: 'bUhLVKdbRd0'
+            }
+        };
+
+        function applyLoginPortalContent() {
+            let content = JSON.parse(JSON.stringify(DEFAULT_LOGIN_CONTENT));
+            const raw = localStorage.getItem('SIMPEL_PORTAL_CONTENT_V1');
+            if (raw) {
+                try {
+                    const parsed = JSON.parse(raw);
+                    if (parsed.features && parsed.features.length) content.features = parsed.features;
+                    if (parsed.video) content.video = Object.assign({}, DEFAULT_LOGIN_CONTENT.video, parsed.video);
+                } catch (e) {
+                    console.warn('Gagal membaca konten portal:', e);
+                }
+            }
+
+            // Render 3 Features
+            const featList = document.getElementById('loginFeaturesList');
+            if (featList && content.features) {
+                featList.innerHTML = content.features.map(f => `
+                    <div class="login-feature-item">
+                        <div class="login-feature-icon ${f.colorClass || 'icon-emerald'}">
+                            <i class="fa-solid ${f.icon || 'fa-star'}"></i>
+                        </div>
+                        <div class="login-feature-text">
+                            <h4>${escapeHtml(f.title)}</h4>
+                            <p>${escapeHtml(f.desc)}</p>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            // Render Video Section
+            const videoCard = document.getElementById('loginVideoCard');
+            const videoIframe = document.getElementById('loginVideoIframe');
+            const videoTitle = document.getElementById('loginVideoTitle');
+            const videoDesc = document.getElementById('loginVideoDesc');
+
+            if (videoCard) {
+                if (content.video && content.video.enabled !== false && content.video.embedId) {
+                    videoCard.style.display = 'block';
+                    if (videoIframe) {
+                        const targetSrc = `https://www.youtube.com/embed/${content.video.embedId}?rel=0`;
+                        if (!videoIframe.src || !videoIframe.src.includes(content.video.embedId)) {
+                            videoIframe.src = targetSrc;
+                        }
+                    }
+                    if (videoTitle) videoTitle.innerText = content.video.title || 'Profil Kampus UIN Siber Syekh Nurjati Cirebon';
+                    if (videoDesc) videoDesc.innerText = content.video.desc || '';
+                } else {
+                    videoCard.style.display = 'none';
+                }
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            generateCaptcha();
+            applyLoginPortalContent();
+        });
+        window.addEventListener('load', () => {
+            generateCaptcha();
+            applyLoginPortalContent();
+        });
+        window.addEventListener('storage', (e) => {
+            if (e.key === 'SIMPEL_PORTAL_CONTENT_V1') {
+                applyLoginPortalContent();
+            }
+        });
     </script>
 </body>
 </html>

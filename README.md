@@ -24,6 +24,12 @@
 c:\Users\ASUS\OneDrive\Desktop\BNSP\
 ├── README.md             # Dokumentasi Resmi Proyek GitHub
 ├── index.html            # Gateway / System Launcher Beranda Utama
+├── schema.sql            # Skema Tabel MySQL Laragon
+├── api/                  # 📁 Endpoint RESTful API Backend
+│   ├── index.php         # Gateway Router API
+│   └── reports.php       # Handler CRUD Laporan Sarpras
+├── config/               # 📁 Konfigurasi Sistem
+│   └── database.php      # Koneksi Database MySQL (PDO)
 ├── assets/               # 📁 Resource Image Assets
 │   └── img/
 │       ├── logo.png      # Logo Resmi Kampus UINSSC

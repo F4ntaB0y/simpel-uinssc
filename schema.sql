@@ -41,4 +41,35 @@ INSERT INTO reports (id, namaPelapor, nimNip, peranPelapor, kontakPelapor, gedun
 ('TRK-2026-008', 'Rizky Pratama', '230102077', 'Mahasiswa', '081299001122', 'Gedung Perpustakaan Pusat', 'Ruang Baca & Komputer Lt. 2', '-6.735600', '108.534200', 'Kelistrikan & Lampu', 'Tinggi', 'Stop kontak meja belajar nomor 5 percikan api kecil saat colokan dilepas.', 'Diproses', 'Joko (Kelistrikan)', 'Stop kontak diisolasi sementara dan stop kontak baru disiapkan.', '2026-07-30 15:30:00', '2026-07-30 17:00:00'),
 ('TRK-2026-009', 'Ust. Farhan Ridwan', '1979061201', 'Dosen', '085211447788', 'Gedung Pascasarjana & Ma\'had', 'Aula Utama Pascasarjana', '-6.734800', '108.530800', 'Proyektor & Sound System', 'Sedang', 'Mic wireless podium sering mendengung (feedback noise) tinggi.', 'Selesai', 'Hendra (Audio System)', 'Penyetelan mixer audio dan peredam frekuensi equalizer selesai.', '2026-07-24 08:00:00', '2026-07-24 11:30:00'),
 ('TRK-2026-010', 'Tri Handoko', '200301144', 'Mahasiswa', '083811992233', 'Kampus 2 Saladara UINSSC', 'Ruang Serbaguna Lt. 1', '-6.744000', '108.525600', 'Bangunan & Infrastruktur', 'Tinggi', 'Terdapat rembesan air hujan dari atap saat hujan deras di dekat panggung utama.', 'Diajukan', 'Belum Ditunjuk', 'Diserahkan ke tim logistik Kampus 2 Saladara.', '2026-07-31 07:15:00', '2026-07-31 07:15:00');
-reportsreportsreportsreports
+
+-- ====================================================================
+-- TABEL MANAJEMEN AKUN ADMIN, PETUGAS & MITRA (WEWENANG SUPER ADMIN)
+-- ====================================================================
+DROP TABLE IF EXISTS staff_accounts;
+
+CREATE TABLE staff_accounts (
+    id VARCHAR(50) NOT NULL PRIMARY KEY,
+    username VARCHAR(100) NULL,
+    password VARCHAR(100) NULL,
+    nama VARCHAR(150) NOT NULL,
+    role ENUM('admin', 'petugas', 'mitra') NOT NULL DEFAULT 'petugas',
+    bidang VARCHAR(150) NOT NULL,
+    wa VARCHAR(50) NOT NULL,
+    status ENUM('Aktif', 'Nonaktif') NOT NULL DEFAULT 'Aktif',
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- Seed Data Akun Admin, Mitra Kampus & Tim Petugas
+INSERT INTO staff_accounts (id, username, password, nama, role, bidang, wa, status) VALUES
+('ADM-01', 'admin_fauzi', 'admin123', 'Ahmad Fauzi, S.T.', 'admin', 'Admin Sarpras Kampus Utama', '081234560001', 'Aktif'),
+('ADM-02', 'admin_dewi', 'admin123', 'Dewi Sartika, S.Kom.', 'admin', 'Admin Gedung Cyber & IT', '081234560002', 'Aktif'),
+('MTR-01', 'mitra', 'mitra123', 'Kantin Berkah Sejahtera (Ibu Sumiati)', 'mitra', 'Kantin Kampus & Pujasera', '081288990001', 'Aktif'),
+('MTR-02', 'mitra_bank', 'mitra123', 'Bank Syariah Mitra Kampus', 'mitra', 'Perbankan & ATM Center Kampus', '081288990002', 'Aktif'),
+('MTR-03', 'indocare', 'mitra123', 'PT. Indocare Facility Services', 'mitra', 'Vendor Kebersihan & Hygiene', '081288990003', 'Aktif'),
+('TKN-01', 'bambang', 'petugas123', 'Bambang Sudiro', 'petugas', 'AC & Pendingin (HVAC)', '081298765001', 'Aktif'),
+('TKN-02', 'joko', 'petugas123', 'Joko Purnomo', 'petugas', 'Kelistrikan & Lampu', '081298765002', 'Aktif'),
+('TKN-03', 'rahmat', 'petugas123', 'Rahmat Hidayat', 'petugas', 'Sanitasi & Plumbing', '081298765003', 'Aktif'),
+('TKN-04', 'hendra', 'petugas123', 'Hendra Wijaya', 'petugas', 'Proyektor & Sound System', '081298765004', 'Aktif'),
+('TKN-05', 'sukarman', 'petugas123', 'Sukarman', 'petugas', 'Sipil & Bangunan', '081298765005', 'Aktif'),
+('TKN-06', 'ilham', 'petugas123', 'Ilham Kurnia', 'petugas', 'Jaringan & Internet (ICT)', '081298765006', 'Aktif'),
+('TKN-07', 'agus', 'petugas123', 'Agus Setiawan', 'petugas', 'Pintu, Kunci & Mebel', '081298765007', 'Aktif');

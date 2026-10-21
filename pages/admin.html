@@ -15,37 +15,109 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <link rel="stylesheet" href="../css/user.css">
     <link rel="stylesheet" href="../css/admin.css">
+    <!-- SweetAlert2 Latest CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- Chart.js Modern Data Analytics -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Leaflet.heat GIS Heatmap Layer -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.heat/0.2.0/leaflet-heat.js"></script>
+    <!-- DOMPurify Security Sanitizer -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.1.6/purify.min.js"></script>
+    <!-- QRCode.js Dynamic Generator -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <!-- html2pdf.js Official PDF Exporter -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </head>
 <body>
 
-    <div class="admin-wrapper">
+    <!-- Sidebar Overlay Backdrop for Mobile -->
+    <div id="sidebarOverlay" class="sidebar-overlay" onclick="closeAdminSidebar()"></div>
+
+    <div class="admin-wrapper" id="adminWrapper">
         <!-- Sidebar Navigation -->
-        <aside class="admin-sidebar">
-            <a href="admin.html" class="sidebar-brand">
-                <div class="brand-icon">
-                    <img src="../assets/img/logo.png" alt="UINSSC Logo" class="brand-logo-img">
-                </div>
-                <div class="brand-text">
-                    <span class="brand-title">SIMPEL UINSSC</span>
-                    <span class="brand-subtitle">Sarpras & Pemeliharaan</span>
-                </div>
-            </a>
+        <aside class="admin-sidebar" id="adminSidebar">
+            <div class="sidebar-brand-wrapper">
+                <a href="admin.html" class="sidebar-brand">
+                    <div class="brand-icon">
+                        <img src="../assets/img/logo.png" alt="UINSSC Logo" class="brand-logo-img">
+                    </div>
+                    <div class="brand-text">
+                        <span class="brand-title">SIMPEL UINSSC</span>
+                        <span class="brand-subtitle">Sarpras & Pemeliharaan</span>
+                    </div>
+                </a>
+                <button type="button" class="btn-sidebar-toggle" onclick="toggleAdminSidebar()" title="Kecilkan / Dikesampingkan">
+                    <i class="fa-solid fa-chevron-left" id="sidebarToggleIcon"></i>
+                </button>
+                <button type="button" class="btn-sidebar-close-mobile" onclick="closeAdminSidebar()" title="Tutup Menu">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
 
             <ul class="sidebar-menu">
+                <!-- ================= GRUP FITUR ADMIN (DIGABUNG) ================= -->
+                <li class="sidebar-heading" style="font-size:11px; font-weight:800; color:var(--text-muted); padding:6px 14px 2px; text-transform:uppercase; letter-spacing:0.8px;">
+                    Fitur Admin
+                </li>
                 <li>
-                    <a href="admin.html" class="active">
+                    <a href="javascript:void(0)" class="active" id="navMainDashboard" onclick="switchAdminView('dashboard'); closeAdminSidebar();" title="Dashboard Utama Operasional">
                         <i class="fa-solid fa-chart-pie"></i> <span>Dashboard Utama</span>
                     </a>
                 </li>
                 <li>
-                    <a href="javascript:void(0)" onclick="handleLogout()" style="color: #ef4444;">
+                    <a href="javascript:void(0)" id="navGisSurveillance" onclick="switchAdminView('gis'); closeAdminSidebar();" title="Radar Geospasial & 5 Kawasan Kampus">
+                        <i class="fa-solid fa-map-location-dot" style="color:#2dd4bf;"></i> <span>Radar Spasial GIS</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="javascript:void(0)" id="navSlaTracker" onclick="switchAdminView('sla'); closeAdminSidebar();" title="Matriks Kecepatan Respon & Beban Kerja Teknisi">
+                        <i class="fa-solid fa-stopwatch-20" style="color:#f59e0b;"></i> <span>Matriks SLA & Teknisi</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="javascript:void(0)" onclick="switchAdminView('staff'); closeAdminSidebar();" id="sidebarStaffLink" title="Kelola Petugas Sarpras">
+                        <i class="fa-solid fa-users-gear" id="sidebarStaffIcon"></i> <span id="sidebarStaffText">Kelola Petugas</span>
+                    </a>
+                </li>
+
+                <!-- ================= GRUP KHUSUS SUPER ADMIN (DIPISAH) ================= -->
+                <li id="sidebarSuperAdminDivider" class="hidden" style="border-top:1px dashed var(--border-color); margin:10px 0 6px; padding-top:4px;"></li>
+                <li id="sidebarSuperAdminHeader" class="hidden" style="font-size:11px; font-weight:800; color:#facc15; padding:4px 14px 2px; text-transform:uppercase; letter-spacing:0.8px; display:flex; align-items:center; gap:6px;">
+                    <i class="fa-solid fa-shield-halved" style="font-size:11px;"></i> Khusus Super Admin
+                </li>
+                <li id="sidebarGeofenceItem" class="hidden">
+                    <a href="javascript:void(0)" onclick="openGeofenceModal(); closeAdminSidebar();" id="sidebarGeofenceLink" title="Atur Batas Wilayah Geofencing (Wewenang Super Admin)">
+                        <i class="fa-solid fa-draw-polygon" style="color:#facc15;"></i> <span>Batas Geofencing</span>
+                    </a>
+                </li>
+                <li id="sidebarCmsItem" class="hidden">
+                    <a href="javascript:void(0)" onclick="openPortalContentModal(); closeAdminSidebar();" id="sidebarCmsLink" title="Kelola Konten, Banner & Video Portal (Wewenang Super Admin)">
+                        <i class="fa-solid fa-photo-film" style="color:#38bdf8;"></i> <span>Konten & Media</span>
+                    </a>
+                </li>
+                <li id="sidebarAuditItem" class="hidden">
+                    <a href="javascript:void(0)" id="navSuperAudit" onclick="switchAdminView('audit'); closeAdminSidebar();" title="Audit Keamanan & Surveillance Sistem (Khusus Super Admin)">
+                        <i class="fa-solid fa-shield-halved" style="color:#facc15;"></i> <span>Audit & Log Sistem</span>
+                    </a>
+                </li>
+                <li id="sidebarSocItem" class="hidden">
+                    <a href="javascript:void(0)" id="navSocSecurity" onclick="switchAdminView('soc'); closeAdminSidebar();" title="Security Operations Center & War Room (Khusus Super Admin)">
+                        <i class="fa-solid fa-server" style="color:#facc15;"></i> <span>Security War Room (SOC)</span>
+                    </a>
+                </li>
+
+                <!-- ================= LOGOUT / SISTEM ================= -->
+                <li style="border-top:1px dashed var(--border-color); margin:10px 0 6px; padding-top:4px;"></li>
+                <li>
+                    <a href="javascript:void(0)" onclick="handleLogout(); closeAdminSidebar();" class="menu-logout" title="Keluar / Logout">
                         <i class="fa-solid fa-right-from-bracket"></i> <span>Keluar / Logout</span>
                     </a>
                 </li>
             </ul>
 
             <div class="sidebar-footer">
-                <button class="nav-link-btn" style="width:100%; justify-content:flex-start;" onclick="toggleTheme()">
+                <button type="button" class="btn-sidebar-theme" onclick="toggleTheme()" title="Ubah Tema Dark/Light">
                     <i class="fa-solid fa-moon" id="adminThemeIcon"></i> <span>Tampilan Dark/Light</span>
                 </button>
             </div>
@@ -55,158 +127,711 @@
         <main class="admin-main">
             <!-- Header Topbar -->
             <div class="admin-header">
-                <div>
-                    <h1 style="font-size: 26px; font-weight: 800;">Dashboard Pengelolaan Sarpras UINSSC</h1>
-                    <p style="color:var(--text-muted); font-size: 14px;">Pantau, verifikasi, dan tindak lanjuti laporan kerusakan fasilitas seluruh kampus.</p>
+                <div style="display:flex; align-items:center;">
+                    <div>
+                        <h1 style="font-size: 22px; font-weight: 800; line-height:1.25;">Dashboard Pengelolaan Sarpras UINSSC</h1>
+                        <p style="color:var(--text-muted); font-size: 13px; margin-top:4px;">Pantau, verifikasi, dan tindak lanjuti laporan kerusakan fasilitas seluruh kampus.</p>
+                    </div>
                 </div>
                 <div style="display:flex; gap:12px; flex-wrap:wrap; align-items:center;">
-                    <span id="adminBadgeDisplay" style="font-size: 13px; font-weight: 700; color: #2dd4bf; background: rgba(45,212,191,0.12); border: 1px solid #2dd4bf; padding: 6px 14px; border-radius: 20px; display: inline-flex; align-items: center; gap: 6px;">
-                        <i class="fa-solid fa-user-shield"></i> <span id="adminBadgeName">Admin Sarpras</span>
+                    <span id="adminBadgeDisplay" style="font-size: 13px; font-weight: 700; color: #2dd4bf; background: rgba(45,212,191,0.12); border: 1px solid #2dd4bf; padding: 6px 14px; border-radius: 20px; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 2px 10px rgba(0,0,0,0.15); transition: all 0.3s ease;">
+                        <span id="adminBadgeName"><i class="fa-solid fa-user-shield"></i> Admin Sarpras</span>
                     </span>
                     <button class="btn btn-secondary" onclick="exportCSV()"><i class="fa-solid fa-file-csv"></i> Export CSV</button>
-                    <button class="btn btn-secondary" onclick="resetDemoData()"><i class="fa-solid fa-rotate-left"></i> Reset Demo</button>
+                    <button class="btn btn-secondary" id="btnResetDemo" onclick="resetDemoData()"><i class="fa-solid fa-rotate-left"></i> Reset Demo</button>
                     <button class="btn btn-secondary" onclick="handleLogout()" style="color:#ef4444; border-color:rgba(239,68,68,0.3);"><i class="fa-solid fa-right-from-bracket"></i> Keluar</button>
                 </div>
             </div>
 
-            <!-- KPI Metric Cards -->
-            <div class="admin-kpi-grid">
-                <div class="kpi-box">
-                    <div class="kpi-box-icon icon-blue"><i class="fa-solid fa-folder-open"></i></div>
-                    <div class="kpi-box-info">
-                        <span class="kpi-num" id="kpiTotal">0</span>
-                        <span class="kpi-title">Total Laporan</span>
+            <!-- Super Admin Special Privilege Banner -->
+            <div id="superadminBanner" class="superadmin-banner hidden">
+                <div class="superadmin-banner-content">
+                    <div class="superadmin-banner-icon">
+                        <i class="fa-solid fa-user-shield" style="color:#facc15;"></i>
                     </div>
-                </div>
-
-                <div class="kpi-box">
-                    <div class="kpi-box-icon icon-amber"><i class="fa-solid fa-clock"></i></div>
-                    <div class="kpi-box-info">
-                        <span class="kpi-num" id="kpiPending">0</span>
-                        <span class="kpi-title">Menunggu Verifikasi</span>
-                    </div>
-                </div>
-
-                <div class="kpi-box">
-                    <div class="kpi-box-icon icon-cyan"><i class="fa-solid fa-screwdriver-wrench"></i></div>
-                    <div class="kpi-box-info">
-                        <span class="kpi-num" id="kpiProses">0</span>
-                        <span class="kpi-title">Dalam Perbaikan</span>
-                    </div>
-                </div>
-
-                <div class="kpi-box">
-                    <div class="kpi-box-icon icon-emerald"><i class="fa-solid fa-circle-check"></i></div>
-                    <div class="kpi-box-info">
-                        <span class="kpi-num" id="kpiSelesai">0</span>
-                        <span class="kpi-title">Perbaikan Selesai</span>
+                    <div>
+                        <strong style="color:#facc15; font-size:14px;">Mode Super Admin (Hak Otoritas Tertinggi):</strong>
+                        <div style="font-size:12px; color:var(--text-muted); margin-top:2px;">Wewenang Eksklusif: Atur Admin & Petugas, Batas Geofencing, serta Konten & Media dapat diakses melalui menu sidebar di sebelah kiri.</div>
                     </div>
                 </div>
             </div>
 
-            <!-- Visual Analytics Chart Section -->
-            <div class="chart-container-card">
-                <h3 style="font-size:16px; font-weight:800; margin-bottom:16px; display:flex; align-items:center; gap:8px;">
-                    <i class="fa-solid fa-chart-column" style="color:var(--gold);"></i> Grafik Statistik Kerusakan Per Kawasan Kampus UINSSC
-                </h3>
-                <div style="height: 180px; width:100%; display:flex; align-items:flex-end; gap:20px; padding-top:20px;" id="chartBarContainer">
-                    <!-- Bars Rendered by JS -->
-                </div>
-            </div>
 
-            <!-- GIS Overview Damage Map Card -->
-            <div class="glass-card" style="padding: 24px; margin-bottom: 24px;">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 10px;">
-                    <h3 style="font-size: 16px; font-weight: 800; display: flex; align-items: center; gap: 8px; margin: 0;">
-                        <i class="fa-solid fa-map-location-dot" style="color: var(--gold);"></i> Peta GIS Sebaran Titik Kerusakan Fasilitas Kampus UINSSC
-                    </h3>
-                    <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
-                        <button type="button" id="adminMaskToggleBtn" class="chip-btn" onclick="toggleAdminCampusMask()" style="background: rgba(255,255,255,0.08); color: var(--text-main); border: 1px solid var(--border-color); cursor: pointer; padding: 6px 14px; font-weight: 700; font-size: 12px; border-radius: 20px; transition: all 0.2s ease;">
-                            <i class="fa-solid fa-eye-slash"></i> Sembunyikan Masking
-                        </button>
-                        <button type="button" class="chip-btn" onclick="focusAdminMapToCampus()" style="background: rgba(0,90,54,0.4); color: #fff; border: 1px solid var(--gold); cursor: pointer; padding: 6px 14px; font-weight: 700; font-size: 12px; border-radius: 20px; transition: all 0.2s ease;">
-                            <i class="fa-solid fa-crosshairs"></i> Fokus Kamera Kampus
-                        </button>
-                        <button id="mapModeToggleBtn" class="chip-btn" onclick="toggleAdminMapMode()" style="background: rgba(197,146,53,0.15); color: var(--gold); border: 1px solid var(--gold); cursor: pointer; padding: 6px 14px; font-weight: 700; font-size: 12px; border-radius: 20px; transition: all 0.2s ease;">
-                            <i class="fa-solid fa-location-dot"></i> Mode: Pin Marker (Klik Mode Heatmap)
-                        </button>
-                        <div style="display: flex; gap: 12px; font-size: 12px; font-weight: 700; background: rgba(0,0,0,0.2); padding: 6px 14px; border-radius: 20px; border: 1px solid var(--border-color);">
-                            <span style="display: inline-flex; align-items: center; gap: 5px; color: #ef4444;"><i class="fa-solid fa-circle"></i> Diajukan</span>
-                            <span style="display: inline-flex; align-items: center; gap: 5px; color: #f59e0b;"><i class="fa-solid fa-circle"></i> Diproses</span>
-                            <span style="display: inline-flex; align-items: center; gap: 5px; color: #22c55e;"><i class="fa-solid fa-circle"></i> Selesai</span>
+            <!-- ================= VIEW 1: DASHBOARD UTAMA OPERASIONAL ================= -->
+            <div id="viewMainDashboard" class="admin-view-section">
+                <!-- KPI Metric Cards -->
+                <div class="admin-kpi-grid">
+                    <div class="kpi-box">
+                        <div class="kpi-box-icon icon-blue"><i class="fa-solid fa-folder-open"></i></div>
+                        <div class="kpi-box-info">
+                            <span class="kpi-num" id="kpiTotal">0</span>
+                            <span class="kpi-title">Total Laporan</span>
+                        </div>
+                    </div>
+
+                    <div class="kpi-box">
+                        <div class="kpi-box-icon icon-amber"><i class="fa-solid fa-clock"></i></div>
+                        <div class="kpi-box-info">
+                            <span class="kpi-num" id="kpiPending">0</span>
+                            <span class="kpi-title">Menunggu Verifikasi</span>
+                        </div>
+                    </div>
+
+                    <div class="kpi-box">
+                        <div class="kpi-box-icon icon-cyan"><i class="fa-solid fa-screwdriver-wrench"></i></div>
+                        <div class="kpi-box-info">
+                            <span class="kpi-num" id="kpiProses">0</span>
+                            <span class="kpi-title">Dalam Perbaikan</span>
+                        </div>
+                    </div>
+
+                    <div class="kpi-box">
+                        <div class="kpi-box-icon icon-emerald"><i class="fa-solid fa-circle-check"></i></div>
+                        <div class="kpi-box-info">
+                            <span class="kpi-num" id="kpiSelesai">0</span>
+                            <span class="kpi-title">Perbaikan Selesai</span>
                         </div>
                     </div>
                 </div>
-                <div id="adminOverviewMap" style="width: 100%; height: 320px; border-radius: var(--radius-md); border: 1px solid var(--border-color); background: #04140d !important; z-index: 1;"></div>
-            </div>
 
-            <!-- Table Filter & Data Card -->
-            <div class="table-card">
-                <div class="table-toolbar">
-                    <div class="filter-group">
-                        <label style="font-size:13px;"><i class="fa-solid fa-filter"></i> Filter Status:</label>
-                        <select id="filterStatus" onchange="renderAdminTable()" style="padding:8px 12px; font-size:13px;">
-                            <option value="ALL">Semua Status</option>
-                            <option value="Diajukan">Diajukan</option>
-                            <option value="Diproses">Diproses</option>
-                            <option value="Selesai">Selesai</option>
-                            <option value="Ditolak">Ditolak</option>
-                        </select>
-
-                        <label style="font-size:13px; margin-left:12px;"><i class="fa-solid fa-building"></i> Gedung:</label>
-                        <select id="filterGedung" onchange="renderAdminTable()" style="padding:8px 12px; font-size:13px;">
-                            <option value="ALL">Semua Kawasan & Gedung</option>
-                            <optgroup label="Kampus Utama UINSSC">
-                                <option value="Gedung Rektorat UINSSC">Gedung Rektorat UINSSC</option>
-                                <option value="Fakultas Ilmu Tarbiyah (FITK)">Fakultas Ilmu Tarbiyah (FITK)</option>
-                                <option value="Fakultas Syariah & Ekonomi (FSEI)">Fakultas Syariah & Ekonomi (FSEI)</option>
-                                <option value="Fakultas Ushuluddin & Adab (FUAD)">Fakultas Ushuluddin & Adab (FUAD)</option>
-                                <option value="Laboratorium Terpadu & Pusat ICT">Laboratorium Terpadu & Pusat ICT</option>
-                                <option value="Gedung Perpustakaan Pusat">Gedung Perpustakaan Pusat</option>
-                                <option value="Auditorium & Student Center">Auditorium & Student Center</option>
-                            </optgroup>
-                            <optgroup label="Gedung Cyber UINSSC">
-                                <option value="Gedung Cyber UINSSC">Gedung Cyber UINSSC</option>
-                                <option value="Gedung Cyber & Pusat IT">Gedung Cyber & Pusat IT</option>
-                            </optgroup>
-                            <optgroup label="Gedung Seberang Kampus Utama">
-                                <option value="Area Gedung Seberang Kampus Utama">Area Gedung Seberang Kampus Utama</option>
-                                <option value="Gedung Seberang Kampus Utama">Gedung Seberang Kampus Utama</option>
-                            </optgroup>
-                            <optgroup label="Pascasarjana & Ma'had">
-                                <option value="Gedung Pascasarjana & Ma'had">Gedung Pascasarjana & Ma'had</option>
-                            </optgroup>
-                            <optgroup label="Kampus Saladara UINSSC">
-                                <option value="Kampus 2 Saladara UINSSC">Kampus 2 Saladara UINSSC</option>
-                            </optgroup>
-                        </select>
+                <!-- Visual Analytics Chart Section (Chart.js Modern Analytics) -->
+                <div class="chart-container-card">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; flex-wrap:wrap; gap:10px;">
+                        <div>
+                            <h3 style="font-size:16px; font-weight:800; display:flex; align-items:center; gap:8px; margin:0;">
+                                <i class="fa-solid fa-chart-column" style="color:var(--gold);"></i> Grafik Statistik Kerusakan Fasilitas Kampus UINSSC
+                            </h3>
+                            <p style="font-size:12px; color:var(--text-muted); margin:3px 0 0 0;">Visualisasi interaktif sebaran laporan per kawasan & kategori sarpras.</p>
+                        </div>
+                        <div style="display:flex; gap:8px; align-items:center;">
+                            <button type="button" class="chip-btn" id="btnChartTypeBar" onclick="switchAdminChartType('bar')" style="background:var(--primary); color:#fff; border-color:var(--primary); font-weight:700;">
+                                <i class="fa-solid fa-chart-simple"></i> Per Kawasan
+                            </button>
+                            <button type="button" class="chip-btn" id="btnChartTypeDoughnut" onclick="switchAdminChartType('doughnut')" style="background:rgba(255,255,255,0.06); color:var(--text-muted); border-color:var(--border-color); font-weight:700;">
+                                <i class="fa-solid fa-chart-pie"></i> Proporsi Kategori
+                            </button>
+                        </div>
                     </div>
-
-                    <div style="min-width:240px;" class="input-wrapper">
-                        <i class="fa-solid fa-search"></i>
-                        <input type="text" id="searchInput" placeholder="Cari tiket, pelapor, lokasi..." onkeyup="renderAdminTable()" style="padding:8px 12px 8px 38px; font-size:13px;">
+                    <div style="position:relative; width:100%; height:230px; display:flex; align-items:center; justify-content:center;">
+                        <canvas id="adminChartCanvas"></canvas>
                     </div>
                 </div>
 
-                <div style="overflow-x:auto;">
-                    <table class="admin-table">
-                        <thead>
-                            <tr>
-                                <th>Kode Tiket</th>
-                                <th>Tanggal</th>
-                                <th>Pelapor</th>
-                                <th>Lokasi / Ruang</th>
-                                <th>Kategori</th>
-                                <th>Urgensi</th>
-                                <th>Status</th>
-                                <th>Teknisi</th>
-                                <th style="text-align:center;">Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody id="adminTableBody">
-                            <!-- Rows Rendered Dynamically -->
-                        </tbody>
-                    </table>
+                <!-- GIS Overview Damage Map Card (Enlarged & Spacious) -->
+                <div class="glass-card" style="padding: 24px; margin-bottom: 24px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 10px;">
+                        <h3 style="font-size: 16px; font-weight: 800; display: flex; align-items: center; gap: 8px; margin: 0;">
+                            <i class="fa-solid fa-map-location-dot" style="color: var(--gold);"></i> Peta GIS Sebaran Titik Kerusakan Fasilitas Kampus UINSSC
+                        </h3>
+                        <div style="display: flex; gap: 12px; font-size: 12px; font-weight: 700; background: rgba(0,0,0,0.2); padding: 6px 14px; border-radius: 20px; border: 1px solid var(--border-color); flex-wrap: wrap;">
+                            <span style="display: inline-flex; align-items: center; gap: 5px; color: #ef4444;"><i class="fa-solid fa-circle"></i> Diajukan</span>
+                            <span style="display: inline-flex; align-items: center; gap: 5px; color: #f59e0b;"><i class="fa-solid fa-circle"></i> Diproses</span>
+                            <span style="display: inline-flex; align-items: center; gap: 5px; color: #22c55e; font-size:11.5px; opacity:0.9;" title="Laporan yang sudah beres/selesai diperbaiki otomatis dihilangkan dari peta titik kerusakan"><i class="fa-solid fa-circle-check"></i> Selesai (Otomatis Hilang)</span>
+                        </div>
+                    </div>
+                    <div id="adminOverviewMap" style="width: 100%; height: 480px; border-radius: var(--radius-md); border: 1px solid var(--border-color); background: #ffffff !important; z-index: 1;"></div>
+                    
+                    <!-- Tombol Masking, Heatmap, dan Fokus di Bawah Peta -->
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 14px; flex-wrap: wrap; gap: 12px; padding-top: 6px;">
+                        <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+                            <button type="button" id="adminMaskToggleBtn" class="chip-btn" onclick="toggleAdminCampusMask()" style="background: rgba(255,255,255,0.08); color: var(--text-main); border: 1px solid var(--border-color); cursor: pointer; padding: 7px 16px; font-weight: 700; font-size: 12px; border-radius: 20px; transition: all 0.2s ease;">
+                                <i class="fa-solid fa-eye" style="color: var(--gold);"></i> Tampilkan Masking
+                            </button>
+                            <button type="button" id="mapModeToggleBtn" class="chip-btn" onclick="toggleAdminMapMode()" style="background: rgba(197,146,53,0.22); color: var(--gold); border: 1px solid var(--gold); cursor: pointer; padding: 7px 16px; font-weight: 700; font-size: 12px; border-radius: 20px; transition: all 0.2s ease;">
+                                <i class="fa-solid fa-fire-flame-curved" style="color: #ef4444;"></i> Mode: Heatmap Aktif (Klik Mode Pin)
+                            </button>
+                            <button type="button" class="chip-btn" onclick="focusAdminMapToCampus()" style="background: rgba(0,90,54,0.4); color: #fff; border: 1px solid var(--gold); cursor: pointer; padding: 7px 16px; font-weight: 700; font-size: 12px; border-radius: 20px; transition: all 0.2s ease;">
+                                <i class="fa-solid fa-crosshairs"></i> Fokus Kamera Kampus
+                            </button>
+                        </div>
+                        <div style="font-size: 12px; color: var(--text-muted); font-weight: 600; display: flex; align-items: center; gap: 6px;">
+                            <i class="fa-solid fa-layer-group" style="color: var(--gold);"></i> <span>5 Kawasan Kampus Terpetakan</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Table Filter & Data Card -->
+                <div class="table-card">
+                    <div class="table-toolbar">
+                        <div class="filter-group">
+                            <label style="font-size:13px;"><i class="fa-solid fa-filter"></i> Filter Status:</label>
+                            <select id="filterStatus" onchange="renderAdminTable()" style="padding:8px 12px; font-size:13px;">
+                                <option value="ALL">Semua Status</option>
+                                <option value="Diajukan">Diajukan</option>
+                                <option value="Diproses">Diproses</option>
+                                <option value="Selesai">Selesai</option>
+                                <option value="Ditolak">Ditolak</option>
+                            </select>
+
+                            <label style="font-size:13px; margin-left:12px;"><i class="fa-solid fa-building"></i> Kawasan:</label>
+                            <select id="filterGedung" onchange="renderAdminTable()" style="padding:8px 12px; font-size:13px;">
+                                <option value="ALL">Semua Kawasan</option>
+                                <option value="Kawasan Kampus Utama">Kawasan Kampus Utama</option>
+                                <option value="Kawasan Gedung Cyber">Kawasan Gedung Cyber</option>
+                                <option value="Kawasan Lab Saladara">Kawasan Lab Saladara</option>
+                                <option value="Kawasan Kampus Sebrang">Kawasan Kampus Sebrang</option>
+                                <option value="Kawasan Pascasarjana & Mahad">Kawasan Pascasarjana & Mahad</option>
+                            </select>
+
+                            <button type="button" id="btnDuplicateFilter" class="chip-btn" onclick="toggleDuplicateFilter()" style="background:rgba(245,158,11,0.12); color:#f59e0b; border:1px solid #f59e0b; padding:6px 14px; font-size:12px; font-weight:700; border-radius:20px; cursor:pointer; display:inline-flex; align-items:center; gap:6px; transition:all 0.2s ease; margin-left:8px;">
+                                <i class="fa-solid fa-clone"></i> Potensi Laporan Serupa (<span id="duplicateCountNum">0</span>)
+                            </button>
+                        </div>
+
+                        <div style="min-width:240px;" class="input-wrapper">
+                            <i class="fa-solid fa-search"></i>
+                            <input type="text" id="searchInput" placeholder="Cari tiket, pelapor, lokasi..." onkeyup="renderAdminTable()" style="padding:8px 12px 8px 38px; font-size:13px;">
+                        </div>
+                    </div>
+
+                    <div style="overflow-x:auto;">
+                        <table class="admin-table">
+                            <thead>
+                                <tr>
+                                    <th style="width:45px; text-align:center;">No.</th>
+                                    <th>Kode Tiket</th>
+                                    <th>Tanggal</th>
+                                    <th>Pelapor</th>
+                                    <th>Lokasi / Ruang</th>
+                                    <th>Kategori</th>
+                                    <th>Urgensi</th>
+                                    <th>Status</th>
+                                    <th>Teknisi</th>
+                                    <th style="text-align:center;">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody id="adminTableBody">
+                                <!-- Rows Rendered Dynamically -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- ================= VIEW 3: RADAR SPASIAL & GEOFENCING GIS 5 KAWASAN ================= -->
+            <div id="viewGisSurveillance" class="admin-view-section hidden">
+                <!-- GIS Surveillance Controls -->
+                <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:16px; background:rgba(255,255,255,0.03); border:1px solid var(--border-color); padding:16px 20px; border-radius:14px;">
+                    <div>
+                        <h2 style="font-size:18px; font-weight:800; margin:0; display:flex; align-items:center; gap:8px;">
+                            <i class="fa-solid fa-map-location-dot" style="color:#2dd4bf;"></i> Radar Pengawasan Geospasial 5 Kawasan Kampus
+                        </h2>
+                        <p style="font-size:12px; color:var(--text-muted); margin:4px 0 0 0;">
+                            Pemantauan visual sebaran insiden sarpras, kluster kerusakan, dan verifikasi perimeter geofencing seluruh zona UINSSC.
+                        </p>
+                    </div>
+
+                    <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+                        <button type="button" class="chip-btn" id="btnGisModePins" onclick="switchGisSurveillanceMode('pins')" style="background:var(--primary); color:#fff; border-color:var(--gold); font-size:12px; padding:6px 12px; border-radius:10px; font-weight:700;">
+                            <i class="fa-solid fa-location-dot"></i> Mode Pin Marker
+                        </button>
+                        <button type="button" class="chip-btn" id="btnGisModeHeatmap" onclick="switchGisSurveillanceMode('heatmap')" style="background:rgba(255,255,255,0.06); color:var(--text-main); border:1px solid var(--border-color); font-size:12px; padding:6px 12px; border-radius:10px; font-weight:700;">
+                            <i class="fa-solid fa-fire" style="color:#ef4444;"></i> Mode Heatmap
+                        </button>
+                        <button type="button" class="chip-btn" onclick="focusGisSurveillanceZone('ALL')" style="background:rgba(197,146,53,0.15); color:var(--gold); border:1px solid var(--gold); font-size:12px; padding:6px 12px; border-radius:10px; font-weight:700;">
+                            <i class="fa-solid fa-globe"></i> Tinjau Semua Kawasan
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 5 Campus Zone Incident Density Scorecards -->
+                <div class="gis-scorecard-grid" id="gisZoneScorecards">
+                    <!-- Populated by JS for the 5 campus zones -->
+                </div>
+
+                <!-- Full View GIS Surveillance Map -->
+                <div class="glass-card" style="padding:16px; margin-bottom:18px;">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; flex-wrap:wrap; gap:8px;">
+                        <span style="font-size:12px; font-weight:700; color:var(--text-main); display:flex; align-items:center; gap:6px;">
+                            <i class="fa-solid fa-crosshairs" style="color:var(--gold);"></i> Peta Radar Real-time (<span id="gisActiveZoneLabel">Semua Kawasan Kampus</span>)
+                        </span>
+                        <div style="display:flex; gap:12px; font-size:11px; font-weight:700;">
+                            <span style="color:#ef4444;"><i class="fa-solid fa-circle"></i> Diajukan</span>
+                            <span style="color:#f59e0b;"><i class="fa-solid fa-circle"></i> Diproses</span>
+                            <span style="color:#10b981;"><i class="fa-solid fa-circle"></i> Selesai</span>
+                        </div>
+                    </div>
+                    <div id="gisSurveillanceMap" style="width:100%; height:520px; border-radius:12px; border:1px solid var(--border-color); background:#ffffff;"></div>
+                    
+                    <!-- Tombol Masking, Heatmap, dan Fokus di Bawah Peta Radar Spasial GIS -->
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 14px; flex-wrap: wrap; gap: 12px; padding-top: 6px;">
+                        <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+                            <button type="button" id="gisMaskToggleBtn" class="chip-btn" onclick="toggleGisCampusMask()" style="background: rgba(255,255,255,0.08); color: var(--text-main); border: 1px solid var(--border-color); cursor: pointer; padding: 7px 16px; font-weight: 700; font-size: 12px; border-radius: 20px; transition: all 0.2s ease;">
+                                <i class="fa-solid fa-eye" style="color: var(--gold);"></i> Tampilkan Masking
+                            </button>
+                            <button type="button" id="gisModeToggleBtn" class="chip-btn" onclick="toggleGisMapMode()" style="background: rgba(197,146,53,0.22); color: var(--gold); border: 1px solid var(--gold); cursor: pointer; padding: 7px 16px; font-weight: 700; font-size: 12px; border-radius: 20px; transition: all 0.2s ease;">
+                                <i class="fa-solid fa-fire-flame-curved" style="color: #ef4444;"></i> Mode: Heatmap Aktif (Klik Mode Pin)
+                            </button>
+                            <button type="button" class="chip-btn" onclick="focusGisMapToCampus()" style="background: rgba(0,90,54,0.4); color: #fff; border: 1px solid var(--gold); cursor: pointer; padding: 7px 16px; font-weight: 700; font-size: 12px; border-radius: 20px; transition: all 0.2s ease;">
+                                <i class="fa-solid fa-crosshairs"></i> Fokus Kamera Kampus
+                            </button>
+                        </div>
+                        <div style="font-size: 12px; color: var(--text-muted); font-weight: 600; display: flex; align-items: center; gap: 6px;">
+                            <i class="fa-solid fa-layer-group" style="color: var(--gold);"></i> <span>5 Kawasan Kampus Terpetakan</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Spatial Breakdown Table -->
+                <div class="table-card">
+                    <div style="padding:14px 18px; border-bottom:1px solid var(--border-color); font-size:13px; font-weight:800; color:var(--text-main); display:flex; align-items:center; gap:8px;">
+                        <i class="fa-solid fa-table-list" style="color:var(--gold);"></i> Rekapitulasi Insiden & Kesiapan Sarpras Berdasarkan Kawasan
+                    </div>
+                    <div style="overflow-x:auto;">
+                        <table class="admin-table">
+                            <thead>
+                                <tr>
+                                    <th style="width:45px; text-align:center;">No.</th>
+                                    <th>Kawasan Kampus</th>
+                                    <th>Status Wilayah</th>
+                                    <th>Total Insiden</th>
+                                    <th>Urgensi Tinggi</th>
+                                    <th>Kategori Dominan</th>
+                                    <th>Aksi Tinjau Peta</th>
+                                </tr>
+                            </thead>
+                            <tbody id="gisZoneTableBody">
+                                <!-- Populated dynamically by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ================= VIEW 4: SURVEILLANCE AUDIT & LOG SISTEM (SUPER ADMIN) ================= -->
+            <div id="viewSuperAdminSurveillance" class="admin-view-section hidden">
+                <!-- Super Admin Audit Header -->
+                <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:18px; background:rgba(250,204,21,0.06); border:1px solid rgba(250,204,21,0.3); padding:16px 20px; border-radius:14px;">
+                    <div>
+                        <div style="display:flex; align-items:center; gap:8px;">
+                            <span class="superadmin-badge-pill" style="font-size:10px;"><i class="fa-solid fa-shield-halved"></i> Super Admin Only</span>
+                            <h2 style="font-size:18px; font-weight:800; margin:0; display:flex; align-items:center; gap:8px; color:#facc15;">
+                                <i class="fa-solid fa-shield-halved"></i> Surveillance Audit & Rekam Jejak Sistem
+                            </h2>
+                        </div>
+                        <p style="font-size:12px; color:var(--text-muted); margin:4px 0 0 0;">
+                            Wewenang Eksklusif: Pemantauan jejak autentikasi akun, mutasi peran staf sarpras, konfigurasi geofencing, dan audit wewenang.
+                        </p>
+                    </div>
+
+                    <div style="display:flex; gap:8px;">
+                        <button type="button" class="btn btn-secondary" onclick="exportAuditLogCSV()" style="font-size:12px; padding:6px 12px; border-color:#facc15; color:#facc15;">
+                            <i class="fa-solid fa-file-export"></i> Export Audit Log (CSV)
+                        </button>
+                        <button type="button" class="btn btn-secondary" onclick="clearAuditLogs()" style="font-size:12px; padding:6px 12px; color:#ef4444; border-color:rgba(239,68,68,0.3);">
+                            <i class="fa-solid fa-trash-can"></i> Bersihkan Log
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Audit Metric Cards -->
+                <div style="display:grid; grid-template-columns: repeat(4, 1fr); gap:12px; margin-bottom:18px;">
+                    <div class="kpi-box" style="padding:14px;">
+                        <div class="kpi-box-icon" style="background:rgba(250,204,21,0.15); color:#facc15;"><i class="fa-solid fa-clipboard-check"></i></div>
+                        <div class="kpi-box-info">
+                            <span class="kpi-num" id="auditKpiTotal" style="color:#facc15;">0</span>
+                            <span class="kpi-title">Total Log Tercatat</span>
+                        </div>
+                    </div>
+
+                    <div class="kpi-box" style="padding:14px;">
+                        <div class="kpi-box-icon icon-blue"><i class="fa-solid fa-right-to-bracket"></i></div>
+                        <div class="kpi-box-info">
+                            <span class="kpi-num" id="auditKpiAuth">0</span>
+                            <span class="kpi-title">Autentikasi & Login</span>
+                        </div>
+                    </div>
+
+                    <div class="kpi-box" style="padding:14px;">
+                        <div class="kpi-box-icon icon-emerald"><i class="fa-solid fa-user-shield"></i></div>
+                        <div class="kpi-box-info">
+                            <span class="kpi-num" id="auditKpiStaff">0</span>
+                            <span class="kpi-title">Mutasi Staf & Peran</span>
+                        </div>
+                    </div>
+
+                    <div class="kpi-box" style="padding:14px;">
+                        <div class="kpi-box-icon icon-cyan"><i class="fa-solid fa-sliders"></i></div>
+                        <div class="kpi-box-info">
+                            <span class="kpi-num" id="auditKpiConfig">0</span>
+                            <span class="kpi-title">Perubahan Konfigurasi</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Audit Log Table & Filter -->
+                <div class="table-card">
+                    <div class="table-toolbar">
+                        <div class="filter-group">
+                            <label style="font-size:12px;"><i class="fa-solid fa-filter"></i> Kategori Log:</label>
+                            <select id="auditFilterCategory" onchange="renderAuditLogTable()" style="padding:6px 10px; font-size:12px;">
+                                <option value="ALL">Semua Kategori</option>
+                                <option value="auth">Autentikasi & Login</option>
+                                <option value="staff">Mutasi Staf & Hak Akses</option>
+                                <option value="geofence">Perubahan Geofencing</option>
+                                <option value="cms">Konten & Media Portal</option>
+                                <option value="ticket">Operasional Tiket & Tindak Lanjut</option>
+                            </select>
+
+                            <label style="font-size:12px; margin-left:10px;"><i class="fa-solid fa-shield"></i> Level:</label>
+                            <select id="auditFilterLevel" onchange="renderAuditLogTable()" style="padding:6px 10px; font-size:12px;">
+                                <option value="ALL">Semua Level</option>
+                                <option value="info">Info</option>
+                                <option value="success">Sukses</option>
+                                <option value="warning">Peringatan</option>
+                                <option value="danger">Kritis</option>
+                            </select>
+                        </div>
+
+                        <div style="min-width:220px;" class="input-wrapper">
+                            <i class="fa-solid fa-search"></i>
+                            <input type="text" id="auditSearchInput" placeholder="Cari pelaku, aksi, catatan..." onkeyup="renderAuditLogTable()" style="padding:6px 10px 6px 34px; font-size:12px;">
+                        </div>
+                    </div>
+
+                    <div style="overflow-x:auto;">
+                        <table class="audit-table">
+                            <thead>
+                                <tr>
+                                    <th style="width:45px; text-align:center;">No.</th>
+                                    <th>Waktu Kejadian</th>
+                                    <th>Akun Pelaku</th>
+                                    <th>Peran Otoritas</th>
+                                    <th>Kategori</th>
+                                    <th>Aksi Aktivitas</th>
+                                    <th>Rincian Keterangan</th>
+                                    <th>Level</th>
+                                </tr>
+                            </thead>
+                            <tbody id="auditTableBody">
+                                <!-- Populated dynamically by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ================= VIEW 5: MATRIKS SLA & BEBAN KERJA TEKNISI ================= -->
+            <div id="viewSlaTracker" class="admin-view-section hidden">
+                <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:18px; background:rgba(255,255,255,0.03); border:1px solid var(--border-color); padding:16px 20px; border-radius:14px;">
+                    <div>
+                        <h2 style="font-size:18px; font-weight:800; margin:0; display:flex; align-items:center; gap:8px;">
+                            <i class="fa-solid fa-stopwatch-20" style="color:#f59e0b;"></i> Matriks SLA & Distribusi Beban Teknisi Lapangan
+                        </h2>
+                        <p style="font-size:12px; color:var(--text-muted); margin:4px 0 0 0;">
+                            Pantau kepatuhan batas waktu Service Level Agreement (SLA), antrean perbaikan darurat, serta kapasitas kerja setiap petugas teknisi.
+                        </p>
+                    </div>
+                    <div style="display:flex; gap:8px; align-items:center;">
+                        <button type="button" class="btn btn-secondary" onclick="renderSlaTrackerView()" style="font-size:12px; padding:6px 14px;">
+                            <i class="fa-solid fa-rotate"></i> Refresh Data SLA
+                        </button>
+                    </div>
+                </div>
+
+                <!-- SLA KPI Grid -->
+                <div class="admin-kpi-grid" style="margin-bottom:20px;">
+                    <div class="kpi-box">
+                        <div class="kpi-box-icon" style="background:rgba(34,197,94,0.15); color:#22c55e;"><i class="fa-solid fa-shield-heart"></i></div>
+                        <div class="kpi-box-info">
+                            <span class="kpi-num" id="slaComplianceRate" style="color:#22c55e;">97.4%</span>
+                            <span class="kpi-title">Kepatuhan Target SLA</span>
+                        </div>
+                    </div>
+                    <div class="kpi-box">
+                        <div class="kpi-box-icon" style="background:rgba(239,68,68,0.15); color:#ef4444;"><i class="fa-solid fa-fire"></i></div>
+                        <div class="kpi-box-info">
+                            <span class="kpi-num" id="slaCriticalCount" style="color:#ef4444;">0</span>
+                            <span class="kpi-title">Mendekati Batas Deadline (&lt;2 Jam)</span>
+                        </div>
+                    </div>
+                    <div class="kpi-box">
+                        <div class="kpi-box-icon" style="background:rgba(245,158,11,0.15); color:#f59e0b;"><i class="fa-solid fa-hourglass-half"></i></div>
+                        <div class="kpi-box-info">
+                            <span class="kpi-num" id="slaAvgResponse">38 Menit</span>
+                            <span class="kpi-title">Rata-rata Respon Pertama</span>
+                        </div>
+                    </div>
+                    <div class="kpi-box">
+                        <div class="kpi-box-icon" style="background:rgba(56,189,248,0.15); color:#38bdf8;"><i class="fa-solid fa-helmet-safety"></i></div>
+                        <div class="kpi-box-info">
+                            <span class="kpi-num" id="slaActiveStaffCount">7</span>
+                            <span class="kpi-title">Teknisi Spesialis Aktif</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section: Live Workload Radar Staf Teknisi -->
+                <div class="glass-card" style="padding:20px; margin-bottom:24px;">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+                        <h3 style="font-size:15px; font-weight:800; margin:0; display:flex; align-items:center; gap:8px;">
+                            <i class="fa-solid fa-users-gear" style="color:var(--gold);"></i> Status Beban & Ketersediaan Teknisi Lapangan
+                        </h3>
+                        <span style="font-size:11.5px; color:var(--text-muted);">
+                            🟢 Tersedia (0-1 Tiket) &nbsp;|&nbsp; 🟡 Sedang Bertugas (2 Tiket) &nbsp;|&nbsp; 🔴 Beban Penuh (3+ Tiket)
+                        </span>
+                    </div>
+                    <div class="staff-workload-grid" id="staffWorkloadContainer">
+                        <!-- Populated dynamically by JS -->
+                    </div>
+                </div>
+
+                <!-- Section: Antrean Tiket Kritis Berdasarkan Batas Waktu SLA -->
+                <div class="table-card">
+                    <div style="padding:14px 18px; border-bottom:1px solid var(--border-color); font-size:13px; font-weight:800; color:var(--text-main); display:flex; align-items:center; justify-content:space-between;">
+                        <span style="display:flex; align-items:center; gap:8px;">
+                            <i class="fa-solid fa-list-check" style="color:var(--gold);"></i> Antrean Prioritas SLA (Tiket Aktif: Diajukan &amp; Diproses)
+                        </span>
+                        <span style="font-size:11px; font-weight:600; color:var(--text-muted);">Diurutkan berdasarkan urgensi dan sisa waktu target</span>
+                    </div>
+                    <div style="overflow-x:auto;">
+                        <table class="admin-table">
+                            <thead>
+                                <tr>
+                                    <th style="width:45px; text-align:center;">No.</th>
+                                    <th>Kode Tiket</th>
+                                    <th>Fasilitas &amp; Kategori</th>
+                                    <th>Lokasi Gedung / Ruangan</th>
+                                    <th>Urgensi</th>
+                                    <th>Target SLA</th>
+                                    <th>Sisa Waktu SLA</th>
+                                    <th>Petugas Penanggung Jawab</th>
+                                    <th>Aksi Cepat</th>
+                                </tr>
+                            </thead>
+                            <tbody id="slaQueueTableBody">
+                                <!-- Populated dynamically by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <!-- ================= VIEW 7: SECURITY OPERATIONS CENTER (SOC) - KHUSUS SUPER ADMIN ================= -->
+            <div id="viewSocSecurity" class="admin-view-section hidden">
+                <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:18px; background:rgba(250,204,21,0.06); border:1px solid rgba(250,204,21,0.3); padding:16px 20px; border-radius:14px;">
+                    <div>
+                        <div style="display:flex; align-items:center; gap:8px;">
+                            <span class="superadmin-badge-pill" style="font-size:10px;"><i class="fa-solid fa-shield-halved"></i> Super Admin Only</span>
+                            <h2 style="font-size:18px; font-weight:800; margin:0; display:flex; align-items:center; gap:8px; color:#facc15;">
+                                <i class="fa-solid fa-server"></i> Security Operations Center (SOC) &amp; Session Radar
+                            </h2>
+                        </div>
+                        <p style="font-size:12px; color:var(--text-muted); margin:4px 0 0 0;">
+                            Pusat kendali keamanan Super Admin: pantau sesi aktif pengguna secara real-time, perlindungan brute-force, serta utilitas memori sistem.
+                        </p>
+                    </div>
+                    <div style="display:flex; gap:8px;">
+                        <button type="button" class="btn btn-secondary" onclick="runSecurityAuditCheck()" style="font-size:12px; padding:6px 14px; border-color:#facc15; color:#facc15;">
+                            <i class="fa-solid fa-shield-check"></i> Uji Integritas Keamanan
+                        </button>
+                    </div>
+                </div>
+
+                <!-- SOC Status Cards -->
+                <div class="soc-grid">
+                    <div class="soc-card">
+                        <span style="font-size:11px; font-weight:700; color:var(--text-muted); text-transform:uppercase;">Status Enkripsi Sesi</span>
+                        <div style="font-size:20px; font-weight:800; color:#22c55e; margin:6px 0 2px;"><i class="fa-solid fa-lock"></i> 256-bit AES</div>
+                        <span style="font-size:11px; color:var(--text-muted);">Token session aman &amp; tersanitasi</span>
+                    </div>
+                    <div class="soc-card">
+                        <span style="font-size:11px; font-weight:700; color:var(--text-muted); text-transform:uppercase;">Proteksi Brute-Force</span>
+                        <div style="font-size:20px; font-weight:800; color:#22c55e; margin:6px 0 2px;"><i class="fa-solid fa-shield-halved"></i> AKTIF (0 Ancaman)</div>
+                        <span style="font-size:11px; color:var(--text-muted);">Captcha &amp; rate-limiting aktif</span>
+                    </div>
+                    <div class="soc-card">
+                        <span style="font-size:11px; font-weight:700; color:var(--text-muted); text-transform:uppercase;">Latensi Query Sistem</span>
+                        <div style="font-size:20px; font-weight:800; color:#38bdf8; margin:6px 0 2px;"><i class="fa-solid fa-bolt"></i> 8.4 ms</div>
+                        <span style="font-size:11px; color:var(--text-muted);">Performa read/write optimal</span>
+                    </div>
+                    <div class="soc-card">
+                        <span style="font-size:11px; font-weight:700; color:var(--text-muted); text-transform:uppercase;">Kapasitas Storage Terpakai</span>
+                        <div style="font-size:20px; font-weight:800; color:#facc15; margin:6px 0 2px;"><i class="fa-solid fa-hard-drive"></i> <span id="socStorageUsage">184 KB</span> / 5 MB</div>
+                        <span style="font-size:11px; color:var(--text-muted);">Quota aman (&lt; 4% kuota)</span>
+                    </div>
+                </div>
+
+                <!-- Active Sessions Table & Force Logout -->
+                <div class="table-card">
+                    <div style="padding:14px 18px; border-bottom:1px solid var(--border-color); font-size:13px; font-weight:800; color:var(--text-main); display:flex; align-items:center; justify-content:space-between;">
+                        <span style="display:flex; align-items:center; gap:8px;">
+                            <i class="fa-solid fa-user-shield" style="color:#facc15;"></i> Sesi Pengguna Aktif &amp; Otentikasi Terverifikasi
+                        </span>
+                        <span style="font-size:11.5px; color:var(--text-muted);">Super Admin memiliki wewenang memutus sesi mencurigakan</span>
+                    </div>
+                    <div style="overflow-x:auto;">
+                        <table class="audit-table">
+                            <thead>
+                                <tr>
+                                    <th style="width:45px; text-align:center;">No.</th>
+                                    <th>Akun Username</th>
+                                    <th>Peran (Role)</th>
+                                    <th>Alamat IP (Simulasi)</th>
+                                    <th>Browser / Klien</th>
+                                    <th>Waktu Login</th>
+                                    <th>Status Sesi</th>
+                                    <th>Tindakan Otoritas</th>
+                                </tr>
+                            </thead>
+                            <tbody id="socActiveSessionsBody">
+                                <!-- Populated dynamically by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ================= VIEW 8: DEDICATED FULL-VIEW MANAJEMEN PETUGAS & ADMIN ================= -->
+            <div id="viewStaffManagement" class="admin-view-section hidden">
+                <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:18px; background:rgba(255,255,255,0.03); border:1px solid var(--border-color); padding:16px 20px; border-radius:14px;">
+                    <div>
+                        <h2 style="font-size:18px; font-weight:800; margin:0; display:flex; align-items:center; gap:8px;">
+                            <i class="fa-solid fa-users-gear" id="staffModalIcon" style="color:var(--gold);"></i> <span id="staffModalTitleText">Manajemen Otoritas: Admin &amp; Petugas Sarpras</span>
+                        </h2>
+                        <p id="staffModalSubtitle" style="font-size:12px; color:var(--text-muted); margin:4px 0 0 0;">
+                            Pusat kendali personil kampus: atur pendaftaran akun teknisi lapangan, spesialisasi keahlian, status ketersediaan, serta nomor WhatsApp penugasan.
+                        </p>
+                    </div>
+                    <div style="display:flex; gap:8px;">
+                        <button type="button" class="btn btn-secondary" onclick="renderStaffTable()" style="font-size:12px; padding:6px 14px;">
+                            <i class="fa-solid fa-rotate"></i> Refresh Data Staf
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Staff Summary Counter Cards -->
+                <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(170px, 1fr)); gap:12px; margin-bottom:20px;">
+                    <div class="kpi-box" style="padding:14px;">
+                        <div class="kpi-box-icon" style="background:rgba(255,255,255,0.08); color:var(--text-main);"><i class="fa-solid fa-users"></i></div>
+                        <div class="kpi-box-info">
+                            <span class="kpi-num" id="staffTotalCount">0</span>
+                            <span class="kpi-title">Total Otoritas</span>
+                        </div>
+                    </div>
+                    <div id="staffAdminCountCard" class="kpi-box" style="padding:14px;">
+                        <div class="kpi-box-icon" style="background:rgba(45,212,191,0.15); color:#2dd4bf;"><i class="fa-solid fa-user-shield"></i></div>
+                        <div class="kpi-box-info">
+                            <span class="kpi-num" id="staffAdminCount" style="color:#2dd4bf;">0</span>
+                            <span class="kpi-title">Admin Sarpras</span>
+                        </div>
+                    </div>
+                    <div class="kpi-box" style="padding:14px;">
+                        <div class="kpi-box-icon" style="background:rgba(245,158,11,0.15); color:#f59e0b;"><i class="fa-solid fa-screwdriver-wrench"></i></div>
+                        <div class="kpi-box-info">
+                            <span class="kpi-num" id="staffPetugasCount" style="color:#f59e0b;">0</span>
+                            <span class="kpi-title">Tim Petugas/Teknisi</span>
+                        </div>
+                    </div>
+                    <div id="staffMitraCountCard" class="kpi-box" style="padding:14px;">
+                        <div class="kpi-box-icon" style="background:rgba(234,179,8,0.15); color:#facc15;"><i class="fa-solid fa-handshake"></i></div>
+                        <div class="kpi-box-info">
+                            <span class="kpi-num" id="staffMitraCount" style="color:#facc15;">0</span>
+                            <span class="kpi-title">Mitra Kampus</span>
+                        </div>
+                    </div>
+                    <div class="kpi-box" style="padding:14px;">
+                        <div class="kpi-box-icon" style="background:rgba(34,197,94,0.15); color:#22c55e;"><i class="fa-solid fa-circle-check"></i></div>
+                        <div class="kpi-box-info">
+                            <span class="kpi-num" id="staffActiveCount" style="color:#22c55e;">0</span>
+                            <span class="kpi-title">Siap / Aktif</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Form Tambah Staff Baru -->
+                <div class="glass-card" style="padding:20px; margin-bottom:24px;">
+                    <div id="staffFormTitle" style="font-size:14px; font-weight:800; color:var(--gold); margin-bottom:14px; display:flex; align-items:center; gap:8px;">
+                        <i class="fa-solid fa-user-plus"></i> <span id="staffFormTitleText">Daftarkan Akun Admin, Petugas &amp; Mitra Baru</span>
+                    </div>
+                    <form id="addStaffForm" onsubmit="handleAddNewStaff(event)">
+                        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:14px;">
+                            <div>
+                                <label style="font-size:12px; font-weight:700; display:block; margin-bottom:6px; color:var(--text-main);" id="lblStaffNama">Nama Lengkap &amp; Gelar *</label>
+                                <input type="text" id="staffNamaInput" placeholder="Contoh: Budi Prasetyo, S.T. / Kantin Berkah" required style="font-size:13px; padding:9px 12px; width:100%;">
+                            </div>
+                            <div>
+                                <label style="font-size:12px; font-weight:700; display:block; margin-bottom:6px; color:var(--text-main);">Peran / Otoritas *</label>
+                                <select id="staffRoleSelect" required onchange="handleStaffRoleChange()" style="font-size:13px; padding:9px 12px; width:100%; font-weight:700;">
+                                    <option value="petugas">Petugas / Teknisi Lapangan</option>
+                                    <option value="admin">Admin Sarpras (Penghubung)</option>
+                                    <option value="mitra">Mitra Kampus (Kantin / Bank / Vendor)</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label style="font-size:12px; font-weight:700; display:block; margin-bottom:6px; color:var(--text-main);" id="lblStaffBidang">Spesialisasi / Bidang Kerja *</label>
+                                <input type="text" id="staffBidangInput" placeholder="Contoh: AC &amp; Pendingin / Kantin Kampus" required style="font-size:13px; padding:9px 12px; width:100%;">
+                            </div>
+                            <div>
+                                <label style="font-size:12px; font-weight:700; display:block; margin-bottom:6px; color:var(--text-main);">Nomor WhatsApp *</label>
+                                <input type="text" id="staffWaInput" placeholder="Contoh: 08123456789" required style="font-size:13px; padding:9px 12px; width:100%;">
+                            </div>
+                            <div id="staffAuthFieldsWrapper" style="display:none; grid-column:1 / -1; background:rgba(250,204,21,0.06); border:1px dashed rgba(250,204,21,0.3); padding:12px 14px; border-radius:10px;">
+                                <div style="font-size:12px; font-weight:800; color:#facc15; margin-bottom:8px; display:flex; align-items:center; gap:6px;">
+                                    <i class="fa-solid fa-key"></i> Kredensial Login Akun Mitra (Dibuatkan Super Admin)
+                                </div>
+                                <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:12px;">
+                                    <div>
+                                        <label style="font-size:11.5px; font-weight:700; display:block; margin-bottom:4px; color:var(--text-muted);">Username Login Mitra</label>
+                                        <input type="text" id="staffUsernameInput" placeholder="Contoh: mitra_kantin (opsional, auto ID)" style="font-size:12.5px; padding:8px 12px; width:100%;">
+                                    </div>
+                                    <div>
+                                        <label style="font-size:11.5px; font-weight:700; display:block; margin-bottom:4px; color:var(--text-muted);">Kata Sandi (Password)</label>
+                                        <input type="text" id="staffPasswordInput" placeholder="Default: mitra123" value="mitra123" style="font-size:12.5px; padding:8px 12px; width:100%;">
+                                    </div>
+                                </div>
+                                <small style="display:block; margin-top:6px; font-size:11px; color:var(--text-muted);">Akun ini dapat langsung dipakai Mitra untuk login di halaman portal dan melaporkan sarpras.</small>
+                            </div>
+                        </div>
+                        <div style="margin-top:16px; display:flex; justify-content:flex-end;">
+                            <button type="submit" id="btnSubmitAddStaff" class="btn btn-primary" style="font-size:12px; padding:9px 20px;">
+                                <i class="fa-solid fa-plus"></i> <span id="btnSubmitAddStaffText">Tambah Akun Staf</span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Staff List Filter & Search -->
+                <div class="table-card">
+                    <div style="padding:14px 18px; border-bottom:1px solid var(--border-color); display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
+                        <div style="display:flex; gap:8px; flex-wrap:wrap;">
+                            <button type="button" class="chip-btn" id="btnFilterStaffAll" onclick="filterStaffTable('ALL')" style="background:var(--primary); color:#fff; border-color:var(--primary); font-weight:700;">Semua (<span id="countTabAll">0</span>)</button>
+                            <button type="button" class="chip-btn" id="btnFilterStaffAdmin" onclick="filterStaffTable('admin')" style="background:rgba(255,255,255,0.06); color:var(--text-muted); border-color:var(--border-color); font-weight:700;">Admin (<span id="countTabAdmin">0</span>)</button>
+                            <button type="button" class="chip-btn" id="btnFilterStaffPetugas" onclick="filterStaffTable('petugas')" style="background:rgba(255,255,255,0.06); color:var(--text-muted); border-color:var(--border-color); font-weight:700;">Petugas (<span id="countTabPetugas">0</span>)</button>
+                            <button type="button" class="chip-btn" id="btnFilterStaffMitra" onclick="filterStaffTable('mitra')" style="background:rgba(255,255,255,0.06); color:var(--text-muted); border-color:var(--border-color); font-weight:700;">Mitra Kampus (<span id="countTabMitra">0</span>)</button>
+                        </div>
+                        <div style="min-width:260px;" class="input-wrapper">
+                            <i class="fa-solid fa-search"></i>
+                            <input type="text" id="searchStaffInput" placeholder="Cari nama, bidang, kontak..." onkeyup="renderStaffTable()" style="padding:7px 12px 7px 34px; font-size:12.5px;">
+                        </div>
+                    </div>
+
+                    <!-- Staff Table -->
+                    <div style="overflow-x:auto;">
+                        <table class="staff-table">
+                            <thead>
+                                <tr>
+                                    <th style="width:45px; text-align:center;">No.</th>
+                                    <th>Kode ID</th>
+                                    <th>Nama &amp; Kontak WhatsApp</th>
+                                    <th>Peran / Otoritas</th>
+                                    <th>Bidang / Spesialisasi</th>
+                                    <th>Status Siaga</th>
+                                    <th id="staffActionColHeader" style="text-align:center;">Aksi Otoritas</th>
+                                </tr>
+                            </thead>
+                            <tbody id="staffTableBody">
+                                <!-- Populated dynamically by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div style="padding:12px 18px; border-top:1px solid var(--border-color); font-size:11.5px; color:var(--text-muted); display:flex; align-items:center; gap:6px;">
+                        <i class="fa-solid fa-shield-halved" style="color:var(--gold);"></i> Perubahan personil staf otomatis disinkronkan ke daftar penugasan admin, radar SLA, dan notifikasi pelapor.
+                    </div>
                 </div>
             </div>
         </main>
@@ -232,8 +857,16 @@
                 </div>
 
                 <div class="form-group">
-                    <label>Tugaskan Teknisi:</label>
-                    <input type="text" id="modalTeknisiInput" placeholder="Contoh: Pak Bambang (HVAC)">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+                        <label style="margin-bottom:0;"><i class="fa-solid fa-user-gear" style="color:var(--gold);"></i> Petugas / Teknisi:</label>
+                        <button type="button" onclick="toggleCustomTeknisiInput()" id="btnToggleCustomTeknisi" style="background:none; border:none; font-size:11px; color:var(--gold); font-weight:700; cursor:pointer;">
+                            <i class="fa-solid fa-pen"></i> Ketik Manual
+                        </button>
+                    </div>
+                    <select id="modalTeknisiSelect" onchange="handleTeknisiSelectChange()" style="font-weight:700;">
+                        <!-- Options populated dynamically from Staff Data by JS -->
+                    </select>
+                    <input type="text" id="modalTeknisiInput" placeholder="Ketik nama petugas..." class="hidden" style="margin-top:6px;">
                 </div>
 
                 <div class="form-group full-width">
@@ -242,8 +875,31 @@
                 </div>
             </div>
 
+            <!-- Hub Penghubung Admin: Petugas & User (Peran Admin) -->
+            <div class="bridge-action-card">
+                <div style="font-size:12px; font-weight:800; color:var(--gold); margin-bottom:8px; display:flex; align-items:center; gap:6px;">
+                    <i class="fa-solid fa-arrows-split-up-and-left"></i> Peran Admin: Menghubungkan Petugas & User
+                </div>
+                <div style="font-size:11px; color:var(--text-muted); margin-bottom:10px; line-height:1.4;">
+                    Sebagai Admin penghubung, kirim instruksi penanganan ke teknisi spesialis atau kirim kabar progres langsung ke kontak pelapor:
+                </div>
+                <div style="display:flex; gap:10px; flex-wrap:wrap;">
+                    <button type="button" class="btn btn-secondary" onclick="dispatchTaskToTeknisi()" style="flex:1; min-width:210px; font-size:12px; padding:9px 14px; background:rgba(16,185,129,0.12); color:#10b981; border-color:#10b981; font-weight:700;" title="Kirim rincian tugas ke WhatsApp Petugas yang ditugaskan">
+                        <i class="fa-brands fa-whatsapp" style="font-size:15px;"></i> Disposisi Tugas ke Petugas
+                    </button>
+                    <button type="button" class="btn btn-secondary" onclick="notifyUserPelapor()" style="flex:1; min-width:210px; font-size:12px; padding:9px 14px; background:rgba(59,130,246,0.12); color:#3b82f6; border-color:#3b82f6; font-weight:700;" title="Kirim kabar progres perbaikan ke WhatsApp User pelapor">
+                        <i class="fa-brands fa-whatsapp" style="font-size:15px;"></i> Update Progres ke User Pelapor
+                    </button>
+                </div>
+            </div>
+
             <div id="modalReportInfo" style="margin-top:20px; background:rgba(255,255,255,0.03); padding:16px; border-radius:10px; font-size:13px; border:1px solid var(--border-color);">
                 <!-- Details injected by JS -->
+            </div>
+
+            <!-- Panel Laporan Serupa / Duplikat di Ruangan Ini -->
+            <div id="modalDuplicateInfo" class="box-duplicate-info hidden">
+                <!-- Injected dynamically by JS -->
             </div>
 
             <!-- Upload / Update Foto Bukti Perbaikan -->
@@ -270,6 +926,286 @@
             <div style="margin-top:24px; display:flex; justify-content:flex-end; align-items:center; flex-wrap:wrap; gap:10px;">
                 <button class="btn btn-secondary" onclick="closeAdminModal()">Batal</button>
                 <button class="btn btn-primary" onclick="saveReportUpdates()"><i class="fa-solid fa-floppy-disk"></i> Simpan Perubahan</button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Geofencing Boundary Editor Modal (Super Admin Exclusive Authority) -->
+    <div id="geofenceModal" class="modal-overlay hidden" onclick="closeGeofenceModalOnBackdrop(event)">
+        <div class="modal-content" style="max-width: 960px; text-align: left;">
+            <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--border-color); padding-bottom:16px; margin-bottom:18px;">
+                <div>
+                    <h3 style="font-size:18px; font-weight:800; display:flex; align-items:center; gap:8px; margin:0;">
+                        <i class="fa-solid fa-draw-polygon" style="color:#facc15;"></i> Pengaturan Batas Wilayah Geofencing Kampus
+                    </h3>
+                    <p style="font-size:12px; color:var(--text-muted); margin:4px 0 0 0;">
+                        Wewenang Eksklusif Super Admin: Menyesuaikan batas koordinat polygon GPS 5 kawasan kampus untuk validasi lokasi kerusakan fasilitas.
+                    </p>
+                </div>
+                <button class="btn-act" onclick="closeGeofenceModal()"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+
+            <!-- Kawasan Selector Tab -->
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:14px;">
+                <div style="display:flex; gap:8px; flex-wrap:wrap;" id="geofenceZoneTabs">
+                    <!-- Populated dynamically via JS: 5 Kawasan buttons -->
+                </div>
+                <div style="display:flex; gap:8px;">
+                    <button type="button" class="btn btn-secondary" onclick="resetCurrentZoneToDefault()" style="font-size:12px; padding:6px 12px;" title="Kembalikan batas kawasan ini ke koordinat bawaan">
+                        <i class="fa-solid fa-rotate-left"></i> Reset Kawasan Ini
+                    </button>
+                    <button type="button" class="btn btn-secondary" onclick="resetAllZonesToDefault()" style="font-size:12px; padding:6px 12px; color:#ef4444; border-color:rgba(239,68,68,0.3);" title="Kembalikan semua kawasan ke koordinat default">
+                        <i class="fa-solid fa-arrow-rotate-left"></i> Reset Semua Kawasan
+                    </button>
+                </div>
+            </div>
+
+            <!-- Two Column Layout: Interactive Leaflet Map Editor & Coordinate Point List -->
+            <div style="display:grid; grid-template-columns: 1.35fr 1fr; gap:16px; margin-bottom:16px;">
+                <!-- Map Column -->
+                <div>
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                        <span style="font-size:12px; font-weight:700; color:var(--gold);">
+                            <i class="fa-solid fa-map-location-dot"></i> Peta Editor Polygon & Sudut Kawasan
+                        </span>
+                        <div style="display:flex; gap:6px;">
+                            <button type="button" id="btnGeofenceDrawMode" class="chip-btn" onclick="toggleGeofenceDrawMode()" style="background:rgba(250,204,21,0.15); color:#facc15; border:1px solid #facc15; font-size:11px; padding:4px 10px; border-radius:14px; font-weight:700;">
+                                <i class="fa-solid fa-pen-nib"></i> Mode Tambah Titik Baru
+                            </button>
+                            <button type="button" class="chip-btn" onclick="clearCurrentZonePoints()" style="background:rgba(255,255,255,0.06); color:var(--text-muted); font-size:11px; padding:4px 10px; border-radius:14px;">
+                                <i class="fa-solid fa-eraser"></i> Kosongkan
+                            </button>
+                        </div>
+                    </div>
+                    <div id="geofenceEditorMap" style="width:100%; height:340px; border-radius:var(--radius-md); border:1px solid var(--border-color); background:#ffffff;"></div>
+                    <small style="font-size:11px; color:var(--text-muted); margin-top:6px; display:block; line-height:1.4;">
+                        <i class="fa-solid fa-circle-info"></i> Geser pin sudut bundar untuk menyesuaikan batas wilayah, atau aktifkan <b>Mode Tambah Titik Baru</b> lalu klik peta untuk menambah sudut poligon.
+                    </small>
+                </div>
+
+                <!-- Point List & Coordinate Table Column -->
+                <div style="display:flex; flex-direction:column;">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                        <span style="font-size:12px; font-weight:700; color:var(--text-main);">
+                            <i class="fa-solid fa-list-ol"></i> Titik Sudut (<span id="geofencePointCount">0</span> Sudut)
+                        </span>
+                        <span id="geofenceActiveZoneBadge" style="font-size:11px; font-weight:700; color:#2dd4bf; background:rgba(45,212,191,0.1); padding:2px 8px; border-radius:10px;">
+                            Kawasan Kampus Utama
+                        </span>
+                    </div>
+
+                    <!-- Points Scrollable List -->
+                    <div id="geofencePointsList" style="max-height:220px; overflow-y:auto; border:1px solid var(--border-color); border-radius:8px; background:rgba(0,0,0,0.2); padding:6px; margin-bottom:10px;">
+                        <!-- Filled dynamically -->
+                    </div>
+
+                    <!-- Add Single Point Manually -->
+                    <div style="background:rgba(255,255,255,0.03); border:1px solid var(--border-color); border-radius:8px; padding:8px 10px; margin-top:auto;">
+                        <div style="font-size:11px; font-weight:700; color:var(--text-muted); margin-bottom:6px;">Tambah Titik Sudut Manual:</div>
+                        <div style="display:grid; grid-template-columns: 1fr 1fr auto; gap:6px;">
+                            <input type="number" step="0.000001" id="manualLatInput" placeholder="Latitude (cth: -6.735...)" style="font-size:11px; padding:6px 8px;">
+                            <input type="number" step="0.000001" id="manualLngInput" placeholder="Longitude (cth: 108.53...)" style="font-size:11px; padding:6px 8px;">
+                            <button type="button" class="btn btn-secondary" onclick="addManualGeofencePoint()" style="font-size:11px; padding:6px 10px;">
+                                <i class="fa-solid fa-plus"></i> Tambah
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer Action Buttons -->
+            <div style="display:flex; justify-content:space-between; align-items:center; border-top:1px dashed var(--border-color); padding-top:14px; flex-wrap:wrap; gap:10px;">
+                <span style="font-size:11px; color:var(--text-muted);">
+                    <i class="fa-solid fa-shield-halved" style="color:#facc15;"></i> Perubahan geofencing otomatis tersimpan dan aktif di portal pelapor user serta GIS overview admin.
+                </span>
+                <div style="display:flex; gap:10px;">
+                    <button type="button" class="btn btn-secondary" onclick="closeGeofenceModal()">Tutup</button>
+                    <button type="button" class="btn btn-primary" onclick="saveAllGeofenceChanges()" style="background:#005a36; border-color:#c59235; font-weight:700;">
+                        <i class="fa-solid fa-floppy-disk"></i> Simpan Batas Geofencing
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Portal Content & Media Management Modal (Super Admin Exclusive Authority) -->
+    <div id="portalContentModal" class="modal-overlay hidden" onclick="closePortalContentModalOnBackdrop(event)">
+        <div class="modal-content" style="max-width: 900px; text-align: left; max-height: 90vh; display: flex; flex-direction: column;">
+            <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--border-color); padding-bottom:16px; margin-bottom:16px; flex-shrink: 0;">
+                <div>
+                    <h3 style="font-size:18px; font-weight:800; display:flex; align-items:center; gap:8px; margin:0;">
+                        <i class="fa-solid fa-photo-film" style="color:#38bdf8;"></i> Pengelolaan Konten, Banner & Video Portal
+                    </h3>
+                    <p style="font-size:12px; color:var(--text-muted); margin:4px 0 0 0;">
+                        Wewenang Eksklusif Super Admin: Kelola teks & ikon 3 fitur login, banner portal pelapor, serta tautan video profil kampus.
+                    </p>
+                </div>
+                <button class="btn-act" onclick="closePortalContentModal()"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+
+            <!-- Tab Navigation for CMS -->
+            <div style="display: flex; gap: 8px; border-bottom: 1px solid var(--border-color); padding-bottom: 12px; margin-bottom: 16px; flex-wrap: wrap; flex-shrink: 0;">
+                <button type="button" class="tab-btn active" id="btnCmsTabFeatures" onclick="switchCmsTab('features')" style="font-size: 12px; padding: 6px 14px; border-radius: 20px;">
+                    <i class="fa-solid fa-list-check"></i> 3 Fitur Halaman Login
+                </button>
+                <button type="button" class="tab-btn" id="btnCmsTabBanner" onclick="switchCmsTab('banner')" style="font-size: 12px; padding: 6px 14px; border-radius: 20px;">
+                    <i class="fa-solid fa-image"></i> Banner Portal Pelapor
+                </button>
+                <button type="button" class="tab-btn" id="btnCmsTabVideo" onclick="switchCmsTab('video')" style="font-size: 12px; padding: 6px 14px; border-radius: 20px;">
+                    <i class="fa-brands fa-youtube" style="color:#ef4444;"></i> Profil Video Kampus
+                </button>
+            </div>
+
+            <!-- Scrollable Content Body -->
+            <div style="overflow-y: auto; padding-right: 6px; flex: 1;">
+                
+                <!-- TAB 1: 3 FITUR LOGIN -->
+                <div id="cmsSectionFeatures">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+                        <span style="font-size:13px; font-weight:700; color:var(--gold);">
+                            <i class="fa-solid fa-sliders"></i> Sesuaikan Tulisan, Deskripsi, dan Ikon 3 Fitur Utama Login
+                        </span>
+                    </div>
+
+                    <!-- 3 Features Form Cards -->
+                    <div style="display:flex; flex-direction:column; gap:14px;" id="cmsFeaturesContainer">
+                        <!-- Populated by JS for Feature 1, 2, 3 -->
+                    </div>
+                </div>
+
+                <!-- TAB 2: BANNER USER PORTAL -->
+                <div id="cmsSectionBanner" class="hidden">
+                    <div style="font-size:13px; font-weight:700; color:var(--gold); margin-bottom:12px;">
+                        <i class="fa-solid fa-image"></i> Pengaturan Banner Utama Pelapor (User Portal)
+                    </div>
+
+                    <!-- Live Banner Preview -->
+                    <div style="margin-bottom:16px;">
+                        <div style="font-size:11px; font-weight:700; color:var(--text-muted); margin-bottom:6px;">Pratinjau Banner Real-time:</div>
+                        <div class="user-banner-card" id="cmsBannerPreview" style="margin-bottom:0; min-height:auto; padding:20px 24px; position:relative; overflow:hidden; border-radius:14px; background:linear-gradient(135deg, #005a36 0%, #003620 100%); color:#fff; border:1px solid #c59235;">
+                            <div class="user-banner-bg-graphic" id="cmsBannerPreviewGraphic" style="position:absolute; right:20px; top:50%; transform:translateY(-50%); font-size:140px; color:rgba(255,255,255,0.05); pointer-events:none;">
+                                <i class="fa-solid fa-building-shield"></i>
+                            </div>
+                            <div class="user-banner-content" style="max-width:100%; position:relative; z-index:2;">
+                                <div class="banner-badge" id="cmsBannerPreviewBadge" style="background:rgba(197,146,53,0.22); border:1px solid #c59235; color:#fef08a; padding:4px 12px; border-radius:9999px; font-size:11px; font-weight:800; display:inline-flex; align-items:center; gap:6px; margin-bottom:10px;">
+                                    <i class="fa-solid fa-bookmark"></i> PORTAL LAYANAN SARPRAS KAMPUS
+                                </div>
+                                <h2 class="user-banner-title" id="cmsBannerPreviewTitle" style="font-size:20px; font-weight:800; margin-bottom:6px; color:#fff;">
+                                    Sistem Informasi Pelaporan Fasilitas Kampus
+                                </h2>
+                                <p class="user-banner-desc" id="cmsBannerPreviewDesc" style="font-size:12px; color:rgba(255,255,255,0.9); margin:0; line-height:1.5;">
+                                    Pencatatan Kerusakan Sarpras, Validasi Geofencing GIS Presisi 5 Kawasan, Pelacakan Status Tiket Real-time, & Respon Cepat Tim Teknisi Pemeliharaan UINSSC.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Banner Form Inputs -->
+                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px; margin-bottom:12px;">
+                        <div>
+                            <label style="font-size:12px; font-weight:700; color:var(--text-main); display:block; margin-bottom:4px;">Teks Badge / Tagline Atas:</label>
+                            <input type="text" id="cmsBannerBadgeInput" class="login-input" placeholder="PORTAL LAYANAN SARPRAS KAMPUS" oninput="updateCmsBannerPreview()">
+                        </div>
+                        <div>
+                            <label style="font-size:12px; font-weight:700; color:var(--text-main); display:block; margin-bottom:4px;">Ikon Grafis Latar Banner:</label>
+                            <select id="cmsBannerIconSelect" class="login-input" onchange="updateCmsBannerPreview()">
+                                <option value="fa-building-shield">Gedung & Keamanan (fa-building-shield)</option>
+                                <option value="fa-building-columns">Gedung Institusi Kampus (fa-building-columns)</option>
+                                <option value="fa-school">Sekolah / Kampus (fa-school)</option>
+                                <option value="fa-city">Kawasan Kampus (fa-city)</option>
+                                <option value="fa-shield-halved">Perlindungan Fasilitas (fa-shield-halved)</option>
+                                <option value="fa-screwdriver-wrench">Alat Perbaikan & Sarpras (fa-screwdriver-wrench)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div style="margin-bottom:12px;">
+                        <label style="font-size:12px; font-weight:700; color:var(--text-main); display:block; margin-bottom:4px;">Judul Utama Banner:</label>
+                        <input type="text" id="cmsBannerTitleInput" class="login-input" placeholder="Sistem Informasi Pelaporan Fasilitas Kampus" oninput="updateCmsBannerPreview()">
+                    </div>
+
+                    <div style="margin-bottom:14px;">
+                        <label style="font-size:12px; font-weight:700; color:var(--text-main); display:block; margin-bottom:4px;">Deskripsi / Paragraf Banner:</label>
+                        <textarea id="cmsBannerDescInput" rows="3" class="login-input" placeholder="Deskripsi informasi layanan sarpras..." oninput="updateCmsBannerPreview()"></textarea>
+                    </div>
+
+                    <div>
+                        <label style="font-size:12px; font-weight:700; color:var(--text-main); display:block; margin-bottom:4px;">Gambar Latar Banner Opsional (Upload Foto / Poster Kampus):</label>
+                        <div style="display:flex; gap:10px; align-items:center;">
+                            <input type="file" id="cmsBannerFileInput" accept="image/*" onchange="handleCmsBannerUpload(event)" style="font-size:12px;">
+                            <button type="button" class="btn btn-secondary" onclick="clearCmsBannerImage()" style="font-size:11px; padding:6px 10px;">
+                                <i class="fa-solid fa-eraser"></i> Hapus Gambar Latar
+                            </button>
+                        </div>
+                        <small style="font-size:11px; color:var(--text-muted); display:block; margin-top:4px;">Jika tidak ada gambar, banner akan menggunakan warna gradien hijau & emas institusi UINSSC.</small>
+                    </div>
+                </div>
+
+                <!-- TAB 3: PROFIL VIDEO YOUTUBE -->
+                <div id="cmsSectionVideo" class="hidden">
+                    <div style="font-size:13px; font-weight:700; color:var(--gold); margin-bottom:12px;">
+                        <i class="fa-brands fa-youtube" style="color:#ef4444;"></i> Pengaturan Video Profil Kampus di Menu Login
+                    </div>
+
+                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:16px;">
+                        <!-- Left: Form Input -->
+                        <div>
+                            <div style="margin-bottom:12px;">
+                                <label style="font-size:12px; font-weight:700; color:var(--text-main); display:block; margin-bottom:4px;">
+                                    Tautan URL Video YouTube:
+                                </label>
+                                <input type="text" id="cmsVideoUrlInput" class="login-input" placeholder="https://youtu.be/bUhLVKdbRd0 atau ID YouTube" oninput="updateCmsVideoPreview()">
+                                <small style="font-size:11px; color:var(--text-muted); display:block; margin-top:3px;">
+                                    Mendukung format: https://youtu.be/..., https://www.youtube.com/watch?v=..., dsb.
+                                </small>
+                            </div>
+
+                            <div style="margin-bottom:12px;">
+                                <label style="font-size:12px; font-weight:700; color:var(--text-main); display:block; margin-bottom:4px;">Judul Video Profil:</label>
+                                <input type="text" id="cmsVideoTitleInput" class="login-input" placeholder="Profil Kampus UIN Siber Syekh Nurjati Cirebon" oninput="updateCmsVideoPreview()">
+                            </div>
+
+                            <div style="margin-bottom:14px;">
+                                <label style="font-size:12px; font-weight:700; color:var(--text-main); display:block; margin-bottom:4px;">Deskripsi Singkat Video:</label>
+                                <textarea id="cmsVideoDescInput" rows="2" class="login-input" placeholder="Mengenal sarana, prasarana, dan ekosistem digital kampus UINSSC Cirebon." oninput="updateCmsVideoPreview()"></textarea>
+                            </div>
+
+                            <div style="background:rgba(255,255,255,0.03); border:1px solid var(--border-color); border-radius:8px; padding:10px 12px;">
+                                <label style="display:flex; align-items:center; gap:8px; font-size:12px; font-weight:700; cursor:pointer;">
+                                    <input type="checkbox" id="cmsVideoEnabledInput" checked onchange="updateCmsVideoPreview()" style="accent-color:var(--gold); width:16px; height:16px;">
+                                    <span>Tampilkan Pemutar Video Profil di Halaman Login</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Right: Live Preview Video Player -->
+                        <div>
+                            <div style="font-size:11px; font-weight:700; color:var(--text-muted); margin-bottom:6px;">Pratinjau Pemutar Video:</div>
+                            <div id="cmsVideoPreviewContainer" style="border-radius:10px; overflow:hidden; border:1px solid var(--border-color); aspect-ratio:16/9; background:#000000; box-shadow:0 4px 16px rgba(0,0,0,0.3);">
+                                <iframe id="cmsVideoPreviewIframe" width="100%" height="100%" src="https://www.youtube.com/embed/bUhLVKdbRd0" title="Video Profil" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="display:block;"></iframe>
+                            </div>
+                            <div style="margin-top:8px;">
+                                <strong id="cmsVideoPreviewTitleText" style="font-size:13px; color:var(--text-main); display:block;">Profil Kampus UIN Siber Syekh Nurjati Cirebon</strong>
+                                <small id="cmsVideoPreviewDescText" style="font-size:11px; color:var(--text-muted); display:block;">Mengenal sarana, prasarana, dan ekosistem digital kampus UINSSC Cirebon.</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Footer Action Buttons -->
+            <div style="display:flex; justify-content:space-between; align-items:center; border-top:1px dashed var(--border-color); padding-top:14px; margin-top:14px; flex-shrink: 0; flex-wrap:wrap; gap:10px;">
+                <button type="button" class="btn btn-secondary" onclick="resetPortalContentToDefault()" style="font-size:12px; padding:6px 12px; color:#ef4444; border-color:rgba(239,68,68,0.3);" title="Kembalikan semua konten ke bawaan awal">
+                    <i class="fa-solid fa-rotate-left"></i> Reset ke Bawaan Kampus
+                </button>
+                <div style="display:flex; gap:10px;">
+                    <button type="button" class="btn btn-secondary" onclick="closePortalContentModal()">Batal</button>
+                    <button type="button" class="btn btn-primary" onclick="savePortalContentChanges()" style="background:#005a36; border-color:#c59235; font-weight:700;">
+                        <i class="fa-solid fa-floppy-disk"></i> Simpan Perubahan Konten & Video
+                    </button>
+                </div>
             </div>
         </div>
     </div>
