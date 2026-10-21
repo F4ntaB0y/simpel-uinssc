@@ -649,6 +649,10 @@ function updateThemeIcon(theme) {
     if (icon) {
         icon.className = theme === 'dark' ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
     }
+    const mobileIcon = document.getElementById('adminMobileThemeIcon');
+    if (mobileIcon) {
+        mobileIcon.className = theme === 'dark' ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
+    }
 }
 
 async function loadReports() {

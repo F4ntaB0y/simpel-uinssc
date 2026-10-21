@@ -444,22 +444,23 @@ body {
 
 @media (max-width: 768px) {
     .user-banner-card {
-        padding: 24px 20px;
+        padding: 20px 16px;
     }
     .user-banner-title {
-        font-size: 22px;
+        font-size: 20px;
     }
     .form-card, #sectionRiwayat, #sectionLacak {
-        padding: 24px 18px !important;
+        padding: 20px 16px !important;
     }
     .tab-switcher {
-        grid-template-columns: 1fr !important;
+        grid-template-columns: repeat(3, 1fr) !important;
         gap: 6px !important;
         border-radius: 12px !important;
+        padding: 5px !important;
     }
     .tab-btn {
-        padding: 10px 14px !important;
-        font-size: 13px !important;
+        padding: 8px 6px !important;
+        font-size: 12px !important;
     }
     .top-util-bar {
         display: none;
@@ -924,20 +925,22 @@ input:focus, select:focus, textarea:focus {
 /* Tablet & Smaller Devices (<= 768px) */
 @media (max-width: 768px) {
     .container {
-        padding: 0 16px;
+        padding: 0 14px;
     }
 
     .navbar-content {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 12px;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
     }
 
     .nav-links {
-        width: 100%;
-        justify-content: flex-start;
-        overflow-x: auto;
-        padding-bottom: 4px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        overflow-x: visible;
+        padding-bottom: 0;
     }
 
     .hero-user {
@@ -945,11 +948,11 @@ input:focus, select:focus, textarea:focus {
     }
 
     .hero-user h1 {
-        font-size: 26px;
+        font-size: 24px;
     }
 
     .hero-user p {
-        font-size: 14px;
+        font-size: 13px;
     }
 
     .form-card {
@@ -966,12 +969,15 @@ input:focus, select:focus, textarea:focus {
     }
 
     .tab-switcher {
-        flex-direction: column;
-        width: 100%;
+        display: grid !important;
+        grid-template-columns: repeat(3, 1fr) !important;
+        gap: 6px !important;
     }
 
     .tab-btn {
         width: 100%;
+        display: flex;
+        align-items: center;
         justify-content: center;
     }
 
@@ -1008,22 +1014,33 @@ input:focus, select:focus, textarea:focus {
 /* Extra Small Phones (<= 480px) */
 @media (max-width: 480px) {
     .brand-title {
-        font-size: 18px;
+        font-size: 15px;
+    }
+
+    .brand-subtitle {
+        display: none;
     }
 
     .hero-user h1 {
-        font-size: 22px;
-    }
-
-    .btn {
-        width: 100%;
-        font-size: 13px;
+        font-size: 20px;
     }
 
     .toast-box {
         bottom: 12px;
         right: 12px;
         left: 12px;
+    }
+
+    .tab-btn {
+        flex-direction: column !important;
+        padding: 8px 4px !important;
+        font-size: 11px !important;
+        gap: 3px !important;
+    }
+
+    .tab-btn i {
+        font-size: 14px !important;
+        margin: 0 !important;
     }
 }
 
@@ -1508,13 +1525,21 @@ input:focus, select:focus, textarea:focus {
 /* Responsive Breakpoints for Login */
 @media (max-width: 992px) {
     .login-portal-grid {
-        grid-template-columns: 1fr;
-        gap: 36px;
+        display: flex;
+        flex-direction: column;
+        gap: 28px;
         min-height: auto;
         padding: 10px 0 40px;
     }
 
+    .login-glass-card-wrapper {
+        order: 1;
+        width: 100%;
+    }
+
     .login-hero-side {
+        order: 2;
+        width: 100%;
         text-align: center;
         align-items: center;
     }
@@ -1524,12 +1549,13 @@ input:focus, select:focus, textarea:focus {
     }
 
     .login-main-title {
-        font-size: 28px;
+        font-size: 24px;
     }
 
     .login-features-list {
         width: 100%;
         max-width: 520px;
+        margin: 0 auto;
     }
 
     .login-feature-item {
@@ -1543,18 +1569,40 @@ input:focus, select:focus, textarea:focus {
     .login-glass-card {
         max-width: 480px;
         margin: 0 auto;
-        padding: 30px 22px !important;
+        padding: 26px 20px !important;
     }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 640px) {
     .login-preset-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: 1fr !important;
+        gap: 8px !important;
+    }
+
+    #presetSuperAdminCard {
+        grid-column: span 1 !important;
     }
 
     .login-glass-card {
-        padding: 24px 18px !important;
-        border-radius: 18px !important;
+        padding: 20px 16px !important;
+        border-radius: 16px !important;
+    }
+
+    .login-main-title {
+        font-size: 20px !important;
+    }
+
+    .login-main-desc {
+        font-size: 13px !important;
+    }
+
+    .system-status-pill {
+        display: none !important;
+    }
+
+    .user-badge-pill {
+        font-size: 11.5px !important;
+        padding: 4px 10px !important;
     }
 }
 
