@@ -80,6 +80,11 @@
                         <i class="fa-solid fa-users-gear" id="sidebarStaffIcon"></i> <span id="sidebarStaffText">Kelola Petugas</span>
                     </a>
                 </li>
+                <li>
+                    <a href="javascript:void(0)" onclick="switchAdminView('kategori'); closeAdminSidebar();" id="sidebarCategoryLink" title="Kelola Kategori Kerusakan Fasilitas (Admin & Super Admin)">
+                        <i class="fa-solid fa-tags" style="color:#a855f7;"></i> <span>Kelola Kategori</span>
+                    </a>
+                </li>
 
                 <!-- ================= GRUP KHUSUS SUPER ADMIN (DIPISAH) ================= -->
                 <li id="sidebarSuperAdminDivider" class="hidden" style="border-top:1px dashed var(--border-color); margin:10px 0 6px; padding-top:4px;"></li>
@@ -213,39 +218,110 @@
                     </div>
                 </div>
 
-                <!-- Visual Analytics Chart Section (Chart.js Modern Analytics) -->
-                <div class="chart-container-card">
-                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; flex-wrap:wrap; gap:10px;">
+                <!-- Visual Analytics Multi-Chart Section (Chart.js Modern Executive Suite) -->
+                <div class="glass-card" style="padding: 22px; margin-bottom: 24px;">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:18px; flex-wrap:wrap; gap:12px; border-bottom:1px solid var(--border-color); padding-bottom:14px;">
                         <div>
-                            <h3 style="font-size:16px; font-weight:800; display:flex; align-items:center; gap:8px; margin:0;">
-                                <i class="fa-solid fa-chart-column" style="color:var(--gold);"></i> Grafik Statistik Kerusakan Fasilitas Kampus UINSSC
+                            <h3 style="font-size:17px; font-weight:800; display:flex; align-items:center; gap:8px; margin:0;">
+                                <i class="fa-solid fa-chart-pie" style="color:var(--gold);"></i> Pusat Analitik Visual Sarpras Kampus (Chart.js Multi-Chart)
                             </h3>
-                            <p style="font-size:12px; color:var(--text-muted); margin:3px 0 0 0;">Visualisasi interaktif sebaran laporan per kawasan & kategori sarpras.</p>
+                            <p style="font-size:12.5px; color:var(--text-muted); margin:4px 0 0 0;">Monitoring komprehensif tren tiket, proporsi kategori sarpras, sebaran kawasan, dan matriks urgensi SLA.</p>
                         </div>
                         <div style="display:flex; gap:8px; align-items:center;">
-                            <button type="button" class="chip-btn" id="btnChartTypeBar" onclick="switchAdminChartType('bar')" style="background:var(--primary); color:#fff; border-color:var(--primary); font-weight:700;">
-                                <i class="fa-solid fa-chart-simple"></i> Per Kawasan
-                            </button>
-                            <button type="button" class="chip-btn" id="btnChartTypeDoughnut" onclick="switchAdminChartType('doughnut')" style="background:rgba(255,255,255,0.06); color:var(--text-muted); border-color:var(--border-color); font-weight:700;">
-                                <i class="fa-solid fa-chart-pie"></i> Proporsi Kategori
-                            </button>
+                            <span class="system-status-pill" style="font-size:11.5px; padding:4px 10px;">
+                                <span class="status-pulse-dot"></span> Real-time Multi-Chart
+                            </span>
                         </div>
                     </div>
-                    <div style="position:relative; width:100%; height:230px; display:flex; align-items:center; justify-content:center;">
-                        <canvas id="adminChartCanvas"></canvas>
+
+                    <div class="analytics-charts-grid">
+                        <!-- Chart 1: Status Laporan -->
+                        <div class="chart-card">
+                            <div class="chart-card-header">
+                                <div>
+                                    <h4 class="chart-title"><i class="fa-solid fa-chart-column" style="color:#10b981;"></i> Status Laporan Kerusakan</h4>
+                                    <span class="chart-subtitle">Distribusi Diajukan, Diproses &amp; Selesai</span>
+                                </div>
+                                <span class="chart-badge badge-emerald">Status</span>
+                            </div>
+                            <div class="chart-canvas-wrapper">
+                                <canvas id="chartTrendStatus"></canvas>
+                            </div>
+                        </div>
+
+                        <!-- Chart 2: Proporsi Kategori Fasilitas -->
+                        <div class="chart-card">
+                            <div class="chart-card-header">
+                                <div>
+                                    <h4 class="chart-title"><i class="fa-solid fa-chart-pie" style="color:#c59235;"></i> Proporsi per Kategori Fasilitas</h4>
+                                    <span class="chart-subtitle">AC, Listrik, Sanitasi, dsb</span>
+                                </div>
+                                <span class="chart-badge badge-gold">Kategori</span>
+                            </div>
+                            <div class="chart-canvas-wrapper">
+                                <canvas id="chartKategoriProporsi"></canvas>
+                            </div>
+                        </div>
+
+                        <!-- Chart 3: Sebaran Insiden 5 Kawasan -->
+                        <div class="chart-card">
+                            <div class="chart-card-header">
+                                <div>
+                                    <h4 class="chart-title"><i class="fa-solid fa-building" style="color:#38bdf8;"></i> Sebaran 5 Kawasan Kampus</h4>
+                                    <span class="chart-subtitle">Gedung Cyber, Utama, Saladara, dll</span>
+                                </div>
+                                <span class="chart-badge badge-cyan">Geospasial</span>
+                            </div>
+                            <div class="chart-canvas-wrapper">
+                                <canvas id="chartKawasanBar"></canvas>
+                            </div>
+                        </div>
+
+                        <!-- Chart 4: Tingkat Urgensi & SLA -->
+                        <div class="chart-card">
+                            <div class="chart-card-header">
+                                <div>
+                                    <h4 class="chart-title"><i class="fa-solid fa-triangle-exclamation" style="color:#ef4444;"></i> Tingkat Urgensi &amp; Respon SLA</h4>
+                                    <span class="chart-subtitle">Darurat / Tinggi, Sedang, Rendah</span>
+                                </div>
+                                <span class="chart-badge badge-amber">Urgensi</span>
+                            </div>
+                            <div class="chart-canvas-wrapper">
+                                <canvas id="chartUrgensiSla"></canvas>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
                 <!-- GIS Overview Damage Map Card (Enlarged & Spacious) -->
                 <div class="glass-card" style="padding: 24px; margin-bottom: 24px;">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 10px;">
-                        <h3 style="font-size: 16px; font-weight: 800; display: flex; align-items: center; gap: 8px; margin: 0;">
-                            <i class="fa-solid fa-map-location-dot" style="color: var(--gold);"></i> Peta GIS Sebaran Titik Kerusakan Fasilitas Kampus UINSSC
-                        </h3>
-                        <div style="display: flex; gap: 12px; font-size: 12px; font-weight: 700; background: rgba(0,0,0,0.2); padding: 6px 14px; border-radius: 20px; border: 1px solid var(--border-color); flex-wrap: wrap;">
-                            <span style="display: inline-flex; align-items: center; gap: 5px; color: #ef4444;"><i class="fa-solid fa-circle"></i> Diajukan</span>
-                            <span style="display: inline-flex; align-items: center; gap: 5px; color: #f59e0b;"><i class="fa-solid fa-circle"></i> Diproses</span>
-                            <span style="display: inline-flex; align-items: center; gap: 5px; color: #22c55e; font-size:11.5px; opacity:0.9;" title="Laporan yang sudah beres/selesai diperbaiki otomatis dihilangkan dari peta titik kerusakan"><i class="fa-solid fa-circle-check"></i> Selesai (Otomatis Hilang)</span>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 12px;">
+                        <div>
+                            <h3 style="font-size: 16px; font-weight: 800; display: flex; align-items: center; gap: 8px; margin: 0;">
+                                <i class="fa-solid fa-map-location-dot" style="color: var(--gold);"></i> Peta GIS Sebaran Titik Kerusakan Fasilitas Kampus UINSSC
+                            </h3>
+                            <span id="mapCategoryFilterLabel" style="font-size:12px; color:var(--text-muted); margin-top:2px; display:block;">
+                                Menampilkan sebaran insiden fasilitas aktif di kawasan kampus.
+                            </span>
+                        </div>
+                        
+                        <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
+                            <!-- Filter per Kategori di Peta -->
+                            <div style="display:flex; align-items:center; gap:6px; background:rgba(255,255,255,0.05); padding:4px 10px; border-radius:12px; border:1px solid var(--border-color);">
+                                <label for="mapCategoryFilter" style="font-size:12px; font-weight:700; color:var(--gold); white-space:nowrap; margin:0;">
+                                    <i class="fa-solid fa-filter"></i> Filter Kategori:
+                                </label>
+                                <select id="mapCategoryFilter" onchange="renderAdminOverviewMarkers()" style="background:var(--bg-input); color:var(--text-main); border:1px solid var(--border-color); border-radius:8px; padding:5px 10px; font-size:12px; font-weight:700; cursor:pointer;">
+                                    <option value="ALL">Semua Kategori Fasilitas</option>
+                                    <!-- Populated dynamically by Category CRUD -->
+                                </select>
+                            </div>
+
+                            <div style="display: flex; gap: 12px; font-size: 12px; font-weight: 700; background: rgba(0,0,0,0.2); padding: 6px 14px; border-radius: 20px; border: 1px solid var(--border-color); flex-wrap: wrap;">
+                                <span style="display: inline-flex; align-items: center; gap: 5px; color: #ef4444;"><i class="fa-solid fa-circle"></i> Diajukan</span>
+                                <span style="display: inline-flex; align-items: center; gap: 5px; color: #f59e0b;"><i class="fa-solid fa-circle"></i> Diproses</span>
+                                <span style="display: inline-flex; align-items: center; gap: 5px; color: #22c55e; font-size:11.5px; opacity:0.9;" title="Laporan yang sudah beres/selesai diperbaiki otomatis dihilangkan dari peta titik kerusakan"><i class="fa-solid fa-circle-check"></i> Selesai (Otomatis Hilang)</span>
+                            </div>
                         </div>
                     </div>
                     <div id="adminOverviewMap" style="width: 100%; height: 480px; border-radius: var(--radius-md); border: 1px solid var(--border-color); background: #ffffff !important; z-index: 1;"></div>
@@ -342,6 +418,16 @@
                     </div>
 
                     <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+                        <!-- Filter Kategori di Radar Spasial GIS -->
+                        <div style="display:flex; align-items:center; gap:6px; background:rgba(0,0,0,0.25); padding:4px 10px; border-radius:10px; border:1px solid var(--border-color);">
+                            <label for="gisCategoryFilter" style="font-size:12px; font-weight:700; color:#2dd4bf; white-space:nowrap; margin:0;">
+                                <i class="fa-solid fa-filter"></i> Kategori:
+                            </label>
+                            <select id="gisCategoryFilter" onchange="drawGisSurveillanceLayers()" style="background:var(--bg-input); color:var(--text-main); border:1px solid var(--border-color); border-radius:8px; padding:5px 10px; font-size:12px; font-weight:700; cursor:pointer;">
+                                <option value="ALL">Semua Kategori</option>
+                                <!-- Populated dynamically by Category CRUD -->
+                            </select>
+                        </div>
                         <button type="button" class="chip-btn" id="btnGisModePins" onclick="switchGisSurveillanceMode('pins')" style="background:var(--primary); color:#fff; border-color:var(--gold); font-size:12px; padding:6px 12px; border-radius:10px; font-weight:700;">
                             <i class="fa-solid fa-location-dot"></i> Mode Pin Marker
                         </button>
@@ -853,6 +939,97 @@
                     </div>
                 </div>
             </div>
+
+            <!-- ================= VIEW 7: MANAJEMEN KATEGORI FASILITAS SARPRAS (ADMIN & SUPER ADMIN) ================= -->
+            <div id="viewCategoryManagement" class="admin-view-section hidden">
+                <!-- Header Card -->
+                <div class="glass-card" style="padding:22px; margin-bottom:20px;">
+                    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
+                        <div>
+                            <h2 style="font-size:20px; font-weight:800; margin:0; display:flex; align-items:center; gap:8px;">
+                                <i class="fa-solid fa-tags" style="color:#a855f7;"></i> Manajemen Kategori Fasilitas Sarpras
+                            </h2>
+                            <p style="font-size:12.5px; color:var(--text-muted); margin:4px 0 0 0;">
+                                Kelola kategori kerusakan fasilitas kampus, standar waktu respon (SLA), dan ikon visual. Kategori aktif otomatis tersinkron ke formulir pelapor, filter peta, dan visual analitik.
+                            </p>
+                        </div>
+                        <button type="button" class="btn btn-primary" onclick="openCategoryModal()" style="font-size:12.5px; padding:9px 18px;">
+                            <i class="fa-solid fa-plus"></i> Tambah Kategori Baru
+                        </button>
+                    </div>
+                </div>
+
+                <!-- KPI Metric Kategori -->
+                <div class="admin-kpi-grid" style="grid-template-columns: repeat(4, 1fr); margin-bottom:20px;">
+                    <div class="kpi-box">
+                        <div class="kpi-box-icon" style="background:rgba(168,85,247,0.15); color:#a855f7; border:1px solid rgba(168,85,247,0.3);"><i class="fa-solid fa-tags"></i></div>
+                        <div class="kpi-box-info">
+                            <span class="kpi-num" id="catTotalCount">0</span>
+                            <span class="kpi-title">Total Kategori</span>
+                        </div>
+                    </div>
+                    <div class="kpi-box">
+                        <div class="kpi-box-icon icon-emerald"><i class="fa-solid fa-circle-check"></i></div>
+                        <div class="kpi-box-info">
+                            <span class="kpi-num" id="catActiveCount">0</span>
+                            <span class="kpi-title">Kategori Aktif</span>
+                        </div>
+                    </div>
+                    <div class="kpi-box">
+                        <div class="kpi-box-icon icon-amber"><i class="fa-solid fa-fire"></i></div>
+                        <div class="kpi-box-info">
+                            <span class="kpi-num" id="catMostReported" style="font-size:14px; line-height:1.3; font-weight:800;">-</span>
+                            <span class="kpi-title">Terbanyak Dilaporkan</span>
+                        </div>
+                    </div>
+                    <div class="kpi-box">
+                        <div class="kpi-box-icon icon-cyan"><i class="fa-solid fa-stopwatch"></i></div>
+                        <div class="kpi-box-info">
+                            <span class="kpi-num" id="catAvgSla">24 Jam</span>
+                            <span class="kpi-title">Rata-rata Target SLA</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Category Table Card -->
+                <div class="table-card">
+                    <div style="padding:14px 18px; border-bottom:1px solid var(--border-color); display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
+                        <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+                            <span style="font-size:13px; font-weight:700; color:var(--text-main);">
+                                <i class="fa-solid fa-list-check" style="color:var(--gold);"></i> Daftar Kategori Kerusakan Fasilitas
+                            </span>
+                        </div>
+                        <div style="min-width:260px;" class="input-wrapper">
+                            <i class="fa-solid fa-search"></i>
+                            <input type="text" id="searchCategoryInput" placeholder="Cari kategori, deskripsi, SLA..." onkeyup="renderCategoryTable()" style="padding:7px 12px 7px 34px; font-size:12.5px;">
+                        </div>
+                    </div>
+
+                    <div style="overflow-x:auto;">
+                        <table class="admin-table">
+                            <thead>
+                                <tr>
+                                    <th style="width:45px; text-align:center;">No.</th>
+                                    <th>Kode ID</th>
+                                    <th>Nama Kategori &amp; Ikon</th>
+                                    <th>Deskripsi &amp; Cakupan</th>
+                                    <th>Estimasi SLA &amp; Urgensi</th>
+                                    <th>Total Laporan</th>
+                                    <th>Status</th>
+                                    <th style="text-align:center;">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody id="categoryTableBody">
+                                <!-- Populated dynamically by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div style="padding:12px 18px; border-top:1px solid var(--border-color); font-size:11.5px; color:var(--text-muted); display:flex; align-items:center; gap:6px;">
+                        <i class="fa-solid fa-circle-info" style="color:var(--gold);"></i> Kategori yang ditambahkan atau diedit otomatis disinkronkan ke opsi formulir pelaporan civitas kampus, filter peta, dan analitik visual.
+                    </div>
+                </div>
+            </div>
         </main>
     </div>
 
@@ -1226,6 +1403,97 @@
                     </button>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <!-- Category Management Modal (Admin & Super Admin) -->
+    <div id="categoryModal" class="modal-overlay hidden" onclick="closeCategoryModalOnBackdrop(event)">
+        <div class="modal-content" style="max-width: 580px; text-align: left;">
+            <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--border-color); padding-bottom:14px; margin-bottom:16px;">
+                <div>
+                    <h3 id="categoryModalTitle" style="font-size:18px; font-weight:800; display:flex; align-items:center; gap:8px; margin:0;">
+                        <i class="fa-solid fa-tags" style="color:var(--gold);"></i> Tambah Kategori Fasilitas Baru
+                    </h3>
+                    <p style="font-size:12px; color:var(--text-muted); margin:4px 0 0 0;">
+                        Kelola data kategori klasifikasi kerusakan sarana dan prasarana kampus UINSSC.
+                    </p>
+                </div>
+                <button class="btn-act" onclick="closeCategoryModal()"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+
+            <form id="categoryForm" onsubmit="handleCategoryFormSubmit(event)">
+                <input type="hidden" id="categoryEditId" value="">
+
+                <div style="margin-bottom:14px;">
+                    <label style="font-size:12px; font-weight:700; color:var(--text-main); display:block; margin-bottom:5px;">
+                        Nama Kategori <span style="color:#ef4444;">*</span>:
+                    </label>
+                    <input type="text" id="categoryNameInput" class="login-input" placeholder="Contoh: AC & Pendingin Ruangan" required>
+                </div>
+
+                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px; margin-bottom:14px;">
+                    <div>
+                        <label style="font-size:12px; font-weight:700; color:var(--text-main); display:block; margin-bottom:5px;">
+                            Ikon FontAwesome:
+                        </label>
+                        <select id="categoryIconInput" class="login-input">
+                            <option value="fa-snowflake">❄️ AC / Pendingin (fa-snowflake)</option>
+                            <option value="fa-bolt">⚡ Kelistrikan (fa-bolt)</option>
+                            <option value="fa-faucet-drip">🚰 Sanitasi / Air (fa-faucet-drip)</option>
+                            <option value="fa-video">📽️ Proyektor & Audio (fa-video)</option>
+                            <option value="fa-couch">🪑 Mebel / Furnitur (fa-couch)</option>
+                            <option value="fa-door-open">🚪 Pintu & Jendela (fa-door-open)</option>
+                            <option value="fa-wifi">📶 Jaringan & Internet (fa-wifi)</option>
+                            <option value="fa-building">🏢 Bangunan & Sipil (fa-building)</option>
+                            <option value="fa-lightbulb">💡 Penerangan Ruang (fa-lightbulb)</option>
+                            <option value="fa-fire-extinguisher">🧯 APAR / K3 (fa-fire-extinguisher)</option>
+                            <option value="fa-box-archive">📦 Aset Umum / Lainnya (fa-box-archive)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label style="font-size:12px; font-weight:700; color:var(--text-main); display:block; margin-bottom:5px;">
+                            Target SLA (Jam):
+                        </label>
+                        <input type="number" id="categorySlaInput" class="login-input" min="1" max="168" value="24" required>
+                    </div>
+                </div>
+
+                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px; margin-bottom:14px;">
+                    <div>
+                        <label style="font-size:12px; font-weight:700; color:var(--text-main); display:block; margin-bottom:5px;">
+                            Urgensi Standar:
+                        </label>
+                        <select id="categoryUrgensiInput" class="login-input">
+                            <option value="Standar">Standar (Normal)</option>
+                            <option value="Penting">Penting (Prioritas Sedang)</option>
+                            <option value="Darurat">Darurat (Prioritas Tinggi)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label style="font-size:12px; font-weight:700; color:var(--text-main); display:block; margin-bottom:5px;">
+                            Status Operasional:
+                        </label>
+                        <select id="categoryStatusInput" class="login-input">
+                            <option value="Aktif">Aktif (Tampil di Form & Map)</option>
+                            <option value="Nonaktif">Nonaktif (Diarsipkan)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div style="margin-bottom:16px;">
+                    <label style="font-size:12px; font-weight:700; color:var(--text-main); display:block; margin-bottom:5px;">
+                        Deskripsi / Lingkup Cakupan Kategori:
+                    </label>
+                    <textarea id="categoryDescInput" rows="2" class="login-input" placeholder="Keterangan singkat tentang lingkup fasilitas yang dicakup oleh kategori ini..."></textarea>
+                </div>
+
+                <div style="display:flex; justify-content:flex-end; gap:10px; border-top:1px dashed var(--border-color); padding-top:14px;">
+                    <button type="button" class="btn btn-secondary" onclick="closeCategoryModal()">Batal</button>
+                    <button type="submit" class="btn btn-primary" style="background:#005a36; border-color:#c59235; font-weight:700;">
+                        <i class="fa-solid fa-floppy-disk"></i> Simpan Kategori
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
 

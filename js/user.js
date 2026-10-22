@@ -492,10 +492,37 @@ function applyUserPortalContent() {
     }
 }
 
+function initUserCategories() {
+    const select = document.getElementById('kategori');
+    if (!select) return;
+
+    const raw = localStorage.getItem('SIMPEL_CATEGORIES_DATA_V1');
+    if (!raw) return;
+
+    try {
+        const cats = JSON.parse(raw);
+        if (!Array.isArray(cats) || cats.length === 0) return;
+
+        const activeCats = cats.filter(c => c.status === 'Aktif');
+        if (activeCats.length === 0) return;
+
+        const currentVal = select.value;
+
+        select.innerHTML = `<option value="">-- Pilih Kategori --</option>` +
+            activeCats.map(c => `<option value="${escapeHtml(c.nama)}">${escapeHtml(c.nama)}</option>`).join('') +
+            `<option value="Lainnya">Fasilitas Lainnya</option>`;
+
+        if (currentVal) select.value = currentVal;
+    } catch (e) {
+        console.warn('Gagal memuat kategori dinamis di form user:', e);
+    }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     checkUserAuth();
     initTheme();
     applyUserPortalContent();
+    initUserCategories();
     loadReports().then(() => {
         updateMyReportsBadge();
         updateUserKPIs();
@@ -506,6 +533,9 @@ document.addEventListener('DOMContentLoaded', () => {
 window.addEventListener('storage', (e) => {
     if (e.key === 'SIMPEL_PORTAL_CONTENT_V1') {
         applyUserPortalContent();
+    }
+    if (e.key === 'SIMPEL_CATEGORIES_DATA_V1') {
+        initUserCategories();
     }
 });
 

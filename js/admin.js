@@ -71,9 +71,12 @@ let adminOverviewZoneGroup = null;
 let adminOverviewMarkersGroup = null;
 let adminHeatLayerInstance = null;
 let currentAdminMapMode = 'heatmap'; // 'pin' or 'heatmap' (Default: Heatmap menyala saat login)
-let currentAdminFoto = '';
-let adminChartInstance = null;
-let currentAdminChartType = 'bar'; // 'bar' or 'doughnut'
+let chartTrendInstance = null;
+let chartKategoriInstance = null;
+let chartKawasanInstance = null;
+let chartUrgensiInstance = null;
+let adminChartInstance = null; // backward compatibility
+let currentAdminChartType = 'bar';
 
 function renderAdminFotoPreview() {
     const previewContainer = document.getElementById('modalFotoPreview');
@@ -417,9 +420,11 @@ document.addEventListener('DOMContentLoaded', () => {
     initTheme();
     initAdminSidebarState();
     loadStaffAccounts();
+    loadCategories();
     loadReports();
+    populateCategoryDropdowns();
     renderKPIs();
-    renderChart();
+    renderAllAdminCharts();
     renderAdminTable();
     initAdminOverviewMap();
 });
@@ -759,130 +764,45 @@ function switchAdminChartType(type) {
     renderChart();
 }
 
-function renderChart(itemsToRender = reportsData) {
-    const canvas = document.getElementById('adminChartCanvas');
-    if (!canvas) return;
-
+// Multi-Chart Visual Analytics Dashboard (4 Simultaneous Chart.js Charts)
+function renderAllAdminCharts(itemsToRender = reportsData) {
     if (typeof Chart === 'undefined') {
-        console.warn('Chart.js belum siap.');
+        console.warn('Chart.js belum dimuat.');
         return;
-    }
-
-    if (adminChartInstance) {
-        adminChartInstance.destroy();
-        adminChartInstance = null;
     }
 
     const isLight = document.documentElement.getAttribute('data-theme') === 'light';
     const textColor = isLight ? '#334155' : '#cbd5e1';
     const gridColor = isLight ? 'rgba(0, 0, 0, 0.06)' : 'rgba(255, 255, 255, 0.08)';
 
-    const ctx = canvas.getContext('2d');
+    // =========================================================================
+    // CHART 1: Trend Status Penanganan Tiket (Canvas: #chartTrendStatus)
+    // =========================================================================
+    const canvasTrend = document.getElementById('chartTrendStatus');
+    if (canvasTrend) {
+        if (chartTrendInstance) {
+            chartTrendInstance.destroy();
+            chartTrendInstance = null;
+        }
 
-    if (currentAdminChartType === 'doughnut') {
-        // Mode 2: Proporsi Per Kategori Fasilitas
-        const categories = [
-            'AC & Pendingin',
-            'Proyektor & Sound System',
-            'Kelistrikan & Lampu',
-            'Sanitasi & Toilet',
-            'Mebel & Meja Kursi',
-            'Pintu & Jendela',
-            'Jaringan & Internet',
-            'Lainnya'
-        ];
+        const diajukanCount = itemsToRender.filter(r => r.status === 'Diajukan').length;
+        const diprosesCount = itemsToRender.filter(r => r.status === 'Diproses').length;
+        const selesaiCount = itemsToRender.filter(r => r.status === 'Selesai').length;
+        const ditolakCount = itemsToRender.filter(r => r.status === 'Ditolak').length;
 
-        const catCounts = categories.map(cat => {
-            return itemsToRender.filter(r => (r.kategori || '').toLowerCase().includes(cat.toLowerCase().split(' ')[0])).length;
-        });
-
-        const palette = [
-            '#005a36',
-            '#10b981',
-            '#c59235',
-            '#f59e0b',
-            '#3b82f6',
-            '#8b5cf6',
-            '#ec4899',
-            '#64748b'
-        ];
-
-        adminChartInstance = new Chart(ctx, {
-            type: 'doughnut',
-            data: {
-                labels: categories,
-                datasets: [{
-                    data: catCounts,
-                    backgroundColor: palette,
-                    borderColor: isLight ? '#ffffff' : '#04140d',
-                    borderWidth: 2,
-                    hoverOffset: 8
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                cutout: '62%',
-                plugins: {
-                    legend: {
-                        position: 'right',
-                        labels: {
-                            color: textColor,
-                            font: { family: "'Plus Jakarta Sans', sans-serif", size: 11, weight: '600' },
-                            padding: 12,
-                            boxWidth: 12,
-                            boxHeight: 12,
-                            usePointStyle: true
-                        }
-                    },
-                    tooltip: {
-                        callbacks: {
-                            label: function(context) {
-                                const total = context.dataset.data.reduce((a, b) => a + b, 0);
-                                const val = context.raw || 0;
-                                const pct = total > 0 ? Math.round((val / total) * 100) : 0;
-                                return ` ${context.label}: ${val} laporan (${pct}%)`;
-                            }
-                        }
-                    }
-                }
-            }
-        });
-    } else {
-        // Mode 1: Bar Chart Per Kawasan Kampus UINSSC
-        const zones = [
-            { name: 'Kampus Utama', keys: ['Rektorat', 'FITK', 'Tarbiyah', 'FSEI', 'Syariah', 'FUAD', 'Ushuluddin', 'ICT', 'Laboratorium', 'Perpustakaan', 'Auditorium', 'Utama'] },
-            { name: 'Gedung Cyber', keys: ['Cyber', 'IT'] },
-            { name: 'Gedung Seberang', keys: ['Seberang'] },
-            { name: 'Pascasarjana & Ma\'had', keys: ['Pascasarjana', "Ma'had"] },
-            { name: 'Kampus 2 Saladara', keys: ['Saladara'] }
-        ];
-
-        const labels = zones.map(z => z.name);
-        const counts = zones.map(z => {
-            return itemsToRender.filter(r => {
-                const g = (r.gedung || '').toLowerCase();
-                return z.keys.some(k => g.includes(k.toLowerCase()));
-            }).length;
-        });
-
-        // Gradient for Bar
-        const barGradient = ctx.createLinearGradient(0, 0, 0, 220);
-        barGradient.addColorStop(0, '#10b981');
-        barGradient.addColorStop(1, '#005a36');
-
-        adminChartInstance = new Chart(ctx, {
+        const ctxTrend = canvasTrend.getContext('2d');
+        chartTrendInstance = new Chart(ctxTrend, {
             type: 'bar',
             data: {
-                labels: labels,
+                labels: ['Diajukan', 'Diproses', 'Selesai', 'Ditolak'],
                 datasets: [{
-                    label: 'Jumlah Laporan Kerusakan',
-                    data: counts,
-                    backgroundColor: barGradient,
-                    borderColor: '#c59235',
+                    label: 'Jumlah Laporan',
+                    data: [diajukanCount, diprosesCount, selesaiCount, ditolakCount],
+                    backgroundColor: ['#ef4444', '#f59e0b', '#10b981', '#64748b'],
+                    borderColor: isLight ? '#ffffff' : '#04140d',
                     borderWidth: 1.5,
                     borderRadius: 8,
-                    maxBarThickness: 46
+                    maxBarThickness: 38
                 }]
             },
             options: {
@@ -892,8 +812,10 @@ function renderChart(itemsToRender = reportsData) {
                     legend: { display: false },
                     tooltip: {
                         callbacks: {
-                            label: function(context) {
-                                return ` ${context.raw} Laporan Kerusakan`;
+                            label: function(ctx) {
+                                const total = itemsToRender.length || 1;
+                                const pct = Math.round((ctx.raw / total) * 100);
+                                return ` ${ctx.raw} Tiket (${pct}% dari total)`;
                             }
                         }
                     }
@@ -913,14 +835,229 @@ function renderChart(itemsToRender = reportsData) {
                             color: textColor,
                             font: { family: "'Plus Jakarta Sans', sans-serif", size: 11 }
                         },
-                        grid: {
-                            color: gridColor
+                        grid: { color: gridColor }
+                    }
+                }
+            }
+        });
+    }
+
+    // =========================================================================
+    // CHART 2: Proporsi Laporan Per Kategori Fasilitas (Canvas: #chartKategoriProporsi)
+    // =========================================================================
+    const canvasKategori = document.getElementById('chartKategoriProporsi');
+    if (canvasKategori) {
+        if (chartKategoriInstance) {
+            chartKategoriInstance.destroy();
+            chartKategoriInstance = null;
+        }
+
+        const activeCats = (categoriesData && categoriesData.length > 0)
+            ? categoriesData
+            : DEFAULT_CATEGORIES_DATA;
+
+        const catLabels = activeCats.map(c => c.nama);
+        const catCounts = activeCats.map(c => {
+            const firstWord = c.nama.toLowerCase().split(' ')[0];
+            return itemsToRender.filter(r => (r.kategori || '').toLowerCase().includes(firstWord)).length;
+        });
+
+        const palette = [
+            '#005a36', '#10b981', '#c59235', '#f59e0b',
+            '#3b82f6', '#8b5cf6', '#ec4899', '#06b6d4',
+            '#f97316', '#64748b'
+        ];
+
+        const ctxKategori = canvasKategori.getContext('2d');
+        chartKategoriInstance = new Chart(ctxKategori, {
+            type: 'doughnut',
+            data: {
+                labels: catLabels,
+                datasets: [{
+                    data: catCounts,
+                    backgroundColor: palette.slice(0, activeCats.length),
+                    borderColor: isLight ? '#ffffff' : '#04140d',
+                    borderWidth: 2,
+                    hoverOffset: 6
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                cutout: '62%',
+                plugins: {
+                    legend: {
+                        position: 'right',
+                        labels: {
+                            color: textColor,
+                            font: { family: "'Plus Jakarta Sans', sans-serif", size: 10, weight: '600' },
+                            padding: 8,
+                            boxWidth: 10,
+                            boxHeight: 10,
+                            usePointStyle: true
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(ctx) {
+                                const total = ctx.dataset.data.reduce((a, b) => a + b, 0);
+                                const val = ctx.raw || 0;
+                                const pct = total > 0 ? Math.round((val / total) * 100) : 0;
+                                return ` ${ctx.label}: ${val} laporan (${pct}%)`;
+                            }
                         }
                     }
                 }
             }
         });
     }
+
+    // =========================================================================
+    // CHART 3: Distribusi Beban Kerusakan 5 Kawasan (Canvas: #chartKawasanBar)
+    // =========================================================================
+    const canvasKawasan = document.getElementById('chartKawasanBar');
+    if (canvasKawasan) {
+        if (chartKawasanInstance) {
+            chartKawasanInstance.destroy();
+            chartKawasanInstance = null;
+        }
+
+        const zones = [
+            { name: 'Kampus Utama', keys: ['Rektorat', 'FITK', 'Tarbiyah', 'FSEI', 'Syariah', 'FUAD', 'Ushuluddin', 'ICT', 'Laboratorium', 'Perpustakaan', 'Auditorium', 'Utama'] },
+            { name: 'Gedung Cyber', keys: ['Cyber', 'IT'] },
+            { name: 'Gedung Seberang', keys: ['Seberang'] },
+            { name: "Pascasarjana & Ma'had", keys: ['Pascasarjana', "Ma'had"] },
+            { name: 'Kampus 2 Saladara', keys: ['Saladara'] }
+        ];
+
+        const labelsKawasan = zones.map(z => z.name);
+        const countsKawasan = zones.map(z => {
+            return itemsToRender.filter(r => {
+                const g = (r.gedung || '').toLowerCase();
+                return z.keys.some(k => g.includes(k.toLowerCase()));
+            }).length;
+        });
+
+        const ctxKawasan = canvasKawasan.getContext('2d');
+        const gradKawasan = ctxKawasan.createLinearGradient(0, 0, 300, 0);
+        gradKawasan.addColorStop(0, '#005a36');
+        gradKawasan.addColorStop(1, '#10b981');
+
+        chartKawasanInstance = new Chart(ctxKawasan, {
+            type: 'bar',
+            data: {
+                labels: labelsKawasan,
+                datasets: [{
+                    axis: 'y',
+                    label: 'Laporan Kerusakan',
+                    data: countsKawasan,
+                    backgroundColor: gradKawasan,
+                    borderColor: '#c59235',
+                    borderWidth: 1.5,
+                    borderRadius: 6
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        callbacks: {
+                            label: function(ctx) {
+                                return ` ${ctx.raw} Laporan di ${ctx.label}`;
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        beginAtZero: true,
+                        ticks: {
+                            stepSize: 1,
+                            color: textColor,
+                            font: { family: "'Plus Jakarta Sans', sans-serif", size: 10 }
+                        },
+                        grid: { color: gridColor }
+                    },
+                    y: {
+                        ticks: {
+                            color: textColor,
+                            font: { family: "'Plus Jakarta Sans', sans-serif", size: 10.5, weight: '700' }
+                        },
+                        grid: { display: false }
+                    }
+                }
+            }
+        });
+    }
+
+    // =========================================================================
+    // CHART 4: Distribusi Tingkat Urgensi & Beban SLA (Canvas: #chartUrgensiSla)
+    // =========================================================================
+    const canvasUrgensi = document.getElementById('chartUrgensiSla');
+    if (canvasUrgensi) {
+        if (chartUrgensiInstance) {
+            chartUrgensiInstance.destroy();
+            chartUrgensiInstance = null;
+        }
+
+        const daruratCount = itemsToRender.filter(r => r.urgensi === 'Darurat' || r.urgensi === 'Tinggi').length;
+        const pentingCount = itemsToRender.filter(r => r.urgensi === 'Penting' || r.urgensi === 'Sedang').length;
+        const standarCount = itemsToRender.filter(r => r.urgensi === 'Standar' || r.urgensi === 'Rendah' || !r.urgensi).length;
+
+        const ctxUrgensi = canvasUrgensi.getContext('2d');
+        chartUrgensiInstance = new Chart(ctxUrgensi, {
+            type: 'polarArea',
+            data: {
+                labels: ['Darurat (SLA <12 Jam)', 'Penting (SLA <24 Jam)', 'Standar (SLA <48 Jam)'],
+                datasets: [{
+                    data: [daruratCount, pentingCount, standarCount],
+                    backgroundColor: [
+                        'rgba(239, 68, 68, 0.85)',
+                        'rgba(245, 158, 11, 0.85)',
+                        'rgba(16, 185, 129, 0.85)'
+                    ],
+                    borderColor: isLight ? '#ffffff' : '#04140d',
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    r: {
+                        ticks: { display: false },
+                        grid: { color: gridColor }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            color: textColor,
+                            font: { family: "'Plus Jakarta Sans', sans-serif", size: 9.5, weight: '600' },
+                            boxWidth: 10,
+                            padding: 6
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(ctx) {
+                                return ` ${ctx.label}: ${ctx.raw} Tiket`;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    }
+}
+
+// Backward compatibility: renderChart memanggil renderAllAdminCharts
+function renderChart(itemsToRender = reportsData) {
+    renderAllAdminCharts(itemsToRender);
 }
 
 // Sidebar Collapse / Mobile Drawer Functionality
@@ -1658,6 +1795,16 @@ function reloadAdminOverviewMapZones() {
     }
 }
 
+function filterAdminMapByCategory() {
+    renderAdminOverviewMarkers();
+    const cat = document.getElementById('mapCategoryFilter')?.value;
+    if (cat) {
+        showToast(`Memfilter peta kerusakan untuk kategori: ${cat}`, 'info');
+    } else {
+        showToast('Menampilkan seluruh kategori fasilitas di peta', 'info');
+    }
+}
+
 function renderAdminOverviewMarkers(itemsToRender = reportsData) {
     if (!adminOverviewMapInstance || !adminOverviewMarkersGroup) return;
     adminOverviewMarkersGroup.clearLayers();
@@ -1673,9 +1820,18 @@ function renderAdminOverviewMarkers(itemsToRender = reportsData) {
     // Titik kerusakan pada peta hanya menampilkan laporan aktif (Diajukan & Diproses).
     // Ketika laporan berstatus 'Selesai' (atau 'Ditolak'), titik tersebut otomatis HILANG dari peta.
     const statusFilterVal = document.getElementById('filterStatus')?.value;
-    const activeItems = (statusFilterVal === 'Selesai' || statusFilterVal === 'Ditolak')
+    let activeItems = (statusFilterVal === 'Selesai' || statusFilterVal === 'Ditolak')
         ? itemsToRender
         : itemsToRender.filter(rep => rep.status !== 'Selesai' && rep.status !== 'Ditolak');
+
+    // Filter Kategori Peta Overview Kerusakan (Contoh: Hanya AC)
+    const categoryFilterVal = (document.getElementById('mapCategoryFilter')?.value || '').toLowerCase().trim();
+    if (categoryFilterVal) {
+        activeItems = activeItems.filter(rep => {
+            const cat = (rep.kategori || '').toLowerCase();
+            return cat.includes(categoryFilterVal);
+        });
+    }
 
     if (currentAdminMapMode === 'heatmap') {
         // 1. Integrasi Leaflet.heat Layer Resmi
@@ -2502,20 +2658,55 @@ function renderGeofenceVertexMarkers(zone) {
     geofenceVertexMarkersGroup.clearLayers();
 
     zone.polygon.forEach((coord, idx) => {
-        const marker = L.circleMarker(coord, {
-            radius: 6,
-            color: '#005a36',
-            weight: 2,
-            fillColor: '#facc15',
-            fillOpacity: 1,
-            interactive: true
+        const handleHtml = `
+            <div style="width:16px; height:16px; background:#facc15; border:2.5px solid #005a36; border-radius:50%; box-shadow:0 2px 6px rgba(0,0,0,0.45); cursor:grab; transition:transform 0.15s ease;"
+                 onmouseover="this.style.transform='scale(1.35)'; this.style.borderColor='#ef4444';"
+                 onmouseout="this.style.transform='scale(1)'; this.style.borderColor='#005a36';">
+            </div>
+        `;
+
+        const dragIcon = L.divIcon({
+            className: 'geofence-draggable-handle',
+            html: handleHtml,
+            iconSize: [16, 16],
+            iconAnchor: [8, 8]
         });
 
-        marker.bindTooltip(`Titik ${idx + 1}<br>${coord[0].toFixed(6)}, ${coord[1].toFixed(6)}`, { direction: 'top' });
+        const marker = L.marker(coord, {
+            draggable: true,
+            icon: dragIcon,
+            title: `Geser Titik ${idx + 1} untuk mengubah koordinat batas kawasan`
+        });
+
+        marker.bindTooltip(`<b>Titik ${idx + 1}</b> (Tahan &amp; Geser Koordinat)<br>${coord[0].toFixed(6)}, ${coord[1].toFixed(6)}`, {
+            direction: 'top',
+            offset: [0, -8]
+        });
+
+        // Event saat pin digeser secara real-time
+        marker.on('drag', (e) => {
+            const latlng = e.target.getLatLng();
+            zone.polygon[idx] = [latlng.lat, latlng.lng];
+            if (geofenceActivePolygonLayer) {
+                geofenceActivePolygonLayer.setLatLngs(zone.polygon);
+            }
+            marker.setTooltipContent(`<b>Titik ${idx + 1}</b> (Sedang Digeser...)<br>${latlng.lat.toFixed(6)}, ${latlng.lng.toFixed(6)}`);
+        });
+
+        // Event saat pin selesai digeser (dragend)
+        marker.on('dragend', (e) => {
+            const latlng = e.target.getLatLng();
+            zone.polygon[idx] = [latlng.lat, latlng.lng];
+            if (geofenceActivePolygonLayer) {
+                geofenceActivePolygonLayer.setLatLngs(zone.polygon);
+            }
+            marker.setTooltipContent(`<b>Titik ${idx + 1}</b> (Tahan &amp; Geser Koordinat)<br>${latlng.lat.toFixed(6)}, ${latlng.lng.toFixed(6)}`);
+            renderGeofencePointsList(zone);
+            showToast(`Titik ${idx + 1} (${zone.name}) digeser ke: [${latlng.lat.toFixed(6)}, ${latlng.lng.toFixed(6)}]`, 'info');
+        });
 
         marker.on('click', (e) => {
             L.DomEvent.stopPropagation(e);
-            deleteGeofencePoint(idx);
         });
 
         geofenceVertexMarkersGroup.addLayer(marker);
@@ -3163,6 +3354,7 @@ function switchAdminView(viewId) {
         gis: document.getElementById('viewGisSurveillance'),
         sla: document.getElementById('viewSlaTracker'),
         staff: document.getElementById('viewStaffManagement'),
+        kategori: document.getElementById('viewCategoryManagement'),
         audit: document.getElementById('viewSuperAdminSurveillance'),
         soc: document.getElementById('viewSocSecurity')
     };
@@ -3173,6 +3365,7 @@ function switchAdminView(viewId) {
         gis: document.getElementById('navGisSurveillance'),
         sla: document.getElementById('navSlaTracker'),
         staff: document.getElementById('sidebarStaffLink'),
+        kategori: document.getElementById('sidebarCategoryLink'),
         audit: document.getElementById('navSuperAudit'),
         soc: document.getElementById('navSocSecurity')
     };
@@ -3193,9 +3386,13 @@ function switchAdminView(viewId) {
     if (viewId === 'dashboard') {
         renderKPIs();
         renderAdminTable();
+        renderAllAdminCharts();
         setTimeout(() => {
             if (adminMapInstance) adminMapInstance.invalidateSize();
-            if (adminChartInstance) adminChartInstance.resize();
+            if (chartTrendInstance) chartTrendInstance.resize();
+            if (chartKategoriInstance) chartKategoriInstance.resize();
+            if (chartKawasanInstance) chartKawasanInstance.resize();
+            if (chartUrgensiInstance) chartUrgensiInstance.resize();
         }, 150);
     } else if (viewId === 'gis') {
         renderGisSurveillanceView();
@@ -3208,6 +3405,8 @@ function switchAdminView(viewId) {
         renderSlaTrackerView();
     } else if (viewId === 'staff') {
         renderStaffView();
+    } else if (viewId === 'kategori') {
+        renderCategoryManagementView();
     } else if (viewId === 'audit') {
         renderAuditLogView();
     } else if (viewId === 'soc') {
@@ -3480,6 +3679,16 @@ function getReportZone(report, zones = (CAMPUS_ZONES || DEFAULT_CAMPUS_ZONES)) {
     return zones.find(z => z.id === 'kampus_utama') || zones[0];
 }
 
+function filterGisMapByCategory() {
+    drawGisSurveillanceLayers();
+    const cat = document.getElementById('gisCategoryFilter')?.value;
+    if (cat) {
+        showToast(`Radar GIS difilter: Kategori ${cat}`, 'info');
+    } else {
+        showToast('Radar GIS menampilkan seluruh kategori fasilitas', 'info');
+    }
+}
+
 function drawGisSurveillanceLayers() {
     if (!gisSurveillanceMapInstance || !gisSurveillanceLayerGroup) return;
 
@@ -3501,7 +3710,13 @@ function drawGisSurveillanceLayers() {
 
     // Hanya tampilkan laporan aktif (Diajukan & Diproses)
     // Kerusakan yang sudah 'Selesai' atau 'Ditolak' otomatis HILANG dari radar spasial
-    const activeReports = reports.filter(r => r.status !== 'Selesai' && r.status !== 'Ditolak');
+    let activeReports = reports.filter(r => r.status !== 'Selesai' && r.status !== 'Ditolak');
+
+    // Filter Kategori Radar Pengawasan GIS (Contoh: Hanya AC)
+    const gisCatFilter = (document.getElementById('gisCategoryFilter')?.value || '').toLowerCase().trim();
+    if (gisCatFilter) {
+        activeReports = activeReports.filter(r => (r.kategori || '').toLowerCase().includes(gisCatFilter));
+    }
 
     if (currentGisRadarMode === 'heatmap') {
         const heatPoints = [];
@@ -4214,6 +4429,421 @@ function runSecurityAuditCheck() {
         });
     } else {
         showToast('Audit keamanan sistem: 100% LOLOS!', 'success');
+    }
+}
+
+/* ==========================================================================
+   CATEGORY CRUD MANAGEMENT (Admin & Super Admin Authority)
+   ========================================================================== */
+const STORAGE_CATEGORIES_KEY = 'SIMPEL_CATEGORIES_DATA_V1';
+
+const DEFAULT_CATEGORIES_DATA = [
+    {
+        id: 'CAT-001',
+        nama: 'AC & Pendingin Ruangan',
+        icon: 'fa-snowflake',
+        sla: 24,
+        urgensi: 'Penting',
+        status: 'Aktif',
+        deskripsi: 'AC split, central inverter, blower, perbaikan freon, dan remote pendingin ruang kuliah/kantor.'
+    },
+    {
+        id: 'CAT-002',
+        nama: 'Kelistrikan & Penerangan',
+        icon: 'fa-bolt',
+        sla: 12,
+        urgensi: 'Darurat',
+        status: 'Aktif',
+        deskripsi: 'MCB panel, instalasi stop kontak, saklar terbakar, kabel listrik, dan lampu penerangan ruangan.'
+    },
+    {
+        id: 'CAT-003',
+        nama: 'Sanitasi & Plumbing',
+        icon: 'fa-faucet-drip',
+        sla: 24,
+        urgensi: 'Penting',
+        status: 'Aktif',
+        deskripsi: 'Kran bocor, closet toilet tersumbat, wastafel cuci tangan, pipa pecah, dan tandon air.'
+    },
+    {
+        id: 'CAT-004',
+        nama: 'Proyektor & Audio Visual',
+        icon: 'fa-video',
+        sla: 12,
+        urgensi: 'Penting',
+        status: 'Aktif',
+        deskripsi: 'Proyektor kelas buram/mati, kabel HDMI/VGA, sound system kuliah, mikrofon, dan layar proyektor.'
+    },
+    {
+        id: 'CAT-005',
+        nama: 'Mebel & Furnitur',
+        icon: 'fa-couch',
+        sla: 48,
+        urgensi: 'Standar',
+        status: 'Aktif',
+        deskripsi: 'Kursi mahasiswa patah, meja dosen goyang, lemari arsip, papan tulis whiteboard, dan podium.'
+    },
+    {
+        id: 'CAT-006',
+        nama: 'Pintu, Jendela & Kunci',
+        icon: 'fa-door-open',
+        sla: 24,
+        urgensi: 'Standar',
+        status: 'Aktif',
+        deskripsi: 'Engsel pintu lepas, handle kunci macet, kunci silinder rusak, grendel jendela, dan ventilasi.'
+    },
+    {
+        id: 'CAT-007',
+        nama: 'Jaringan & Internet Wi-Fi',
+        icon: 'fa-wifi',
+        sla: 8,
+        urgensi: 'Darurat',
+        status: 'Aktif',
+        deskripsi: 'Access point Wi-Fi tidak ada sinyal, port LAN meja tidak konek, router, dan kabel fiber kampus.'
+    },
+    {
+        id: 'CAT-008',
+        nama: 'Bangunan, Plafon & Sipil',
+        icon: 'fa-building',
+        sla: 72,
+        urgensi: 'Standar',
+        status: 'Aktif',
+        deskripsi: 'Atap/plafon jebol bocor saat hujan, keramik lantai terangkat/pecah, retak dinding, dan pengecatan.'
+    },
+    {
+        id: 'CAT-009',
+        nama: 'Aset Umum & Sarpras Lainnya',
+        icon: 'fa-box-archive',
+        sla: 48,
+        urgensi: 'Standar',
+        status: 'Aktif',
+        deskripsi: 'Fasilitas sarana prasarana lainnya di lingkungan kampus UINSSC yang belum terklasifikasi khusus.'
+    }
+];
+
+let categoriesData = [];
+
+function loadCategories() {
+    const raw = localStorage.getItem(STORAGE_CATEGORIES_KEY);
+    if (raw) {
+        try {
+            categoriesData = JSON.parse(raw);
+            if (!Array.isArray(categoriesData) || categoriesData.length === 0) {
+                categoriesData = JSON.parse(JSON.stringify(DEFAULT_CATEGORIES_DATA));
+                saveCategories();
+            }
+        } catch(e) {
+            categoriesData = JSON.parse(JSON.stringify(DEFAULT_CATEGORIES_DATA));
+            saveCategories();
+        }
+    } else {
+        categoriesData = JSON.parse(JSON.stringify(DEFAULT_CATEGORIES_DATA));
+        saveCategories();
+    }
+}
+
+function saveCategories() {
+    localStorage.setItem(STORAGE_CATEGORIES_KEY, JSON.stringify(categoriesData));
+}
+
+function renderCategoryTable(itemsToRender = categoriesData) {
+    const tbody = document.getElementById('categoryTableBody');
+    if (!tbody) return;
+
+    if (itemsToRender.length === 0) {
+        tbody.innerHTML = `
+            <tr>
+                <td colspan="7" style="text-align:center; padding:32px 16px; color:var(--text-muted);">
+                    <i class="fa-solid fa-tags" style="font-size:32px; margin-bottom:8px; display:block; opacity:0.4;"></i>
+                    Tidak ada data kategori yang sesuai filter pencarian.
+                </td>
+            </tr>
+        `;
+        return;
+    }
+
+    tbody.innerHTML = itemsToRender.map((cat, idx) => {
+        const isAktif = cat.status === 'Aktif';
+        const badgeStatus = isAktif
+            ? `<span style="background:rgba(16,185,129,0.15); color:#10b981; border:1px solid #10b981; padding:3px 10px; border-radius:12px; font-size:11px; font-weight:700;"><i class="fa-solid fa-circle-check"></i> Aktif</span>`
+            : `<span style="background:rgba(100,116,139,0.15); color:#94a3b8; border:1px solid #64748b; padding:3px 10px; border-radius:12px; font-size:11px; font-weight:700;"><i class="fa-solid fa-circle-xmark"></i> Nonaktif</span>`;
+
+        let urgensiColor = '#10b981';
+        if (cat.urgensi === 'Darurat') urgensiColor = '#ef4444';
+        else if (cat.urgensi === 'Penting') urgensiColor = '#f59e0b';
+
+        return `
+            <tr>
+                <td style="text-align:center; font-weight:700; color:var(--text-muted);">${idx + 1}</td>
+                <td>
+                    <div style="display:flex; align-items:center; gap:10px;">
+                        <div style="width:34px; height:34px; border-radius:8px; background:rgba(0,90,54,0.15); border:1px solid #005a36; display:flex; align-items:center; justify-content:center; color:var(--gold); font-size:15px; flex-shrink:0;">
+                            <i class="fa-solid ${escapeHtml(cat.icon || 'fa-tag')}"></i>
+                        </div>
+                        <div>
+                            <strong style="color:var(--text-main); font-size:13px; display:block;">${escapeHtml(cat.nama)}</strong>
+                            <span style="font-size:11px; color:var(--text-muted); font-family:monospace;">${escapeHtml(cat.id)}</span>
+                        </div>
+                    </div>
+                </td>
+                <td style="font-size:12px; color:var(--text-muted); max-width:240px; line-height:1.4;">
+                    ${escapeHtml(cat.deskripsi || '-')}
+                </td>
+                <td>
+                    <span style="background:rgba(0,90,54,0.1); color:var(--primary); font-weight:700; padding:3px 8px; border-radius:6px; font-size:11px; border:1px solid rgba(0,90,54,0.2);">
+                        <i class="fa-solid fa-clock"></i> ${cat.sla || 24} Jam
+                    </span>
+                </td>
+                <td>
+                    <span style="color:${urgensiColor}; font-weight:700; font-size:11px; background:${urgensiColor}18; padding:3px 8px; border-radius:6px; border:1px solid ${urgensiColor}40;">
+                        ${escapeHtml(cat.urgensi || 'Standar')}
+                    </span>
+                </td>
+                <td>${badgeStatus}</td>
+                <td>
+                    <div style="display:flex; gap:6px;">
+                        <button type="button" class="btn-act" onclick="openCategoryModal('${cat.id}')" title="Edit Kategori" style="color:#facc15; border-color:rgba(250,204,21,0.3);">
+                            <i class="fa-solid fa-pen-to-square"></i>
+                        </button>
+                        <button type="button" class="btn-act btn-del" onclick="deleteCategory('${cat.id}')" title="Hapus Kategori">
+                            <i class="fa-solid fa-trash-can"></i>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+        `;
+    }).join('');
+}
+
+function renderCategoryManagementView() {
+    loadCategories();
+    renderCategoryTable();
+
+    // KPI Summary
+    const totalEl = document.getElementById('catKpiTotal');
+    const activeEl = document.getElementById('catKpiActive');
+    const topEl = document.getElementById('catKpiTop');
+    const slaEl = document.getElementById('catKpiSla');
+
+    if (totalEl) totalEl.innerText = categoriesData.length;
+    if (activeEl) activeEl.innerText = categoriesData.filter(c => c.status === 'Aktif').length;
+
+    // Hitung kategori terbanyak dilaporkan
+    if (topEl) {
+        const counts = {};
+        (reportsData || []).forEach(r => {
+            const k = r.kategori || 'Lainnya';
+            counts[k] = (counts[k] || 0) + 1;
+        });
+        let topCat = 'Belum Ada';
+        let maxCount = 0;
+        Object.entries(counts).forEach(([k, c]) => {
+            if (c > maxCount) {
+                maxCount = c;
+                topCat = k.split(' ')[0];
+            }
+        });
+        topEl.innerText = topCat;
+    }
+
+    if (slaEl) {
+        const totalSla = categoriesData.reduce((acc, c) => acc + (parseInt(c.sla) || 24), 0);
+        const avgSla = categoriesData.length ? Math.round(totalSla / categoriesData.length) : 24;
+        slaEl.innerText = `${avgSla} Jam`;
+    }
+}
+
+function filterCategoryTable() {
+    const query = (document.getElementById('searchCategoryInput')?.value || '').toLowerCase().trim();
+    if (!query) {
+        renderCategoryTable(categoriesData);
+        return;
+    }
+    const filtered = categoriesData.filter(c => {
+        return (c.nama || '').toLowerCase().includes(query) ||
+               (c.id || '').toLowerCase().includes(query) ||
+               (c.deskripsi || '').toLowerCase().includes(query);
+    });
+    renderCategoryTable(filtered);
+}
+
+function openCategoryModal(catId = null) {
+    const modal = document.getElementById('categoryModal');
+    const titleEl = document.getElementById('categoryModalTitle');
+    const editIdInput = document.getElementById('categoryEditId');
+    const nameInput = document.getElementById('categoryNameInput');
+    const iconInput = document.getElementById('categoryIconInput');
+    const slaInput = document.getElementById('categorySlaInput');
+    const urgensiInput = document.getElementById('categoryUrgensiInput');
+    const statusInput = document.getElementById('categoryStatusInput');
+    const descInput = document.getElementById('categoryDescInput');
+
+    if (!modal) return;
+
+    if (catId) {
+        const cat = categoriesData.find(c => c.id === catId);
+        if (!cat) return;
+        if (titleEl) titleEl.innerHTML = `<i class="fa-solid fa-pen-to-square" style="color:var(--gold);"></i> Edit Kategori: ${escapeHtml(cat.nama)}`;
+        if (editIdInput) editIdInput.value = cat.id;
+        if (nameInput) nameInput.value = cat.nama;
+        if (iconInput) iconInput.value = cat.icon || 'fa-box-archive';
+        if (slaInput) slaInput.value = cat.sla || 24;
+        if (urgensiInput) urgensiInput.value = cat.urgensi || 'Standar';
+        if (statusInput) statusInput.value = cat.status || 'Aktif';
+        if (descInput) descInput.value = cat.deskripsi || '';
+    } else {
+        if (titleEl) titleEl.innerHTML = `<i class="fa-solid fa-tags" style="color:var(--gold);"></i> Tambah Kategori Fasilitas Baru`;
+        if (editIdInput) editIdInput.value = '';
+        if (nameInput) nameInput.value = '';
+        if (iconInput) iconInput.value = 'fa-snowflake';
+        if (slaInput) slaInput.value = '24';
+        if (urgensiInput) urgensiInput.value = 'Standar';
+        if (statusInput) statusInput.value = 'Aktif';
+        if (descInput) descInput.value = '';
+    }
+
+    modal.classList.remove('hidden');
+}
+
+function closeCategoryModal() {
+    const modal = document.getElementById('categoryModal');
+    if (modal) modal.classList.add('hidden');
+}
+
+function closeCategoryModalOnBackdrop(e) {
+    if (e.target && e.target.id === 'categoryModal') {
+        closeCategoryModal();
+    }
+}
+
+function handleCategoryFormSubmit(e) {
+    e.preventDefault();
+
+    const editId = document.getElementById('categoryEditId')?.value;
+    const nama = (document.getElementById('categoryNameInput')?.value || '').trim();
+    const icon = document.getElementById('categoryIconInput')?.value || 'fa-tag';
+    const sla = parseInt(document.getElementById('categorySlaInput')?.value || '24', 10);
+    const urgensi = document.getElementById('categoryUrgensiInput')?.value || 'Standar';
+    const status = document.getElementById('categoryStatusInput')?.value || 'Aktif';
+    const deskripsi = (document.getElementById('categoryDescInput')?.value || '').trim();
+
+    if (!nama) {
+        showToast('Nama kategori wajib diisi!', 'warning');
+        return;
+    }
+
+    if (editId) {
+        // Mode Update
+        const idx = categoriesData.findIndex(c => c.id === editId);
+        if (idx !== -1) {
+            categoriesData[idx] = {
+                ...categoriesData[idx],
+                nama,
+                icon,
+                sla,
+                urgensi,
+                status,
+                deskripsi
+            };
+            saveCategories();
+            showToast(`Kategori "${nama}" berhasil diperbarui!`, 'success');
+            logAudit('update', 'Perubahan Data Kategori', `Kategori ${editId} diubah menjadi "${nama}"`);
+        }
+    } else {
+        // Mode Create
+        const nextNum = categoriesData.length + 1;
+        const newId = `CAT-${String(nextNum).padStart(3, '0')}`;
+        const newCat = {
+            id: newId,
+            nama,
+            icon,
+            sla,
+            urgensi,
+            status,
+            deskripsi
+        };
+        categoriesData.push(newCat);
+        saveCategories();
+        showToast(`Kategori "${nama}" berhasil ditambahkan!`, 'success');
+        logAudit('create', 'Penambahan Kategori Baru', `Kategori baru ditambahkan: "${nama}" (${newId})`);
+    }
+
+    closeCategoryModal();
+    renderCategoryManagementView();
+    populateCategoryDropdowns();
+    renderAllAdminCharts();
+}
+
+function deleteCategory(catId) {
+    const cat = categoriesData.find(c => c.id === catId);
+    if (!cat) return;
+
+    // Cek laporan terkait
+    const usedCount = (reportsData || []).filter(r => (r.kategori || '').toLowerCase().includes(cat.nama.toLowerCase().split(' ')[0])).length;
+
+    const doDelete = () => {
+        categoriesData = categoriesData.filter(c => c.id !== catId);
+        saveCategories();
+        renderCategoryManagementView();
+        populateCategoryDropdowns();
+        renderAllAdminCharts();
+        showToast(`Kategori "${cat.nama}" berhasil dihapus.`, 'success');
+        logAudit('delete', 'Penghapusan Kategori', `Kategori "${cat.nama}" (${catId}) dihapus dari sistem.`);
+    };
+
+    if (typeof Swal !== 'undefined') {
+        Swal.fire({
+            title: `Hapus Kategori "${cat.nama}"?`,
+            html: usedCount > 0
+                ? `<div style="font-size:13px; color:#ef4444; font-weight:700;">Perhatian: Kategori ini terhubung dengan ${usedCount} riwayat laporan!</div>`
+                : 'Data kategori ini akan dihapus dari opsi sistem.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#ef4444',
+            cancelButtonColor: '#64748b',
+            confirmButtonText: '<i class="fa-solid fa-trash-can"></i> Ya, Hapus',
+            cancelButtonText: 'Batal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                doDelete();
+            }
+        });
+    } else {
+        if (confirm(`Yakin ingin menghapus kategori "${cat.nama}"?`)) {
+            doDelete();
+        }
+    }
+}
+
+function populateCategoryDropdowns() {
+    loadCategories();
+    const activeCats = categoriesData.filter(c => c.status === 'Aktif');
+
+    // 1. Dropdown Filter Peta Overview: #mapCategoryFilter
+    const mapFilter = document.getElementById('mapCategoryFilter');
+    if (mapFilter) {
+        const curVal = mapFilter.value;
+        mapFilter.innerHTML = `<option value="">Semua Kategori Sarpras</option>` +
+            activeCats.map(c => `<option value="${escapeHtml(c.nama)}">${escapeHtml(c.nama)}</option>`).join('');
+        if (curVal) mapFilter.value = curVal;
+    }
+
+    // 2. Dropdown Filter Radar GIS: #gisCategoryFilter
+    const gisFilter = document.getElementById('gisCategoryFilter');
+    if (gisFilter) {
+        const curVal = gisFilter.value;
+        gisFilter.innerHTML = `<option value="">Semua Kategori Fasilitas</option>` +
+            activeCats.map(c => `<option value="${escapeHtml(c.nama)}">${escapeHtml(c.nama)}</option>`).join('');
+        if (curVal) gisFilter.value = curVal;
+    }
+
+    // 3. Dropdown Filter Tabel Dashboard: #filterKategori
+    const tableFilter = document.getElementById('filterKategori');
+    if (tableFilter) {
+        const curVal = tableFilter.value;
+        tableFilter.innerHTML = `<option value="">Semua Kategori</option>` +
+            activeCats.map(c => `<option value="${escapeHtml(c.nama)}">${escapeHtml(c.nama)}</option>`).join('');
+        if (curVal) tableFilter.value = curVal;
     }
 }
 
