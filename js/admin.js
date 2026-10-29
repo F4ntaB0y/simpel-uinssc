@@ -24,19 +24,28 @@ let currentAdminRole = 'admin'; // 'admin' or 'superadmin'
 let staffAccounts = [];
 let currentStaffFilterRole = 'ALL';
 
+// Metadata 5 Kawasan / Zona Kampus UINSSC untuk Penugasan Wilayah Admin & Petugas
+const CAMPUS_ZONE_METAS = {
+    'kampus_utama': { name: 'Kawasan Kampus Utama', icon: 'fa-building-columns', color: '#10b981', short: 'Kampus Utama' },
+    'gedung_cyber': { name: 'Kawasan Gedung Cyber', icon: 'fa-laptop-code', color: '#06b6d4', short: 'Gedung Cyber' },
+    'gedung_seberang': { name: 'Kawasan Kampus Sebrang', icon: 'fa-school', color: '#a855f7', short: 'Kampus Sebrang' },
+    'pascasarjana_mahad': { name: 'Kawasan Pascasarjana & Mahad', icon: 'fa-mosque', color: '#f59e0b', short: 'Pascasarjana & Mahad' },
+    'area_saladara': { name: 'Kawasan Lab Saladara', icon: 'fa-flask-vial', color: '#ec4899', short: 'Lab Saladara' }
+};
+
 const DEFAULT_STAFF_DATA = [
-    { id: 'ADM-01', username: 'admin_fauzi', password: 'admin123', nama: 'Ahmad Fauzi, S.T.', role: 'admin', bidang: 'Admin Sarpras Kampus Utama', wa: '081234560001', status: 'Aktif' },
-    { id: 'ADM-02', username: 'admin_dewi', password: 'admin123', nama: 'Dewi Sartika, S.Kom.', role: 'admin', bidang: 'Admin Gedung Cyber & IT', wa: '081234560002', status: 'Aktif' },
-    { id: 'MTR-01', username: 'mitra', password: 'mitra123', nama: 'Kantin Berkah Sejahtera (Ibu Sumiati)', role: 'mitra', bidang: 'Kantin Kampus & Pujasera', wa: '081288990001', status: 'Aktif' },
-    { id: 'MTR-02', username: 'mitra_bank', password: 'mitra123', nama: 'Bank Syariah Mitra Kampus', role: 'mitra', bidang: 'Perbankan & ATM Center Kampus', wa: '081288990002', status: 'Aktif' },
-    { id: 'MTR-03', username: 'indocare', password: 'mitra123', nama: 'PT. Indocare Facility Services', role: 'mitra', bidang: 'Vendor Kebersihan & Hygiene', wa: '081288990003', status: 'Aktif' },
-    { id: 'TKN-01', nama: 'Bambang Sudiro', role: 'petugas', bidang: 'AC & Pendingin (HVAC)', wa: '081298765001', status: 'Aktif' },
-    { id: 'TKN-02', nama: 'Joko Purnomo', role: 'petugas', bidang: 'Kelistrikan & Lampu', wa: '081298765002', status: 'Aktif' },
-    { id: 'TKN-03', nama: 'Rahmat Hidayat', role: 'petugas', bidang: 'Sanitasi & Plumbing', wa: '081298765003', status: 'Aktif' },
-    { id: 'TKN-04', nama: 'Hendra Wijaya', role: 'petugas', bidang: 'Proyektor & Sound System', wa: '081298765004', status: 'Aktif' },
-    { id: 'TKN-05', nama: 'Sukarman', role: 'petugas', bidang: 'Sipil & Bangunan', wa: '081298765005', status: 'Aktif' },
-    { id: 'TKN-06', nama: 'Ilham Kurnia', role: 'petugas', bidang: 'Jaringan & Internet (ICT)', wa: '081298765006', status: 'Aktif' },
-    { id: 'TKN-07', nama: 'Agus Setiawan', role: 'petugas', bidang: 'Pintu, Kunci & Mebel', wa: '081298765007', status: 'Aktif' }
+    { id: 'ADM-01', username: 'admin_fauzi', password: 'admin123', nama: 'Ahmad Fauzi, S.T.', role: 'admin', bidang: 'Admin Sarpras Kampus Utama', wa: '081234560001', status: 'Aktif', wilayah: ['kampus_utama', 'gedung_seberang'] },
+    { id: 'ADM-02', username: 'admin_dewi', password: 'admin123', nama: 'Dewi Sartika, S.Kom.', role: 'admin', bidang: 'Admin Gedung Cyber & IT', wa: '081234560002', status: 'Aktif', wilayah: ['gedung_cyber', 'pascasarjana_mahad'] },
+    { id: 'MTR-01', username: 'mitra', password: 'mitra123', nama: 'Kantin Berkah Sejahtera (Ibu Sumiati)', role: 'mitra', bidang: 'Kantin Kampus & Pujasera', wa: '081288990001', status: 'Aktif', wilayah: ['kampus_utama'] },
+    { id: 'MTR-02', username: 'mitra_bank', password: 'mitra123', nama: 'Bank Syariah Mitra Kampus', role: 'mitra', bidang: 'Perbankan & ATM Center Kampus', wa: '081288990002', status: 'Aktif', wilayah: ['kampus_utama'] },
+    { id: 'MTR-03', username: 'indocare', password: 'mitra123', nama: 'PT. Indocare Facility Services', role: 'mitra', bidang: 'Vendor Kebersihan & Hygiene', wa: '081288990003', status: 'Aktif', wilayah: ['kampus_utama', 'gedung_cyber', 'gedung_seberang', 'pascasarjana_mahad', 'area_saladara'] },
+    { id: 'TKN-01', nama: 'Bambang Sudiro', role: 'petugas', bidang: 'AC & Pendingin (HVAC)', wa: '081298765001', status: 'Aktif', wilayah: ['kampus_utama', 'gedung_cyber'] },
+    { id: 'TKN-02', nama: 'Joko Purnomo', role: 'petugas', bidang: 'Kelistrikan & Lampu', wa: '081298765002', status: 'Aktif', wilayah: ['kampus_utama', 'gedung_seberang', 'area_saladara'] },
+    { id: 'TKN-03', nama: 'Rahmat Hidayat', role: 'petugas', bidang: 'Sanitasi & Plumbing', wa: '081298765003', status: 'Aktif', wilayah: ['kampus_utama', 'pascasarjana_mahad'] },
+    { id: 'TKN-04', nama: 'Hendra Wijaya', role: 'petugas', bidang: 'Proyektor & Sound System', wa: '081298765004', status: 'Aktif', wilayah: ['kampus_utama', 'gedung_cyber'] },
+    { id: 'TKN-05', nama: 'Sukarman', role: 'petugas', bidang: 'Sipil & Bangunan', wa: '081298765005', status: 'Aktif', wilayah: ['kampus_utama', 'gedung_seberang', 'pascasarjana_mahad', 'area_saladara'] },
+    { id: 'TKN-06', nama: 'Ilham Kurnia', role: 'petugas', bidang: 'Jaringan & Internet (ICT)', wa: '081298765006', status: 'Aktif', wilayah: ['kampus_utama', 'gedung_cyber', 'gedung_seberang', 'pascasarjana_mahad', 'area_saladara'] },
+    { id: 'TKN-07', nama: 'Agus Setiawan', role: 'petugas', bidang: 'Pintu, Kunci & Mebel', wa: '081298765007', status: 'Aktif', wilayah: ['kampus_utama', 'gedung_cyber'] }
 ];
 
 function loadStaffAccounts() {
@@ -44,14 +53,30 @@ function loadStaffAccounts() {
     if (raw) {
         try {
             staffAccounts = JSON.parse(raw);
+            let needsSave = false;
             // Sinkronkan akun Mitra bawaan jika belum pernah ada
             if (!staffAccounts.some(s => s.role === 'mitra')) {
                 const defaultMitras = DEFAULT_STAFF_DATA.filter(s => s.role === 'mitra');
                 staffAccounts.push(...defaultMitras);
-                saveStaffAccounts();
+                needsSave = true;
             }
+            // Normalisasi atribut wilayah untuk akun lama yang belum memilikinya
+            staffAccounts.forEach(s => {
+                if (!Array.isArray(s.wilayah) || s.wilayah.length === 0) {
+                    if (s.role === 'admin') {
+                        s.wilayah = (s.bidang && s.bidang.toLowerCase().includes('cyber')) ? ['gedung_cyber', 'pascasarjana_mahad'] : ['kampus_utama', 'gedung_seberang'];
+                    } else if (s.role === 'mitra') {
+                        s.wilayah = ['kampus_utama'];
+                    } else {
+                        s.wilayah = ['kampus_utama', 'gedung_cyber'];
+                    }
+                    needsSave = true;
+                }
+            });
+            if (needsSave) saveStaffAccounts();
         } catch(e) {
             staffAccounts = [...DEFAULT_STAFF_DATA];
+            saveStaffAccounts();
         }
     } else {
         staffAccounts = [...DEFAULT_STAFF_DATA];
@@ -394,19 +419,51 @@ const DEFAULT_CAMPUS_ZONES = [
     }
 ];
 
+function syncCampusZoneMetas(zones) {
+    if (!Array.isArray(zones)) return;
+    zones.forEach(z => {
+        if (!CAMPUS_ZONE_METAS[z.id]) {
+            CAMPUS_ZONE_METAS[z.id] = {
+                name: z.name,
+                icon: z.icon || 'fa-map-location-dot',
+                color: z.color || '#f59e0b',
+                short: z.short || z.name.replace(/^Kawasan\s+/i, '')
+            };
+        }
+    });
+}
+
+function updateFilterGedungOptions() {
+    const sel = document.getElementById('filterGedung');
+    if (!sel) return;
+    const curVal = sel.value;
+    const zones = CAMPUS_ZONES || loadCampusZones();
+    let html = '<option value="ALL">Semua Kawasan</option>';
+    zones.forEach(z => {
+        html += `<option value="${escapeHtml(z.name)}">${escapeHtml(z.name)}</option>`;
+    });
+    sel.innerHTML = html;
+    if (curVal && Array.from(sel.options).some(o => o.value === curVal)) {
+        sel.value = curVal;
+    }
+}
+
 function loadCampusZones() {
     const raw = localStorage.getItem(STORAGE_ZONES_KEY);
     if (raw) {
         try {
             const parsed = JSON.parse(raw);
-            if (Array.isArray(parsed) && parsed.length === 5) {
+            if (Array.isArray(parsed) && parsed.length >= 1) {
+                syncCampusZoneMetas(parsed);
                 return parsed;
             }
         } catch(e) {
             console.error('Gagal membaca geofencing tersimpan', e);
         }
     }
-    return JSON.parse(JSON.stringify(DEFAULT_CAMPUS_ZONES));
+    const defZones = JSON.parse(JSON.stringify(DEFAULT_CAMPUS_ZONES));
+    syncCampusZoneMetas(defZones);
+    return defZones;
 }
 
 function saveCampusZones(zones) {
@@ -538,6 +595,33 @@ function checkAdminAuth() {
 
                 const sidebarSocEl = document.getElementById('sidebarSocItem');
                 if (sidebarSocEl) sidebarSocEl.classList.add('hidden');
+            }
+
+            // Tampilkan informasi wilayah penugasan akun Admin yang sedang login
+            loadStaffAccounts();
+            const myAccount = staffAccounts.find(s => 
+                (s.username && s.username.toLowerCase() === sess.username.toLowerCase()) || 
+                (s.id && s.id.toLowerCase() === sess.username.toLowerCase()) ||
+                (sess.nimNip && s.id === sess.nimNip)
+            );
+            const adminWilayahPill = document.getElementById('adminWilayahPill');
+            const adminWilayahPillText = document.getElementById('adminWilayahPillText');
+            const btnFilterMyWilayah = document.getElementById('btnFilterMyWilayah');
+
+            if (currentAdminRole === 'admin' && myAccount && Array.isArray(myAccount.wilayah) && myAccount.wilayah.length > 0) {
+                const names = myAccount.wilayah.map(k => CAMPUS_ZONE_METAS[k]?.short || k);
+                if (adminWilayahPillText) adminWilayahPillText.innerText = `Wilayah Tugas: ${names.join(', ')}`;
+                if (adminWilayahPill) adminWilayahPill.style.display = 'inline-flex';
+                if (btnFilterMyWilayah) btnFilterMyWilayah.style.display = 'inline-flex';
+            } else if (currentAdminRole === 'superadmin') {
+                if (adminWilayahPillText) adminWilayahPillText.innerText = 'Cakupan: Seluruh 5 Kawasan Kampus';
+                if (adminWilayahPill) {
+                    adminWilayahPill.style.display = 'inline-flex';
+                    adminWilayahPill.style.borderColor = 'rgba(250,204,21,0.35)';
+                    adminWilayahPill.style.color = '#facc15';
+                    adminWilayahPill.style.background = 'rgba(250,204,21,0.12)';
+                }
+                if (btnFilterMyWilayah) btnFilterMyWilayah.style.display = 'none';
             }
         }
     } catch (e) {
@@ -1244,6 +1328,26 @@ function renderAdminTable() {
     const filtered = reportsData.filter(item => {
         if (isDuplicateFilterActive && !dupMap[item.id]) return false;
         if (statusFilter !== 'ALL' && item.status !== statusFilter) return false;
+
+        // Filter Penugasan Wilayah Admin (Jika mode Wilayah Tugas Saya aktif)
+        if (isMyWilayahFilterActive && currentAdminRole === 'admin') {
+            const sessionRaw = localStorage.getItem('SIMPEL_AUTH_SESSION');
+            if (sessionRaw) {
+                try {
+                    const sess = JSON.parse(sessionRaw);
+                    loadStaffAccounts();
+                    const myAcc = staffAccounts.find(s => 
+                        (s.username && s.username.toLowerCase() === sess.username.toLowerCase()) || 
+                        (s.id && s.id.toLowerCase() === sess.username.toLowerCase()) ||
+                        (sess.nimNip && s.id === sess.nimNip)
+                    );
+                    if (myAcc && Array.isArray(myAcc.wilayah) && myAcc.wilayah.length > 0) {
+                        const repZone = getReportZone(item);
+                        if (!repZone || !myAcc.wilayah.includes(repZone.id)) return false;
+                    }
+                } catch(e) {}
+            }
+        }
         if (gedungFilter !== 'ALL') {
             const itemGedung = (item.gedung || '').toLowerCase();
             const filterLower = gedungFilter.toLowerCase();
@@ -1945,10 +2049,29 @@ function populateTeknisiSelect(currentValue) {
     loadStaffAccounts();
     const activePetugas = staffAccounts.filter(s => s.role === 'petugas' && s.status === 'Aktif');
 
+    // Identifikasi zona kawasan kampus dari tiket laporan yang sedang ditinjau
+    let targetZone = null;
+    if (editingId) {
+        const curReport = reportsData.find(r => r.id === editingId);
+        if (curReport) targetZone = getReportZone(curReport);
+    }
+
+    // Sort: Utamakan teknisi yang ditugaskan pada wilayah zona laporan ini
+    const sortedPetugas = [...activePetugas].sort((a, b) => {
+        if (!targetZone) return 0;
+        const aMatch = Array.isArray(a.wilayah) && a.wilayah.includes(targetZone.id);
+        const bMatch = Array.isArray(b.wilayah) && b.wilayah.includes(targetZone.id);
+        if (aMatch && !bMatch) return -1;
+        if (!aMatch && bMatch) return 1;
+        return 0;
+    });
+
     let html = `<option value="Belum Ditunjuk">-- Pilih Petugas Spesialis (Aktif) --</option>`;
-    activePetugas.forEach(p => {
+    sortedPetugas.forEach(p => {
+        const isZoneMatch = targetZone && Array.isArray(p.wilayah) && p.wilayah.includes(targetZone.id);
+        const zoneBadge = isZoneMatch ? ` ⭐ [Wilayah Sesuai: ${targetZone.name}]` : '';
         const valText = `${p.nama} (${p.bidang})`;
-        html += `<option value="${escapeHtml(valText)}">${escapeHtml(p.nama)} - ${escapeHtml(p.bidang)}</option>`;
+        html += `<option value="${escapeHtml(valText)}">${escapeHtml(p.nama)} - ${escapeHtml(p.bidang)}${zoneBadge}</option>`;
     });
     html += `<option value="__custom__">&#9998; Ketik Nama Lain (Manual)...</option>`;
 
@@ -2144,6 +2267,525 @@ function notifyUserPelapor() {
 // SUPER ADMIN: MENGATUR SIAPA ADMIN DAN PETUGAS SARPRAS KAMPUS
 // ==========================================================================
 
+
+// ==========================================================================
+// PENUGASAN WILAYAH KERJA ADMIN & PETUGAS (MULTI-WILAYAH) - SUPER ADMIN
+// ==========================================================================
+
+function renderStaffZonesBadges(wilayahArray) {
+    if (!Array.isArray(wilayahArray) || wilayahArray.length === 0) {
+        return '<span style="font-size:11px; color:var(--text-muted); font-style:italic;">Belum Ditugaskan</span>';
+    }
+    const allKeys = Object.keys(CAMPUS_ZONE_METAS);
+    if (allKeys.every(k => wilayahArray.includes(k))) {
+        return `<span style="background:rgba(250,204,21,0.15); color:#facc15; border:1px solid rgba(250,204,21,0.35); padding:3px 9px; border-radius:8px; font-size:11px; font-weight:700; display:inline-flex; align-items:center; gap:5px;" title="Bertanggung jawab di seluruh 5 kawasan kampus UINSSC">
+            <i class="fa-solid fa-globe"></i> Semua Kawasan (5/5)
+        </span>`;
+    }
+    return `<div style="display:flex; flex-wrap:wrap; gap:4px;">` +
+        wilayahArray.map(key => {
+            const meta = CAMPUS_ZONE_METAS[key] || { name: key, icon: 'fa-map-pin', color: '#94a3b8', short: key };
+            return `<span style="background:rgba(255,255,255,0.05); color:${meta.color}; border:1px solid ${meta.color}55; padding:2px 7px; border-radius:6px; font-size:10.5px; font-weight:700; display:inline-flex; align-items:center; gap:4px;" title="${escapeHtml(meta.name)}">
+                <i class="fa-solid ${meta.icon}"></i> ${escapeHtml(meta.short)}
+            </span>`;
+        }).join('') +
+    `</div>`;
+}
+
+function renderAddStaffZoneCheckboxes() {
+    const container = document.getElementById('addStaffWilayahContainer');
+    if (!container) return;
+    const allKeys = Object.keys(CAMPUS_ZONE_METAS);
+    container.innerHTML = allKeys.map(key => {
+        const meta = CAMPUS_ZONE_METAS[key];
+        const isDefault = (key === 'kampus_utama');
+        return `
+            <label style="display:flex; align-items:center; gap:8px; font-size:12px; color:var(--text-main); cursor:pointer; background:rgba(255,255,255,0.03); padding:7px 10px; border-radius:7px; border:1px solid var(--border-color); user-select:none;">
+                <input type="checkbox" name="addStaffWilayahCheckbox" value="${key}" ${isDefault ? 'checked' : ''} style="cursor:pointer; accent-color:#facc15; width:15px; height:15px;">
+                <span style="color:${meta.color}; font-weight:700; display:inline-flex; align-items:center; gap:5px;">
+                    <i class="fa-solid ${meta.icon}"></i> ${escapeHtml(meta.short)}
+                </span>
+            </label>
+        `;
+    }).join('');
+}
+
+function toggleAllStaffZoneCheckboxes(checked) {
+    const checkboxes = document.querySelectorAll('input[name="addStaffWilayahCheckbox"]');
+    checkboxes.forEach(cb => cb.checked = !!checked);
+}
+
+function openAssignWilayahModal(staffId) {
+    if (currentAdminRole !== 'superadmin') {
+        warnSuperAdminOnly('menugaskan atau mengubah wilayah kerja personil');
+        return;
+    }
+
+    loadStaffAccounts();
+    const staff = staffAccounts.find(s => s.id === staffId);
+    if (!staff) {
+        showToast('Data personil tidak ditemukan.', 'error');
+        return;
+    }
+
+    const modal = document.getElementById('assignWilayahModal');
+    if (!modal) return;
+
+    document.getElementById('assignStaffIdHidden').value = staff.id;
+    document.getElementById('assignStaffName').innerText = staff.nama;
+    
+    let roleBadge = '';
+    if (staff.role === 'admin') {
+        roleBadge = `<span class="badge-role-admin" style="font-size:11px; padding:2px 8px;"><i class="fa-solid fa-user-shield"></i> Admin Sarpras</span>`;
+    } else if (staff.role === 'mitra') {
+        roleBadge = `<span class="badge-role-mitra" style="font-size:11px; padding:2px 8px;"><i class="fa-solid fa-handshake"></i> Mitra Kampus</span>`;
+    } else {
+        roleBadge = `<span class="badge-role-petugas" style="font-size:11px; padding:2px 8px;"><i class="fa-solid fa-screwdriver-wrench"></i> Petugas Lapangan</span>`;
+    }
+    document.getElementById('assignStaffRoleBadge').innerHTML = roleBadge;
+    document.getElementById('assignStaffMeta').innerText = `Kode ID: ${staff.id} &bull; Bidang: ${staff.bidang}`;
+
+    // Render 5 Checkbox Kawasan Kampus
+    const listContainer = document.getElementById('modalWilayahCheckboxesList');
+    const staffZones = Array.isArray(staff.wilayah) ? staff.wilayah : [];
+
+    const allKeys = Object.keys(CAMPUS_ZONE_METAS);
+    listContainer.innerHTML = allKeys.map(key => {
+        const meta = CAMPUS_ZONE_METAS[key];
+        const isChecked = staffZones.includes(key);
+        return `
+            <label style="display:flex; align-items:center; justify-content:space-between; gap:10px; font-size:13px; color:var(--text-main); cursor:pointer; background:rgba(255,255,255,0.03); padding:10px 14px; border-radius:9px; border:1px solid ${isChecked ? meta.color + '66' : 'var(--border-color)'}; transition:all 0.2s ease;" onmouseover="this.style.background='rgba(255,255,255,0.06)'" onmouseout="this.style.background='rgba(255,255,255,0.03)'">
+                <div style="display:flex; align-items:center; gap:10px;">
+                    <input type="checkbox" name="modalStaffWilayahCheckbox" value="${key}" ${isChecked ? 'checked' : ''} onchange="updateModalSelectedCount()" style="cursor:pointer; accent-color:#facc15; width:17px; height:17px;">
+                    <span style="color:${meta.color}; font-weight:800; font-size:13.5px;">
+                        <i class="fa-solid ${meta.icon}" style="margin-right:6px;"></i> ${escapeHtml(meta.name)}
+                    </span>
+                </div>
+                <span style="font-size:11px; color:var(--text-muted); background:rgba(0,0,0,0.3); padding:2px 8px; border-radius:6px;">${escapeHtml(meta.short)}</span>
+            </label>
+        `;
+    }).join('');
+
+    updateModalSelectedCount();
+    modal.classList.remove('hidden');
+}
+
+function updateModalSelectedCount() {
+    const checked = document.querySelectorAll('input[name="modalStaffWilayahCheckbox"]:checked');
+    const el = document.getElementById('modalSelectedCountText');
+    if (el) {
+        if (checked.length === 5) {
+            el.innerHTML = `<span style="color:#10b981;"><i class="fa-solid fa-globe"></i> Semua Kawasan (5/5) Ditugaskan</span>`;
+        } else if (checked.length === 0) {
+            el.innerHTML = `<span style="color:#ef4444;"><i class="fa-solid fa-triangle-exclamation"></i> 0 Kawasan (Wajib Pilih Minimal 1)</span>`;
+        } else {
+            el.innerHTML = `<span style="color:#facc15;"><i class="fa-solid fa-check"></i> ${checked.length} dari 5 Kawasan Terpilih</span>`;
+        }
+    }
+}
+
+function modalSetAllZones(checked) {
+    const cbs = document.querySelectorAll('input[name="modalStaffWilayahCheckbox"]');
+    cbs.forEach(cb => cb.checked = !!checked);
+    updateModalSelectedCount();
+}
+
+function closeAssignWilayahModal() {
+    const modal = document.getElementById('assignWilayahModal');
+    if (modal) modal.classList.add('hidden');
+}
+
+function closeAssignWilayahModalOnBackdrop(e) {
+    if (e.target.id === 'assignWilayahModal') {
+        closeAssignWilayahModal();
+    }
+}
+
+function saveStaffWilayahAssignment() {
+    if (currentAdminRole !== 'superadmin') {
+        warnSuperAdminOnly('menyimpan perubahan penugasan wilayah');
+        return;
+    }
+
+    const staffId = document.getElementById('assignStaffIdHidden').value;
+    const checked = document.querySelectorAll('input[name="modalStaffWilayahCheckbox"]:checked');
+    const selected = Array.from(checked).map(cb => cb.value);
+
+    if (selected.length === 0) {
+        showToast('Pilih minimal 1 wilayah penugasan operasional!', 'error');
+        return;
+    }
+
+    loadStaffAccounts();
+    const staff = staffAccounts.find(s => s.id === staffId);
+    if (!staff) {
+        showToast('Personil tidak ditemukan.', 'error');
+        return;
+    }
+
+    staff.wilayah = selected;
+    saveStaffAccounts();
+    renderStaffTable();
+    closeAssignWilayahModal();
+
+    const zoneNames = selected.map(k => CAMPUS_ZONE_METAS[k]?.short || k).join(', ');
+    const roleTitle = staff.role === 'admin' ? 'Admin Sarpras' : (staff.role === 'mitra' ? 'Mitra Kampus' : 'Petugas Lapangan');
+
+    if (typeof Swal !== 'undefined') {
+        Swal.fire({
+            icon: 'success',
+            title: 'Penugasan Wilayah Berhasil!',
+            html: `Personil <b>${escapeHtml(staff.nama)}</b> (${roleTitle}) telah resmi ditugaskan pada <b>${selected.length} Kawasan</b>:<br><div style="margin-top:10px; padding:10px; background:rgba(0,0,0,0.25); border-radius:8px; font-size:12.5px; color:#facc15; font-weight:700;"><i class="fa-solid fa-map-location-dot"></i> ${escapeHtml(zoneNames)}</div>`,
+            confirmButtonColor: '#005a36'
+        });
+    } else {
+        showToast(`Penugasan ${staff.nama} diperbarui ke ${selected.length} wilayah!`, 'success');
+    }
+}
+
+/* ==========================================================================
+   FITUR CETAK REKAPITULASI RESMI SARPRAS KAMPUS (OFFICIAL PDF / PRINT)
+   ========================================================================== */
+
+function openPrintRekapModal() {
+    const modal = document.getElementById('printRekapModal');
+    if (modal) {
+        modal.classList.remove('hidden');
+    }
+}
+
+function closePrintRekapModal() {
+    const modal = document.getElementById('printRekapModal');
+    if (modal) {
+        modal.classList.add('hidden');
+    }
+}
+
+function generateAndPrintOfficialRekap() {
+    const period = document.getElementById('rekapFilterPeriod')?.value || 'ALL';
+    const statusFilter = document.getElementById('rekapFilterStatus')?.value || 'ALL';
+    const zoneFilter = document.getElementById('rekapFilterKawasan')?.value || 'ALL';
+
+    closePrintRekapModal();
+
+    let filtered = [...reportsData];
+
+    // Status filter
+    if (statusFilter !== 'ALL') {
+        filtered = filtered.filter(r => r.status === statusFilter);
+    }
+
+    // Zone filter
+    if (zoneFilter !== 'ALL') {
+        filtered = filtered.filter(r => {
+            const detectedZone = detectCampusZoneKey(r.lat, r.lng, r.gedung);
+            return detectedZone === zoneFilter;
+        });
+    }
+
+    const totalTiket = filtered.length;
+    const countSelesai = filtered.filter(r => r.status === 'Selesai').length;
+    const countProses = filtered.filter(r => r.status === 'Diproses').length;
+    const countDiajukan = filtered.filter(r => r.status === 'Diajukan').length;
+    const completionRate = totalTiket > 0 ? Math.round((countSelesai / totalTiket) * 100) : 0;
+
+    const periodLabelMap = {
+        'ALL': 'Semua Periode (Rekap Akumulatif 2026)',
+        'JULI_2026': 'Bulan Juli 2026',
+        'AGUSTUS_2026': 'Bulan Agustus 2026',
+        'SEMESTER_GANJIL_2026': 'Semester Ganjil TA 2026/2027'
+    };
+    const periodLabel = periodLabelMap[period] || period;
+
+    const printWin = window.open('', '_blank', 'width=1000,height=900');
+    if (!printWin) {
+        alert('Pop-up jendela cetak diblokir oleh browser. Izinkan pop-up untuk mencetak rekap resmi.');
+        return;
+    }
+
+    const todayStr = new Date().toLocaleDateString('id-ID', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric'
+    });
+
+    const rowsHtml = filtered.map((r, index) => {
+        let badgeColor = '#6b7280';
+        if (r.status === 'Selesai') badgeColor = '#10b981';
+        else if (r.status === 'Diproses') badgeColor = '#f59e0b';
+        else if (r.status === 'Diajukan') badgeColor = '#3b82f6';
+
+        return `
+            <tr style="border-bottom:1px solid #e5e7eb; font-size:11px;">
+                <td style="padding:7px 8px; text-align:center;">${index + 1}</td>
+                <td style="padding:7px 8px; font-weight:700; font-family:monospace; color:#005a36;">${escapeHtml(r.id)}</td>
+                <td style="padding:7px 8px; white-space:nowrap;">${escapeHtml(r.tanggalLapor ? r.tanggalLapor.substring(0, 10) : '-')}</td>
+                <td style="padding:7px 8px;">
+                    <strong>${escapeHtml(r.namaPelapor)}</strong><br>
+                    <span style="color:#6b7280; font-size:10px;">${escapeHtml(r.peranPelapor || 'Mahasiswa')} &bull; ${escapeHtml(r.nimNip || '-')}</span>
+                </td>
+                <td style="padding:7px 8px;">
+                    <strong>${escapeHtml(r.gedung)}</strong><br>
+                    <span style="color:#6b7280; font-size:10px;">${escapeHtml(r.ruangan)}</span>
+                </td>
+                <td style="padding:7px 8px;">${escapeHtml(r.kategori)}</td>
+                <td style="padding:7px 8px; text-align:center;">
+                    <span style="font-weight:700; color:${r.urgensi === 'Darurat' ? '#dc2626' : (r.urgensi === 'Tinggi' ? '#ea580c' : '#4b5563')}">${escapeHtml(r.urgensi || 'Sedang')}</span>
+                </td>
+                <td style="padding:7px 8px;">${escapeHtml(r.teknisi || 'Belum Ditunjuk')}</td>
+                <td style="padding:7px 8px; text-align:center;">
+                    <span style="background:${badgeColor}; color:#fff; padding:3px 8px; border-radius:12px; font-size:10px; font-weight:700;">
+                        ${escapeHtml(r.status)}
+                    </span>
+                </td>
+            </tr>
+        `;
+    }).join('');
+
+    printWin.document.write(`
+        <!DOCTYPE html>
+        <html lang="id">
+        <head>
+            <meta charset="UTF-8">
+            <title>Rekapitulasi Sarpras UINSSC - ${periodLabel}</title>
+            <style>
+                @page { size: A4 landscape; margin: 12mm 15mm; }
+                body {
+                    font-family: 'Segoe UI', Tahoma, Arial, sans-serif;
+                    color: #1f2937;
+                    background: #fff;
+                    margin: 0;
+                    padding: 10px;
+                    line-height: 1.4;
+                }
+                .kop-wrapper {
+                    display: flex;
+                    align-items: center;
+                    border-bottom: 3px double #005a36;
+                    padding-bottom: 12px;
+                    margin-bottom: 16px;
+                }
+                .kop-logo {
+                    width: 80px;
+                    height: 80px;
+                    object-fit: contain;
+                    margin-right: 18px;
+                }
+                .kop-text {
+                    flex: 1;
+                    text-align: center;
+                }
+                .kop-text h2 {
+                    margin: 0;
+                    font-size: 15px;
+                    text-transform: uppercase;
+                    letter-spacing: 0.5px;
+                    color: #374151;
+                }
+                .kop-text h1 {
+                    margin: 2px 0;
+                    font-size: 19px;
+                    font-weight: 800;
+                    color: #005a36;
+                    letter-spacing: 0.8px;
+                }
+                .kop-text p {
+                    margin: 2px 0 0 0;
+                    font-size: 11px;
+                    color: #4b5563;
+                }
+                .doc-title {
+                    text-align: center;
+                    margin: 14px 0 16px 0;
+                }
+                .doc-title h3 {
+                    margin: 0;
+                    font-size: 16px;
+                    font-weight: 800;
+                    color: #111827;
+                    text-transform: uppercase;
+                    letter-spacing: 0.5px;
+                }
+                .doc-title p {
+                    margin: 3px 0 0 0;
+                    font-size: 12px;
+                    color: #6b7280;
+                }
+                .kpi-grid {
+                    display: grid;
+                    grid-template-columns: repeat(5, 1fr);
+                    gap: 10px;
+                    margin-bottom: 16px;
+                }
+                .kpi-card {
+                    border: 1px solid #d1d5db;
+                    border-radius: 6px;
+                    padding: 8px 10px;
+                    text-align: center;
+                    background: #f9fafb;
+                }
+                .kpi-card .num {
+                    font-size: 18px;
+                    font-weight: 800;
+                    margin-top: 2px;
+                }
+                .kpi-card .lbl {
+                    font-size: 10.5px;
+                    color: #4b5563;
+                    text-transform: uppercase;
+                    font-weight: 600;
+                }
+                table {
+                    width: 100%;
+                    border-collapse: collapse;
+                    margin-top: 10px;
+                }
+                th {
+                    background: #005a36;
+                    color: #fff;
+                    font-size: 11px;
+                    padding: 8px 6px;
+                    text-align: left;
+                    font-weight: 700;
+                    border: 1px solid #005a36;
+                }
+                td {
+                    border: 1px solid #e5e7eb;
+                }
+                .signature-section {
+                    margin-top: 28px;
+                    display: flex;
+                    justify-content: flex-end;
+                    page-break-inside: avoid;
+                }
+                .signature-box {
+                    text-align: center;
+                    width: 250px;
+                    font-size: 11.5px;
+                }
+                @media print {
+                    .no-print { display: none !important; }
+                    body { padding: 0; }
+                }
+            </style>
+        </head>
+        <body>
+            <div class="no-print" style="margin-bottom:14px; display:flex; justify-content:space-between; align-items:center; background:#f3f4f6; padding:10px 14px; border-radius:8px;">
+                <span style="font-size:13px; font-weight:600; color:#374151;">Pratinjau Lembar Rekapitulasi Laporan Resmi Sarpras Kampus</span>
+                <div style="display:flex; gap:8px;">
+                    <button onclick="window.print()" style="background:#005a36; color:#fff; border:none; padding:8px 18px; border-radius:6px; font-weight:700; cursor:pointer; font-size:13px;">
+                        Cetak / Simpan PDF
+                    </button>
+                    <button onclick="window.close()" style="background:#e5e7eb; color:#374151; border:none; padding:8px 14px; border-radius:6px; font-weight:600; cursor:pointer; font-size:13px;">
+                        Tutup
+                    </button>
+                </div>
+            </div>
+
+            <!-- Kop Surat Resmi -->
+            <div class="kop-wrapper">
+                <img src="../assets/img/logo.png" alt="Logo UINSSC" class="kop-logo" onerror="this.style.display='none'">
+                <div class="kop-text">
+                    <h2>Kementerian Agama Republik Indonesia</h2>
+                    <h1>Universitas Islam Negeri Siber Syekh Nurjati Cirebon</h1>
+                    <p>Bagian Umum dan Layanan Sarana Prasarana Kampus &bull; Gedung Rektorat Lt. 1 &bull; Jl. Perjuangan, Sunyaragi, Cirebon</p>
+                    <p>Sistem Informasi Manajemen Pengaduan Layanan Sarpras (SIMPEL-UINSSC)</p>
+                </div>
+            </div>
+
+            <div class="doc-title">
+                <h3>Rekapitulasi Layanan Perbaikan Fasilitas & Sarana Prasarana Kampus</h3>
+                <p>Periode: <strong>${escapeHtml(periodLabel)}</strong> &bull; Status Filter: <strong>${escapeHtml(statusFilter)}</strong> &bull; Kawasan: <strong>${escapeHtml(zoneFilter === 'ALL' ? 'Semua Kawasan' : (CAMPUS_ZONE_METAS[zoneFilter]?.name || zoneFilter))}</strong></p>
+            </div>
+
+            <!-- KPI Ringkasan -->
+            <div class="kpi-grid">
+                <div class="kpi-card">
+                    <div class="lbl">Total Pengaduan</div>
+                    <div class="num" style="color:#111827;">${totalTiket}</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="lbl">Laporan Selesai</div>
+                    <div class="num" style="color:#10b981;">${countSelesai}</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="lbl">Sedang Diproses</div>
+                    <div class="num" style="color:#f59e0b;">${countProses}</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="lbl">Menunggu Penugasan</div>
+                    <div class="num" style="color:#3b82f6;">${countDiajukan}</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="lbl">Rasio Penyelesaian</div>
+                    <div class="num" style="color:#005a36;">${completionRate}%</div>
+                </div>
+            </div>
+
+            <!-- Tabel Data Insiden -->
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width:28px; text-align:center;">No</th>
+                        <th style="width:105px;">ID Tiket</th>
+                        <th style="width:85px;">Tanggal</th>
+                        <th>Pelapor</th>
+                        <th>Lokasi & Gedung</th>
+                        <th>Kategori</th>
+                        <th style="width:65px; text-align:center;">Urgensi</th>
+                        <th>Teknisi Bertugas</th>
+                        <th style="width:85px; text-align:center;">Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${rowsHtml.length > 0 ? rowsHtml : '<tr><td colspan="9" style="text-align:center; padding:16px; color:#6b7280;">Tidak ada laporan fasilitas yang sesuai dengan kriteria filter yang dipilih.</td></tr>'}
+                </tbody>
+            </table>
+
+            <!-- Kolom Pengesahan Tanda Tangan -->
+            <div class="signature-section">
+                <div class="signature-box">
+                    <p style="margin:0;">Cirebon, ${todayStr}</p>
+                    <p style="margin:4px 0 60px 0; font-weight:700;">Kepala Bagian Umum &amp; Sarpras Kampus<br>UIN Siber Syekh Nurjati Cirebon</p>
+                    <p style="margin:0; font-weight:800; text-decoration:underline;">H. Mohammad Nurwahid, M.Si.</p>
+                    <p style="margin:2px 0 0 0; color:#6b7280; font-size:10.5px;">NIP. 19780514 200501 1 003</p>
+                </div>
+            </div>
+
+            <script>
+                window.onload = function() {
+                    // Auto-trigger print jika diinginkan
+                };
+            </script>
+        </body>
+        </html>
+    `);
+
+    printWin.document.close();
+}
+
+
+let isMyWilayahFilterActive = false;
+
+function toggleFilterMyWilayah() {
+    isMyWilayahFilterActive = !isMyWilayahFilterActive;
+    const btn = document.getElementById('btnFilterMyWilayah');
+    if (btn) {
+        if (isMyWilayahFilterActive) {
+            btn.style.background = '#2dd4bf';
+            btn.style.color = '#000';
+            btn.innerHTML = '<i class="fa-solid fa-check"></i> Filter: Wilayah Tugas Saya';
+            showToast('Filter aktif: Menampilkan tiket di wilayah tugas Anda', 'info');
+        } else {
+            btn.style.background = 'rgba(45,212,191,0.15)';
+            btn.style.color = '#2dd4bf';
+            btn.innerHTML = '<i class="fa-solid fa-location-crosshairs"></i> Wilayah Tugas Saya';
+            showToast('Filter dinonaktifkan: Menampilkan seluruh kawasan', 'info');
+        }
+    }
+    renderAdminTable();
+}
+
 function renderStaffView() {
     loadStaffAccounts();
 
@@ -2203,6 +2845,7 @@ function renderStaffView() {
     }
 
     handleStaffRoleChange();
+    renderAddStaffZoneCheckboxes();
     filterStaffTable(currentStaffFilterRole);
     renderStaffTable();
 }
@@ -2311,7 +2954,7 @@ function renderStaffTable() {
     if (!tbody) return;
 
     if (filtered.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding:24px; color:var(--text-muted);">Tidak ada data ${currentAdminRole === 'superadmin' ? 'staf / mitra' : 'petugas'} yang cocok.</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="8" style="text-align:center; padding:24px; color:var(--text-muted);">Tidak ada data ${currentAdminRole === 'superadmin' ? 'staf / mitra' : 'petugas'} yang cocok.</td></tr>`;
         return;
     }
 
@@ -2336,6 +2979,15 @@ function renderStaffTable() {
             ? `<div style="font-size:11px; color:#facc15; margin-top:2px; font-family:monospace; display:inline-flex; align-items:center; gap:4px;"><i class="fa-solid fa-key" style="font-size:10px;"></i> Login: <b>${escapeHtml(s.username || s.id)}</b> (pwd: ${escapeHtml(s.password || 'mitra123')})</div>`
             : '';
 
+        const wilayahBadges = renderStaffZonesBadges(s.wilayah);
+
+        // Tombol penugasan wilayah khusus Super Admin (Super Admin bisa menugaskan Admin maupun Petugas ke wilayah mana saja)
+        const btnWilayah = (currentAdminRole === 'superadmin')
+            ? `<button class="btn-act" onclick="openAssignWilayahModal('${s.id}')" title="Tugaskan / Atur Wilayah Operasional (${escapeHtml(s.nama)})" style="background:rgba(250,204,21,0.15); color:#facc15; border:1px solid rgba(250,204,21,0.35); font-size:11px; padding:3px 8px; border-radius:6px; margin-right:4px;">
+                <i class="fa-solid fa-map-location-dot"></i> Wilayah
+            </button>`
+            : '';
+
         return `
             <tr>
                 <td style="text-align:center; font-weight:700; color:var(--text-muted); font-size:12px;">${idx + 1}</td>
@@ -2351,8 +3003,10 @@ function renderStaffTable() {
                 </td>
                 <td>${roleBadge}</td>
                 <td style="font-size:12px; color:var(--text-muted);">${escapeHtml(s.bidang)}</td>
+                <td>${wilayahBadges}</td>
                 <td>${statusBadge}</td>
                 <td style="text-align:center; white-space:nowrap;">
+                    ${btnWilayah}
                     <button class="btn-toggle-status" onclick="toggleStaffStatus('${s.id}')" title="Ubah Status Aktif/Nonaktif">
                         ${s.status === 'Aktif' ? '<i class="fa-solid fa-toggle-on" style="color:#22c55e;"></i> Matikan' : '<i class="fa-solid fa-toggle-off" style="color:#94a3b8;"></i> Aktifkan'}
                     </button>
@@ -2404,6 +3058,15 @@ function handleAddNewStaff(event) {
     const username = usernameInput || (role === 'mitra' ? `mitra_${sameRoleCount}` : newId.toLowerCase());
     const password = passwordInput || (role === 'mitra' ? 'mitra123' : 'admin123');
 
+    // Ambil wilayah terpilih dari checkbox form
+    const checkedBoxes = document.querySelectorAll('input[name="addStaffWilayahCheckbox"]:checked');
+    const selectedWilayah = Array.from(checkedBoxes).map(cb => cb.value);
+
+    if (selectedWilayah.length === 0) {
+        showToast('Pilih minimal 1 wilayah penugasan operasional!', 'error');
+        return;
+    }
+
     const newStaff = {
         id: newId,
         username: username,
@@ -2412,6 +3075,7 @@ function handleAddNewStaff(event) {
         role,
         bidang,
         wa,
+        wilayah: selectedWilayah,
         status: 'Aktif'
     };
 
@@ -2501,37 +3165,267 @@ let geofenceBackgroundZoneGroup = null;
 let geofenceVertexMarkersGroup = null;
 let isGeofenceDrawMode = false;
 
+// ==========================================================================
+// VIEW MANAJEMEN WILAYAH & GEOFENCING KAMPUS (HALAMAN UTAMA SUPER ADMIN)
+// ==========================================================================
+
 function openGeofenceModal() {
+    // Alihkan langsung ke view halaman penuh, bukan popup/modal
+    switchAdminView('geofence');
+}
+
+function closeGeofenceModal() {
+    // Kompatibilitas mundur
+}
+
+function closeGeofenceModalOnBackdrop() {
+    // Kompatibilitas mundur
+}
+
+function renderGeofenceManagementView() {
     if (currentAdminRole !== 'superadmin') {
-        warnSuperAdminOnly('mengatur batas wilayah geofencing kampus');
+        warnSuperAdminOnly('mengatur wilayah dan batas geofencing kampus');
         return;
     }
 
     CAMPUS_ZONES = loadCampusZones();
     geofenceEditableZones = JSON.parse(JSON.stringify(CAMPUS_ZONES));
-    geofenceActiveZoneId = 'kampus_utama';
+    if (!geofenceActiveZoneId || !geofenceEditableZones.some(z => z.id === geofenceActiveZoneId)) {
+        geofenceActiveZoneId = geofenceEditableZones[0]?.id || 'kampus_utama';
+    }
     isGeofenceDrawMode = false;
     updateGeofenceDrawModeBtn();
 
-    const modal = document.getElementById('geofenceModal');
-    if (modal) modal.classList.remove('hidden');
-
+    renderGeofenceZoneCards();
     renderGeofenceZoneTabs();
     initGeofenceEditorMap();
     loadGeofenceZoneToEditor(geofenceActiveZoneId);
+
+    setTimeout(() => {
+        if (geofenceEditorMapInstance) {
+            geofenceEditorMapInstance.invalidateSize();
+        }
+    }, 200);
 }
 
-function closeGeofenceModal() {
-    const modal = document.getElementById('geofenceModal');
-    if (modal) modal.classList.add('hidden');
-    isGeofenceDrawMode = false;
-    updateGeofenceDrawModeBtn();
-}
+function toggleAddNewZoneForm() {
+    const card = document.getElementById('addZoneFormCard');
+    const btnText = document.getElementById('btnToggleZoneText');
+    if (!card) return;
 
-function closeGeofenceModalOnBackdrop(e) {
-    if (e.target && e.target.id === 'geofenceModal') {
-        closeGeofenceModal();
+    if (card.style.display === 'none' || card.style.display === '') {
+        card.style.display = 'block';
+        if (btnText) btnText.innerText = 'Tutup Formulir';
+        card.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        setTimeout(() => document.getElementById('newZoneNameInput')?.focus(), 200);
+    } else {
+        card.style.display = 'none';
+        if (btnText) btnText.innerText = 'Tambah Wilayah Baru';
     }
+}
+
+function autoGenerateZoneId(name) {
+    const idInput = document.getElementById('newZoneIdInput');
+    if (!idInput) return;
+    const clean = name.toLowerCase()
+        .replace(/^kawasan\s+/i, '')
+        .replace(/[^a-z0-9]+/g, '_')
+        .replace(/^_+|_+$/g, '');
+    idInput.value = clean || 'wilayah_baru';
+}
+
+function handleAddNewZone(event) {
+    event.preventDefault();
+    if (currentAdminRole !== 'superadmin') {
+        warnSuperAdminOnly('menambahkan wilayah baru');
+        return;
+    }
+
+    const name = document.getElementById('newZoneNameInput').value.trim();
+    const id = document.getElementById('newZoneIdInput').value.trim().toLowerCase().replace(/[^a-z0-9_]/g, '_');
+    const icon = document.getElementById('newZoneIconInput').value;
+    const color = document.getElementById('newZoneColorInput').value;
+    const baseLoc = document.getElementById('newZoneBaseLocInput').value;
+
+    if (!name || !id) {
+        showToast('Mohon lengkapi nama dan ID kawasan.', 'error');
+        return;
+    }
+
+    CAMPUS_ZONES = loadCampusZones();
+
+    if (CAMPUS_ZONES.some(z => z.id === id)) {
+        if (typeof Swal !== 'undefined') {
+            Swal.fire({
+                icon: 'warning',
+                title: 'ID Wilayah Sudah Ada',
+                html: `Kode ID <b>${escapeHtml(id)}</b> sudah digunakan oleh kawasan lain.<br>Silakan gunakan kode ID yang unik.`,
+                confirmButtonColor: '#005a36'
+            });
+        } else {
+            showToast('ID Wilayah sudah ada, gunakan ID lain.', 'error');
+        }
+        return;
+    }
+
+    // Tentukan koordinat titik pusat acuan untuk membuat polygon 4 titik awal yang rapi
+    let centerLat = -6.735000;
+    let centerLng = 108.533600;
+
+    if (baseLoc === 'gedung_cyber') {
+        centerLat = -6.737100; centerLng = 108.531500;
+    } else if (baseLoc === 'kampus_sebrang') {
+        centerLat = -6.738000; centerLng = 108.535000;
+    } else if (baseLoc === 'pascasarjana_mahad') {
+        centerLat = -6.740500; centerLng = 108.533000;
+    } else if (baseLoc === 'area_saladara') {
+        centerLat = -6.742000; centerLng = 108.528000;
+    }
+
+    const delta = 0.00035; // ~40 meter segi empat awal
+    const initialPolygon = [
+        [+(centerLat - delta).toFixed(6), +(centerLng - delta).toFixed(6)],
+        [+(centerLat - delta).toFixed(6), +(centerLng + delta).toFixed(6)],
+        [+(centerLat + delta).toFixed(6), +(centerLng + delta).toFixed(6)],
+        [+(centerLat + delta).toFixed(6), +(centerLng - delta).toFixed(6)]
+    ];
+
+    const newZone = {
+        id: id,
+        name: name,
+        icon: icon,
+        color: color,
+        polygon: initialPolygon,
+        isCustom: true
+    };
+
+    CAMPUS_ZONES.push(newZone);
+    saveCampusZones(CAMPUS_ZONES);
+    syncCampusZoneMetas(CAMPUS_ZONES);
+
+    geofenceEditableZones = JSON.parse(JSON.stringify(CAMPUS_ZONES));
+    geofenceActiveZoneId = id;
+
+    // Reset dan tutup form
+    document.getElementById('newZoneForm').reset();
+    toggleAddNewZoneForm();
+
+    // Render ulang seluruh view
+    renderGeofenceManagementView();
+    updateFilterGedungOptions();
+    renderAddStaffZoneCheckboxes();
+    reloadAdminOverviewMapZones();
+
+    if (typeof Swal !== 'undefined') {
+        Swal.fire({
+            icon: 'success',
+            title: 'Kawasan Baru Berhasil Dibuat!',
+            html: `Wilayah <b>${escapeHtml(name)}</b> (${id}) telah terdaftar dengan 4 titik awal poligon.<br><span style="font-size:12px; color:var(--text-muted);">Peta di bawah telah difokuskan ke wilayah baru ini. Anda dapat langsung menggeser pin sudut atau menambah titik baru.</span>`,
+            confirmButtonColor: '#005a36'
+        });
+    } else {
+        showToast(`Kawasan ${name} berhasil ditambahkan!`, 'success');
+    }
+}
+
+async function deleteCampusZone(zoneId) {
+    if (currentAdminRole !== 'superadmin') {
+        warnSuperAdminOnly('menghapus wilayah kampus');
+        return;
+    }
+
+    const isDefault = DEFAULT_CAMPUS_ZONES.some(d => d.id === zoneId);
+    if (isDefault) {
+        if (typeof Swal !== 'undefined') {
+            Swal.fire({
+                icon: 'info',
+                title: 'Kawasan Bawaan Sistem',
+                html: '5 Kawasan utama UINSSC merupakan zona inti kampus yang tidak dapat dihapus.<br><span style="font-size:12px; color:var(--text-muted);">Anda dapat menyesuaikan atau menggeser titik-titik koordinat batas poligonnya.</span>',
+                confirmButtonColor: '#005a36'
+            });
+        } else {
+            showToast('Kawasan bawaan sistem tidak dapat dihapus.', 'info');
+        }
+        return;
+    }
+
+    CAMPUS_ZONES = loadCampusZones();
+    const targetZone = CAMPUS_ZONES.find(z => z.id === zoneId);
+    if (!targetZone) return;
+
+    if (typeof Swal !== 'undefined') {
+        const result = await Swal.fire({
+            title: 'Hapus Wilayah Ini?',
+            html: `Apakah Anda yakin ingin menghapus kawasan <b>${escapeHtml(targetZone.name)}</b>?<br><span style="font-size:12px; color:var(--text-muted);">Seluruh data batas koordinat dan geofencing wilayah ini akan dihapus dari sistem.</span>`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#ef4444',
+            cancelButtonColor: '#64748b',
+            confirmButtonText: 'Ya, Hapus Kawasan',
+            cancelButtonText: 'Batal',
+            reverseButtons: true
+        });
+        if (!result.isConfirmed) return;
+    }
+
+    CAMPUS_ZONES = CAMPUS_ZONES.filter(z => z.id !== zoneId);
+    saveCampusZones(CAMPUS_ZONES);
+    delete CAMPUS_ZONE_METAS[zoneId];
+
+    geofenceEditableZones = JSON.parse(JSON.stringify(CAMPUS_ZONES));
+    geofenceActiveZoneId = CAMPUS_ZONES[0]?.id || 'kampus_utama';
+
+    renderGeofenceManagementView();
+    updateFilterGedungOptions();
+    renderAddStaffZoneCheckboxes();
+    reloadAdminOverviewMapZones();
+
+    showToast(`Kawasan ${targetZone.name} berhasil dihapus.`, 'success');
+}
+
+function renderGeofenceZoneCards() {
+    const grid = document.getElementById('geofenceZoneCardsGrid');
+    const badgeCount = document.getElementById('totalZonesCountBadge');
+    if (!grid) return;
+
+    const zones = geofenceEditableZones || CAMPUS_ZONES;
+    if (badgeCount) badgeCount.innerText = zones.length;
+
+    grid.innerHTML = zones.map(z => {
+        const isActive = z.id === geofenceActiveZoneId;
+        const meta = CAMPUS_ZONE_METAS[z.id] || { icon: 'fa-map-pin', color: '#facc15' };
+        const isDefault = DEFAULT_CAMPUS_ZONES.some(d => d.id === z.id);
+        const pointCount = (z.polygon || []).length;
+        const color = z.color || meta.color || '#facc15';
+
+        const deleteBtn = (!isDefault)
+            ? `<button type="button" class="btn-act btn-del" onclick="event.stopPropagation(); deleteCampusZone('${z.id}')" title="Hapus Kawasan Ini" style="font-size:11px; padding:3px 7px;">
+                <i class="fa-solid fa-trash-can"></i>
+            </button>`
+            : '';
+
+        return `
+            <div onclick="switchGeofenceActiveZone('${z.id}')" style="cursor:pointer; background:rgba(255,255,255,${isActive ? '0.08' : '0.03'}); border:1.5px solid ${isActive ? 'var(--gold)' : 'var(--border-color)'}; border-radius:12px; padding:12px 14px; position:relative; transition:all 0.2s ease; box-shadow:${isActive ? '0 0 15px rgba(250,204,21,0.2)' : 'none'};">
+                <div style="height:3px; background:${color}; border-radius:3px; margin-bottom:10px;"></div>
+                <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:6px;">
+                    <div style="display:flex; align-items:center; gap:8px;">
+                        <span style="width:28px; height:28px; border-radius:8px; background:${color}22; color:${color}; display:flex; align-items:center; justify-content:center; font-size:13px;">
+                            <i class="fa-solid ${z.icon || meta.icon}"></i>
+                        </span>
+                        <div>
+                            <strong style="font-size:13px; color:var(--text-main); display:block; line-height:1.2;">${escapeHtml(z.name)}</strong>
+                            <span style="font-size:10.5px; font-family:monospace; color:var(--text-muted);">ID: ${escapeHtml(z.id)}</span>
+                        </div>
+                    </div>
+                    ${deleteBtn}
+                </div>
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-top:8px; font-size:11px; color:var(--text-muted); border-top:1px dashed var(--border-color); padding-top:6px;">
+                    <span><i class="fa-solid fa-draw-polygon" style="color:${color};"></i> <b>${pointCount}</b> Sudut Titik</span>
+                    <span style="font-size:10.5px; font-weight:700; color:${isDefault ? '#10b981' : '#38bdf8'};">${isDefault ? 'Bawaan' : 'Kustom'}</span>
+                </div>
+            </div>
+        `;
+    }).join('');
 }
 
 function renderGeofenceZoneTabs() {
@@ -2540,12 +3434,17 @@ function renderGeofenceZoneTabs() {
 
     container.innerHTML = geofenceEditableZones.map(zone => {
         const isActive = zone.id === geofenceActiveZoneId;
+        const meta = CAMPUS_ZONE_METAS[zone.id] || { color: '#facc15' };
+        const color = zone.color || meta.color || '#facc15';
+        const pointCount = (zone.polygon || []).length;
         const activeStyle = isActive 
-            ? 'background: #005a36; color: #facc15; border: 1px solid #c59235; font-weight: 700;'
-            : 'background: rgba(255,255,255,0.06); color: var(--text-muted); border: 1px solid var(--border-color); font-weight: 500;';
+            ? `background: #005a36; color: #fef08a; border: 1.5px solid var(--gold); font-weight: 800; box-shadow:0 0 10px rgba(250,204,21,0.3);`
+            : 'background: rgba(255,255,255,0.05); color: var(--text-muted); border: 1px solid var(--border-color); font-weight: 500;';
         return `
-            <button type="button" class="chip-btn" onclick="switchGeofenceActiveZone('${zone.id}')" style="${activeStyle} font-size:12px; padding:6px 14px; border-radius:18px; cursor:pointer; transition:all 0.2s ease;">
-                <i class="fa-solid fa-draw-polygon" style="margin-right:4px;"></i> ${escapeHtml(zone.name)}
+            <button type="button" class="chip-btn" onclick="switchGeofenceActiveZone('${zone.id}')" style="${activeStyle} font-size:12px; padding:6px 14px; border-radius:18px; cursor:pointer; transition:all 0.2s ease; display:inline-flex; align-items:center; gap:6px;">
+                <span style="width:8px; height:8px; border-radius:50%; background:${color}; display:inline-block;"></span>
+                ${escapeHtml(zone.name)}
+                <span style="font-size:10px; background:rgba(0,0,0,0.3); padding:1px 6px; border-radius:10px; opacity:0.85;">${pointCount}</span>
             </button>
         `;
     }).join('');
@@ -2553,6 +3452,7 @@ function renderGeofenceZoneTabs() {
 
 function switchGeofenceActiveZone(zoneId) {
     geofenceActiveZoneId = zoneId;
+    renderGeofenceZoneCards();
     renderGeofenceZoneTabs();
     loadGeofenceZoneToEditor(zoneId);
 }
@@ -2713,32 +3613,99 @@ function renderGeofenceVertexMarkers(zone) {
     });
 }
 
-function renderGeofencePointsList(zone) {
-    const listEl = document.getElementById('geofencePointsList');
-    const countEl = document.getElementById('geofencePointCount');
-    if (countEl) countEl.innerText = zone.polygon.length;
-    if (!listEl) return;
+function calculatePolygonAreaM2(coords) {
+    if (!Array.isArray(coords) || coords.length < 3) return 0;
+    const avgLat = coords.reduce((sum, c) => sum + c[0], 0) / coords.length;
+    const rad = Math.PI / 180;
+    const mPerLat = 111139;
+    const mPerLng = 111139 * Math.cos(avgLat * rad);
 
-    if (zone.polygon.length === 0) {
-        listEl.innerHTML = `
-            <div style="text-align:center; padding:24px 10px; color:var(--text-muted); font-size:12px;">
-                Belum ada titik sudut untuk kawasan ini.<br>Klik tombol <b>Mode Tambah Titik Baru</b> lalu klik pada peta.
-            </div>
+    let area = 0;
+    const n = coords.length;
+    for (let i = 0; i < n; i++) {
+        const j = (i + 1) % n;
+        const xi = coords[i][1] * mPerLng;
+        const yi = coords[i][0] * mPerLat;
+        const xj = coords[j][1] * mPerLng;
+        const yj = coords[j][0] * mPerLat;
+        area += (xi * yj) - (xj * yi);
+    }
+    return Math.abs(area) / 2;
+}
+
+function formatPolygonArea(areaM2) {
+    if (!areaM2 || isNaN(areaM2) || areaM2 <= 0) return '-';
+    if (areaM2 >= 10000) {
+        const ha = (areaM2 / 10000).toFixed(2);
+        return `${Math.round(areaM2).toLocaleString('id-ID')} m² (${ha} Ha)`;
+    }
+    return `${Math.round(areaM2).toLocaleString('id-ID')} m²`;
+}
+
+function renderGeofencePointsList(zone) {
+    const tbody = document.getElementById('geofencePointsTableBody');
+    const countEl = document.getElementById('geofencePointCount');
+    const areaEl = document.getElementById('geofenceAreaText');
+    const validEl = document.getElementById('geofenceValidityText');
+    const statusBadge = document.getElementById('geofenceZoneStatusBadge');
+
+    const pts = Array.isArray(zone.polygon) ? zone.polygon : [];
+    if (countEl) countEl.innerText = pts.length;
+
+    // Hitung luas area polygon dalam m² & Hektar
+    const areaM2 = calculatePolygonAreaM2(pts);
+    if (areaEl) {
+        areaEl.innerText = formatPolygonArea(areaM2);
+    }
+
+    // Validitas polygon (minimal 3 titik untuk membentuk area tertutup)
+    if (validEl) {
+        if (pts.length >= 3) {
+            validEl.innerHTML = `<span style="color:#10b981; font-weight:700;"><i class="fa-solid fa-circle-check"></i> Valid Polygon (${pts.length} Titik)</span>`;
+        } else {
+            validEl.innerHTML = `<span style="color:#ef4444; font-weight:700;"><i class="fa-solid fa-triangle-exclamation"></i> Belum Tertutup (< 3 Titik)</span>`;
+        }
+    }
+
+    if (statusBadge) {
+        if (pts.length >= 3) {
+            statusBadge.innerText = 'Kawasan Siaga';
+            statusBadge.style.color = '#10b981';
+            statusBadge.style.borderColor = 'rgba(16,185,129,0.4)';
+            statusBadge.style.background = 'rgba(16,185,129,0.1)';
+        } else {
+            statusBadge.innerText = 'Titik Belum Lengkap';
+            statusBadge.style.color = '#ef4444';
+            statusBadge.style.borderColor = 'rgba(239,68,68,0.4)';
+            statusBadge.style.background = 'rgba(239,68,68,0.1)';
+        }
+    }
+
+    if (!tbody) return;
+
+    if (pts.length === 0) {
+        tbody.innerHTML = `
+            <tr>
+                <td colspan="4" style="text-align:center; padding:24px 10px; color:var(--text-muted); font-size:11.5px;">
+                    Belum ada titik sudut untuk kawasan ini.<br>Aktifkan <b>Mode Tambah Titik Baru</b> lalu klik pada peta.
+                </td>
+            </tr>
         `;
         return;
     }
 
-    listEl.innerHTML = zone.polygon.map((pt, idx) => {
+    tbody.innerHTML = pts.map((pt, idx) => {
         return `
-            <div style="display:flex; justify-content:space-between; align-items:center; background:rgba(255,255,255,0.03); border:1px solid var(--border-color); border-radius:6px; padding:6px 10px; margin-bottom:4px; font-size:11px; cursor:pointer;" onclick="panToGeofencePoint(${idx})">
-                <div style="display:flex; align-items:center; gap:8px;">
-                    <span style="display:inline-block; width:22px; height:22px; line-height:22px; text-align:center; background:rgba(250,204,21,0.2); color:#facc15; font-weight:800; border-radius:50%; font-size:10px;">${idx + 1}</span>
-                    <span style="font-family:monospace; color:var(--text-main);">[${pt[0].toFixed(6)}, ${pt[1].toFixed(6)}]</span>
-                </div>
-                <button type="button" class="btn-act btn-del" onclick="event.stopPropagation(); deleteGeofencePoint(${idx})" title="Hapus titik ini" style="width:24px; height:24px; font-size:11px;">
-                    <i class="fa-solid fa-trash-can"></i>
-                </button>
-            </div>
+            <tr style="border-bottom:1px solid rgba(255,255,255,0.04); cursor:pointer; transition:background 0.15s ease;" onmouseover="this.style.background='rgba(255,255,255,0.06)'" onmouseout="this.style.background='transparent'" onclick="panToGeofencePoint(${idx})">
+                <td style="padding:6px 8px; text-align:center; color:var(--gold); font-weight:700;">${idx + 1}</td>
+                <td style="padding:6px 8px; color:var(--text-main); font-family:monospace;">${pt[0].toFixed(6)}</td>
+                <td style="padding:6px 8px; color:var(--text-main); font-family:monospace;">${pt[1].toFixed(6)}</td>
+                <td style="padding:6px 8px; text-align:center;">
+                    <button type="button" class="btn-act btn-del" onclick="event.stopPropagation(); deleteGeofencePoint(${idx})" title="Hapus titik koordinat ini" style="width:22px; height:22px; font-size:10.5px; padding:0; display:inline-flex; align-items:center; justify-content:center;">
+                        <i class="fa-solid fa-trash-can"></i>
+                    </button>
+                </td>
+            </tr>
         `;
     }).join('');
 }
@@ -2882,18 +3849,22 @@ function saveAllGeofenceChanges() {
     // Refresh Overview Map admin
     reloadAdminOverviewMapZones();
 
+    syncCampusZoneMetas(CAMPUS_ZONES);
+    renderGeofenceZoneCards();
+    renderGeofenceZoneTabs();
+    updateFilterGedungOptions();
+    renderAddStaffZoneCheckboxes();
+
     if (typeof Swal !== 'undefined') {
         Swal.fire({
             icon: 'success',
             title: 'Batas Geofencing Disimpan!',
-            html: 'Seluruh koordinat polygon 5 kawasan kampus berhasil diperbarui.<br><span style="font-size:12px; color:var(--text-muted);">Batas wilayah baru telah aktif pada verifikasi pelaporan mahasiswa/dosen serta peta GIS sarpras.</span>',
+            html: `Seluruh koordinat polygon <b>${CAMPUS_ZONES.length} kawasan kampus</b> berhasil disimpan.<br><span style="font-size:12px; color:var(--text-muted);">Batas wilayah baru telah aktif pada verifikasi pelaporan mahasiswa/dosen serta peta GIS sarpras.</span>`,
             confirmButtonColor: '#005a36'
         });
     } else {
         showToast('Batas Geofencing berhasil disimpan!', 'success');
     }
-
-    closeGeofenceModal();
 }
 
 /* ==========================================================================
@@ -3341,8 +4312,11 @@ const ADMIN_STORAGE_KEY = STORAGE_KEY;
 
 // View Switcher Function
 function switchAdminView(viewId) {
-    if ((viewId === 'audit' || viewId === 'soc') && currentAdminRole !== 'superadmin') {
-        warnSuperAdminOnly(`mengakses ${viewId === 'soc' ? 'Security Operations Center (SOC) War Room' : 'rekaman audit & surveillance keamanan sistem'}`);
+    if ((viewId === 'audit' || viewId === 'soc' || viewId === 'geofence') && currentAdminRole !== 'superadmin') {
+        let featureName = 'rekaman audit & surveillance keamanan sistem';
+        if (viewId === 'soc') featureName = 'Security Operations Center (SOC) War Room';
+        if (viewId === 'geofence') featureName = 'Manajemen Wilayah & Batas Geofencing Kampus';
+        warnSuperAdminOnly(`mengakses ${featureName}`);
         return;
     }
 
@@ -3355,6 +4329,7 @@ function switchAdminView(viewId) {
         sla: document.getElementById('viewSlaTracker'),
         staff: document.getElementById('viewStaffManagement'),
         kategori: document.getElementById('viewCategoryManagement'),
+        geofence: document.getElementById('viewGeofenceManagement'),
         audit: document.getElementById('viewSuperAdminSurveillance'),
         soc: document.getElementById('viewSocSecurity')
     };
@@ -3366,6 +4341,7 @@ function switchAdminView(viewId) {
         sla: document.getElementById('navSlaTracker'),
         staff: document.getElementById('sidebarStaffLink'),
         kategori: document.getElementById('sidebarCategoryLink'),
+        geofence: document.getElementById('sidebarGeofenceLink'),
         audit: document.getElementById('navSuperAudit'),
         soc: document.getElementById('navSocSecurity')
     };
@@ -3381,6 +4357,8 @@ function switchAdminView(viewId) {
             else sidebarNavs[key].classList.remove('active');
         }
     });
+
+    window.scrollTo({ top: 0, behavior: 'instant' });
 
     // View-specific initializations
     if (viewId === 'dashboard') {
@@ -3411,6 +4389,8 @@ function switchAdminView(viewId) {
         renderAuditLogView();
     } else if (viewId === 'soc') {
         renderSocSecurityView();
+    } else if (viewId === 'geofence') {
+        renderGeofenceManagementView();
     }
 }
 

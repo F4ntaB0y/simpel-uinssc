@@ -195,7 +195,7 @@ function loadCampusZones() {
     if (raw) {
         try {
             const parsed = JSON.parse(raw);
-            if (Array.isArray(parsed) && parsed.length === 5) {
+            if (Array.isArray(parsed) && parsed.length > 0) {
                 return parsed;
             }
         } catch(e) {
@@ -497,25 +497,40 @@ function initUserCategories() {
     if (!select) return;
 
     const raw = localStorage.getItem('SIMPEL_CATEGORIES_DATA_V1');
-    if (!raw) return;
-
-    try {
-        const cats = JSON.parse(raw);
-        if (!Array.isArray(cats) || cats.length === 0) return;
-
-        const activeCats = cats.filter(c => c.status === 'Aktif');
-        if (activeCats.length === 0) return;
-
-        const currentVal = select.value;
-
-        select.innerHTML = `<option value="">-- Pilih Kategori --</option>` +
-            activeCats.map(c => `<option value="${escapeHtml(c.nama)}">${escapeHtml(c.nama)}</option>`).join('') +
-            `<option value="Lainnya">Fasilitas Lainnya</option>`;
-
-        if (currentVal) select.value = currentVal;
-    } catch (e) {
-        console.warn('Gagal memuat kategori dinamis di form user:', e);
+    let cats = [];
+    if (raw) {
+        try {
+            cats = JSON.parse(raw);
+        } catch (e) {
+            cats = [];
+        }
     }
+
+    const currentVal = select.value;
+    let optionsHtml = '<option value="">-- Pilih Kategori Fasilitas --</option>';
+
+    if (Array.isArray(cats) && cats.length > 0) {
+        // Ambil kategori aktif yang BUKAN 'Lainnya' (agar 'Lainnya' selalu berada di paling bawah)
+        const activeCats = cats.filter(c => c.status === 'Aktif' && !c.nama.toLowerCase().includes('lainnya'));
+        optionsHtml += activeCats.map(c => '<option value="' + escapeHtml(c.nama) + '">' + escapeHtml(c.nama) + '</option>').join('');
+    } else {
+        optionsHtml += [
+            '<option value="AC & Pendingin Ruangan">AC & Pendingin Ruangan</option>',
+            '<option value="Proyektor & Audio Visual">Proyektor & Audio Visual</option>',
+            '<option value="Kelistrikan & Penerangan">Kelistrikan & Penerangan</option>',
+            '<option value="Sanitasi & Plumbing">Sanitasi & Plumbing</option>',
+            '<option value="Mebel & Furnitur">Mebel & Furnitur</option>',
+            '<option value="Pintu, Jendela & Kunci">Pintu, Jendela & Kunci</option>',
+            '<option value="Jaringan & Internet Wi-Fi">Jaringan & Internet Wi-Fi</option>',
+            '<option value="Bangunan, Plafon & Sipil">Bangunan, Plafon & Sipil</option>'
+        ].join('\n');
+    }
+
+    // Selalu tambahkan opsi Kategori 'Lainnya' khusus di posisi paling bawah
+    optionsHtml += '<option value="Lainnya">📦 Lainnya (Di Luar Kategori di Atas)</option>';
+
+    select.innerHTML = optionsHtml;
+    if (currentVal) select.value = currentVal;
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -539,6 +554,45 @@ window.addEventListener('storage', (e) => {
     }
 });
 
+/**
+ * Menghasilkan avatar inisial SVG Data-URI offline dengan palet warna resmi UINSSC (Emerald & Gold).
+ * Solusi 100% offline-ready tanpa bergantung pada layanan pihak ketiga eksternal.
+ * @param {string} name - Nama civitas/pelapor
+ * @param {number} size - Ukuran canvas avatar
+ * @returns {string} Data URI SVG
+ */
+function generateInitialAvatarSvg(name, size) {
+    size = size || 150;
+    const cleanName = (name || 'Civitas').trim();
+    const parts = cleanName.split(/\s+/).filter(Boolean);
+    let initials = 'U';
+    if (parts.length >= 2) {
+        initials = (parts[0][0] + parts[1][0]).toUpperCase();
+    } else if (parts.length === 1 && parts[0].length >= 2) {
+        initials = parts[0].substring(0, 2).toUpperCase();
+    } else if (parts.length === 1) {
+        initials = parts[0][0].toUpperCase();
+    }
+
+    const strokeW = Math.max(2, Math.round(size * 0.04));
+    const fontSz = Math.round(size * 0.42);
+    const radius = Math.round((size / 2) - (strokeW / 2));
+    const center = Math.round(size / 2);
+
+    const svg = '<svg xmlns="http://www.w3.org/2000/svg" width="' + size + '" height="' + size + '" viewBox="0 0 ' + size + ' ' + size + '">' +
+        '<defs>' +
+        '<linearGradient id="uinAvatarGrad" x1="0%" y1="0%" x2="100%" y2="100%">' +
+        '<stop offset="0%" stop-color="#005a36"/>' +
+        '<stop offset="100%" stop-color="#003520"/>' +
+        '</linearGradient>' +
+        '</defs>' +
+        '<circle cx="' + center + '" cy="' + center + '" r="' + radius + '" fill="url(#uinAvatarGrad)" stroke="#c59235" stroke-width="' + strokeW + '"/>' +
+        '<text x="50%" y="54%" font-family="sans-serif" font-size="' + fontSz + '" font-weight="800" fill="#fef08a" text-anchor="middle" dominant-baseline="middle" letter-spacing="1">' + initials + '</text>' +
+        '</svg>';
+    return 'data:image/svg+xml;utf8,' + encodeURIComponent(svg);
+}
+window.generateInitialAvatarSvg = generateInitialAvatarSvg;
+
 function checkUserAuth() {
     const sessionRaw = localStorage.getItem('SIMPEL_AUTH_SESSION');
     if (!sessionRaw) {
@@ -550,17 +604,35 @@ function checkUserAuth() {
         const el = document.getElementById('userBadgeName');
         const displayName = sess.name || sess.username || 'Civitas UINSSC';
         const isMitra = (sess.role === 'mitra');
+        const nimDisplay = sess.nimNip ? (' (' + sess.nimNip + ')') : '';
+
+        // Tampilkan foto profil di navbar jika tersedia (atau Avatar Inisial Elegan UINSSC)
+        const navPhoto = document.getElementById('navUserPhoto');
+        const navDefaultIcon = document.getElementById('navDefaultUserIcon');
+        if (navPhoto) {
+            if (sess.foto && String(sess.foto).trim() !== '') {
+                navPhoto.src = sess.foto;
+                navPhoto.onerror = function() {
+                    this.onerror = null;
+                    this.src = generateInitialAvatarSvg(displayName, 64);
+                };
+            } else {
+                navPhoto.src = generateInitialAvatarSvg(displayName, 64);
+            }
+            navPhoto.style.display = 'inline-block';
+            if (navDefaultIcon) navDefaultIcon.style.display = 'none';
+        }
 
         if (el) {
             if (isMitra) {
-                el.innerHTML = `<i class="fa-solid fa-handshake" style="color:#facc15; margin-right:4px;"></i> Mitra: ${escapeHtml(displayName)}`;
+                el.innerHTML = '<i class="fa-solid fa-handshake" style="color:#facc15; margin-right:4px;"></i> Mitra: ' + escapeHtml(displayName);
                 const userBadge = el.closest('.user-badge');
                 if (userBadge) {
                     userBadge.style.borderColor = '#facc15';
                     userBadge.style.background = 'rgba(250, 204, 21, 0.12)';
                 }
             } else {
-                el.innerHTML = `<i class="fa-solid fa-graduation-cap" style="color:var(--gold); margin-right:4px;"></i> ${escapeHtml(displayName)}`;
+                el.innerHTML = '<i class="fa-solid fa-graduation-cap" style="color:var(--gold); margin-right:4px;"></i> ' + escapeHtml(displayName) + '<span style="font-size:11px; opacity:0.85; margin-left:4px;">' + escapeHtml(nimDisplay) + '</span>';
             }
         }
 
@@ -575,6 +647,12 @@ function checkUserAuth() {
                     if (e.target.value === 'Mitra Kampus') {
                         icon.className = 'fa-solid fa-handshake';
                         icon.style.color = '#facc15';
+                    } else if (e.target.value === 'Dosen') {
+                        icon.className = 'fa-solid fa-chalkboard-user';
+                        icon.style.color = '#38bdf8';
+                    } else if (e.target.value === 'Staf / Tendik') {
+                        icon.className = 'fa-solid fa-user-tie';
+                        icon.style.color = '#a855f7';
                     } else {
                         icon.className = 'fa-solid fa-graduation-cap';
                         icon.style.color = 'var(--gold)';
@@ -589,7 +667,14 @@ function checkUserAuth() {
 
 function prefillPelaporDataFromSession() {
     const sessionRaw = localStorage.getItem('SIMPEL_AUTH_SESSION');
-    if (!sessionRaw) return;
+    const fieldNamaGroup = document.getElementById('fieldNamaGroup');
+    const fieldNimGroup = document.getElementById('fieldNimGroup');
+
+    if (!sessionRaw) {
+        if (fieldNamaGroup) fieldNamaGroup.style.display = '';
+        if (fieldNimGroup) fieldNimGroup.style.display = '';
+        return;
+    }
     try {
         const sess = JSON.parse(sessionRaw);
         const isMitra = (sess.role === 'mitra');
@@ -599,17 +684,111 @@ function prefillPelaporDataFromSession() {
         const peranSelect = document.getElementById('peranPelapor');
         const peranIcon = document.getElementById('peranIcon');
 
-        if (isMitra) {
-            if (namaInput) namaInput.value = sess.name || '';
-            if (nimInput) nimInput.value = sess.nimNip || sess.username || '';
-            if (kontakInput && sess.wa) kontakInput.value = sess.wa;
-            if (peranSelect) peranSelect.value = 'Mitra Kampus';
-            if (peranIcon) {
-                peranIcon.className = 'fa-solid fa-handshake';
-                peranIcon.style.color = '#facc15';
+        const ssoBanner = document.getElementById('ssoProfileBanner');
+        const ssoRoleBadge = document.getElementById('ssoUserRoleBadge');
+        const ssoNameDetail = document.getElementById('ssoUserNameDetail');
+        const ssoNimText = document.getElementById('ssoNimText');
+        const ssoProdiDetail = document.getElementById('ssoUserProdiDetail');
+        const ssoEmailFakDetail = document.getElementById('ssoEmailFakultasDetail');
+        const ssoPhotoImg = document.getElementById('ssoUserPhotoImg');
+
+        const badgeNama = document.getElementById('badgeNamaSso');
+        const badgeNim = document.getElementById('badgeNimSso');
+        const badgeKontak = document.getElementById('badgeKontakSso');
+
+        // 1. Prefill data ke elemen input form
+        if (sess.name && namaInput) {
+            namaInput.value = sess.name;
+            namaInput.readOnly = true;
+            namaInput.style.backgroundColor = 'rgba(16, 185, 129, 0.05)';
+            namaInput.style.borderColor = 'rgba(16, 185, 129, 0.4)';
+            namaInput.title = 'Data nama resmi diambil dari Portal Kampus UINSSC';
+            if (badgeNama) badgeNama.style.display = 'inline-flex';
+        }
+
+        if ((sess.nimNip || sess.username) && nimInput) {
+            nimInput.value = sess.nimNip || sess.username;
+            nimInput.readOnly = true;
+            nimInput.style.backgroundColor = 'rgba(16, 185, 129, 0.05)';
+            nimInput.style.borderColor = 'rgba(16, 185, 129, 0.4)';
+            nimInput.title = 'NIM/NIP diverifikasi langsung dari basis data SSO Kampus';
+            if (badgeNim) badgeNim.style.display = 'inline-flex';
+        }
+
+        if (sess.wa && kontakInput) {
+            kontakInput.value = sess.wa;
+            if (badgeKontak) badgeKontak.style.display = 'inline-flex';
+        }
+
+        if (peranSelect) {
+            if (isMitra) {
+                peranSelect.value = 'Mitra Kampus';
+                if (peranIcon) {
+                    peranIcon.className = 'fa-solid fa-handshake';
+                    peranIcon.style.color = '#facc15';
+                }
+            } else if (sess.peran) {
+                peranSelect.value = sess.peran;
+                if (peranIcon) {
+                    if (sess.peran === 'Dosen') {
+                        peranIcon.className = 'fa-solid fa-chalkboard-user';
+                        peranIcon.style.color = '#38bdf8';
+                    } else if (sess.peran === 'Staf / Tendik') {
+                        peranIcon.className = 'fa-solid fa-user-tie';
+                        peranIcon.style.color = '#a855f7';
+                    } else {
+                        peranIcon.className = 'fa-solid fa-graduation-cap';
+                        peranIcon.style.color = 'var(--gold)';
+                    }
+                }
+            } else {
+                peranSelect.value = 'Mahasiswa';
             }
         }
-    } catch (e) {}
+
+        // 2. Tampilkan Kartu Identitas Digital Civitas Terpadu (SSO)
+        if (ssoBanner && (sess.name || sess.nimNip)) {
+            ssoBanner.style.display = 'block';
+
+            // Sembunyikan field input Nama dan NIM agar TIDAK DUPLIKAT dengan Kartu Identitas SSO
+            if (fieldNamaGroup) fieldNamaGroup.style.display = 'none';
+            if (fieldNimGroup) fieldNimGroup.style.display = 'none';
+
+            // Pasang Foto Profil dari Portal API (atau Avatar Inisial Elegan UINSSC jika null/kosong)
+            if (ssoPhotoImg) {
+                if (sess.foto && String(sess.foto).trim() !== '') {
+                    ssoPhotoImg.src = sess.foto;
+                    ssoPhotoImg.onerror = function() {
+                        this.onerror = null;
+                        this.src = generateInitialAvatarSvg(sess.name || 'Civitas', 150);
+                    };
+                } else {
+                    ssoPhotoImg.src = generateInitialAvatarSvg(sess.name || 'Civitas', 150);
+                }
+            }
+
+            if (ssoRoleBadge) {
+                ssoRoleBadge.textContent = sess.peran ? (sess.peran + ' Aktif') : 'Civitas Aktif';
+            }
+            if (ssoNameDetail) {
+                ssoNameDetail.textContent = sess.name || 'Civitas Kampus';
+            }
+            if (ssoNimText) {
+                ssoNimText.textContent = sess.nimNip || sess.username || '-';
+            }
+            if (ssoProdiDetail) {
+                const prodiText = sess.prodi || 'Program Studi Terdaftar di UINSSC';
+                ssoProdiDetail.innerHTML = '<i class="fa-solid fa-graduation-cap" style="color:#06b6d4; margin-right:5px;"></i> ' + escapeHtml(prodiText);
+            }
+            if (ssoEmailFakDetail) {
+                const fakText = sess.fakultas ? ('<i class="fa-solid fa-building-columns" style="margin-right:4px; opacity:0.75;"></i> ' + escapeHtml(sess.fakultas)) : '<i class="fa-solid fa-building-columns" style="margin-right:4px; opacity:0.75;"></i> UIN Siber Syekh Nurjati Cirebon';
+                const emailText = sess.email ? (' • <i class="fa-solid fa-envelope" style="margin-left:4px; margin-right:3px; opacity:0.75;"></i> ' + escapeHtml(sess.email)) : '';
+                ssoEmailFakDetail.innerHTML = fakText + emailText;
+            }
+        }
+    } catch (e) {
+        console.warn('Gagal autofill data pelapor dari sesi:', e);
+    }
 }
 
 function initTheme() {
@@ -834,22 +1013,31 @@ function initMapPicker() {
 
             if (!mapMarkerInstance) {
                 mapMarkerInstance = L.marker(e.latlng, { draggable: true }).addTo(mapPickerInstance);
-                mapMarkerInstance.bindPopup('<b>Titik Lokasi Kerusakan</b><br>Geser pin jika perlu menyesuaikan posisi presisi.').openPopup();
                 mapMarkerInstance.on('dragend', function () {
                     const pos = mapMarkerInstance.getLatLng();
-                    updateCoordinatesDisplay(pos.lat, pos.lng);
-                    if (!isInsideCampus(pos.lat, pos.lng)) {
-                        showToast('Info: Titik lokasi berada di luar batas utama zona gedung.', 'info');
-                    }
+                    updateCoordinatesDisplay(pos.lat, pos.lng, false);
                 });
             } else {
                 mapMarkerInstance.setLatLng(e.latlng);
             }
 
-            updateCoordinatesDisplay(e.latlng.lat, e.latlng.lng);
-            if (!isInsideCampus(e.latlng.lat, e.latlng.lng)) {
-                showToast('Info: Titik lokasi berada di luar batas utama zona gedung.', 'info');
+            const insideClick = isInsideCampus(e.latlng.lat, e.latlng.lng);
+            if (!insideClick) {
+                mapMarkerInstance.bindPopup(`
+                    <div style="font-family:sans-serif; text-align:center; padding:4px;">
+                        <div style="color:#ef4444; font-weight:700; font-size:12.5px; margin-bottom:3px;">
+                            <i class="fa-solid fa-triangle-exclamation"></i> Di Luar Kawasan Kampus!
+                        </div>
+                        <div style="font-size:11px; color:#475569;">
+                            Titik ini berada di luar area kampus UINSSC. Laporan tidak dapat diinput.
+                        </div>
+                    </div>
+                `).openPopup();
+            } else {
+                mapMarkerInstance.bindPopup('<b>Titik Lokasi Kerusakan</b><br>Geser pin jika perlu menyesuaikan posisi presisi.').openPopup();
             }
+
+            updateCoordinatesDisplay(e.latlng.lat, e.latlng.lng, false);
         });
     } catch (err) {
         console.error('Error init map:', err);
@@ -907,7 +1095,21 @@ function focusMapToCampus() {
         polygonGroup.addLayer(poly);
     });
     const combinedBounds = polygonGroup.getBounds();
+    const centerAll = combinedBounds.getCenter();
     mapPickerInstance.fitBounds(combinedBounds, { padding: [30, 30] });
+
+    if (!mapMarkerInstance) {
+        mapMarkerInstance = L.marker([centerAll.lat, centerAll.lng], { draggable: true }).addTo(mapPickerInstance);
+        mapMarkerInstance.on('dragend', function () {
+            const pos = mapMarkerInstance.getLatLng();
+            updateCoordinatesDisplay(pos.lat, pos.lng, false);
+        });
+    } else {
+        mapMarkerInstance.setLatLng([centerAll.lat, centerAll.lng]);
+    }
+    mapMarkerInstance.bindPopup('<b>Area Kampus UINSSC</b><br>Silakan geser pin ke gedung / lokasi spesifik.').openPopup();
+
+    updateCoordinatesDisplay(centerAll.lat, centerAll.lng, false);
     showToast('📍 Kamera terfokus kembali ke area Kampus UINSSC', 'info');
 }
 
@@ -1035,11 +1237,85 @@ function copyPolygonCode() {
     }
 }
 
-function updateCoordinatesDisplay(lat, lng) {
-    currentLat = parseFloat(lat).toFixed(6);
-    currentLng = parseFloat(lng).toFixed(6);
-    document.getElementById('latInput').value = currentLat;
-    document.getElementById('lngInput').value = currentLng;
+let isLocationGeofenceValid = true;
+
+function applyGeofenceState(inside, lat, lng, isGps = false) {
+    const alertBox = document.getElementById('geofenceAlertBox');
+    const latInp = document.getElementById('latInput');
+    const lngInp = document.getElementById('lngInput');
+    const btnSubmit = document.getElementById('btnSubmitReport');
+    const btnReview = document.getElementById('btnReviewReport');
+
+    if (inside) {
+        isLocationGeofenceValid = true;
+        if (alertBox) alertBox.classList.add('hidden');
+        if (latInp) {
+            latInp.classList.remove('input-error-geofence');
+            latInp.placeholder = 'Latitude (klik lokasi di peta)';
+        }
+        if (lngInp) {
+            lngInp.classList.remove('input-error-geofence');
+            lngInp.placeholder = 'Longitude (klik lokasi di peta)';
+        }
+        if (lat !== undefined && lng !== undefined) {
+            currentLat = parseFloat(lat).toFixed(6);
+            currentLng = parseFloat(lng).toFixed(6);
+            if (latInp) latInp.value = currentLat;
+            if (lngInp) lngInp.value = currentLng;
+        }
+        if (btnSubmit) {
+            btnSubmit.disabled = false;
+            btnSubmit.classList.remove('btn-disabled-geofence');
+            btnSubmit.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Kirim Laporan';
+            btnSubmit.removeAttribute('title');
+        }
+        if (btnReview) {
+            btnReview.disabled = false;
+            btnReview.classList.remove('btn-disabled-geofence');
+            btnReview.removeAttribute('title');
+        }
+    } else {
+        // DI LUAR KAWASAN KAMPUS
+        isLocationGeofenceValid = false;
+        currentLat = '';
+        currentLng = '';
+        if (latInp) {
+            latInp.value = '';
+            latInp.placeholder = 'Ditolak: Di luar kawasan kampus';
+            latInp.classList.add('input-error-geofence');
+        }
+        if (lngInp) {
+            lngInp.value = '';
+            lngInp.placeholder = 'Ditolak: Di luar kawasan kampus';
+            lngInp.classList.add('input-error-geofence');
+        }
+        if (alertBox) {
+            alertBox.classList.remove('hidden');
+            alertBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+        if (btnSubmit) {
+            btnSubmit.disabled = true;
+            btnSubmit.classList.add('btn-disabled-geofence');
+            btnSubmit.innerHTML = '<i class="fa-solid fa-ban"></i> Terkunci (Di Luar Kampus)';
+            btnSubmit.title = 'Formulir terkunci karena posisi berada di luar batas wilayah kampus UINSSC';
+        }
+        if (btnReview) {
+            btnReview.disabled = true;
+            btnReview.classList.add('btn-disabled-geofence');
+            btnReview.title = 'Formulir terkunci karena posisi berada di luar batas wilayah kampus UINSSC';
+        }
+
+        if (isGps) {
+            showToast('⚠️ Anda berada di luar kawasan kampus! Pengaduan sarpras tidak dapat diinput dari luar area kampus.', 'error');
+        } else {
+            showToast('⚠️ Titik lokasi berada di luar batas kawasan kampus UINSSC! Laporan tidak dapat diajukan.', 'error');
+        }
+    }
+}
+
+function updateCoordinatesDisplay(lat, lng, isGps = false) {
+    const inside = isInsideCampus(lat, lng);
+    applyGeofenceState(inside, lat, lng, isGps);
 }
 
 function getCurrentGPSLocation() {
@@ -1054,7 +1330,7 @@ function getCurrentGPSLocation() {
         (position) => {
             const lat = position.coords.latitude;
             const lng = position.coords.longitude;
-            updateCoordinatesDisplay(lat, lng);
+            const inside = isInsideCampus(lat, lng);
 
             if (mapPickerInstance) {
                 mapPickerInstance.setView([lat, lng], 17);
@@ -1062,18 +1338,37 @@ function getCurrentGPSLocation() {
                     mapMarkerInstance = L.marker([lat, lng], { draggable: true }).addTo(mapPickerInstance);
                     mapMarkerInstance.on('dragend', function () {
                         const pos = mapMarkerInstance.getLatLng();
-                        updateCoordinatesDisplay(pos.lat, pos.lng);
+                        updateCoordinatesDisplay(pos.lat, pos.lng, false);
                     });
                 } else {
                     mapMarkerInstance.setLatLng([lat, lng]);
                 }
-                mapMarkerInstance.bindPopup('<b>Lokasi GPS Anda Terunci!</b><br>Geser pin jika perlu disesuaikan.').openPopup();
+
+                if (!inside) {
+                    mapMarkerInstance.bindPopup(`
+                        <div style="font-family:sans-serif; text-align:center; padding:6px 4px; min-width:210px;">
+                            <div style="color:#ef4444; font-weight:700; font-size:13px; margin-bottom:4px;">
+                                <i class="fa-solid fa-triangle-exclamation"></i> Anda di Luar Kawasan Kampus!
+                            </div>
+                            <div style="font-size:11.5px; color:#475569; margin-bottom:8px; line-height:1.4;">
+                                Posisi GPS terdeteksi di luar kawasan kampus UINSSC. Sesuai SOP, formulir pelaporan <b>dikunci dan tidak dapat diinput</b>.
+                            </div>
+                            <button type="button" onclick="focusMapToCampus()" style="background:#ef4444; color:#fff; border:none; padding:5px 12px; border-radius:6px; font-size:11.5px; font-weight:600; cursor:pointer;">
+                                <i class="fa-solid fa-building-flag"></i> Pilih Lokasi Kampus
+                            </button>
+                        </div>
+                    `).openPopup();
+                } else {
+                    mapMarkerInstance.bindPopup('<b>Lokasi GPS Anda Terkunci (Dalam Kampus)!</b><br>Geser pin jika perlu disesuaikan.').openPopup();
+                    showToast('Lokasi presisi GPS terverifikasi di dalam kawasan kampus!', 'success');
+                }
             }
-            showToast('Lokasi presisi GPS terdeteksi!', 'success');
+
+            updateCoordinatesDisplay(lat, lng, true);
         },
         (error) => {
             console.warn('GPS Error', error);
-            showToast('Gagal mengambil lokasi GPS. Menutup ke posisi default UINSSC.', 'error');
+            showToast('Gagal mengambil lokasi GPS. Silakan tentukan lokasi pada peta kampus.', 'error');
         },
         { enableHighAccuracy: true, timeout: 10000 }
     );
@@ -1088,8 +1383,32 @@ function resetReportLocationMarker() {
     currentLng = '';
     const latInp = document.getElementById('latInput');
     const lngInp = document.getElementById('lngInput');
-    if (latInp) latInp.value = '';
-    if (lngInp) lngInp.value = '';
+    if (latInp) {
+        latInp.value = '';
+        latInp.classList.remove('input-error-geofence');
+        latInp.placeholder = 'Latitude (klik lokasi di peta)';
+    }
+    if (lngInp) {
+        lngInp.value = '';
+        lngInp.classList.remove('input-error-geofence');
+        lngInp.placeholder = 'Longitude (klik lokasi di peta)';
+    }
+    const alertBox = document.getElementById('geofenceAlertBox');
+    if (alertBox) alertBox.classList.add('hidden');
+    const btnSubmit = document.getElementById('btnSubmitReport');
+    if (btnSubmit) {
+        btnSubmit.disabled = false;
+        btnSubmit.classList.remove('btn-disabled-geofence');
+        btnSubmit.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Kirim Laporan';
+        btnSubmit.removeAttribute('title');
+    }
+    const btnReview = document.getElementById('btnReviewReport');
+    if (btnReview) {
+        btnReview.disabled = false;
+        btnReview.classList.remove('btn-disabled-geofence');
+        btnReview.removeAttribute('title');
+    }
+    isLocationGeofenceValid = true;
 }
 
 function escapeHtml(str) {
@@ -1242,6 +1561,18 @@ function openReviewBeforeSubmit() {
         return;
     }
 
+    const latCheck = document.getElementById('latInput').value || currentLat;
+    const lngCheck = document.getElementById('lngInput').value || currentLng;
+    if (!latCheck || !lngCheck || !isInsideCampus(latCheck, lngCheck)) {
+        showToast('⚠️ Anda berada di luar kawasan kampus! Pengaduan sarpras tidak dapat diinput atau dikirim.', 'error');
+        const alertBox = document.getElementById('geofenceAlertBox');
+        if (alertBox) {
+            alertBox.classList.remove('hidden');
+            alertBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+        return;
+    }
+
     const nama = document.getElementById('namaPelapor').value.trim();
     const nim = document.getElementById('nimNip').value.trim();
     const peran = document.getElementById('peranPelapor').value;
@@ -1315,6 +1646,19 @@ async function handlePublicFormSubmit(event) {
                 dropzone.style.borderColor = '';
                 dropzone.style.boxShadow = '';
             }, 2500);
+        }
+        return;
+    }
+
+    // Geofencing Campus Boundary Guard
+    const submitLat = document.getElementById('latInput').value || currentLat;
+    const submitLng = document.getElementById('lngInput').value || currentLng;
+    if (!submitLat || !submitLng || !isInsideCampus(submitLat, submitLng)) {
+        showToast('⚠️ Gagal mengirim! Posisi Anda terdeteksi di luar kawasan kampus UINSSC. Pengaduan sarpras tidak dapat diinput.', 'error');
+        const alertBox = document.getElementById('geofenceAlertBox');
+        if (alertBox) {
+            alertBox.classList.remove('hidden');
+            alertBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
         return;
     }

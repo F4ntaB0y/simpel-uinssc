@@ -5,6 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>SIMPEL UINSSC | System Information Pelaporan Fasilitas Kampus</title>
     <link rel="icon" type="image/png" href="assets/img/favicon.png">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#005a36">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <!-- Google Fonts & Font Awesome Icons -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -230,26 +234,15 @@
                             <span style="font-size: 11px; color: var(--gold); font-weight: 700; background: rgba(197, 146, 53, 0.12); padding: 2px 8px; border-radius: 10px;">Siap Pakai</span>
                         </div>
 
-                        <div class="login-preset-grid">
-                            <div class="login-preset-card" id="presetUserCard" onclick="quickFillAccount('user')" title="User: Mahasiswa/Dosen/Tendik pembuat pelaporan">
+                        <div class="login-preset-grid" style="grid-template-columns: repeat(2, 1fr);">
+                            <div class="login-preset-card" id="presetUserCard" onclick="quickFillAccount('user')" title="User: Mahasiswa SSO dengan profil terisi otomatis ke form laporan">
                                 <div class="preset-avatar preset-user">
                                     <i class="fa-solid fa-graduation-cap"></i>
                                 </div>
                                 <div class="preset-info">
-                                    <span class="preset-role-name">Pelapor (User)</span>
-                                    <span style="font-size:10px; color:var(--gold); display:block; font-weight:700;">Mahasiswa / Civitas</span>
+                                    <span class="preset-role-name">Mahasiswa (SSO)</span>
+                                    <span style="font-size:10px; color:var(--gold); display:block; font-weight:700;">Autofill Portal Kampus</span>
                                     <span class="preset-cred">user / user123</span>
-                                </div>
-                            </div>
-
-                            <div class="login-preset-card" id="presetMitraCard" onclick="quickFillAccount('mitra')" title="Mitra: Pengelola Kantin, Bank, Vendor Rekanan Kampus (Dibuatkan Super Admin)">
-                                <div class="preset-avatar preset-mitra" style="background:rgba(234,179,8,0.15); color:#facc15;">
-                                    <i class="fa-solid fa-handshake"></i>
-                                </div>
-                                <div class="preset-info">
-                                    <span class="preset-role-name">Mitra Kampus</span>
-                                    <span style="font-size:10px; color:#facc15; display:block; font-weight:700;">Kantin / Vendor / Bank</span>
-                                    <span class="preset-cred">mitra / mitra123</span>
                                 </div>
                             </div>
 
@@ -261,6 +254,17 @@
                                     <span class="preset-role-name">Admin Sarpras</span>
                                     <span style="font-size:10px; color:#2dd4bf; display:block; font-weight:700;">Pengelola Sarpras</span>
                                     <span class="preset-cred">admin / admin123</span>
+                                </div>
+                            </div>
+
+                            <!-- Fitur Akun Mitra Dinonaktifkan Sementara -->
+                            <div class="login-preset-card" id="presetMitraCard" style="display:none;" onclick="quickFillAccount('mitra')">
+                                <div class="preset-avatar preset-mitra">
+                                    <i class="fa-solid fa-handshake"></i>
+                                </div>
+                                <div class="preset-info">
+                                    <span class="preset-role-name">Mitra Kampus</span>
+                                    <span class="preset-cred">mitra / mitra123</span>
                                 </div>
                             </div>
 
@@ -357,7 +361,21 @@
         const BRIDGE_API_BASE = 'https://bridge.uinssc.ac.id';
 
         const ACCOUNTS = {
-            user: { username: 'user', password: 'user123', role: 'user', name: 'Pelapor Publik (Mahasiswa/Dosen/Staf)', redirect: 'pages/user.html' },
+            user: { 
+                username: 'user', 
+                password: 'user123', 
+                role: 'user', 
+                name: 'Ahmad Rizki Pratama', 
+                nimNip: '220101892', 
+                peran: 'Mahasiswa', 
+                prodi: 'S1 Pendidikan Agama Islam (Cyber)', 
+                fakultas: 'Ilmu Tarbiyah & Keguruan', 
+                wa: '081234567890', 
+                email: 'ahmad.rizki@uinssc.ac.id',
+                foto: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=250&auto=format&fit=crop&q=80',
+                isCampusPortal: true,
+                redirect: 'pages/user.html' 
+            },
             mitra: { username: 'mitra', password: 'mitra123', role: 'mitra', name: 'Kantin Berkah Sejahtera (Mitra Kampus)', redirect: 'pages/user.html', nimNip: 'MTR-01', bidang: 'Kantin Kampus & Pujasera', wa: '081288990001' },
             admin: { username: 'admin', password: 'admin123', role: 'admin', name: 'Administrator Sarpras', redirect: 'pages/admin.html' },
             superadmin: { username: 'superadmin', password: 'superadmin123', role: 'superadmin', name: 'Super Administrator Sarpras & IT', redirect: 'pages/admin.html' }
@@ -634,9 +652,17 @@
                 return;
             }
 
-            if (uname.toLowerCase() === 'mitra' && pass === 'mitra123') {
-                setBtnLoading('Menyiapkan Portal Mitra Kampus...');
-                saveSessionAndRedirect(ACCOUNTS.mitra);
+            if (uname.toLowerCase() === 'mitra') {
+                showLoginFeedback('ℹ️ Fitur akun Mitra Kampus saat ini sedang dinonaktifkan sementara.', '#f59e0b');
+                if (typeof Swal !== 'undefined') {
+                    Swal.fire({
+                        icon: 'info',
+                        title: 'Fitur Dinonaktifkan Sementara',
+                        text: 'Layanan akun Mitra Kampus sedang dinonaktifkan sementara untuk pemeliharaan.',
+                        confirmButtonColor: '#005a36'
+                    });
+                }
+                resetBtnState();
                 return;
             }
 
@@ -646,7 +672,7 @@
                 return;
             }
 
-            // 1b. Cek Akun Mitra / Personil Tambahan yang Dibuatkan oleh Super Admin di Database/LocalStorage
+            // 1b. Cek Akun Personil Tambahan yang Dibuatkan oleh Super Admin di Database/LocalStorage
             const savedStaffRaw = localStorage.getItem('SIMPEL_STAFF_ACCOUNTS_V1');
             if (savedStaffRaw) {
                 try {
@@ -656,7 +682,7 @@
                         (s.id && s.id.toLowerCase() === uname.toLowerCase())
                     );
                     if (matchedAccount) {
-                        const expectedPass = matchedAccount.password || 'mitra123';
+                        const expectedPass = matchedAccount.password || 'admin123';
                         if (pass === expectedPass) {
                             if (matchedAccount.status !== 'Aktif') {
                                 showLoginFeedback('❌ Akun ini sedang dinonaktifkan oleh Administrator Sarpras Kampus.', '#ef4444');
@@ -672,17 +698,16 @@
                                 return;
                             }
                             if (matchedAccount.role === 'mitra') {
-                                setBtnLoading('Menyiapkan Portal Mitra Kampus...');
-                                saveSessionAndRedirect({
-                                    username: matchedAccount.username || matchedAccount.id,
-                                    role: 'mitra',
-                                    name: matchedAccount.nama,
-                                    nimNip: matchedAccount.id,
-                                    bidang: matchedAccount.bidang,
-                                    wa: matchedAccount.wa,
-                                    peran: 'Mitra Kampus',
-                                    redirect: 'pages/user.html'
-                                });
+                                showLoginFeedback('ℹ️ Fitur akun Mitra Kampus saat ini sedang dinonaktifkan sementara.', '#f59e0b');
+                                if (typeof Swal !== 'undefined') {
+                                    Swal.fire({
+                                        icon: 'info',
+                                        title: 'Fitur Dinonaktifkan Sementara',
+                                        text: 'Layanan akun Mitra Kampus sedang dinonaktifkan sementara.',
+                                        confirmButtonColor: '#005a36'
+                                    });
+                                }
+                                resetBtnState();
                                 return;
                             } else if (matchedAccount.role === 'admin') {
                                 setBtnLoading('Memverifikasi Akses Admin...');
@@ -723,9 +748,16 @@
                 const token = data.data?.token || data.token;
 
                 if (response.ok && token) {
-                    // Ambil Profil Mahasiswa/Dosen
+                    // Ambil Profil Mahasiswa/Dosen dari API Portal Kampus
                     let profilName = uname;
                     let nimNip = uname;
+                    let peran = 'Mahasiswa';
+                    let prodi = '';
+                    let fakultas = '';
+                    let wa = '';
+                    let email = '';
+                    let foto = '';
+
                     try {
                         const profRes = await fetch(`${BRIDGE_API_BASE}/api/v2/profil`, {
                             method: 'GET',
@@ -739,9 +771,23 @@
                             const info = profData.data || profData;
                             profilName = info.nama || info.name || uname;
                             nimNip = info.nim || info.nip || uname;
+                            prodi = info.prodi || info.program_studi || info.jurusan || '';
+                            fakultas = info.fakultas || '';
+                            wa = info.hp || info.no_hp || info.telepon || info.wa || '';
+                            email = info.email || '';
+                            foto = info.foto || info.foto_url || info.photo || info.avatar || info.image || info.picture || '';
+
+                            // Klasifikasikan peran pengguna kampus
+                            if (info.peran) {
+                                peran = info.peran;
+                            } else if (info.nip || (!info.nim && String(uname).length > 12)) {
+                                peran = 'Dosen';
+                            } else {
+                                peran = 'Mahasiswa';
+                            }
                         }
                     } catch(pe) {
-                        console.info('Gagal ambil detail profil, gunakan username.');
+                        console.info('Gagal ambil detail profil API, gunakan username dasar.');
                     }
 
                     const campusUser = {
@@ -749,7 +795,14 @@
                         role: 'user',
                         name: profilName,
                         nimNip: nimNip,
+                        peran: peran,
+                        prodi: prodi,
+                        fakultas: fakultas,
+                        wa: wa,
+                        email: email,
+                        foto: foto,
                         token: token,
+                        isCampusPortal: true,
                         redirect: 'pages/user.html'
                     };
 
@@ -795,7 +848,12 @@
                 nimNip: acc.nimNip || acc.username,
                 bidang: acc.bidang || '',
                 wa: acc.wa || '',
-                peran: acc.peran || (acc.role === 'mitra' ? 'Mitra Kampus' : 'User'),
+                email: acc.email || '',
+                prodi: acc.prodi || '',
+                fakultas: acc.fakultas || '',
+                foto: acc.foto || '',
+                peran: acc.peran || (acc.role === 'mitra' ? 'Mitra Kampus' : 'Mahasiswa'),
+                isCampusPortal: !!acc.isCampusPortal,
                 token: acc.token || '',
                 loginTime: new Date().toISOString()
             };
@@ -974,6 +1032,15 @@
                 applyLoginPortalContent();
             }
         });
+
+        // Progressive Web App (PWA) Service Worker Registration
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js')
+                    .then(reg => console.log('SIMPEL PWA Service Worker Registered', reg.scope))
+                    .catch(err => console.debug('SIMPEL PWA Registration Notice:', err));
+            });
+        }
     </script>
 </body>
 </html>

@@ -1,0 +1,26 @@
+{
+  "name": "SIMPEL UINSSC - Sistem Informasi Sarpras Kampus",
+  "short_name": "SIMPEL UINSSC",
+  "description": "Sistem Informasi Manajemen Pengaduan & Layanan Sarana Prasarana Kampus UIN Siber Syekh Nurjati Cirebon",
+  "start_url": "index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#06130e",
+  "theme_color": "#005a36",
+  "lang": "id-ID",
+  "icons": [
+    {
+      "src": "assets/img/favicon.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "assets/img/logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

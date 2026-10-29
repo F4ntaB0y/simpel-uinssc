@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>SIMPEL UINSSC | Portal Pelaporan Fasilitas Kampus</title>
     <link rel="icon" type="image/png" href="../assets/img/favicon.png">
+    <link rel="manifest" href="../manifest.json">
+    <meta name="theme-color" content="#005a36">
+    <meta name="mobile-web-app-capable" content="yes">
     <!-- Google Fonts & Font Awesome Icons -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -53,8 +56,9 @@
             </a>
 
             <div class="nav-links" style="display:flex; align-items:center; gap:10px;">
-                <span id="userBadgeDisplay" class="user-badge-pill">
-                    <i class="fa-solid fa-circle-user"></i> <span id="userBadgeName">Civitas Kampus</span>
+                <span id="userBadgeDisplay" class="user-badge-pill" style="display:inline-flex; align-items:center; gap:8px;">
+                    <img id="navUserPhoto" src="" alt="Avatar" style="width:26px; height:26px; border-radius:50%; object-fit:cover; display:none; border:1.5px solid var(--gold); box-shadow:0 0 6px rgba(197,146,53,0.3);">
+                    <i class="fa-solid fa-circle-user" id="navDefaultUserIcon"></i> <span id="userBadgeName">Civitas Kampus</span>
                 </span>
                 <span class="system-status-pill">
                     <span class="status-pulse-dot"></span> Sistem Aktif
@@ -126,22 +130,95 @@
                     
                     <!-- Section 1: Identitas -->
                     <div class="form-section-heading">
-                        <i class="fa-solid fa-user-circle"></i> Identitas Pelapor
+                        <i class="fa-solid fa-id-card"></i> Identitas Pelapor (Terintegrasi SSO Portal Kampus)
                     </div>
 
-                    <div class="form-group">
-                        <label for="namaPelapor">Nama Lengkap <span class="req">*</span></label>
+                    <!-- KARTU IDENTITAS DIGITAL CIVITAS KAMPUS (SSO INTEGRATION) -->
+                    <div id="ssoProfileBanner" class="sso-profile-card" style="display:none;">
+                        
+                        <!-- Watermark Emblem Logo UINSSC di background kartu -->
+                        <div style="position: absolute; right: -20px; bottom: -25px; opacity: 0.08; pointer-events: none; width: 180px; height: 180px;">
+                            <img src="../assets/img/logo.png" alt="UINSSC Emblem" style="width: 100%; height: 100%; object-fit: contain;">
+                        </div>
+
+                        <div class="sso-card-content">
+                            
+                            <!-- Sisi Kiri: Foto Profil + Info Detail Mahasiswa/Dosen -->
+                            <div class="sso-card-left">
+                                
+                                <!-- Foto Profil Avatar dengan Ring Status Terverifikasi -->
+                                <div class="sso-avatar-wrap">
+                                    <img id="ssoUserPhotoImg" src="" alt="Avatar"
+                                         onerror="this.onerror=null; if(window.generateInitialAvatarSvg){ this.src=window.generateInitialAvatarSvg(document.getElementById('namaPelapor')?.value||'Civitas', 150); }">
+                                    <span style="position:absolute; bottom:2px; right:2px; width:16px; height:16px; background:#10b981; border:2.5px solid var(--bg-card); border-radius:50%; box-shadow:0 0 8px #10b981;" title="Status Akun Aktif & Terverifikasi"></span>
+                                </div>
+
+                                <!-- Detail Identitas Terverifikasi -->
+                                <div class="sso-card-meta">
+                                    <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin-bottom:5px;">
+                                        <span class="sso-pill-badge">
+                                            <i class="fa-solid fa-circle-check"></i> Terverifikasi Portal Kampus UINSSC
+                                        </span>
+                                        <span id="ssoUserRoleBadge" style="font-size:11px; font-weight:700; color:var(--gold); background:rgba(197,146,53,0.15); border:1px solid rgba(197,146,53,0.3); padding:2px 8px; border-radius:6px;">
+                                            Mahasiswa Aktif
+                                        </span>
+                                    </div>
+                                    
+                                    <h3 id="ssoUserNameDetail">
+                                        Ahmad Rizki Pratama
+                                    </h3>
+                                    
+                                    <div style="display:flex; align-items:center; gap:16px; flex-wrap:wrap; font-size:13px; color:var(--text-muted); margin-bottom:2px;">
+                                        <span id="ssoNimDetail" style="color:var(--text-main); font-weight:600;">
+                                            <i class="fa-solid fa-id-badge" style="color:var(--gold); margin-right:4px;"></i> NIM: <strong id="ssoNimText" style="color:var(--gold); font-family:monospace; font-size:13.5px;">220101892</strong>
+                                        </span>
+                                        <span id="ssoUserProdiDetail" style="display:inline-flex; align-items:center;">
+                                            <i class="fa-solid fa-graduation-cap" style="color:#06b6d4; margin-right:5px;"></i> S1 Pendidikan Agama Islam (Cyber)
+                                        </span>
+                                    </div>
+                                    <div id="ssoEmailFakultasDetail" style="font-size:12px; color:var(--text-muted);">
+                                        <i class="fa-solid fa-building-columns" style="margin-right:4px; opacity:0.75;"></i> Fakultas Ilmu Tarbiyah &amp; Keguruan • <i class="fa-solid fa-envelope" style="margin-left:4px; margin-right:3px; opacity:0.75;"></i> ahmad.rizki@uinssc.ac.id
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Sisi Kanan: Badge Keamanan & Status Kunci SSO -->
+                            <div class="sso-card-right">
+                                <span style="font-size:11.5px; color:#10b981; font-weight:700; display:inline-flex; align-items:center; gap:6px; background:rgba(0,0,0,0.3); padding:7px 14px; border-radius:10px; border:1px solid rgba(16,185,129,0.35); box-shadow:0 2px 8px rgba(0,0,0,0.15);">
+                                    <i class="fa-solid fa-shield-halved"></i> Data Sah &amp; Terkunci SSO (Anti-Fraud)
+                                </span>
+                                <div style="font-size:11px; color:var(--text-muted); margin-top:2px;">
+                                    Sinkronisasi resmi basis data akademik
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- 4 Field Identitas Pelapor (Dual Column Grid Presisi) -->
+                    <div class="form-group" id="fieldNamaGroup">
+                        <div class="form-label-row">
+                            <label for="namaPelapor" style="margin:0;">Nama Lengkap <span class="req">*</span></label>
+                            <span id="badgeNamaSso" class="sso-pill-badge" style="display:none;">
+                                <i class="fa-solid fa-circle-check"></i> Otomatis dari Portal
+                            </span>
+                        </div>
                         <div class="input-wrapper">
                             <i class="fa-solid fa-user"></i>
                             <input type="text" id="namaPelapor" placeholder="Contoh: Ahmad Rizki" required>
                         </div>
                     </div>
 
-                    <div class="form-group">
-                        <label for="nimNip">NIM / NIP / ID Mitra / ID Staf <span class="req">*</span></label>
+                    <div class="form-group" id="fieldNimGroup">
+                        <div class="form-label-row">
+                            <label for="nimNip" style="margin:0;">NIM / NIP / ID Staf <span class="req">*</span></label>
+                            <span id="badgeNimSso" class="sso-pill-badge" style="display:none;">
+                                <i class="fa-solid fa-lock"></i> Terkunci Resmi (SSO)
+                            </span>
+                        </div>
                         <div class="input-wrapper">
                             <i class="fa-solid fa-id-badge"></i>
-                            <input type="text" id="nimNip" placeholder="Contoh: 220101892 atau MTR-01" required>
+                            <input type="text" id="nimNip" placeholder="Contoh: 220101892 (NIM) atau 1985... (NIP)" required>
                         </div>
                     </div>
 
@@ -154,13 +231,17 @@
                                 <option value="Mahasiswa">Mahasiswa</option>
                                 <option value="Dosen">Dosen</option>
                                 <option value="Staf / Tendik">Staf / Tendik</option>
-                                <option value="Mitra Kampus">Mitra Kampus (Kantin / Vendor / Bank / Rekanan)</option>
                             </select>
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label for="kontakPelapor">No. WhatsApp / HP <span class="req">*</span></label>
+                        <div class="form-label-row">
+                            <label for="kontakPelapor" style="margin:0;">No. WhatsApp / HP <span class="req">*</span></label>
+                            <span id="badgeKontakSso" class="sso-pill-badge" style="display:none;">
+                                <i class="fa-solid fa-circle-check"></i> Dari Profil Kampus
+                            </span>
+                        </div>
                         <div class="input-wrapper">
                             <i class="fa-solid fa-phone"></i>
                             <input type="text" id="kontakPelapor" placeholder="Contoh: 081234567890" required>
@@ -209,6 +290,22 @@
                                 <button type="button" class="chip-btn" onclick="getCurrentGPSLocation()" style="background:var(--primary); color:#fff; border-color:var(--gold);">
                                     <i class="fa-solid fa-location-crosshairs"></i> Gunakan Lokasi GPS Saya
                                 </button>
+                            </div>
+                        </div>
+
+                        <!-- Geofence Outside Campus Alert Banner -->
+                        <div id="geofenceAlertBox" class="geofence-alert-box hidden">
+                            <div style="display:flex; align-items:flex-start; gap:12px;">
+                                <i class="fa-solid fa-triangle-exclamation" style="font-size:22px; margin-top:2px;"></i>
+                                <div style="flex:1;">
+                                    <strong style="display:block; font-size:14px; margin-bottom:3px;">⚠️ Anda Berada di Luar Kawasan Kampus!</strong>
+                                    <span>Posisi Anda terdeteksi di luar batas resmi wilayah kampus UIN Siber Syekh Nurjati Cirebon. Sesuai ketentuan SOP, <strong>pengaduan sarpras tidak dapat diinput atau dikirim dari luar area kampus</strong>.</span>
+                                    <div style="margin-top:10px; display:flex; gap:8px; flex-wrap:wrap;">
+                                        <button type="button" class="chip-btn" onclick="focusMapToCampus()" style="background:#ef4444; color:#fff; border:none; padding:6px 12px; font-size:12px; font-weight:600; border-radius:6px; cursor:pointer;">
+                                            <i class="fa-solid fa-building-flag"></i> Fokus Kembali ke Kampus
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
@@ -274,12 +371,13 @@
                         </div>
 
                         <!-- Dynamic Input for Kategori Lainnya -->
-                        <div class="form-group hidden" id="kategoriLainnyaWrapper" style="margin-top: 10px;">
-                            <label for="kategoriLainnyaInput">Tuliskan Nama Fasilitas <span class="req">*</span></label>
-                            <div class="input-wrapper">
+                        <div class="form-group hidden" id="kategoriLainnyaWrapper" style="margin-top: 10px; background: rgba(0,0,0,0.2); padding: 12px; border-radius: 8px; border: 1px dashed var(--border-color);">
+                            <label for="kategoriLainnyaInput" style="color:var(--gold); font-weight:700;"><i class="fa-solid fa-pen-to-square"></i> Nama / Jenis Fasilitas Lainnya <span class="req">*</span></label>
+                            <div class="input-wrapper" style="margin-top:4px;">
                                 <i class="fa-solid fa-pen-clip"></i>
-                                <input type="text" id="kategoriLainnyaInput" placeholder="Contoh: Papan Tulis / Tembok Retak / Lift / Dll" onkeyup="checkDuplicateWarning()">
+                                <input type="text" id="kategoriLainnyaInput" placeholder="Tuliskan nama fasilitas di luar kategori yang ada (contoh: Lift, Eskalator, Bel Kampus, Kunci Loker, dll)" onkeyup="checkDuplicateWarning()">
                             </div>
+                            <small style="color:var(--text-muted); font-size:11.5px; margin-top:5px; display:block;"><i class="fa-solid fa-circle-info"></i> Opsi ini khusus untuk melaporkan sarana prasarana yang berada di luar kategori standar di atas.</small>
                         </div>
                     </div>
 
@@ -341,7 +439,7 @@
 
                 <div style="margin-top:30px; display:flex; justify-content:flex-end; gap:12px; border-top:1px dashed var(--border-color); padding-top:20px; flex-wrap:wrap;">
                     <button type="reset" class="btn btn-secondary" onclick="removeFoto(); handleKategoriChange(); resetReportLocationMarker();"><i class="fa-solid fa-eraser"></i> Bersihkan</button>
-                    <button type="button" class="btn btn-secondary" onclick="openReviewBeforeSubmit()" style="background:rgba(197,146,53,0.12); color:var(--gold); border-color:var(--gold);"><i class="fa-solid fa-eye"></i> Tinjau Laporan</button>
+                    <button type="button" id="btnReviewReport" class="btn btn-secondary" onclick="openReviewBeforeSubmit()" style="background:rgba(197,146,53,0.12); color:var(--gold); border-color:var(--gold);"><i class="fa-solid fa-eye"></i> Tinjau Laporan</button>
                     <button type="submit" id="btnSubmitReport" class="btn btn-primary"><i class="fa-solid fa-paper-plane"></i> Kirim Laporan</button>
                 </div>
             </form>
@@ -472,5 +570,14 @@
     <div id="toastBox" class="toast-box"></div>
 
     <script src="../js/user.js"></script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('../sw.js')
+                    .then(reg => console.log('SIMPEL User PWA Registered', reg.scope))
+                    .catch(err => console.debug('SIMPEL PWA Registration Notice:', err));
+            });
+        }
+    </script>
 </body>
 </html>

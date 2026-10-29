@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>SIMPEL UINSSC | Dashboard Admin & Sarpras Kampus</title>
     <link rel="icon" type="image/png" href="../assets/img/favicon.png">
+    <link rel="manifest" href="../manifest.json">
+    <meta name="theme-color" content="#005a36">
+    <meta name="mobile-web-app-capable" content="yes">
     <!-- Google Fonts & Font Awesome Icons -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -92,8 +95,8 @@
                     <i class="fa-solid fa-shield-halved" style="font-size:11px;"></i> Khusus Super Admin
                 </li>
                 <li id="sidebarGeofenceItem" class="hidden">
-                    <a href="javascript:void(0)" onclick="openGeofenceModal(); closeAdminSidebar();" id="sidebarGeofenceLink" title="Atur Batas Wilayah Geofencing (Wewenang Super Admin)">
-                        <i class="fa-solid fa-draw-polygon" style="color:#facc15;"></i> <span>Batas Geofencing</span>
+                    <a href="javascript:void(0)" onclick="switchAdminView('geofence'); closeAdminSidebar();" id="sidebarGeofenceLink" title="Kelola Wilayah & Batas Geofencing Kampus (Wewenang Super Admin)">
+                        <i class="fa-solid fa-draw-polygon" style="color:#facc15;"></i> <span>Kelola Wilayah &amp; Geofencing</span>
                     </a>
                 </li>
                 <li id="sidebarCmsItem" class="hidden">
@@ -161,7 +164,11 @@
                     <span id="adminBadgeDisplay" style="font-size: 13px; font-weight: 700; color: #2dd4bf; background: rgba(45,212,191,0.12); border: 1px solid #2dd4bf; padding: 6px 14px; border-radius: 20px; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 2px 10px rgba(0,0,0,0.15); transition: all 0.3s ease;">
                         <span id="adminBadgeName"><i class="fa-solid fa-user-shield"></i> Admin Sarpras</span>
                     </span>
+                    <span id="adminWilayahPill" style="display:none; font-size:11.5px; font-weight:700; background:rgba(45,212,191,0.12); color:#2dd4bf; border:1px solid rgba(45,212,191,0.35); padding:6px 12px; border-radius:20px; align-items:center; gap:6px;" title="Cakupan Wilayah Penugasan Operasional">
+                        <i class="fa-solid fa-map-location-dot"></i> <span id="adminWilayahPillText">Wilayah Tugas</span>
+                    </span>
                     <button class="btn btn-secondary" onclick="exportCSV()"><i class="fa-solid fa-file-csv"></i> Export CSV</button>
+                    <button class="btn btn-secondary" onclick="openPrintRekapModal()" style="color:#f59e0b; border-color:rgba(245,158,11,0.35);"><i class="fa-solid fa-print"></i> Cetak Rekap Resmi</button>
                     <button class="btn btn-secondary" id="btnResetDemo" onclick="resetDemoData()"><i class="fa-solid fa-rotate-left"></i> Reset Demo</button>
                     <button class="btn btn-secondary" onclick="handleLogout()" style="color:#ef4444; border-color:rgba(239,68,68,0.3);"><i class="fa-solid fa-right-from-bracket"></i> Keluar</button>
                 </div>
@@ -367,6 +374,10 @@
                                 <option value="Kawasan Kampus Sebrang">Kawasan Kampus Sebrang</option>
                                 <option value="Kawasan Pascasarjana & Mahad">Kawasan Pascasarjana & Mahad</option>
                             </select>
+
+                            <button type="button" id="btnFilterMyWilayah" class="chip-btn" onclick="toggleFilterMyWilayah()" style="display:none; padding:7px 12px; font-size:12px; font-weight:700; background:rgba(45,212,191,0.15); color:#2dd4bf; border:1px solid rgba(45,212,191,0.35); border-radius:8px; cursor:pointer;" title="Filter laporan sesuai wilayah penugasan saya">
+                                <i class="fa-solid fa-location-crosshairs"></i> Wilayah Tugas Saya
+                            </button>
 
                             <button type="button" id="btnDuplicateFilter" class="chip-btn" onclick="toggleDuplicateFilter()" style="background:rgba(245,158,11,0.12); color:#f59e0b; border:1px solid #f59e0b; padding:6px 14px; font-size:12px; font-weight:700; border-radius:20px; cursor:pointer; display:inline-flex; align-items:center; gap:6px; transition:all 0.2s ease; margin-left:8px;">
                                 <i class="fa-solid fa-clone"></i> Potensi Laporan Serupa (<span id="duplicateCountNum">0</span>)
@@ -890,6 +901,26 @@
                                 </div>
                                 <small style="display:block; margin-top:6px; font-size:11px; color:var(--text-muted);">Akun ini dapat langsung dipakai Mitra untuk login di halaman portal dan melaporkan sarpras.</small>
                             </div>
+
+                            <!-- Input Wilayah Penugasan (Multi-Wilayah) -->
+                            <div style="grid-column: 1 / -1; margin-top: 4px;">
+                                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                                    <label style="font-size:12px; font-weight:700; color:var(--text-main); margin:0;">
+                                        <i class="fa-solid fa-map-location-dot" style="color:var(--gold); margin-right:5px;"></i>
+                                        Wilayah Penugasan (Dapat Memilih Lebih Dari Satu Zona / Kawasan) <span style="color:#ef4444;">*</span>
+                                    </label>
+                                    <div style="font-size:11px;">
+                                        <a href="javascript:void(0)" onclick="toggleAllStaffZoneCheckboxes(true)" style="color:var(--gold); text-decoration:none; margin-right:10px; font-weight:600;"><i class="fa-solid fa-check-double"></i> Pilih Semua (5/5)</a>
+                                        <a href="javascript:void(0)" onclick="toggleAllStaffZoneCheckboxes(false)" style="color:var(--text-muted); text-decoration:none;"><i class="fa-solid fa-xmark"></i> Kosongkan</a>
+                                    </div>
+                                </div>
+                                <div id="addStaffWilayahContainer" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:10px; background:rgba(0,0,0,0.22); padding:12px; border-radius:10px; border:1px solid var(--border-color);">
+                                    <!-- Checkboxes 5 Kawasan Kampus di-render otomatis oleh JS -->
+                                </div>
+                                <small style="color:var(--text-muted); font-size:11px; margin-top:6px; display:block;">
+                                    <i class="fa-solid fa-circle-info"></i> Wewenang Super Admin: Tetapkan satu atau lebih zona kawasan kampus untuk penugasan Admin Sarpras maupun Petugas Lapangan.
+                                </small>
+                            </div>
                         </div>
                         <div style="margin-top:16px; display:flex; justify-content:flex-end;">
                             <button type="submit" id="btnSubmitAddStaff" class="btn btn-primary" style="font-size:12px; padding:9px 20px;">
@@ -924,6 +955,7 @@
                                     <th>Nama &amp; Kontak WhatsApp</th>
                                     <th>Peran / Otoritas</th>
                                     <th>Bidang / Spesialisasi</th>
+                                    <th style="min-width:180px;"><i class="fa-solid fa-map-location-dot" style="color:var(--gold);"></i> Wilayah Penugasan</th>
                                     <th>Status Siaga</th>
                                     <th id="staffActionColHeader" style="text-align:center;">Aksi Otoritas</th>
                                 </tr>
@@ -1030,6 +1062,208 @@
                     </div>
                 </div>
             </div>
+            <!-- ================= VIEW MANAJEMEN WILAYAH & GEOFENCING (KHUSUS SUPER ADMIN) ================= -->
+            <div id="viewGeofenceManagement" class="admin-view-section hidden">
+                <!-- Header View -->
+                <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:18px; background:rgba(255,255,255,0.03); border:1px solid var(--border-color); padding:16px 20px; border-radius:14px;">
+                    <div>
+                        <h2 style="font-size:18px; font-weight:800; margin:0; display:flex; align-items:center; gap:8px;">
+                            <i class="fa-solid fa-draw-polygon" style="color:#facc15;"></i> <span>Manajemen Wilayah &amp; Batas Geofencing Kampus</span>
+                        </h2>
+                        <p style="font-size:12px; color:var(--text-muted); margin:4px 0 0 0;">
+                            Wewenang Eksklusif Super Admin: Tambah wilayah baru, kelola zona kawasan kampus, dan atur batas koordinat polygon GPS secara presisi tanpa popup.
+                        </p>
+                    </div>
+                    <div style="display:flex; gap:8px; flex-wrap:wrap;">
+                        <button type="button" class="btn btn-primary" onclick="toggleAddNewZoneForm()" style="font-size:12px; padding:7px 16px; background:linear-gradient(135deg, #005a36, #003520); border:1px solid var(--gold); color:#fef08a; font-weight:700;">
+                            <i class="fa-solid fa-plus"></i> <span id="btnToggleZoneText">Tambah Wilayah Baru</span>
+                        </button>
+                        <button type="button" class="btn btn-secondary" onclick="resetAllZonesToDefault()" style="font-size:12px; padding:7px 14px; color:#ef4444; border-color:rgba(239,68,68,0.3);" title="Kembalikan semua kawasan ke koordinat default bawaan UINSSC">
+                            <i class="fa-solid fa-arrow-rotate-left"></i> Reset ke Default Bawaan
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Formulir Tambah Kawasan Baru (Collapsible Card) -->
+                <div id="addZoneFormCard" class="glass-card" style="display:none; padding:20px; margin-bottom:20px; border:1px dashed var(--gold); background:rgba(250,204,21,0.04);">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
+                        <h4 style="margin:0; font-size:14.5px; font-weight:800; color:var(--gold); display:flex; align-items:center; gap:8px;">
+                            <i class="fa-solid fa-layer-group"></i> Pendaftaran Kawasan / Wilayah Kampus Baru
+                        </h4>
+                        <button type="button" onclick="toggleAddNewZoneForm()" style="background:none; border:none; color:var(--text-muted); cursor:pointer;"><i class="fa-solid fa-xmark"></i></button>
+                    </div>
+
+                    <form id="newZoneForm" onsubmit="handleAddNewZone(event)">
+                        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(210px, 1fr)); gap:14px; margin-bottom:14px;">
+                            <div>
+                                <label style="font-size:12px; font-weight:700; color:var(--text-main); display:block; margin-bottom:5px;">
+                                    Nama Kawasan / Wilayah <span style="color:#ef4444;">*</span>:
+                                </label>
+                                <input type="text" id="newZoneNameInput" class="login-input" placeholder="Contoh: Kawasan Kampus 3 / Asrama Baru" required oninput="autoGenerateZoneId(this.value)">
+                            </div>
+                            <div>
+                                <label style="font-size:12px; font-weight:700; color:var(--text-main); display:block; margin-bottom:5px;">
+                                    Kode ID Wilayah (Sistem) <span style="color:#ef4444;">*</span>:
+                                </label>
+                                <input type="text" id="newZoneIdInput" class="login-input" placeholder="Contoh: kampus_3" required style="font-family:monospace;">
+                            </div>
+                            <div>
+                                <label style="font-size:12px; font-weight:700; color:var(--text-main); display:block; margin-bottom:5px;">
+                                    Ikon Kawasan:
+                                </label>
+                                <select id="newZoneIconInput" class="login-input">
+                                    <option value="fa-building-columns">🏛️ Gedung Kampus / Rektorat</option>
+                                    <option value="fa-laptop-code">💻 Gedung IT &amp; Cyber</option>
+                                    <option value="fa-school">🏢 Fakultas / Pembelajaran</option>
+                                    <option value="fa-mosque">🕌 Masjid / Mahad / Asrama</option>
+                                    <option value="fa-flask-vial">🔬 Laboratorium / Riset</option>
+                                    <option value="fa-futbol">⚽ Sarana Olahraga / Lapangan</option>
+                                    <option value="fa-book-open">📚 Perpustakaan / Literasi</option>
+                                    <option value="fa-hospital">🏥 Poliklinik / Kesehatan</option>
+                                    <option value="fa-map-pin">📍 Titik Kawasan Lainnya</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label style="font-size:12px; font-weight:700; color:var(--text-main); display:block; margin-bottom:5px;">
+                                    Warna Poligon di Peta:
+                                </label>
+                                <select id="newZoneColorInput" class="login-input">
+                                    <option value="#10b981">🟢 Emerald Green (#10b981)</option>
+                                    <option value="#06b6d4">🔵 Cyan Cyber (#06b6d4)</option>
+                                    <option value="#a855f7">🟣 Royal Purple (#a855f7)</option>
+                                    <option value="#f59e0b" selected>🟡 Amber Gold (#f59e0b)</option>
+                                    <option value="#ec4899">🌸 Rose Pink (#ec4899)</option>
+                                    <option value="#6366f1">🔷 Indigo Blue (#6366f1)</option>
+                                    <option value="#14b8a6">🌊 Teal Aqua (#14b8a6)</option>
+                                    <option value="#ef4444">🔴 Crimson Red (#ef4444)</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label style="font-size:12px; font-weight:700; color:var(--text-main); display:block; margin-bottom:5px;">
+                                    Lokasi Acuan Titik Awal:
+                                </label>
+                                <select id="newZoneBaseLocInput" class="login-input">
+                                    <option value="kampus_utama">Sekitar Kampus Utama UINSSC</option>
+                                    <option value="gedung_cyber">Sekitar Gedung Cyber</option>
+                                    <option value="kampus_sebrang">Sekitar Kampus Sebrang</option>
+                                    <option value="pascasarjana_mahad">Sekitar Pascasarjana &amp; Mahad</option>
+                                    <option value="area_saladara">Sekitar Lab Saladara (Kampus 2)</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div style="display:flex; justify-content:flex-end; gap:10px;">
+                            <button type="button" class="btn btn-secondary" onclick="toggleAddNewZoneForm()" style="font-size:12px; padding:7px 16px;">Batal</button>
+                            <button type="submit" class="btn btn-primary" style="font-size:12px; padding:7px 20px; background:linear-gradient(135deg, #005a36, #003520); border:1px solid var(--gold); color:#fef08a; font-weight:700;">
+                                <i class="fa-solid fa-plus"></i> Simpan &amp; Gambar di Peta
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Kartu Ringkasan Seluruh Kawasan Terdaftar -->
+                <div style="margin-bottom:18px;">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                        <h4 style="margin:0; font-size:13.5px; font-weight:800; color:var(--text-main); display:flex; align-items:center; gap:6px;">
+                            <i class="fa-solid fa-map"></i> Daftar Wilayah Terdaftar (<span id="totalZonesCountBadge">0</span> Kawasan)
+                        </h4>
+                        <small style="color:var(--text-muted); font-size:11px;">Klik salah satu kartu untuk mengedit batas polygon pada peta di bawah</small>
+                    </div>
+                    <div id="geofenceZoneCardsGrid" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:12px;">
+                        <!-- Cards di-render otomatis oleh JS -->
+                    </div>
+                </div>
+
+                <!-- Tab Kawasan yang Sedang Diedit & Peta Interaktif -->
+                <div class="glass-card" style="padding:16px 20px 20px; margin-bottom:24px;">
+                    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:14px; border-bottom:1px solid var(--border-color); padding-bottom:12px;">
+                        <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+                            <span style="font-size:12px; font-weight:800; color:var(--gold); text-transform:uppercase; letter-spacing:0.5px;">
+                                <i class="fa-solid fa-crosshairs"></i> Kawasan Aktif:
+                            </span>
+                            <div style="display:flex; gap:6px; flex-wrap:wrap;" id="geofenceZoneTabs">
+                                <!-- Populated dynamically via JS -->
+                            </div>
+                        </div>
+                        <div style="display:flex; gap:8px;">
+                            <button type="button" class="btn btn-secondary" onclick="resetCurrentZoneToDefault()" style="font-size:11.5px; padding:5px 12px;" title="Kembalikan batas kawasan ini ke koordinat bawaan">
+                                <i class="fa-solid fa-rotate-left"></i> Reset Kawasan Ini
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Two Column Layout: Interactive Leaflet Map Editor & Coordinate Point List -->
+                    <div style="display:grid; grid-template-columns: 1.4fr 1fr; gap:16px; margin-bottom:18px;">
+                        <!-- Map Column -->
+                        <div>
+                            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                                <span style="font-size:12.5px; font-weight:700; color:var(--gold);">
+                                    <i class="fa-solid fa-map-location-dot"></i> Peta Editor Polygon &amp; Sudut Kawasan
+                                </span>
+                                <div style="display:flex; gap:6px;">
+                                    <button type="button" id="btnGeofenceDrawMode" class="chip-btn" onclick="toggleGeofenceDrawMode()" style="background:rgba(250,204,21,0.15); color:#facc15; border:1px solid #facc15; font-size:11px; padding:5px 12px; border-radius:14px; font-weight:700;">
+                                        <i class="fa-solid fa-pen-nib"></i> Mode Tambah Titik Baru
+                                    </button>
+                                    <button type="button" class="chip-btn" onclick="clearCurrentZonePoints()" style="background:rgba(255,255,255,0.06); color:var(--text-muted); font-size:11px; padding:5px 10px; border-radius:14px;">
+                                        <i class="fa-solid fa-eraser"></i> Kosongkan
+                                    </button>
+                                </div>
+                            </div>
+                            <div id="geofenceEditorMap" style="width:100%; height:430px; border-radius:var(--radius-md); border:1px solid var(--border-color); background:#ffffff;"></div>
+                            <small style="font-size:11.5px; color:var(--text-muted); margin-top:8px; display:block; line-height:1.4;">
+                                <i class="fa-solid fa-circle-info"></i> <b>Petunjuk:</b> Geser pin sudut bundar pada peta untuk menyesuaikan batas wilayah, atau aktifkan <b>Mode Tambah Titik Baru</b> lalu klik peta untuk menambah sudut poligon baru.
+                            </small>
+                        </div>
+
+                        <!-- Point List & Coordinate Table Column -->
+                        <div style="display:flex; flex-direction:column;">
+                            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                                <span style="font-size:12.5px; font-weight:700; color:var(--text-main);">
+                                    <i class="fa-solid fa-list-ol"></i> Daftar Titik Koordinat (<span id="geofencePointCount">0</span> Titik)
+                                </span>
+                                <span id="geofenceZoneStatusBadge" class="system-status-pill" style="font-size:11px; padding:2px 8px;">
+                                    Kawasan Siap
+                                </span>
+                            </div>
+
+                            <div style="flex:1; max-height:430px; overflow-y:auto; border:1px solid var(--border-color); border-radius:var(--radius-md); background:rgba(0,0,0,0.2);">
+                                <table style="width:100%; border-collapse:collapse; font-size:11px; font-family:monospace;">
+                                    <thead>
+                                        <tr style="background:rgba(255,255,255,0.05); color:var(--text-muted); border-bottom:1px solid var(--border-color); text-align:left;">
+                                            <th style="padding:6px 8px; width:35px; text-align:center;">#</th>
+                                            <th style="padding:6px 8px;">Latitude</th>
+                                            <th style="padding:6px 8px;">Longitude</th>
+                                            <th style="padding:6px 8px; width:45px; text-align:center;">Aksi</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="geofencePointsTableBody">
+                                        <!-- Rendered dynamically via JS -->
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div style="margin-top:10px; background:rgba(255,255,255,0.02); border:1px solid var(--border-color); border-radius:8px; padding:8px 12px; font-size:11px; color:var(--text-muted); display:flex; justify-content:space-between; align-items:center;">
+                                <span><i class="fa-solid fa-calculator"></i> Luas Area: <strong id="geofenceAreaText" style="color:var(--gold); font-family:monospace;">-</strong></span>
+                                <span id="geofenceValidityText" style="color:#10b981; font-weight:700;"><i class="fa-solid fa-circle-check"></i> Valid Polygon</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Bottom Action Bar -->
+                    <div style="display:flex; justify-content:space-between; align-items:center; border-top:1px solid var(--border-color); padding-top:14px; flex-wrap:wrap; gap:10px;">
+                        <span style="font-size:12px; color:var(--text-muted);">
+                            <i class="fa-solid fa-shield-halved" style="color:var(--gold); margin-right:4px;"></i>
+                            Perubahan batas wilayah akan otomatis tersinkronisasi ke seluruh sistem (Pelaporan civitas, Radar GIS &amp; Penugasan Staf).
+                        </span>
+                        <div style="display:flex; gap:10px;">
+                            <button type="button" class="btn btn-primary" onclick="saveAllGeofenceChanges()" style="font-size:12px; padding:9px 24px; background:linear-gradient(135deg, #005a36, #003520); border:1px solid var(--gold); color:#fef08a; font-weight:800;">
+                                <i class="fa-solid fa-floppy-disk"></i> Simpan Perubahan Geofencing ke Sistem
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </main>
     </div>
 
@@ -1128,103 +1362,6 @@
 
 
     <!-- Geofencing Boundary Editor Modal (Super Admin Exclusive Authority) -->
-    <div id="geofenceModal" class="modal-overlay hidden" onclick="closeGeofenceModalOnBackdrop(event)">
-        <div class="modal-content" style="max-width: 960px; text-align: left;">
-            <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--border-color); padding-bottom:16px; margin-bottom:18px;">
-                <div>
-                    <h3 style="font-size:18px; font-weight:800; display:flex; align-items:center; gap:8px; margin:0;">
-                        <i class="fa-solid fa-draw-polygon" style="color:#facc15;"></i> Pengaturan Batas Wilayah Geofencing Kampus
-                    </h3>
-                    <p style="font-size:12px; color:var(--text-muted); margin:4px 0 0 0;">
-                        Wewenang Eksklusif Super Admin: Menyesuaikan batas koordinat polygon GPS 5 kawasan kampus untuk validasi lokasi kerusakan fasilitas.
-                    </p>
-                </div>
-                <button class="btn-act" onclick="closeGeofenceModal()"><i class="fa-solid fa-xmark"></i></button>
-            </div>
-
-            <!-- Kawasan Selector Tab -->
-            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:14px;">
-                <div style="display:flex; gap:8px; flex-wrap:wrap;" id="geofenceZoneTabs">
-                    <!-- Populated dynamically via JS: 5 Kawasan buttons -->
-                </div>
-                <div style="display:flex; gap:8px;">
-                    <button type="button" class="btn btn-secondary" onclick="resetCurrentZoneToDefault()" style="font-size:12px; padding:6px 12px;" title="Kembalikan batas kawasan ini ke koordinat bawaan">
-                        <i class="fa-solid fa-rotate-left"></i> Reset Kawasan Ini
-                    </button>
-                    <button type="button" class="btn btn-secondary" onclick="resetAllZonesToDefault()" style="font-size:12px; padding:6px 12px; color:#ef4444; border-color:rgba(239,68,68,0.3);" title="Kembalikan semua kawasan ke koordinat default">
-                        <i class="fa-solid fa-arrow-rotate-left"></i> Reset Semua Kawasan
-                    </button>
-                </div>
-            </div>
-
-            <!-- Two Column Layout: Interactive Leaflet Map Editor & Coordinate Point List -->
-            <div style="display:grid; grid-template-columns: 1.35fr 1fr; gap:16px; margin-bottom:16px;">
-                <!-- Map Column -->
-                <div>
-                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-                        <span style="font-size:12px; font-weight:700; color:var(--gold);">
-                            <i class="fa-solid fa-map-location-dot"></i> Peta Editor Polygon & Sudut Kawasan
-                        </span>
-                        <div style="display:flex; gap:6px;">
-                            <button type="button" id="btnGeofenceDrawMode" class="chip-btn" onclick="toggleGeofenceDrawMode()" style="background:rgba(250,204,21,0.15); color:#facc15; border:1px solid #facc15; font-size:11px; padding:4px 10px; border-radius:14px; font-weight:700;">
-                                <i class="fa-solid fa-pen-nib"></i> Mode Tambah Titik Baru
-                            </button>
-                            <button type="button" class="chip-btn" onclick="clearCurrentZonePoints()" style="background:rgba(255,255,255,0.06); color:var(--text-muted); font-size:11px; padding:4px 10px; border-radius:14px;">
-                                <i class="fa-solid fa-eraser"></i> Kosongkan
-                            </button>
-                        </div>
-                    </div>
-                    <div id="geofenceEditorMap" style="width:100%; height:340px; border-radius:var(--radius-md); border:1px solid var(--border-color); background:#ffffff;"></div>
-                    <small style="font-size:11px; color:var(--text-muted); margin-top:6px; display:block; line-height:1.4;">
-                        <i class="fa-solid fa-circle-info"></i> Geser pin sudut bundar untuk menyesuaikan batas wilayah, atau aktifkan <b>Mode Tambah Titik Baru</b> lalu klik peta untuk menambah sudut poligon.
-                    </small>
-                </div>
-
-                <!-- Point List & Coordinate Table Column -->
-                <div style="display:flex; flex-direction:column;">
-                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-                        <span style="font-size:12px; font-weight:700; color:var(--text-main);">
-                            <i class="fa-solid fa-list-ol"></i> Titik Sudut (<span id="geofencePointCount">0</span> Sudut)
-                        </span>
-                        <span id="geofenceActiveZoneBadge" style="font-size:11px; font-weight:700; color:#2dd4bf; background:rgba(45,212,191,0.1); padding:2px 8px; border-radius:10px;">
-                            Kawasan Kampus Utama
-                        </span>
-                    </div>
-
-                    <!-- Points Scrollable List -->
-                    <div id="geofencePointsList" style="max-height:220px; overflow-y:auto; border:1px solid var(--border-color); border-radius:8px; background:rgba(0,0,0,0.2); padding:6px; margin-bottom:10px;">
-                        <!-- Filled dynamically -->
-                    </div>
-
-                    <!-- Add Single Point Manually -->
-                    <div style="background:rgba(255,255,255,0.03); border:1px solid var(--border-color); border-radius:8px; padding:8px 10px; margin-top:auto;">
-                        <div style="font-size:11px; font-weight:700; color:var(--text-muted); margin-bottom:6px;">Tambah Titik Sudut Manual:</div>
-                        <div style="display:grid; grid-template-columns: 1fr 1fr auto; gap:6px;">
-                            <input type="number" step="0.000001" id="manualLatInput" placeholder="Latitude (cth: -6.735...)" style="font-size:11px; padding:6px 8px;">
-                            <input type="number" step="0.000001" id="manualLngInput" placeholder="Longitude (cth: 108.53...)" style="font-size:11px; padding:6px 8px;">
-                            <button type="button" class="btn btn-secondary" onclick="addManualGeofencePoint()" style="font-size:11px; padding:6px 10px;">
-                                <i class="fa-solid fa-plus"></i> Tambah
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Footer Action Buttons -->
-            <div style="display:flex; justify-content:space-between; align-items:center; border-top:1px dashed var(--border-color); padding-top:14px; flex-wrap:wrap; gap:10px;">
-                <span style="font-size:11px; color:var(--text-muted);">
-                    <i class="fa-solid fa-shield-halved" style="color:#facc15;"></i> Perubahan geofencing otomatis tersimpan dan aktif di portal pelapor user serta GIS overview admin.
-                </span>
-                <div style="display:flex; gap:10px;">
-                    <button type="button" class="btn btn-secondary" onclick="closeGeofenceModal()">Tutup</button>
-                    <button type="button" class="btn btn-primary" onclick="saveAllGeofenceChanges()" style="background:#005a36; border-color:#c59235; font-weight:700;">
-                        <i class="fa-solid fa-floppy-disk"></i> Simpan Batas Geofencing
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <!-- Portal Content & Media Management Modal (Super Admin Exclusive Authority) -->
     <div id="portalContentModal" class="modal-overlay hidden" onclick="closePortalContentModalOnBackdrop(event)">
         <div class="modal-content" style="max-width: 900px; text-align: left; max-height: 90vh; display: flex; flex-direction: column;">
@@ -1497,9 +1634,139 @@
         </div>
     </div>
 
+    <!-- Modal Penugasan Wilayah Operasional (Khusus Wewenang Super Admin - Multi-Wilayah) -->
+    <div id="assignWilayahModal" class="modal-overlay hidden" onclick="closeAssignWilayahModalOnBackdrop(event)">
+        <div class="modal-content" style="max-width: 580px; text-align: left;">
+            <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--border-color); padding-bottom:14px; margin-bottom:16px;">
+                <div>
+                    <h3 style="font-size:18px; font-weight:800; display:flex; align-items:center; gap:8px; margin:0; color:#facc15;">
+                        <i class="fa-solid fa-map-location-dot"></i> Penugasan Wilayah Operasional
+                    </h3>
+                    <p style="font-size:12px; color:var(--text-muted); margin:4px 0 0 0;">
+                        Wewenang Super Admin: Petakan wilayah tanggung jawab Admin Sarpras &amp; Petugas Lapangan (Dapat lebih dari satu wilayah).
+                    </p>
+                </div>
+                <button class="btn-act" onclick="closeAssignWilayahModal()" title="Tutup Modal"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+
+            <!-- Kartu Info Personil Target -->
+            <div style="background:rgba(255,255,255,0.03); border:1px solid var(--border-color); border-radius:12px; padding:14px 16px; margin-bottom:16px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px;">
+                <div>
+                    <div id="assignStaffRoleBadge" style="margin-bottom:4px;"></div>
+                    <h4 id="assignStaffName" style="margin:0; font-size:15px; font-weight:800; color:var(--text-main);">Nama Personil</h4>
+                    <div id="assignStaffMeta" style="font-size:12px; color:var(--text-muted); margin-top:2px;">ID: ADM-01 &bull; Bidang: Sarpras Kampus Utama</div>
+                </div>
+                <input type="hidden" id="assignStaffIdHidden" value="">
+            </div>
+
+            <!-- Opsi Wilayah Multi-Select (5 Kawasan Kampus) -->
+            <div style="margin-bottom:16px;">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                    <label style="font-size:13px; font-weight:700; color:var(--text-main); margin:0;">
+                        Pilih Kawasan Tugas (Centang satu atau lebih) <span style="color:#ef4444;">*</span>:
+                    </label>
+                    <div style="font-size:11px;">
+                        <a href="javascript:void(0)" onclick="modalSetAllZones(true)" style="color:var(--gold); text-decoration:none; margin-right:10px; font-weight:600;"><i class="fa-solid fa-check-double"></i> Pilih Semua (5/5)</a>
+                        <a href="javascript:void(0)" onclick="modalSetAllZones(false)" style="color:var(--text-muted); text-decoration:none;"><i class="fa-solid fa-xmark"></i> Kosongkan</a>
+                    </div>
+                </div>
+
+                <div id="modalWilayahCheckboxesList" style="display:flex; flex-direction:column; gap:9px;">
+                    <!-- 5 Zona Checkboxes diisi oleh JS -->
+                </div>
+            </div>
+
+            <!-- Status Ringkasan Terpilih -->
+            <div style="background:rgba(250,204,21,0.06); border:1px dashed rgba(250,204,21,0.3); border-radius:10px; padding:10px 14px; margin-bottom:18px; display:flex; justify-content:space-between; align-items:center;">
+                <span style="font-size:12px; color:var(--text-muted);"><i class="fa-solid fa-layer-group" style="color:var(--gold); margin-right:5px;"></i> Total Cakupan Wilayah:</span>
+                <strong id="modalSelectedCountText" style="font-size:12.5px; color:#facc15;">0 Kawasan Terpilih</strong>
+            </div>
+
+            <div style="display:flex; justify-content:flex-end; gap:10px; border-top:1px solid var(--border-color); padding-top:14px;">
+                <button type="button" class="btn btn-secondary" onclick="closeAssignWilayahModal()" style="font-size:12px; padding:8px 16px;">Batal</button>
+                <button type="button" class="btn btn-primary" onclick="saveStaffWilayahAssignment()" style="font-size:12px; padding:8px 20px; background:linear-gradient(135deg, #005a36, #003520); border:1px solid var(--gold); color:#fef08a; font-weight:700;">
+                    <i class="fa-solid fa-floppy-disk"></i> Simpan Penugasan Wilayah
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Cetak Rekapitulasi Laporan Sarpras Resmi -->
+    <div id="printRekapModal" class="modal-backdrop hidden">
+        <div class="modal-card" style="max-width: 650px;">
+            <div class="modal-header">
+                <div>
+                    <h3 style="display:flex; align-items:center; gap:8px; margin:0; font-size:17px; font-weight:800; color:var(--text-main);">
+                        <i class="fa-solid fa-print" style="color:var(--gold);"></i> Cetak Laporan Rekapitulasi Resmi Sarpras
+                    </h3>
+                    <p style="font-size:12px; color:var(--text-muted); margin:4px 0 0 0;">
+                        Generate lembar rekapitulasi penanganan sarana prasarana kampus ber-kop surat resmi UINSSC siap cetak/simpan PDF.
+                    </p>
+                </div>
+                <button class="btn-act" onclick="closePrintRekapModal()" title="Tutup Modal"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+
+            <div style="margin-top:16px; display:flex; flex-direction:column; gap:14px;">
+                <div class="filter-group">
+                    <label style="font-size:12.5px; font-weight:700; color:var(--text-main);">Pilih Periode Laporan:</label>
+                    <select id="rekapFilterPeriod" class="form-control" style="background:var(--bg-main); border:1px solid var(--border-color); color:var(--text-main); padding:8px 12px; border-radius:8px;">
+                        <option value="ALL">Semua Periode (Rekap Lengkap)</option>
+                        <option value="JULI_2026">Juli 2026</option>
+                        <option value="AGUSTUS_2026">Agustus 2026</option>
+                        <option value="SEMESTER_GANJIL_2026">Semester Ganjil 2026/2027</option>
+                    </select>
+                </div>
+
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+                    <div class="filter-group">
+                        <label style="font-size:12.5px; font-weight:700; color:var(--text-main);">Filter Status:</label>
+                        <select id="rekapFilterStatus" class="form-control" style="background:var(--bg-main); border:1px solid var(--border-color); color:var(--text-main); padding:8px 12px; border-radius:8px;">
+                            <option value="ALL">Semua Status (Diajukan, Proses, Selesai)</option>
+                            <option value="Selesai">Hanya Yang Telah Selesai</option>
+                            <option value="Diproses">Sedang Diproses Teknisi</option>
+                            <option value="Diajukan">Menunggu Penanganan (Diajukan)</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label style="font-size:12.5px; font-weight:700; color:var(--text-main);">Filter Kawasan:</label>
+                        <select id="rekapFilterKawasan" class="form-control" style="background:var(--bg-main); border:1px solid var(--border-color); color:var(--text-main); padding:8px 12px; border-radius:8px;">
+                            <option value="ALL">Seluruh Kawasan Kampus</option>
+                            <option value="kampus_utama">Kawasan Kampus Utama</option>
+                            <option value="gedung_cyber">Kawasan Gedung Cyber</option>
+                            <option value="gedung_seberang">Kawasan Kampus Sebrang</option>
+                            <option value="pascasarjana_mahad">Pascasarjana & Mahad</option>
+                            <option value="area_saladara">Kawasan Lab Saladara</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div style="background:rgba(0,90,54,0.1); border:1px solid rgba(0,90,54,0.3); border-radius:10px; padding:12px; font-size:12px; color:var(--text-muted); line-height:1.5;">
+                    <strong style="color:var(--text-main);"><i class="fa-solid fa-circle-info" style="color:var(--gold);"></i> Informasi Format Dokumen:</strong><br>
+                    Lembar rekapitulasi akan memuat Kop Resmi Universitas Islam Negeri Siber Syekh Nurjati Cirebon, ringkasan indikator KPI perbaikan, tabel rincian insiden, serta kolom pengesahan Kepala Bagian Umum &amp; Sarpras.
+                </div>
+            </div>
+
+            <div style="display:flex; justify-content:flex-end; gap:10px; border-top:1px solid var(--border-color); padding-top:14px; margin-top:18px;">
+                <button type="button" class="btn btn-secondary" onclick="closePrintRekapModal()" style="font-size:12px; padding:8px 16px;">Batal</button>
+                <button type="button" class="btn btn-primary" onclick="generateAndPrintOfficialRekap()" style="font-size:12px; padding:8px 20px; background:linear-gradient(135deg, #005a36, #003520); border:1px solid var(--gold); color:#fef08a; font-weight:700;">
+                    <i class="fa-solid fa-print"></i> Buka Lembar Cetak / PDF
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- Toast Notifications -->
     <div id="toastBox" class="toast-box"></div>
 
     <script src="../js/admin.js"></script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('../sw.js')
+                    .then(reg => console.log('SIMPEL Admin PWA Registered', reg.scope))
+                    .catch(err => console.debug('SIMPEL PWA Registration Notice:', err));
+            });
+        }
+    </script>
 </body>
 </html>
