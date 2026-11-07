@@ -14,7 +14,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="css/user.css?v=20261021_mobile2">
+    <link rel="stylesheet" href="css/user.css?v=20261107_ui3">
     <!-- SweetAlert2 Latest CDN -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <!-- DOMPurify Security Sanitizer -->
@@ -27,7 +27,7 @@
         }
         .captcha-box-wrapper {
             display: grid;
-            grid-template-columns: 140px 42px 1fr;
+            grid-template-columns: 140px 44px 1fr;
             gap: 8px;
             align-items: center;
             width: 100%;
@@ -51,6 +51,20 @@
         <div class="login-bg-tint"></div>
     </div>
 
+    <!-- Top Institutional Utility Bar -->
+    <div class="top-util-bar">
+        <div class="container top-util-container">
+            <div class="top-util-contacts">
+                <span><i class="fa-solid fa-envelope" style="color:#fde047;"></i> sarpras@uinssc.ac.id</span>
+                <span><i class="fa-solid fa-phone" style="color:#fde047;"></i> (0231) 481-264</span>
+                <span><i class="fa-solid fa-clock" style="color:#fde047;"></i> Senin - Jumat (07.30 - 16.00 WIB)</span>
+            </div>
+            <div class="top-util-badge">
+                <i class="fa-solid fa-building-columns"></i> Portal Terpadu Sarpras UINSSC
+            </div>
+        </div>
+    </div>
+
     <!-- Header Navigation -->
     <header class="navbar">
         <div class="container navbar-content">
@@ -60,13 +74,19 @@
                 </div>
                 <div class="brand-text">
                     <span class="brand-title">SIMPEL UINSSC</span>
-                    <span class="brand-subtitle">Pelaporan Fasilitas Kampus UINSSC</span>
+                    <span class="brand-subtitle">Sistem Informasi Pelaporan Fasilitas Kampus</span>
                 </div>
             </a>
 
             <div class="nav-links">
-                <button class="nav-link-btn" onclick="toggleTheme()" title="Ubah Tema Dark/Light">
-                    <i class="fa-solid fa-moon" id="themeIcon"></i>
+                <span class="system-status-pill">
+                    <span class="status-pulse-dot"></span> Layanan Online
+                </span>
+                <button type="button" class="nav-link-btn" onclick="openHelpModal()" title="Panduan Peran & Akses">
+                    <i class="fa-solid fa-circle-info" style="color:var(--gold);"></i> <span class="nav-btn-label">Panduan</span>
+                </button>
+                <button type="button" class="nav-link-btn" onclick="toggleTheme()" title="Ubah Tema Dark/Light">
+                    <i class="fa-solid fa-moon" id="themeIcon"></i> <span class="nav-btn-label">Tema</span>
                 </button>
             </div>
         </div>
@@ -269,7 +289,7 @@
                             </div>
 
                             <!-- Secret Super Admin Preset Card (Hidden by default, revealed via Secret Trigger) -->
-                            <div class="login-preset-card" id="presetSuperAdminCard" onclick="quickFillAccount('superadmin')" title="Super Admin (Rahasia): Yang mengatur siapa admin, petugas, dan mitra" style="display:none; grid-column:span 3; border-color:#facc15; background:rgba(250,204,21,0.08); animation: fadeIn 0.4s ease;">
+                            <div class="login-preset-card" id="presetSuperAdminCard" onclick="quickFillAccount('superadmin')" title="Super Admin (Rahasia): Yang mengatur siapa admin, petugas, dan mitra" style="display:none; grid-column: 1 / -1; border-color:#facc15; background:rgba(250,204,21,0.08); animation: fadeIn 0.4s ease;">
                                 <div class="preset-avatar preset-superadmin">
                                     <i class="fa-solid fa-user-shield"></i>
                                 </div>
@@ -351,9 +371,9 @@
     </div>
 
     <!-- Footer -->
-    <footer style="border-top: 1px solid var(--border-color); padding: 22px 0; text-align: center; font-size: 13px; color: var(--text-muted); margin-top: auto; background: rgba(0,0,0,0.2); backdrop-filter: blur(8px);">
+    <footer class="app-footer">
         <div class="container">
-            &copy; 2026 <strong>UIN Siber Syekh Nurjati Cirebon (UINSSC)</strong>. Bagian Pengelolaan Sarana & Prasarana Kampus.
+            &copy; 2026 <strong>UIN Siber Syekh Nurjati Cirebon (UINSSC)</strong> &bull; Bagian Pengelolaan Sarana &amp; Prasarana Kampus.
         </div>
     </footer>
 
