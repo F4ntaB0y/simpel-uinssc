@@ -16,8 +16,8 @@
     <!-- Leaflet.js Interactive Map CSS & JS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <link rel="stylesheet" href="../css/user.css?v=20261107_ui3">
-    <link rel="stylesheet" href="../css/admin.css?v=20261107_ui3">
+    <link rel="stylesheet" href="../css/user.css?v=20261107_ui4">
+    <link rel="stylesheet" href="../css/admin.css?v=20261107_ui4">
     <!-- SweetAlert2 Latest CDN -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <!-- Chart.js Modern Data Analytics -->
@@ -100,8 +100,8 @@
                     </a>
                 </li>
                 <li id="sidebarCmsItem" class="hidden">
-                    <a href="javascript:void(0)" onclick="openPortalContentModal(); closeAdminSidebar();" id="sidebarCmsLink" title="Kelola Konten, Banner & Video Portal (Wewenang Super Admin)">
-                        <i class="fa-solid fa-photo-film" style="color:#38bdf8;"></i> <span>Konten & Media</span>
+                    <a href="javascript:void(0)" onclick="switchAdminView('pagebuilder'); closeAdminSidebar();" id="sidebarCmsLink" title="Kelola Tata Letak, Edit, Hapus & Tambah Konten Setiap Halaman (Wewenang Super Admin)">
+                        <i class="fa-solid fa-wand-magic-sparkles" style="color:#38bdf8;"></i> <span>Tata Letak &amp; Halaman</span>
                     </a>
                 </li>
                 <li id="sidebarAuditItem" class="hidden">
@@ -185,16 +185,19 @@
                     </div>
                     <div>
                         <strong style="color:#facc15; font-size:14px;">Mode Super Admin (Hak Otoritas Tertinggi):</strong>
-                        <div style="font-size:12px; color:var(--text-muted); margin-top:2px;">Wewenang Eksklusif: Atur Admin & Petugas, Batas Geofencing, serta Konten & Media dapat diakses melalui menu sidebar di sebelah kiri.</div>
+                        <div style="font-size:12px; color:var(--text-muted); margin-top:2px;">Wewenang Eksklusif: Ubah Tata Letak, Edit, Hapus &amp; Tambah komponen di setiap halaman (Login, User, Admin), serta kelola Admin, Petugas &amp; Geofencing.</div>
                     </div>
                 </div>
+                <button type="button" class="btn btn-secondary" onclick="switchAdminView('pagebuilder')" style="min-height:36px; padding:6px 14px; font-size:12px; border-color:rgba(250,204,21,0.45); color:#facc15; background:rgba(250,204,21,0.1); flex-shrink:0;">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i> Studio Tata Letak &amp; Halaman
+                </button>
             </div>
 
 
             <!-- ================= VIEW 1: DASHBOARD UTAMA OPERASIONAL ================= -->
             <div id="viewMainDashboard" class="admin-view-section">
                 <!-- KPI Metric Cards -->
-                <div class="admin-kpi-grid">
+                <div id="adminKpiSection" class="admin-kpi-grid">
                     <div class="kpi-box">
                         <div class="kpi-box-icon icon-blue"><i class="fa-solid fa-folder-open"></i></div>
                         <div class="kpi-box-info">
@@ -228,24 +231,42 @@
                     </div>
                 </div>
 
-                <!-- Visual Analytics Multi-Chart Section (Chart.js Modern Executive Suite) -->
-                <div class="glass-card" style="padding: 22px; margin-bottom: 24px;">
-                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:18px; flex-wrap:wrap; gap:12px; border-bottom:1px solid var(--border-color); padding-bottom:14px;">
+                <!-- Visual Analytics Multi-Chart Section (Admin & Super Admin Interactive Chart Selector) -->
+                <div id="adminChartsSection" class="glass-card" style="padding: 22px; margin-bottom: 24px;">
+                    <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:18px; flex-wrap:wrap; gap:14px; border-bottom:1px solid var(--border-color); padding-bottom:14px;">
                         <div>
-                            <h3 style="font-size:17px; font-weight:800; display:flex; align-items:center; gap:8px; margin:0;">
-                                <i class="fa-solid fa-chart-pie" style="color:var(--gold);"></i> Pusat Analitik Visual Sarpras Kampus (Chart.js Multi-Chart)
+                            <h3 id="adminChartsSectionTitle" style="font-size:17px; font-weight:800; display:flex; align-items:center; gap:8px; margin:0;">
+                                <i class="fa-solid fa-chart-pie" style="color:var(--gold);"></i> Pusat Analitik Visual &amp; Pemilih Grafik Data
                             </h3>
-                            <p style="font-size:12.5px; color:var(--text-muted); margin:4px 0 0 0;">Monitoring komprehensif tren tiket, proporsi kategori sarpras, sebaran kawasan, dan matriks urgensi SLA.</p>
+                            <p id="adminChartsSectionDesc" style="font-size:12.5px; color:var(--text-muted); margin:4px 0 0 0;">Admin &amp; Super Admin bebas memilih kombinasi sumber data dan jenis visualisasi grafik pada setiap kartu analitik.</p>
                         </div>
-                        <div style="display:flex; gap:8px; align-items:center;">
-                            <span class="system-status-pill" style="font-size:11.5px; padding:4px 10px;">
-                                <span class="status-pulse-dot"></span> Real-time Multi-Chart
-                            </span>
+
+                        <div class="chart-controls-toolbar">
+                            <select id="chartScopeFilter" class="chart-mini-select" onchange="handleChartScopeOrLayoutChange()" title="Pilih cakupan data laporan yang divisualisasikan">
+                                <option value="ALL">Data: Semua Laporan</option>
+                                <option value="FILTERED">Data: Ikuti Filter Tabel</option>
+                                <option value="ACTIVE">Data: Hanya Tiket Aktif</option>
+                                <option value="SELESAI">Data: Hanya Tiket Selesai</option>
+                            </select>
+
+                            <select id="chartGridColsSelect" class="chart-mini-select" onchange="handleChartScopeOrLayoutChange()" title="Pilih tata letak kolom grafik">
+                                <option value="2col">Tampilan: 2 Kolom</option>
+                                <option value="1col">Tampilan: 1 Kolom Lebar</option>
+                                <option value="3col">Tampilan: 3 Kolom</option>
+                            </select>
+
+                            <button type="button" class="btn btn-primary" onclick="addNewAdminChartPanel()" style="min-height:32px; padding:5px 12px; font-size:12px;" title="Tambah kartu grafik data baru">
+                                <i class="fa-solid fa-plus"></i> Tambah Grafik
+                            </button>
+
+                            <button type="button" class="btn btn-secondary" onclick="resetAdminChartPanels()" style="min-height:32px; padding:5px 11px; font-size:12px;" title="Kembalikan ke 4 grafik bawaan">
+                                <i class="fa-solid fa-rotate-left"></i> Reset
+                            </button>
                         </div>
                     </div>
 
-                    <div class="analytics-charts-grid">
-                        <!-- Chart 1: Status Laporan -->
+                    <div id="analyticsChartsGrid" class="analytics-charts-grid">
+                        <!-- Chart 1 Fallback -->
                         <div class="chart-card">
                             <div class="chart-card-header">
                                 <div>
@@ -259,7 +280,7 @@
                             </div>
                         </div>
 
-                        <!-- Chart 2: Proporsi Kategori Fasilitas -->
+                        <!-- Chart 2 Fallback -->
                         <div class="chart-card">
                             <div class="chart-card-header">
                                 <div>
@@ -273,7 +294,7 @@
                             </div>
                         </div>
 
-                        <!-- Chart 3: Sebaran Insiden 5 Kawasan -->
+                        <!-- Chart 3 Fallback -->
                         <div class="chart-card">
                             <div class="chart-card-header">
                                 <div>
@@ -287,7 +308,7 @@
                             </div>
                         </div>
 
-                        <!-- Chart 4: Tingkat Urgensi & SLA -->
+                        <!-- Chart 4 Fallback -->
                         <div class="chart-card">
                             <div class="chart-card-header">
                                 <div>
@@ -304,7 +325,7 @@
                 </div>
 
                 <!-- GIS Overview Damage Map Card (Enlarged & Spacious) -->
-                <div class="glass-card" style="padding: 24px; margin-bottom: 24px;">
+                <div id="adminMapSection" class="glass-card" style="padding: 24px; margin-bottom: 24px;">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 12px;">
                         <div>
                             <h3 style="font-size: 16px; font-weight: 800; display: flex; align-items: center; gap: 8px; margin: 0;">
@@ -356,7 +377,7 @@
                 </div>
 
                 <!-- Table Filter & Data Card -->
-                <div class="table-card">
+                <div id="adminTableSection" class="table-card">
                     <div class="table-toolbar">
                         <div class="filter-group">
                             <label><i class="fa-solid fa-filter" style="color:var(--gold);"></i> Status:</label>
@@ -1267,6 +1288,61 @@
                 </div>
             </div>
 
+            <!-- ================= VIEW 9: STUDIO TATA LETAK & EDITOR SEMUA HALAMAN (KHUSUS SUPER ADMIN) ================= -->
+            <div id="viewPageBuilder" class="admin-view-section hidden">
+                <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:18px; background:rgba(250,204,21,0.06); border:1px solid rgba(250,204,21,0.35); padding:18px 22px; border-radius:16px;">
+                    <div>
+                        <div style="display:flex; align-items:center; gap:8px; margin-bottom:4px;">
+                            <span class="superadmin-badge-pill"><i class="fa-solid fa-crown"></i> Wewenang Eksklusif Super Admin</span>
+                        </div>
+                        <h2 style="font-size:19px; font-weight:800; margin:0; display:flex; align-items:center; gap:8px; color:var(--text-main);">
+                            <i class="fa-solid fa-wand-magic-sparkles" style="color:#facc15;"></i> Studio Tata Letak &amp; Manajemen Konten Seluruh Halaman
+                        </h2>
+                        <p style="font-size:12.5px; color:var(--text-muted); margin:4px 0 0 0;">
+                            Ubah tata letak kolom, urutkan posisi seksi (<kbd>↑</kbd>/<kbd>↓</kbd>), edit teks/media, sembunyikan/hapus komponen, atau tambah seksi &amp; fitur baru di Halaman Login, Portal Pelapor, dan Dashboard Admin.
+                        </p>
+                    </div>
+                    <div style="display:flex; gap:8px; flex-wrap:wrap;">
+                        <a id="builderPreviewPageLink" href="../index.html" target="_blank" class="btn btn-secondary" style="font-size:12px;">
+                            <i class="fa-solid fa-arrow-up-right-from-square" style="color:#38bdf8;"></i> Buka Halaman Live
+                        </a>
+                        <button type="button" class="btn btn-secondary" onclick="resetCurrentBuilderPageToDefault()" style="font-size:12px; color:#ef4444; border-color:rgba(239,68,68,0.35);">
+                            <i class="fa-solid fa-rotate-left"></i> Reset Halaman Ini
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Pemilih 3 Halaman Sistem -->
+                <div class="builder-page-tabs">
+                    <button type="button" class="builder-page-tab active" id="builderTabLogin" onclick="switchBuilderTargetPage('login')">
+                        <div class="kpi-box-icon icon-emerald" style="width:42px; height:42px; font-size:17px;"><i class="fa-solid fa-right-to-bracket"></i></div>
+                        <div>
+                            <div style="font-size:14px; font-weight:800; color:var(--text-main);">1. Halaman Gerbang Login</div>
+                            <div style="font-size:11.5px; color:var(--text-muted);">index.html &bull; Layout Kolom, Fitur, Video &amp; Blok</div>
+                        </div>
+                    </button>
+
+                    <button type="button" class="builder-page-tab" id="builderTabUser" onclick="switchBuilderTargetPage('user')">
+                        <div class="kpi-box-icon icon-amber" style="width:42px; height:42px; font-size:17px;"><i class="fa-solid fa-user-graduate"></i></div>
+                        <div>
+                            <div style="font-size:14px; font-weight:800; color:var(--text-main);">2. Halaman Portal Pelapor (User)</div>
+                            <div style="font-size:11.5px; color:var(--text-muted);">pages/user.html &bull; Banner, Tab, Form &amp; Seksi</div>
+                        </div>
+                    </button>
+
+                    <button type="button" class="builder-page-tab" id="builderTabAdmin" onclick="switchBuilderTargetPage('admin')">
+                        <div class="kpi-box-icon icon-cyan" style="width:42px; height:42px; font-size:17px;"><i class="fa-solid fa-gauge-high"></i></div>
+                        <div>
+                            <div style="font-size:14px; font-weight:800; color:var(--text-main);">3. Halaman Dashboard Admin</div>
+                            <div style="font-size:11.5px; color:var(--text-muted);">pages/admin.html &bull; Sidebar, KPI, Grafik, Peta &amp; Widget</div>
+                        </div>
+                    </button>
+                </div>
+
+                <!-- Kontainer Workspace Studio Builder (Dirender Dinamis oleh JS) -->
+                <div id="pageBuilderWorkspace"></div>
+            </div>
+
         </main>
     </div>
 
@@ -1758,9 +1834,40 @@
         </div>
     </div>
 
+    <!-- Modal Editor Universal Komponen / Seksi / Fitur Halaman (Super Admin Builder) -->
+    <div id="builderEditorModal" class="modal-overlay hidden" onclick="if(event.target===this) closeBuilderEditorModal()">
+        <div class="modal-content" style="max-width: 640px; text-align: left;">
+            <div class="modal-header">
+                <div>
+                    <h3 id="builderEditorModalTitle" style="margin:0; font-size:18px; font-weight:800; display:flex; align-items:center; gap:8px;">
+                        <i class="fa-solid fa-pen-to-square" style="color:var(--gold);"></i> Edit Komponen Halaman
+                    </h3>
+                    <p id="builderEditorModalSubtitle" style="font-size:12px; color:var(--text-muted); margin:4px 0 0 0;">
+                        Perubahan akan langsung tersimpan dan aktif secara real-time pada halaman terkait.
+                    </p>
+                </div>
+                <button type="button" class="btn-act" onclick="closeBuilderEditorModal()"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+
+            <form id="builderEditorForm" onsubmit="submitBuilderEditorForm(event)">
+                <div id="builderEditorFieldsContainer" style="display:flex; flex-direction:column; gap:14px; max-height:62vh; overflow-y:auto; padding-right:6px;">
+                    <!-- Injected dynamically by Page Builder JS -->
+                </div>
+
+                <div style="display:flex; justify-content:flex-end; gap:10px; border-top:1px solid var(--border-color); padding-top:16px; margin-top:20px;">
+                    <button type="button" class="btn btn-secondary" onclick="closeBuilderEditorModal()">Batal</button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fa-solid fa-floppy-disk"></i> Simpan Perubahan
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <!-- Toast Notifications -->
     <div id="toastBox" class="toast-box"></div>
 
+    <script src="../js/site-builder.js?v=20261107_ui4"></script>
     <script src="../js/admin.js"></script>
     <script>
         if ('serviceWorker' in navigator) {

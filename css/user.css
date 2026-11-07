@@ -2157,3 +2157,106 @@ textarea.login-input {
     box-shadow: none !important;
     pointer-events: none !important;
 }
+
+/* ==========================================================================
+   DYNAMIC SITE BUILDER LAYOUT VARIANTS & FLOATING SUPER ADMIN DOCK
+   ========================================================================== */
+.container.container-wide {
+    max-width: 1460px !important;
+}
+
+/* Login Page Layout: Split-Left (Login Card on Left, Hero Info on Right) */
+@media (min-width: 961px) {
+    .login-portal-grid.layout-split-left {
+        grid-template-columns: 460px minmax(0, 1.15fr) !important;
+    }
+    .login-portal-grid.layout-split-left .login-glass-card-wrapper {
+        order: -1;
+    }
+    .login-portal-grid.layout-split-left .login-hero-side {
+        order: 2;
+    }
+}
+
+/* Login Page Layout: Centered Stack (Single Column Centered) */
+.login-portal-grid.layout-centered {
+    grid-template-columns: minmax(0, 720px) !important;
+    justify-content: center;
+    gap: 28px !important;
+}
+.login-portal-grid.layout-centered .login-glass-card-wrapper {
+    order: -1;
+    position: static !important;
+    max-width: 520px;
+    width: 100%;
+    margin: 0 auto;
+}
+.login-portal-grid.layout-centered .login-hero-side {
+    order: 2;
+}
+
+/* Floating Super Admin Quick Dock on Login & User Pages */
+.sa-floating-dock {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    z-index: 9990;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    border-radius: 9999px;
+    background: rgba(6, 22, 16, 0.92);
+    border: 1.5px solid #facc15;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45), 0 0 18px rgba(250, 204, 21, 0.25);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    flex-wrap: wrap;
+}
+
+.sa-dock-badge {
+    font-size: 11px;
+    font-weight: 800;
+    color: #facc15;
+    background: rgba(250, 204, 21, 0.14);
+    border: 1px solid rgba(250, 204, 21, 0.35);
+    padding: 4px 10px;
+    border-radius: 9999px;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.sa-dock-btn {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    color: #f8fafc;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 6px 12px;
+    border-radius: 9999px;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s ease;
+    font-family: inherit;
+}
+
+.sa-dock-btn:hover {
+    border-color: #facc15;
+    color: #facc15;
+    background: rgba(250, 204, 21, 0.12);
+}
+
+.sa-dock-btn-primary {
+    background: linear-gradient(135deg, #005a36, #003b23);
+    border-color: #d4a343;
+    color: #fef08a;
+}
+
+.sa-dock-btn-primary:hover {
+    background: linear-gradient(135deg, #007245, #004d2e);
+    color: #ffffff;
+}

@@ -484,6 +484,16 @@ document.addEventListener('DOMContentLoaded', () => {
     renderAllAdminCharts();
     renderAdminTable();
     initAdminOverviewMap();
+
+    // Buka otomatis Studio Tata Letak jika Super Admin datang dari tombol "Kelola Halaman Ini"
+    try {
+        const params = new URLSearchParams(window.location.search);
+        const targetPage = params.get('openBuilder');
+        if (targetPage && currentAdminRole === 'superadmin') {
+            currentBuilderPageKey = ['login', 'user', 'admin'].includes(targetPage) ? targetPage : 'login';
+            switchAdminView('pagebuilder');
+        }
+    } catch (e) {}
 });
 
 function checkAdminAuth() {
@@ -848,295 +858,549 @@ function switchAdminChartType(type) {
     renderChart();
 }
 
-// Multi-Chart Visual Analytics Dashboard (4 Simultaneous Chart.js Charts)
+/* ==========================================================================
+   DYNAMIC INTERACTIVE CHART DATA & VISUALIZATION ENGINE (ADMIN & SUPER ADMIN)
+   ========================================================================== */
+const CHART_PANELS_STORAGE_KEY = 'SIMPEL_CHART_PANELS_V1';
+let dynamicChartInstances = {};
+let lastFilteredReportsCache = null;
+
+const DEFAULT_CHART_PANELS_STATE = {
+    scope: 'ALL',
+    gridCols: '2col',
+    panels: [
+        { id: 'panel_status', dataset: 'status', chartType: 'bar' },
+        { id: 'panel_kategori', dataset: 'kategori', chartType: 'doughnut' },
+        { id: 'panel_kawasan', dataset: 'kawasan', chartType: 'bar_h' },
+        { id: 'panel_urgensi', dataset: 'urgensi', chartType: 'polarArea' }
+    ]
+};
+
+const CHART_DATASETS_META = {
+    status: {
+        label: 'Status Penanganan Laporan',
+        subtitle: 'Diajukan, Diproses, Selesai & Ditolak',
+        badge: 'Status',
+        badgeClass: 'badge-emerald',
+        icon: 'fa-chart-column',
+        iconColor: '#10b981'
+    },
+    kategori: {
+        label: 'Kategori Kerusakan Fasilitas',
+        subtitle: 'Distribusi per jenis sarana & prasarana',
+        badge: 'Kategori',
+        badgeClass: 'badge-gold',
+        icon: 'fa-tags',
+        iconColor: '#d4a343'
+    },
+    kawasan: {
+        label: 'Sebaran Insiden Kawasan Kampus',
+        subtitle: 'Perbandingan laporan antar zona kampus',
+        badge: 'Geospasial',
+        badgeClass: 'badge-cyan',
+        icon: 'fa-building-columns',
+        iconColor: '#38bdf8'
+    },
+    urgensi: {
+        label: 'Tingkat Urgensi & Prioritas SLA',
+        subtitle: 'Darurat (<12j), Penting (<24j), Standar',
+        badge: 'Urgensi SLA',
+        badgeClass: 'badge-amber',
+        icon: 'fa-triangle-exclamation',
+        iconColor: '#f59e0b'
+    },
+    teknisi: {
+        label: 'Distribusi Beban Kerja Teknisi',
+        subtitle: 'Jumlah tiket ditangani per petugas sarpras',
+        badge: 'Personil',
+        badgeClass: 'badge-emerald',
+        icon: 'fa-user-gear',
+        iconColor: '#2dd4bf'
+    },
+    peran: {
+        label: 'Profil Peran Pelapor Civitas',
+        subtitle: 'Mahasiswa, Dosen, Tendik & Mitra Kampus',
+        badge: 'Pelapor',
+        badgeClass: 'badge-gold',
+        icon: 'fa-users',
+        iconColor: '#a855f7'
+    },
+    tren_waktu: {
+        label: 'Tren Waktu Laporan Masuk',
+        subtitle: 'Kronologi jumlah pengaduan per tanggal',
+        badge: 'Kronologi',
+        badgeClass: 'badge-cyan',
+        icon: 'fa-calendar-days',
+        iconColor: '#06b6d4'
+    }
+};
+
+const CHART_TYPES_META = [
+    { value: 'bar', label: 'Batang Tegak (Bar)' },
+    { value: 'bar_h', label: 'Batang Mendatar (Horizontal)' },
+    { value: 'line', label: 'Garis & Area Tren (Line)' },
+    { value: 'doughnut', label: 'Cincin Proporsi (Doughnut)' },
+    { value: 'pie', label: 'Lingkaran Penuh (Pie)' },
+    { value: 'polarArea', label: 'Area Polar (Polar Radar)' },
+    { value: 'radar', label: 'Jaring Laba-laba (Radar)' }
+];
+
+function loadChartPanelsState() {
+    try {
+        const raw = localStorage.getItem(CHART_PANELS_STORAGE_KEY);
+        if (!raw) return JSON.parse(JSON.stringify(DEFAULT_CHART_PANELS_STATE));
+        const parsed = JSON.parse(raw);
+        if (!parsed || !Array.isArray(parsed.panels) || parsed.panels.length === 0) {
+            return JSON.parse(JSON.stringify(DEFAULT_CHART_PANELS_STATE));
+        }
+        return {
+            scope: parsed.scope || 'ALL',
+            gridCols: parsed.gridCols || '2col',
+            panels: parsed.panels.filter(p => p && CHART_DATASETS_META[p.dataset])
+        };
+    } catch (e) {
+        return JSON.parse(JSON.stringify(DEFAULT_CHART_PANELS_STATE));
+    }
+}
+
+function saveChartPanelsState(state) {
+    localStorage.setItem(CHART_PANELS_STORAGE_KEY, JSON.stringify(state));
+}
+
+function resolveChartSourceItems(passedItems) {
+    if (Array.isArray(passedItems) && passedItems !== reportsData) {
+        lastFilteredReportsCache = passedItems;
+    }
+    const state = loadChartPanelsState();
+    const scopeEl = document.getElementById('chartScopeFilter');
+    const activeScope = scopeEl ? scopeEl.value : state.scope;
+
+    if (activeScope === 'FILTERED') {
+        return Array.isArray(lastFilteredReportsCache) ? lastFilteredReportsCache : reportsData;
+    }
+    if (activeScope === 'ACTIVE') {
+        return reportsData.filter(r => r.status === 'Diajukan' || r.status === 'Diproses');
+    }
+    if (activeScope === 'SELESAI') {
+        return reportsData.filter(r => r.status === 'Selesai');
+    }
+    return reportsData;
+}
+
+function computeDatasetSeries(datasetKey, items) {
+    const palette = [
+        '#10b981', '#d4a343', '#38bdf8', '#f59e0b',
+        '#ef4444', '#8b5cf6', '#ec4899', '#14b8a6',
+        '#6366f1', '#f97316', '#64748b'
+    ];
+
+    if (datasetKey === 'status') {
+        return {
+            labels: ['Diajukan', 'Diproses', 'Selesai', 'Ditolak'],
+            values: [
+                items.filter(r => r.status === 'Diajukan').length,
+                items.filter(r => r.status === 'Diproses').length,
+                items.filter(r => r.status === 'Selesai').length,
+                items.filter(r => r.status === 'Ditolak').length
+            ],
+            colors: ['#ef4444', '#f59e0b', '#10b981', '#64748b'],
+            unit: 'Tiket'
+        };
+    }
+
+    if (datasetKey === 'kategori') {
+        const activeCats = (typeof categoriesData !== 'undefined' && categoriesData && categoriesData.length > 0)
+            ? categoriesData
+            : DEFAULT_CATEGORIES_DATA;
+        const labels = activeCats.map(c => c.nama);
+        const values = activeCats.map(c => {
+            const firstWord = c.nama.toLowerCase().split(' ')[0];
+            return items.filter(r => (r.kategori || '').toLowerCase().includes(firstWord)).length;
+        });
+        return {
+            labels,
+            values,
+            colors: labels.map((_, i) => palette[i % palette.length]),
+            unit: 'Laporan'
+        };
+    }
+
+    if (datasetKey === 'kawasan') {
+        const zoneDefs = [
+            { name: 'Kampus Utama', keys: ['rektorat', 'fitk', 'tarbiyah', 'fsei', 'syariah', 'fuad', 'ushuluddin', 'ict', 'laboratorium', 'perpustakaan', 'auditorium', 'utama'] },
+            { name: 'Gedung Cyber', keys: ['cyber', 'it'] },
+            { name: 'Kampus Sebrang', keys: ['seberang', 'sebrang'] },
+            { name: "Pascasarjana & Ma'had", keys: ['pascasarjana', 'mahad', "ma'had"] },
+            { name: 'Lab Saladara', keys: ['saladara'] }
+        ];
+        // Tambahkan kawasan kustom dari CAMPUS_ZONES bila ada
+        if (Array.isArray(CAMPUS_ZONES)) {
+            CAMPUS_ZONES.forEach(z => {
+                if (z && z.name && !zoneDefs.some(d => z.name.toLowerCase().includes(d.keys[0]))) {
+                    zoneDefs.push({ name: z.shortName || z.name, keys: [z.name.toLowerCase(), z.id.toLowerCase()] });
+                }
+            });
+        }
+        const labels = zoneDefs.map(z => z.name);
+        const values = zoneDefs.map(z => items.filter(r => {
+            const g = (r.gedung || '').toLowerCase();
+            return z.keys.some(k => g.includes(k));
+        }).length);
+        return {
+            labels,
+            values,
+            colors: ['#005a36', '#06b6d4', '#a855f7', '#f59e0b', '#ec4899', '#10b981', '#3b82f6'].slice(0, labels.length),
+            unit: 'Insiden'
+        };
+    }
+
+    if (datasetKey === 'urgensi') {
+        return {
+            labels: ['Darurat (SLA <12j)', 'Penting (SLA <24j)', 'Standar (SLA <48j)'],
+            values: [
+                items.filter(r => r.urgensi === 'Darurat' || r.urgensi === 'Tinggi').length,
+                items.filter(r => r.urgensi === 'Penting' || r.urgensi === 'Sedang').length,
+                items.filter(r => r.urgensi === 'Standar' || r.urgensi === 'Rendah' || !r.urgensi).length
+            ],
+            colors: ['#ef4444', '#f59e0b', '#10b981'],
+            unit: 'Tiket'
+        };
+    }
+
+    if (datasetKey === 'teknisi') {
+        const countsMap = {};
+        items.forEach(r => {
+            const name = (r.teknisi && r.teknisi.trim()) ? r.teknisi.trim() : 'Belum Ditunjuk';
+            countsMap[name] = (countsMap[name] || 0) + 1;
+        });
+        const entries = Object.entries(countsMap).sort((a, b) => b[1] - a[1]).slice(0, 8);
+        if (entries.length === 0) entries.push(['Belum Ada Data', 0]);
+        return {
+            labels: entries.map(e => e[0]),
+            values: entries.map(e => e[1]),
+            colors: entries.map((_, i) => palette[i % palette.length]),
+            unit: 'Tiket'
+        };
+    }
+
+    if (datasetKey === 'peran') {
+        const roles = ['Mahasiswa', 'Dosen', 'Tenaga Kependidikan', 'Mitra Kampus', 'Umum / Lainnya'];
+        const values = [0, 0, 0, 0, 0];
+        items.forEach(r => {
+            const p = (r.peranPelapor || '').toLowerCase();
+            if (p.includes('mahasiswa')) values[0]++;
+            else if (p.includes('dosen')) values[1]++;
+            else if (p.includes('tendik') || p.includes('kependidikan') || p.includes('staf')) values[2]++;
+            else if (p.includes('mitra')) values[3]++;
+            else values[4]++;
+        });
+        return {
+            labels: roles,
+            values,
+            colors: ['#10b981', '#38bdf8', '#d4a343', '#f59e0b', '#94a3b8'],
+            unit: 'Pelapor'
+        };
+    }
+
+    // tren_waktu: Group by date (YYYY-MM-DD)
+    const dateMap = {};
+    items.forEach(r => {
+        const rawDate = (r.tanggalLapor || '').split(' ')[0] || 'Lainnya';
+        dateMap[rawDate] = (dateMap[rawDate] || 0) + 1;
+    });
+    const sortedDates = Object.keys(dateMap).sort().slice(-10);
+    if (sortedDates.length === 0) sortedDates.push('Hari Ini');
+    return {
+        labels: sortedDates,
+        values: sortedDates.map(d => dateMap[d] || 0),
+        colors: sortedDates.map((_, i) => palette[i % palette.length]),
+        unit: 'Laporan'
+    };
+}
+
+function handleChartScopeOrLayoutChange() {
+    const state = loadChartPanelsState();
+    const scopeEl = document.getElementById('chartScopeFilter');
+    const colsEl = document.getElementById('chartGridColsSelect');
+    if (scopeEl) state.scope = scopeEl.value;
+    if (colsEl) state.gridCols = colsEl.value;
+    saveChartPanelsState(state);
+    renderAllAdminCharts();
+}
+
+function updateAdminChartPanel(panelId, field, newValue) {
+    const state = loadChartPanelsState();
+    const target = state.panels.find(p => p.id === panelId);
+    if (!target) return;
+    target[field] = newValue;
+    saveChartPanelsState(state);
+    renderAllAdminCharts();
+}
+
+function addNewAdminChartPanel() {
+    const state = loadChartPanelsState();
+    if (state.panels.length >= 8) {
+        showToast('Maksimal 8 panel grafik aktif sekaligus agar dashboard tetap optimal.', 'info');
+        return;
+    }
+    const allDatasets = Object.keys(CHART_DATASETS_META);
+    const usedDatasets = state.panels.map(p => p.dataset);
+    const nextDataset = allDatasets.find(d => !usedDatasets.includes(d)) || 'teknisi';
+    const defaultTypes = {
+        status: 'bar',
+        kategori: 'doughnut',
+        kawasan: 'bar_h',
+        urgensi: 'polarArea',
+        teknisi: 'bar',
+        peran: 'pie',
+        tren_waktu: 'line'
+    };
+
+    state.panels.push({
+        id: 'panel_' + Date.now(),
+        dataset: nextDataset,
+        chartType: defaultTypes[nextDataset] || 'bar'
+    });
+    saveChartPanelsState(state);
+    renderAllAdminCharts();
+    showToast('Panel grafik analitik baru berhasil ditambahkan!', 'success');
+}
+
+function removeAdminChartPanel(panelId) {
+    const state = loadChartPanelsState();
+    if (state.panels.length <= 1) {
+        showToast('Minimal 1 panel grafik tetap ditampilkan di pusat analitik.', 'info');
+        return;
+    }
+    state.panels = state.panels.filter(p => p.id !== panelId);
+    saveChartPanelsState(state);
+    renderAllAdminCharts();
+    showToast('Panel grafik dihapus dari tampilan.', 'info');
+}
+
+function moveAdminChartPanel(panelId, dir) {
+    const state = loadChartPanelsState();
+    const idx = state.panels.findIndex(p => p.id === panelId);
+    if (idx < 0) return;
+    const swapIdx = idx + dir;
+    if (swapIdx < 0 || swapIdx >= state.panels.length) return;
+    const tmp = state.panels[idx];
+    state.panels[idx] = state.panels[swapIdx];
+    state.panels[swapIdx] = tmp;
+    saveChartPanelsState(state);
+    renderAllAdminCharts();
+}
+
+function resetAdminChartPanels() {
+    localStorage.removeItem(CHART_PANELS_STORAGE_KEY);
+    renderAllAdminCharts();
+    showToast('Susunan dan pilihan grafik dikembalikan ke standar awal.', 'success');
+}
+
+function downloadAdminChartPng(panelId) {
+    const inst = dynamicChartInstances[panelId];
+    if (!inst) return;
+    const link = document.createElement('a');
+    link.href = inst.toBase64Image('image/png', 1);
+    link.download = `GRAFIK_SIMPEL_UINSSC_${panelId}.png`;
+    link.click();
+    showToast('Gambar grafik PNG berhasil diunduh.', 'success');
+}
+
 function renderAllAdminCharts(itemsToRender = reportsData) {
     if (typeof Chart === 'undefined') {
         console.warn('Chart.js belum dimuat.');
         return;
     }
 
+    const grid = document.getElementById('analyticsChartsGrid');
+    if (!grid) return;
+
+    const state = loadChartPanelsState();
+
+    // Sync toolbar dropdowns
+    const scopeEl = document.getElementById('chartScopeFilter');
+    const colsEl = document.getElementById('chartGridColsSelect');
+    if (scopeEl && scopeEl.value !== state.scope) scopeEl.value = state.scope;
+    if (colsEl && colsEl.value !== state.gridCols) colsEl.value = state.gridCols;
+
+    grid.classList.remove('charts-cols-1', 'charts-cols-3');
+    if (state.gridCols === '1col') grid.classList.add('charts-cols-1');
+    else if (state.gridCols === '3col') grid.classList.add('charts-cols-3');
+
+    // Destroy previous Chart.js instances cleanly
+    Object.keys(dynamicChartInstances).forEach(k => {
+        try {
+            if (dynamicChartInstances[k]) dynamicChartInstances[k].destroy();
+        } catch (e) {}
+    });
+    dynamicChartInstances = {};
+
+    const sourceItems = resolveChartSourceItems(itemsToRender);
     const isLight = document.documentElement.getAttribute('data-theme') === 'light';
     const textColor = isLight ? '#334155' : '#cbd5e1';
     const gridColor = isLight ? 'rgba(0, 0, 0, 0.06)' : 'rgba(255, 255, 255, 0.08)';
 
-    // =========================================================================
-    // CHART 1: Trend Status Penanganan Tiket (Canvas: #chartTrendStatus)
-    // =========================================================================
-    const canvasTrend = document.getElementById('chartTrendStatus');
-    if (canvasTrend) {
-        if (chartTrendInstance) {
-            chartTrendInstance.destroy();
-            chartTrendInstance = null;
+    // Render Dynamic Cards HTML
+    grid.innerHTML = state.panels.map((p, idx) => {
+        const meta = CHART_DATASETS_META[p.dataset] || CHART_DATASETS_META.status;
+        const datasetOpts = Object.keys(CHART_DATASETS_META).map(dk =>
+            `<option value="${dk}" ${dk === p.dataset ? 'selected' : ''}>Data: ${escapeHtml(CHART_DATASETS_META[dk].label)}</option>`
+        ).join('');
+        const typeOpts = CHART_TYPES_META.map(t =>
+            `<option value="${t.value}" ${t.value === p.chartType ? 'selected' : ''}>Grafik: ${escapeHtml(t.label)}</option>`
+        ).join('');
+
+        return `
+            <div class="chart-card" id="chartCard_${escapeHtml(p.id)}">
+                <div class="chart-card-header" style="margin-bottom:6px;">
+                    <div style="min-width:0;">
+                        <h4 class="chart-title">
+                            <i class="fa-solid ${escapeHtml(meta.icon)}" style="color:${meta.iconColor};"></i>
+                            <span>${escapeHtml(meta.label)}</span>
+                        </h4>
+                        <span class="chart-subtitle">${escapeHtml(meta.subtitle)} &bull; Total sampel: ${sourceItems.length}</span>
+                    </div>
+                    <span class="chart-badge ${escapeHtml(meta.badgeClass)}">${escapeHtml(meta.badge)}</span>
+                </div>
+
+                <div class="chart-card-controls">
+                    <select class="chart-mini-select" onchange="updateAdminChartPanel('${escapeHtml(p.id)}', 'dataset', this.value)" title="Pilih sumber data untuk grafik ini">
+                        ${datasetOpts}
+                    </select>
+                    <select class="chart-mini-select" onchange="updateAdminChartPanel('${escapeHtml(p.id)}', 'chartType', this.value)" title="Pilih jenis tampilan grafik">
+                        ${typeOpts}
+                    </select>
+                    <button type="button" class="chart-icon-btn" onclick="moveAdminChartPanel('${escapeHtml(p.id)}', -1)" title="Geser ke kiri / atas" ${idx === 0 ? 'disabled style="opacity:0.35; cursor:default;"' : ''}>
+                        <i class="fa-solid fa-arrow-left"></i>
+                    </button>
+                    <button type="button" class="chart-icon-btn" onclick="moveAdminChartPanel('${escapeHtml(p.id)}', 1)" title="Geser ke kanan / bawah" ${idx === state.panels.length - 1 ? 'disabled style="opacity:0.35; cursor:default;"' : ''}>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                    <button type="button" class="chart-icon-btn" onclick="downloadAdminChartPng('${escapeHtml(p.id)}')" title="Unduh gambar grafik (PNG)">
+                        <i class="fa-solid fa-camera"></i>
+                    </button>
+                    <button type="button" class="chart-icon-btn danger" onclick="removeAdminChartPanel('${escapeHtml(p.id)}')" title="Hapus panel grafik ini">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+
+                <div class="chart-canvas-wrapper" style="margin-top:10px;">
+                    <canvas id="canvas_${escapeHtml(p.id)}"></canvas>
+                </div>
+            </div>
+        `;
+    }).join('');
+
+    // Instantiate each Chart.js canvas
+    state.panels.forEach(p => {
+        const canvas = document.getElementById('canvas_' + p.id);
+        if (!canvas) return;
+        const series = computeDatasetSeries(p.dataset, sourceItems);
+        const rawType = p.chartType || 'bar';
+        const actualType = rawType === 'bar_h' ? 'bar' : rawType;
+        const isCircular = ['doughnut', 'pie', 'polarArea', 'radar'].includes(actualType);
+        const isLine = actualType === 'line';
+
+        const datasetConfig = {
+            label: series.unit || 'Jumlah',
+            data: series.values,
+            backgroundColor: isLine
+                ? 'rgba(16, 185, 129, 0.18)'
+                : (actualType === 'radar' ? 'rgba(212, 163, 67, 0.22)' : series.colors),
+            borderColor: isLine
+                ? '#10b981'
+                : (actualType === 'radar' ? '#d4a343' : (isLight ? '#ffffff' : '#061a12')),
+            borderWidth: isLine || actualType === 'radar' ? 2.5 : 1.5,
+            fill: isLine || actualType === 'radar',
+            tension: 0.35,
+            pointBackgroundColor: isLine ? '#d4a343' : series.colors,
+            pointRadius: isLine || actualType === 'radar' ? 4 : 0
+        };
+
+        if (actualType === 'bar') {
+            datasetConfig.borderRadius = 7;
+            datasetConfig.maxBarThickness = 40;
         }
 
-        const diajukanCount = itemsToRender.filter(r => r.status === 'Diajukan').length;
-        const diprosesCount = itemsToRender.filter(r => r.status === 'Diproses').length;
-        const selesaiCount = itemsToRender.filter(r => r.status === 'Selesai').length;
-        const ditolakCount = itemsToRender.filter(r => r.status === 'Ditolak').length;
-
-        const ctxTrend = canvasTrend.getContext('2d');
-        chartTrendInstance = new Chart(ctxTrend, {
-            type: 'bar',
-            data: {
-                labels: ['Diajukan', 'Diproses', 'Selesai', 'Ditolak'],
-                datasets: [{
-                    label: 'Jumlah Laporan',
-                    data: [diajukanCount, diprosesCount, selesaiCount, ditolakCount],
-                    backgroundColor: ['#ef4444', '#f59e0b', '#10b981', '#64748b'],
-                    borderColor: isLight ? '#ffffff' : '#04140d',
-                    borderWidth: 1.5,
-                    borderRadius: 8,
-                    maxBarThickness: 38
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: { display: false },
-                    tooltip: {
-                        callbacks: {
-                            label: function(ctx) {
-                                const total = itemsToRender.length || 1;
-                                const pct = Math.round((ctx.raw / total) * 100);
-                                return ` ${ctx.raw} Tiket (${pct}% dari total)`;
-                            }
-                        }
+        const options = {
+            responsive: true,
+            maintainAspectRatio: false,
+            indexAxis: rawType === 'bar_h' ? 'y' : 'x',
+            plugins: {
+                legend: {
+                    display: isCircular && actualType !== 'radar',
+                    position: actualType === 'polarArea' ? 'bottom' : 'right',
+                    labels: {
+                        color: textColor,
+                        font: { family: "'Plus Jakarta Sans', sans-serif", size: 10.5, weight: '600' },
+                        boxWidth: 10,
+                        padding: 8,
+                        usePointStyle: true
                     }
                 },
-                scales: {
-                    x: {
-                        grid: { display: false },
-                        ticks: {
-                            color: textColor,
-                            font: { family: "'Plus Jakarta Sans', sans-serif", size: 11, weight: '700' }
-                        }
-                    },
-                    y: {
-                        beginAtZero: true,
-                        ticks: {
-                            stepSize: 1,
-                            color: textColor,
-                            font: { family: "'Plus Jakarta Sans', sans-serif", size: 11 }
-                        },
-                        grid: { color: gridColor }
-                    }
-                }
-            }
-        });
-    }
-
-    // =========================================================================
-    // CHART 2: Proporsi Laporan Per Kategori Fasilitas (Canvas: #chartKategoriProporsi)
-    // =========================================================================
-    const canvasKategori = document.getElementById('chartKategoriProporsi');
-    if (canvasKategori) {
-        if (chartKategoriInstance) {
-            chartKategoriInstance.destroy();
-            chartKategoriInstance = null;
-        }
-
-        const activeCats = (categoriesData && categoriesData.length > 0)
-            ? categoriesData
-            : DEFAULT_CATEGORIES_DATA;
-
-        const catLabels = activeCats.map(c => c.nama);
-        const catCounts = activeCats.map(c => {
-            const firstWord = c.nama.toLowerCase().split(' ')[0];
-            return itemsToRender.filter(r => (r.kategori || '').toLowerCase().includes(firstWord)).length;
-        });
-
-        const palette = [
-            '#005a36', '#10b981', '#c59235', '#f59e0b',
-            '#3b82f6', '#8b5cf6', '#ec4899', '#06b6d4',
-            '#f97316', '#64748b'
-        ];
-
-        const ctxKategori = canvasKategori.getContext('2d');
-        chartKategoriInstance = new Chart(ctxKategori, {
-            type: 'doughnut',
-            data: {
-                labels: catLabels,
-                datasets: [{
-                    data: catCounts,
-                    backgroundColor: palette.slice(0, activeCats.length),
-                    borderColor: isLight ? '#ffffff' : '#04140d',
-                    borderWidth: 2,
-                    hoverOffset: 6
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                cutout: '62%',
-                plugins: {
-                    legend: {
-                        position: 'right',
-                        labels: {
-                            color: textColor,
-                            font: { family: "'Plus Jakarta Sans', sans-serif", size: 10, weight: '600' },
-                            padding: 8,
-                            boxWidth: 10,
-                            boxHeight: 10,
-                            usePointStyle: true
-                        }
-                    },
-                    tooltip: {
-                        callbacks: {
-                            label: function(ctx) {
-                                const total = ctx.dataset.data.reduce((a, b) => a + b, 0);
-                                const val = ctx.raw || 0;
-                                const pct = total > 0 ? Math.round((val / total) * 100) : 0;
-                                return ` ${ctx.label}: ${val} laporan (${pct}%)`;
-                            }
+                tooltip: {
+                    callbacks: {
+                        label: function (ctx) {
+                            const total = (ctx.dataset.data || []).reduce((a, b) => a + b, 0) || 1;
+                            const val = typeof ctx.raw === 'number' ? ctx.raw : 0;
+                            const pct = Math.round((val / total) * 100);
+                            return ` ${ctx.label}: ${val} ${series.unit} (${pct}%)`;
                         }
                     }
                 }
             }
-        });
-    }
+        };
 
-    // =========================================================================
-    // CHART 3: Distribusi Beban Kerusakan 5 Kawasan (Canvas: #chartKawasanBar)
-    // =========================================================================
-    const canvasKawasan = document.getElementById('chartKawasanBar');
-    if (canvasKawasan) {
-        if (chartKawasanInstance) {
-            chartKawasanInstance.destroy();
-            chartKawasanInstance = null;
+        if (actualType === 'doughnut') {
+            options.cutout = '60%';
         }
 
-        const zones = [
-            { name: 'Kampus Utama', keys: ['Rektorat', 'FITK', 'Tarbiyah', 'FSEI', 'Syariah', 'FUAD', 'Ushuluddin', 'ICT', 'Laboratorium', 'Perpustakaan', 'Auditorium', 'Utama'] },
-            { name: 'Gedung Cyber', keys: ['Cyber', 'IT'] },
-            { name: 'Gedung Seberang', keys: ['Seberang'] },
-            { name: "Pascasarjana & Ma'had", keys: ['Pascasarjana', "Ma'had"] },
-            { name: 'Kampus 2 Saladara', keys: ['Saladara'] }
-        ];
-
-        const labelsKawasan = zones.map(z => z.name);
-        const countsKawasan = zones.map(z => {
-            return itemsToRender.filter(r => {
-                const g = (r.gedung || '').toLowerCase();
-                return z.keys.some(k => g.includes(k.toLowerCase()));
-            }).length;
-        });
-
-        const ctxKawasan = canvasKawasan.getContext('2d');
-        const gradKawasan = ctxKawasan.createLinearGradient(0, 0, 300, 0);
-        gradKawasan.addColorStop(0, '#005a36');
-        gradKawasan.addColorStop(1, '#10b981');
-
-        chartKawasanInstance = new Chart(ctxKawasan, {
-            type: 'bar',
-            data: {
-                labels: labelsKawasan,
-                datasets: [{
-                    axis: 'y',
-                    label: 'Laporan Kerusakan',
-                    data: countsKawasan,
-                    backgroundColor: gradKawasan,
-                    borderColor: '#c59235',
-                    borderWidth: 1.5,
-                    borderRadius: 6
-                }]
-            },
-            options: {
-                indexAxis: 'y',
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: { display: false },
-                    tooltip: {
-                        callbacks: {
-                            label: function(ctx) {
-                                return ` ${ctx.raw} Laporan di ${ctx.label}`;
-                            }
-                        }
+        if (actualType === 'polarArea' || actualType === 'radar') {
+            options.scales = {
+                r: {
+                    beginAtZero: true,
+                    ticks: { display: false },
+                    pointLabels: {
+                        color: textColor,
+                        font: { family: "'Plus Jakarta Sans', sans-serif", size: 10.5, weight: '600' }
+                    },
+                    grid: { color: gridColor },
+                    angleLines: { color: gridColor }
+                }
+            };
+        } else if (!isCircular) {
+            options.scales = {
+                x: {
+                    beginAtZero: true,
+                    grid: { display: rawType === 'bar_h', color: gridColor },
+                    ticks: {
+                        stepSize: rawType === 'bar_h' ? 1 : undefined,
+                        color: textColor,
+                        font: { family: "'Plus Jakarta Sans', sans-serif", size: 10.5, weight: '600' }
                     }
                 },
-                scales: {
-                    x: {
-                        beginAtZero: true,
-                        ticks: {
-                            stepSize: 1,
-                            color: textColor,
-                            font: { family: "'Plus Jakarta Sans', sans-serif", size: 10 }
-                        },
-                        grid: { color: gridColor }
-                    },
-                    y: {
-                        ticks: {
-                            color: textColor,
-                            font: { family: "'Plus Jakarta Sans', sans-serif", size: 10.5, weight: '700' }
-                        },
-                        grid: { display: false }
+                y: {
+                    beginAtZero: true,
+                    grid: { display: rawType !== 'bar_h', color: gridColor },
+                    ticks: {
+                        stepSize: rawType !== 'bar_h' ? 1 : undefined,
+                        color: textColor,
+                        font: { family: "'Plus Jakarta Sans', sans-serif", size: 10.5, weight: '600' }
                     }
                 }
-            }
-        });
-    }
-
-    // =========================================================================
-    // CHART 4: Distribusi Tingkat Urgensi & Beban SLA (Canvas: #chartUrgensiSla)
-    // =========================================================================
-    const canvasUrgensi = document.getElementById('chartUrgensiSla');
-    if (canvasUrgensi) {
-        if (chartUrgensiInstance) {
-            chartUrgensiInstance.destroy();
-            chartUrgensiInstance = null;
+            };
         }
 
-        const daruratCount = itemsToRender.filter(r => r.urgensi === 'Darurat' || r.urgensi === 'Tinggi').length;
-        const pentingCount = itemsToRender.filter(r => r.urgensi === 'Penting' || r.urgensi === 'Sedang').length;
-        const standarCount = itemsToRender.filter(r => r.urgensi === 'Standar' || r.urgensi === 'Rendah' || !r.urgensi).length;
-
-        const ctxUrgensi = canvasUrgensi.getContext('2d');
-        chartUrgensiInstance = new Chart(ctxUrgensi, {
-            type: 'polarArea',
+        dynamicChartInstances[p.id] = new Chart(canvas.getContext('2d'), {
+            type: actualType,
             data: {
-                labels: ['Darurat (SLA <12 Jam)', 'Penting (SLA <24 Jam)', 'Standar (SLA <48 Jam)'],
-                datasets: [{
-                    data: [daruratCount, pentingCount, standarCount],
-                    backgroundColor: [
-                        'rgba(239, 68, 68, 0.85)',
-                        'rgba(245, 158, 11, 0.85)',
-                        'rgba(16, 185, 129, 0.85)'
-                    ],
-                    borderColor: isLight ? '#ffffff' : '#04140d',
-                    borderWidth: 2
-                }]
+                labels: series.labels,
+                datasets: [datasetConfig]
             },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                scales: {
-                    r: {
-                        ticks: { display: false },
-                        grid: { color: gridColor }
-                    }
-                },
-                plugins: {
-                    legend: {
-                        position: 'bottom',
-                        labels: {
-                            color: textColor,
-                            font: { family: "'Plus Jakarta Sans', sans-serif", size: 9.5, weight: '600' },
-                            boxWidth: 10,
-                            padding: 6
-                        }
-                    },
-                    tooltip: {
-                        callbacks: {
-                            label: function(ctx) {
-                                return ` ${ctx.label}: ${ctx.raw} Tiket`;
-                            }
-                        }
-                    }
-                }
-            }
+            options
         });
-    }
+    });
 }
 
 // Backward compatibility: renderChart memanggil renderAllAdminCharts
@@ -4312,10 +4576,11 @@ const ADMIN_STORAGE_KEY = STORAGE_KEY;
 
 // View Switcher Function
 function switchAdminView(viewId) {
-    if ((viewId === 'audit' || viewId === 'soc' || viewId === 'geofence') && currentAdminRole !== 'superadmin') {
+    if ((viewId === 'audit' || viewId === 'soc' || viewId === 'geofence' || viewId === 'pagebuilder') && currentAdminRole !== 'superadmin') {
         let featureName = 'rekaman audit & surveillance keamanan sistem';
         if (viewId === 'soc') featureName = 'Security Operations Center (SOC) War Room';
         if (viewId === 'geofence') featureName = 'Manajemen Wilayah & Batas Geofencing Kampus';
+        if (viewId === 'pagebuilder') featureName = 'Studio Tata Letak & Manajemen Seluruh Halaman';
         warnSuperAdminOnly(`mengakses ${featureName}`);
         return;
     }
@@ -4330,6 +4595,7 @@ function switchAdminView(viewId) {
         staff: document.getElementById('viewStaffManagement'),
         kategori: document.getElementById('viewCategoryManagement'),
         geofence: document.getElementById('viewGeofenceManagement'),
+        pagebuilder: document.getElementById('viewPageBuilder'),
         audit: document.getElementById('viewSuperAdminSurveillance'),
         soc: document.getElementById('viewSocSecurity')
     };
@@ -4342,6 +4608,7 @@ function switchAdminView(viewId) {
         staff: document.getElementById('sidebarStaffLink'),
         kategori: document.getElementById('sidebarCategoryLink'),
         geofence: document.getElementById('sidebarGeofenceLink'),
+        pagebuilder: document.getElementById('sidebarCmsLink'),
         audit: document.getElementById('navSuperAudit'),
         soc: document.getElementById('navSocSecurity')
     };
@@ -4362,15 +4629,15 @@ function switchAdminView(viewId) {
 
     // View-specific initializations
     if (viewId === 'dashboard') {
+        if (window.SimpelSiteBuilder) window.SimpelSiteBuilder.applyAdminPage();
         renderKPIs();
         renderAdminTable();
         renderAllAdminCharts();
         setTimeout(() => {
             if (adminMapInstance) adminMapInstance.invalidateSize();
-            if (chartTrendInstance) chartTrendInstance.resize();
-            if (chartKategoriInstance) chartKategoriInstance.resize();
-            if (chartKawasanInstance) chartKawasanInstance.resize();
-            if (chartUrgensiInstance) chartUrgensiInstance.resize();
+            Object.values(dynamicChartInstances || {}).forEach(ch => {
+                if (ch && typeof ch.resize === 'function') ch.resize();
+            });
         }, 150);
     } else if (viewId === 'gis') {
         renderGisSurveillanceView();
@@ -4391,6 +4658,8 @@ function switchAdminView(viewId) {
         renderSocSecurityView();
     } else if (viewId === 'geofence') {
         renderGeofenceManagementView();
+    } else if (viewId === 'pagebuilder') {
+        renderPageBuilderView();
     }
 }
 
@@ -5826,6 +6095,1043 @@ function populateCategoryDropdowns() {
         if (curVal) tableFilter.value = curVal;
     }
 }
+
+/* ==========================================================================
+   SUPER ADMIN STUDIO: TATA LETAK, EDIT, HAPUS & TAMBAH DI SETIAP HALAMAN
+   ========================================================================== */
+let currentBuilderPageKey = 'login'; // 'login' | 'user' | 'admin'
+let activeBuilderModalCtx = null;
+let tempBuilderBannerBg = '';
+
+const BUILDER_ICONS_CATALOG = [
+    { value: 'fa-bullhorn', label: 'Pengumuman (fa-bullhorn)' },
+    { value: 'fa-circle-info', label: 'Informasi (fa-circle-info)' },
+    { value: 'fa-shield-halved', label: 'Keamanan & Otoritas (fa-shield-halved)' },
+    { value: 'fa-map-location-dot', label: 'Peta & Lokasi GIS (fa-map-location-dot)' },
+    { value: 'fa-building-columns', label: 'Gedung Kampus (fa-building-columns)' },
+    { value: 'fa-building-shield', label: 'Gedung & Sarpras (fa-building-shield)' },
+    { value: 'fa-screwdriver-wrench', label: 'Teknisi & Perbaikan (fa-screwdriver-wrench)' },
+    { value: 'fa-bolt', label: 'Respon Cepat / Listrik (fa-bolt)' },
+    { value: 'fa-chart-line', label: 'Analitik & SLA (fa-chart-line)' },
+    { value: 'fa-layer-group', label: 'Sistem Terpadu (fa-layer-group)' },
+    { value: 'fa-phone-volume', label: 'Kontak Darurat (fa-phone-volume)' },
+    { value: 'fa-calendar-check', label: 'Jadwal Layanan (fa-calendar-check)' },
+    { value: 'fa-book-open', label: 'Panduan & SOP (fa-book-open)' },
+    { value: 'fa-qrcode', label: 'QR & Bukti Digital (fa-qrcode)' },
+    { value: 'fa-triangle-exclamation', label: 'Peringatan Penting (fa-triangle-exclamation)' }
+];
+
+const BUILDER_ACCENT_CATALOG = [
+    { value: 'emerald', label: 'Hijau Emerald Kampus' },
+    { value: 'gold', label: 'Emas Institusi (Gold)' },
+    { value: 'cyan', label: 'Biru Siber (Cyan)' },
+    { value: 'amber', label: 'Kuning Peringatan (Amber)' },
+    { value: 'rose', label: 'Merah Prioritas (Rose)' }
+];
+
+function ensureSuperAdminForBuilder() {
+    if (currentAdminRole !== 'superadmin') {
+        warnSuperAdminOnly('mengubah tata letak, mengedit, menambah, atau menghapus komponen halaman');
+        return false;
+    }
+    return true;
+}
+
+function getBuilderCfg() {
+    return window.SimpelSiteBuilder
+        ? window.SimpelSiteBuilder.getSiteConfig()
+        : JSON.parse(localStorage.getItem('SIMPEL_SITE_BUILDER_V1') || '{}');
+}
+
+function commitBuilderCfg(cfg, toastMsg, auditDetail) {
+    if (window.SimpelSiteBuilder) {
+        window.SimpelSiteBuilder.saveSiteConfig(cfg);
+        window.SimpelSiteBuilder.applyAdminPage();
+    }
+    if (typeof recordAuditLog === 'function' && auditDetail) {
+        recordAuditLog('cms', 'Update Tata Letak / Halaman', auditDetail, 'info');
+    }
+    renderPageBuilderView();
+    if (toastMsg) showToast(toastMsg, 'success');
+}
+
+function switchBuilderTargetPage(pageKey) {
+    if (!ensureSuperAdminForBuilder()) return;
+    currentBuilderPageKey = pageKey;
+    renderPageBuilderView();
+}
+
+function renderPageBuilderView() {
+    if (!ensureSuperAdminForBuilder()) return;
+    const ws = document.getElementById('pageBuilderWorkspace');
+    if (!ws) return;
+
+    // Update active tab & preview link
+    ['login', 'user', 'admin'].forEach(k => {
+        const btn = document.getElementById('builderTab' + k.charAt(0).toUpperCase() + k.slice(1));
+        if (btn) btn.classList.toggle('active', k === currentBuilderPageKey);
+    });
+
+    const previewLink = document.getElementById('builderPreviewPageLink');
+    if (previewLink) {
+        if (currentBuilderPageKey === 'login') {
+            previewLink.href = '../index.html';
+            previewLink.innerHTML = '<i class="fa-solid fa-arrow-up-right-from-square" style="color:#38bdf8;"></i> Buka Halaman Login';
+        } else if (currentBuilderPageKey === 'user') {
+            previewLink.href = 'user.html';
+            previewLink.innerHTML = '<i class="fa-solid fa-arrow-up-right-from-square" style="color:#38bdf8;"></i> Buka Halaman Portal User';
+        } else {
+            previewLink.href = 'javascript:void(0)';
+            previewLink.onclick = function (ev) {
+                if (currentBuilderPageKey === 'admin') {
+                    ev.preventDefault();
+                    switchAdminView('dashboard');
+                }
+            };
+            previewLink.innerHTML = '<i class="fa-solid fa-eye" style="color:#38bdf8;"></i> Lihat Dashboard Admin';
+        }
+        if (currentBuilderPageKey !== 'admin') {
+            previewLink.onclick = null;
+        }
+    }
+
+    const cfg = getBuilderCfg();
+
+    if (currentBuilderPageKey === 'login') {
+        ws.innerHTML = buildLoginStudioHtml(cfg.login);
+    } else if (currentBuilderPageKey === 'user') {
+        ws.innerHTML = buildUserStudioHtml(cfg.user);
+    } else {
+        ws.innerHTML = buildAdminStudioHtml(cfg.admin);
+    }
+}
+
+/* --------------------------------------------------------------------------
+   STUDIO 1: HALAMAN LOGIN (index.html)
+   -------------------------------------------------------------------------- */
+function buildLoginStudioHtml(lCfg) {
+    const heroRows = (lCfg.heroOrder || []).map((id, idx, arr) => {
+        let b = lCfg.blocks[id];
+        let isCustom = false;
+        if (!b) {
+            b = (lCfg.customBlocks || []).find(c => c.id === id);
+            isCustom = true;
+        }
+        if (!b) return '';
+        const enabled = b.enabled !== false;
+        const label = isCustom ? `[Blok Kustom] ${b.title}` : (b.label || b.title || id);
+        const sub = isCustom
+            ? (b.desc || 'Blok informasi tambahan di halaman login')
+            : (id === 'features_list'
+                ? `${(b.items || []).length} kartu fitur aktif — dapat ditambah, diedit, digeser, atau dihapus di bawah`
+                : (b.title || b.desc || ''));
+
+        return `
+            <div class="builder-block-row ${enabled ? '' : 'is-disabled'}">
+                <div style="display:flex; align-items:center; gap:12px; min-width:0; flex:1;">
+                    <span style="width:28px; height:28px; border-radius:8px; background:var(--gold-light); color:var(--gold); font-weight:800; font-size:12px; display:inline-flex; align-items:center; justify-content:center; flex-shrink:0;">${idx + 1}</span>
+                    <div style="min-width:0;">
+                        <div style="font-size:13.5px; font-weight:800; color:var(--text-main);">${escapeHtml(label)}</div>
+                        <div style="font-size:12px; color:var(--text-muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:520px;">${escapeHtml(sub)}</div>
+                    </div>
+                </div>
+                <div class="builder-row-actions">
+                    <button type="button" class="chart-icon-btn" onclick="builderMoveOrder('login_hero', '${escapeHtml(id)}', -1)" title="Geser ke Atas" ${idx === 0 ? 'disabled style="opacity:0.3;"' : ''}><i class="fa-solid fa-arrow-up"></i></button>
+                    <button type="button" class="chart-icon-btn" onclick="builderMoveOrder('login_hero', '${escapeHtml(id)}', 1)" title="Geser ke Bawah" ${idx === arr.length - 1 ? 'disabled style="opacity:0.3;"' : ''}><i class="fa-solid fa-arrow-down"></i></button>
+                    ${id !== 'features_list' ? `
+                        <button type="button" class="btn btn-secondary" style="min-height:30px; padding:4px 10px; font-size:11.5px;" onclick="openBuilderEditModal('${isCustom ? 'custom_block' : 'login_builtin'}', '${escapeHtml(id)}')">
+                            <i class="fa-solid fa-pen"></i> Edit
+                        </button>
+                    ` : ''}
+                    ${isCustom ? `
+                        <button type="button" class="btn btn-secondary" style="min-height:30px; padding:4px 10px; font-size:11.5px;" onclick="builderToggleEnabled('login', '${escapeHtml(id)}', true)">
+                            <i class="fa-solid ${enabled ? 'fa-eye' : 'fa-eye-slash'}"></i> ${enabled ? 'Aktif' : 'Nonaktif'}
+                        </button>
+                        <button type="button" class="chart-icon-btn danger" onclick="builderDeleteCustomBlock('login', '${escapeHtml(id)}')" title="Hapus Permanen Blok Ini"><i class="fa-solid fa-trash-can"></i></button>
+                    ` : `
+                        <button type="button" class="btn btn-secondary" style="min-height:30px; padding:4px 10px; font-size:11.5px; color:${enabled ? '#ef4444' : '#10b981'}; border-color:${enabled ? 'rgba(239,68,68,0.35)' : 'rgba(16,185,129,0.4)'};" onclick="builderToggleEnabled('login', '${escapeHtml(id)}', false)">
+                            <i class="fa-solid ${enabled ? 'fa-trash-can' : 'fa-rotate-left'}"></i> ${enabled ? 'Hapus dari Halaman' : 'Pulihkan Seksi'}
+                        </button>
+                    `}
+                </div>
+            </div>
+        `;
+    }).join('');
+
+    const featItems = (lCfg.blocks.features_list && lCfg.blocks.features_list.items) || [];
+    const featRows = featItems.map((f, idx) => `
+        <div class="builder-block-row">
+            <div style="display:flex; align-items:center; gap:12px; min-width:0; flex:1;">
+                <div class="login-feature-icon ${escapeHtml(f.colorClass || 'icon-emerald')}" style="width:36px; height:36px; font-size:15px;">
+                    <i class="fa-solid ${escapeHtml(f.icon || 'fa-star')}"></i>
+                </div>
+                <div style="min-width:0;">
+                    <div style="font-size:13.5px; font-weight:800; color:var(--text-main);">${escapeHtml(f.title)}</div>
+                    <div style="font-size:12px; color:var(--text-muted);">${escapeHtml(f.desc)}</div>
+                </div>
+            </div>
+            <div class="builder-row-actions">
+                <button type="button" class="chart-icon-btn" onclick="builderMoveLoginFeature(${idx}, -1)" title="Geser Atas" ${idx === 0 ? 'disabled style="opacity:0.3;"' : ''}><i class="fa-solid fa-arrow-up"></i></button>
+                <button type="button" class="chart-icon-btn" onclick="builderMoveLoginFeature(${idx}, 1)" title="Geser Bawah" ${idx === featItems.length - 1 ? 'disabled style="opacity:0.3;"' : ''}><i class="fa-solid fa-arrow-down"></i></button>
+                <button type="button" class="btn btn-secondary" style="min-height:30px; padding:4px 10px; font-size:11.5px;" onclick="openBuilderEditModal('login_feature_item', '${idx}')">
+                    <i class="fa-solid fa-pen"></i> Edit
+                </button>
+                <button type="button" class="chart-icon-btn danger" onclick="builderDeleteLoginFeature(${idx})" title="Hapus Kartu Fitur Ini"><i class="fa-solid fa-trash-can"></i></button>
+            </div>
+        </div>
+    `).join('');
+
+    return `
+        <div class="glass-card" style="padding:20px 22px; margin-bottom:20px;">
+            <h3 style="font-size:15.5px; font-weight:800; margin:0 0 12px 0; display:flex; align-items:center; gap:8px;">
+                <i class="fa-solid fa-table-columns" style="color:var(--gold);"></i> A. Tata Letak Kolom Halaman Login (index.html)
+            </h3>
+            <div class="builder-layout-options">
+                <div class="builder-layout-card ${lCfg.layout === 'split-right' ? 'selected' : ''}" onclick="builderSetPageLayout('login', 'split-right')">
+                    <strong style="font-size:13.5px; color:var(--text-main);"><i class="fa-solid fa-columns" style="color:var(--gold);"></i> Info Kiri — Form Login Kanan</strong>
+                    <span style="font-size:12px; color:var(--text-muted);">Tata letak standar institusi: identitas &amp; video di kiri, kartu login sticky di kanan.</span>
+                </div>
+                <div class="builder-layout-card ${lCfg.layout === 'split-left' ? 'selected' : ''}" onclick="builderSetPageLayout('login', 'split-left')">
+                    <strong style="font-size:13.5px; color:var(--text-main);"><i class="fa-solid fa-right-left" style="color:#38bdf8;"></i> Form Login Kiri — Info Kanan</strong>
+                    <span style="font-size:12px; color:var(--text-muted);">Membalik posisi kartu login ke sisi kiri layar utama dan informasi ke kanan.</span>
+                </div>
+                <div class="builder-layout-card ${lCfg.layout === 'centered' ? 'selected' : ''}" onclick="builderSetPageLayout('login', 'centered')">
+                    <strong style="font-size:13.5px; color:var(--text-main);"><i class="fa-solid fa-align-center" style="color:#10b981;"></i> Satu Kolom Terpusat (Centered)</strong>
+                    <span style="font-size:12px; color:var(--text-muted);">Kartu form login fokus tepat di tengah atas, diikuti fitur &amp; video di bawahnya.</span>
+                </div>
+            </div>
+
+            <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:12px; margin-top:16px;">
+                <div class="builder-block-row">
+                    <div>
+                        <div style="font-size:13px; font-weight:800;">Bar Kontak &amp; Jam Layanan Atas</div>
+                        <div style="font-size:11.5px; color:var(--text-muted);">${escapeHtml(lCfg.topBar.email)} &bull; ${escapeHtml(lCfg.topBar.phone)}</div>
+                    </div>
+                    <div class="builder-row-actions">
+                        <button type="button" class="btn btn-secondary" style="min-height:30px; padding:4px 10px; font-size:11.5px;" onclick="openBuilderEditModal('topbar', 'login')"><i class="fa-solid fa-pen"></i> Edit</button>
+                        <button type="button" class="btn btn-secondary" style="min-height:30px; padding:4px 10px; font-size:11.5px; color:${lCfg.showTopBar ? '#ef4444' : '#10b981'};" onclick="builderToggleTopBar('login')">
+                            ${lCfg.showTopBar ? 'Sembunyikan' : 'Tampilkan'}
+                        </button>
+                    </div>
+                </div>
+
+                <div class="builder-block-row">
+                    <div>
+                        <div style="font-size:13px; font-weight:800;">Kartu Form Login &amp; Kotak Akun Demo</div>
+                        <div style="font-size:11.5px; color:var(--text-muted);">${escapeHtml(lCfg.loginBox.title)} &bull; Demo: ${lCfg.loginBox.showPresetDemo !== false ? 'Tampil' : 'Disembunyikan'}</div>
+                    </div>
+                    <div class="builder-row-actions">
+                        <button type="button" class="btn btn-secondary" style="min-height:30px; padding:4px 10px; font-size:11.5px;" onclick="openBuilderEditModal('login_box', 'login')"><i class="fa-solid fa-pen"></i> Edit Kartu Login</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="glass-card" style="padding:20px 22px; margin-bottom:20px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:14px;">
+                <div>
+                    <h3 style="font-size:15.5px; font-weight:800; margin:0;"><i class="fa-solid fa-layer-group" style="color:var(--gold);"></i> B. Urutan Seksi &amp; Blok Konten Halaman Login</h3>
+                    <span style="font-size:12px; color:var(--text-muted);">Atur urutan tampil (<kbd>↑</kbd>/<kbd>↓</kbd>), edit teks/video, hapus seksi dari halaman, atau tambah blok pengumuman baru.</span>
+                </div>
+                <button type="button" class="btn btn-primary" style="font-size:12px; min-height:36px;" onclick="openBuilderEditModal('add_custom_block', 'login')">
+                    <i class="fa-solid fa-plus"></i> Tambah Seksi / Blok Baru
+                </button>
+            </div>
+            <div class="builder-block-list">${heroRows}</div>
+        </div>
+
+        <div class="glass-card" style="padding:20px 22px; margin-bottom:20px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:14px;">
+                <div>
+                    <h3 style="font-size:15.5px; font-weight:800; margin:0;"><i class="fa-solid fa-star" style="color:var(--gold);"></i> C. Kelola Kartu Fitur Sorotan Login (Tambah, Edit, Urutkan &amp; Hapus)</h3>
+                    <span style="font-size:12px; color:var(--text-muted);">Tidak terbatas 3 fitur — Anda bebas menambah fitur baru, mengubah ikon/teks, atau menghapusnya.</span>
+                </div>
+                <button type="button" class="btn btn-primary" style="font-size:12px; min-height:36px;" onclick="openBuilderEditModal('add_login_feature', '')">
+                    <i class="fa-solid fa-plus"></i> Tambah Kartu Fitur
+                </button>
+            </div>
+            <div class="builder-block-list">${featRows || '<div style="padding:16px; text-align:center; color:var(--text-muted); font-size:13px;">Belum ada kartu fitur. Klik "+ Tambah Kartu Fitur" untuk membuat baru.</div>'}</div>
+        </div>
+    `;
+}
+
+/* --------------------------------------------------------------------------
+   STUDIO 2: HALAMAN PORTAL USER / PELAPOR (pages/user.html)
+   -------------------------------------------------------------------------- */
+function buildUserStudioHtml(uCfg) {
+    const pageRows = (uCfg.pageOrder || []).map((id, idx, arr) => {
+        let label = '';
+        let sub = '';
+        let enabled = true;
+        let isCustom = false;
+
+        if (id === 'user_banner') {
+            const b = uCfg.blocks.user_banner;
+            enabled = b.enabled !== false;
+            label = 'Hero Banner Utama Portal Pelapor';
+            sub = `${b.title} (${(b.pills || []).length} pill keunggulan)`;
+        } else if (id === 'user_workspace') {
+            label = 'Area Kerja Utama (Navigasi Tab / Formulir, Riwayat & Lacak Tiket)';
+            sub = 'Blok inti layanan pengaduan civitas kampus';
+        } else {
+            const cb = (uCfg.customBlocks || []).find(c => c.id === id);
+            if (!cb) return '';
+            isCustom = true;
+            enabled = cb.enabled !== false;
+            label = `[Seksi Kustom] ${cb.title}`;
+            sub = cb.desc || '';
+        }
+
+        return `
+            <div class="builder-block-row ${enabled ? '' : 'is-disabled'}">
+                <div style="display:flex; align-items:center; gap:12px; min-width:0; flex:1;">
+                    <span style="width:28px; height:28px; border-radius:8px; background:var(--gold-light); color:var(--gold); font-weight:800; font-size:12px; display:inline-flex; align-items:center; justify-content:center; flex-shrink:0;">${idx + 1}</span>
+                    <div style="min-width:0;">
+                        <div style="font-size:13.5px; font-weight:800; color:var(--text-main);">${escapeHtml(label)}</div>
+                        <div style="font-size:12px; color:var(--text-muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:520px;">${escapeHtml(sub)}</div>
+                    </div>
+                </div>
+                <div class="builder-row-actions">
+                    <button type="button" class="chart-icon-btn" onclick="builderMoveOrder('user_page', '${escapeHtml(id)}', -1)" title="Geser ke Atas" ${idx === 0 ? 'disabled style="opacity:0.3;"' : ''}><i class="fa-solid fa-arrow-up"></i></button>
+                    <button type="button" class="chart-icon-btn" onclick="builderMoveOrder('user_page', '${escapeHtml(id)}', 1)" title="Geser ke Bawah" ${idx === arr.length - 1 ? 'disabled style="opacity:0.3;"' : ''}><i class="fa-solid fa-arrow-down"></i></button>
+                    ${id === 'user_banner' ? `
+                        <button type="button" class="btn btn-secondary" style="min-height:30px; padding:4px 10px; font-size:11.5px;" onclick="openBuilderEditModal('user_banner', 'user_banner')"><i class="fa-solid fa-pen"></i> Edit Banner</button>
+                        <button type="button" class="btn btn-secondary" style="min-height:30px; padding:4px 10px; font-size:11.5px; color:${enabled ? '#ef4444' : '#10b981'};" onclick="builderToggleEnabled('user', 'user_banner', false)">
+                            ${enabled ? 'Hapus Banner' : 'Pulihkan Banner'}
+                        </button>
+                    ` : ''}
+                    ${isCustom ? `
+                        <button type="button" class="btn btn-secondary" style="min-height:30px; padding:4px 10px; font-size:11.5px;" onclick="openBuilderEditModal('custom_block', '${escapeHtml(id)}')"><i class="fa-solid fa-pen"></i> Edit</button>
+                        <button type="button" class="btn btn-secondary" style="min-height:30px; padding:4px 10px; font-size:11.5px;" onclick="builderToggleEnabled('user', '${escapeHtml(id)}', true)">${enabled ? 'Aktif' : 'Nonaktif'}</button>
+                        <button type="button" class="chart-icon-btn danger" onclick="builderDeleteCustomBlock('user', '${escapeHtml(id)}')" title="Hapus Permanen"><i class="fa-solid fa-trash-can"></i></button>
+                    ` : ''}
+                </div>
+            </div>
+        `;
+    }).join('');
+
+    const tabRows = (uCfg.tabOrder || []).map((tid, idx, arr) => {
+        let b = uCfg.blocks[tid];
+        let isCustom = false;
+        if (!b) {
+            b = (uCfg.customBlocks || []).find(c => c.id === tid && c.placement === 'tab');
+            isCustom = true;
+        }
+        if (!b) return '';
+        const enabled = b.enabled !== false;
+        return `
+            <div class="builder-block-row ${enabled ? '' : 'is-disabled'}">
+                <div style="display:flex; align-items:center; gap:12px; min-width:0; flex:1;">
+                    <div class="kpi-box-icon icon-emerald" style="width:36px; height:36px; font-size:14px;">
+                        <i class="fa-solid ${escapeHtml(b.icon || 'fa-folder')}"></i>
+                    </div>
+                    <div style="min-width:0;">
+                        <div style="font-size:13.5px; font-weight:800; color:var(--text-main);">
+                            ${isCustom ? '[Tab Kustom] ' : ''}Tab: ${escapeHtml(b.tabLabel || b.title)}
+                        </div>
+                        <div style="font-size:12px; color:var(--text-muted);">${escapeHtml(b.title)} &mdash; ${escapeHtml(b.desc || '')}</div>
+                    </div>
+                </div>
+                <div class="builder-row-actions">
+                    <button type="button" class="chart-icon-btn" onclick="builderMoveOrder('user_tabs', '${escapeHtml(tid)}', -1)" title="Geser Kiri/Atas" ${idx === 0 ? 'disabled style="opacity:0.3;"' : ''}><i class="fa-solid fa-arrow-up"></i></button>
+                    <button type="button" class="chart-icon-btn" onclick="builderMoveOrder('user_tabs', '${escapeHtml(tid)}', 1)" title="Geser Kanan/Bawah" ${idx === arr.length - 1 ? 'disabled style="opacity:0.3;"' : ''}><i class="fa-solid fa-arrow-down"></i></button>
+                    <button type="button" class="btn btn-secondary" style="min-height:30px; padding:4px 10px; font-size:11.5px;" onclick="openBuilderEditModal('${isCustom ? 'custom_block' : 'user_builtin_tab'}', '${escapeHtml(tid)}')">
+                        <i class="fa-solid fa-pen"></i> Edit
+                    </button>
+                    ${isCustom ? `
+                        <button type="button" class="chart-icon-btn danger" onclick="builderDeleteCustomBlock('user', '${escapeHtml(tid)}')" title="Hapus Tab Ini"><i class="fa-solid fa-trash-can"></i></button>
+                    ` : `
+                        <button type="button" class="btn btn-secondary" style="min-height:30px; padding:4px 10px; font-size:11.5px; color:${enabled ? '#ef4444' : '#10b981'};" onclick="builderToggleEnabled('user', '${escapeHtml(tid)}', false)">
+                            ${enabled ? 'Hapus / Nonaktifkan' : 'Pulihkan Tab'}
+                        </button>
+                    `}
+                </div>
+            </div>
+        `;
+    }).join('');
+
+    const pills = (uCfg.blocks.user_banner && uCfg.blocks.user_banner.pills) || [];
+    const pillChips = pills.map((p, i) => `
+        <span style="display:inline-flex; align-items:center; gap:8px; padding:6px 12px; border-radius:9999px; background:rgba(255,255,255,0.05); border:1px solid var(--border-color); font-size:12px; font-weight:700;">
+            <i class="fa-solid ${escapeHtml(p.icon || 'fa-check')}" style="color:var(--gold);"></i>
+            <span>${escapeHtml(p.text)}</span>
+            <button type="button" onclick="openBuilderEditModal('user_banner_pill', '${i}')" style="background:none; border:none; color:#38bdf8; cursor:pointer; padding:0;" title="Edit Pill"><i class="fa-solid fa-pen"></i></button>
+            <button type="button" onclick="builderDeleteBannerPill(${i})" style="background:none; border:none; color:#ef4444; cursor:pointer; padding:0;" title="Hapus Pill"><i class="fa-solid fa-xmark"></i></button>
+        </span>
+    `).join('');
+
+    return `
+        <div class="glass-card" style="padding:20px 22px; margin-bottom:20px;">
+            <h3 style="font-size:15.5px; font-weight:800; margin:0 0 12px 0; display:flex; align-items:center; gap:8px;">
+                <i class="fa-solid fa-table-columns" style="color:var(--gold);"></i> A. Tata Letak Halaman Portal Pelapor (pages/user.html)
+            </h3>
+            <div class="builder-layout-options">
+                <div class="builder-layout-card ${uCfg.layout === 'tabs' ? 'selected' : ''}" onclick="builderSetPageLayout('user', 'tabs')">
+                    <strong style="font-size:13.5px; color:var(--text-main);"><i class="fa-solid fa-folder-tree" style="color:var(--gold);"></i> Mode Navigasi Tab Terpisah</strong>
+                    <span style="font-size:12px; color:var(--text-muted);">Formulir, Riwayat, Lacak Tiket &amp; Tab tambahan dibagi rapi menggunakan tombol tab.</span>
+                </div>
+                <div class="builder-layout-card ${uCfg.layout === 'stacked' ? 'selected' : ''}" onclick="builderSetPageLayout('user', 'stacked')">
+                    <strong style="font-size:13.5px; color:var(--text-main);"><i class="fa-solid fa-bars-staggered" style="color:#38bdf8;"></i> Mode Semua Seksi Terbuka (Stacked)</strong>
+                    <span style="font-size:12px; color:var(--text-muted);">Menampilkan seluruh seksi aktif secara berurutan dari atas ke bawah dalam satu halaman penuh.</span>
+                </div>
+                <div class="builder-layout-card ${uCfg.containerWidth === 'wide' ? 'selected' : ''}" onclick="builderToggleUserWidth()">
+                    <strong style="font-size:13.5px; color:var(--text-main);"><i class="fa-solid fa-arrows-left-right-to-line" style="color:#10b981;"></i> Lebar Halaman: ${uCfg.containerWidth === 'wide' ? 'Lebar Penuh (1460px)' : 'Proporsional Standar (1260px)'}</strong>
+                    <span style="font-size:12px; color:var(--text-muted);">Klik untuk beralih antara kontainer standar atau kontainer ekstra lebar.</span>
+                </div>
+            </div>
+
+            <div class="builder-block-row" style="margin-top:14px;">
+                <div>
+                    <div style="font-size:13px; font-weight:800;">Bar Kontak Layanan Atas (Portal User)</div>
+                    <div style="font-size:11.5px; color:var(--text-muted);">${escapeHtml(uCfg.topBar.email)} &bull; ${escapeHtml(uCfg.topBar.badge)}</div>
+                </div>
+                <div class="builder-row-actions">
+                    <button type="button" class="btn btn-secondary" style="min-height:30px; padding:4px 10px; font-size:11.5px;" onclick="openBuilderEditModal('topbar', 'user')"><i class="fa-solid fa-pen"></i> Edit</button>
+                    <button type="button" class="btn btn-secondary" style="min-height:30px; padding:4px 10px; font-size:11.5px; color:${uCfg.showTopBar ? '#ef4444' : '#10b981'};" onclick="builderToggleTopBar('user')">
+                        ${uCfg.showTopBar ? 'Sembunyikan' : 'Tampilkan'}
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="glass-card" style="padding:20px 22px; margin-bottom:20px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:14px;">
+                <div>
+                    <h3 style="font-size:15.5px; font-weight:800; margin:0;"><i class="fa-solid fa-arrows-up-down" style="color:var(--gold);"></i> B. Urutan Seksi Halaman &amp; Pill Banner Pelapor</h3>
+                    <span style="font-size:12px; color:var(--text-muted);">Atur posisi Banner Utama, Area Kerja, serta tambahkan kartu pengumuman di atas/bawah halaman.</span>
+                </div>
+                <div style="display:flex; gap:8px; flex-wrap:wrap;">
+                    <button type="button" class="btn btn-secondary" style="font-size:12px; min-height:36px;" onclick="openBuilderEditModal('add_banner_pill', '')">
+                        <i class="fa-solid fa-tag"></i> + Pill Banner
+                    </button>
+                    <button type="button" class="btn btn-primary" style="font-size:12px; min-height:36px;" onclick="openBuilderEditModal('add_custom_block', 'user_section')">
+                        <i class="fa-solid fa-plus"></i> Tambah Seksi Halaman
+                    </button>
+                </div>
+            </div>
+            <div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:14px;">${pillChips}</div>
+            <div class="builder-block-list">${pageRows}</div>
+        </div>
+
+        <div class="glass-card" style="padding:20px 22px; margin-bottom:20px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:14px;">
+                <div>
+                    <h3 style="font-size:15.5px; font-weight:800; margin:0;"><i class="fa-solid fa-window-restore" style="color:var(--gold);"></i> C. Kelola Tab &amp; Seksi Layanan Pelapor (Tambah, Edit, Urutkan &amp; Hapus)</h3>
+                    <span style="font-size:12px; color:var(--text-muted);">Ubah nama tab/judul seksi, urutkan posisi tab, nonaktifkan seksi, atau buat Menu Tab baru (misal: SOP &amp; Kontak Darurat).</span>
+                </div>
+                <button type="button" class="btn btn-primary" style="font-size:12px; min-height:36px;" onclick="openBuilderEditModal('add_custom_block', 'user_tab')">
+                    <i class="fa-solid fa-plus"></i> Tambah Menu Tab Baru
+                </button>
+            </div>
+            <div class="builder-block-list">${tabRows}</div>
+        </div>
+    `;
+}
+
+/* --------------------------------------------------------------------------
+   STUDIO 3: HALAMAN DASHBOARD ADMIN (pages/admin.html)
+   -------------------------------------------------------------------------- */
+function buildAdminStudioHtml(aCfg) {
+    const secRows = (aCfg.sectionOrder || []).map((sid, idx, arr) => {
+        let b = aCfg.blocks[sid];
+        let isCustom = false;
+        if (!b) {
+            b = (aCfg.customBlocks || []).find(c => c.id === sid);
+            isCustom = true;
+        }
+        if (!b) return '';
+        const enabled = b.enabled !== false;
+        const label = isCustom ? `[Widget Kustom] ${b.title}` : (b.label || b.title);
+
+        return `
+            <div class="builder-block-row ${enabled ? '' : 'is-disabled'}">
+                <div style="display:flex; align-items:center; gap:12px; min-width:0; flex:1;">
+                    <span style="width:28px; height:28px; border-radius:8px; background:var(--gold-light); color:var(--gold); font-weight:800; font-size:12px; display:inline-flex; align-items:center; justify-content:center; flex-shrink:0;">${idx + 1}</span>
+                    <div style="min-width:0;">
+                        <div style="font-size:13.5px; font-weight:800; color:var(--text-main);">${escapeHtml(label)}</div>
+                        <div style="font-size:12px; color:var(--text-muted);">${escapeHtml(b.desc || '')}</div>
+                    </div>
+                </div>
+                <div class="builder-row-actions">
+                    <button type="button" class="chart-icon-btn" onclick="builderMoveOrder('admin_sec', '${escapeHtml(sid)}', -1)" title="Geser ke Atas" ${idx === 0 ? 'disabled style="opacity:0.3;"' : ''}><i class="fa-solid fa-arrow-up"></i></button>
+                    <button type="button" class="chart-icon-btn" onclick="builderMoveOrder('admin_sec', '${escapeHtml(sid)}', 1)" title="Geser ke Bawah" ${idx === arr.length - 1 ? 'disabled style="opacity:0.3;"' : ''}><i class="fa-solid fa-arrow-down"></i></button>
+                    ${sid !== 'admin_table' ? `
+                        <button type="button" class="btn btn-secondary" style="min-height:30px; padding:4px 10px; font-size:11.5px;" onclick="openBuilderEditModal('${isCustom ? 'custom_block' : 'admin_builtin'}', '${escapeHtml(sid)}')">
+                            <i class="fa-solid fa-pen"></i> Edit
+                        </button>
+                    ` : ''}
+                    ${isCustom ? `
+                        <button type="button" class="btn btn-secondary" style="min-height:30px; padding:4px 10px; font-size:11.5px;" onclick="builderToggleEnabled('admin', '${escapeHtml(sid)}', true)">${enabled ? 'Aktif' : 'Nonaktif'}</button>
+                        <button type="button" class="chart-icon-btn danger" onclick="builderDeleteCustomBlock('admin', '${escapeHtml(sid)}')" title="Hapus Permanen Widget Ini"><i class="fa-solid fa-trash-can"></i></button>
+                    ` : `
+                        <button type="button" class="btn btn-secondary" style="min-height:30px; padding:4px 10px; font-size:11.5px; color:${enabled ? '#ef4444' : '#10b981'};" onclick="builderToggleEnabled('admin', '${escapeHtml(sid)}', false)">
+                            ${enabled ? 'Hapus dari Dashboard' : 'Pulihkan Seksi'}
+                        </button>
+                    `}
+                </div>
+            </div>
+        `;
+    }).join('');
+
+    return `
+        <div class="glass-card" style="padding:20px 22px; margin-bottom:20px;">
+            <h3 style="font-size:15.5px; font-weight:800; margin:0 0 12px 0; display:flex; align-items:center; gap:8px;">
+                <i class="fa-solid fa-table-columns" style="color:var(--gold);"></i> A. Tata Letak Sidebar &amp; Grid Dashboard Admin (pages/admin.html)
+            </h3>
+            <div class="builder-layout-options">
+                <div class="builder-layout-card ${aCfg.sidebarPosition === 'left' ? 'selected' : ''}" onclick="builderSetAdminSidebarPos('left')">
+                    <strong style="font-size:13.5px; color:var(--text-main);"><i class="fa-solid fa-indent" style="color:var(--gold);"></i> Navigasi Sidebar di Kiri</strong>
+                    <span style="font-size:12px; color:var(--text-muted);">Tata letak klasik: menu navigasi di sisi kiri dan area kerja di sisi kanan.</span>
+                </div>
+                <div class="builder-layout-card ${aCfg.sidebarPosition === 'right' ? 'selected' : ''}" onclick="builderSetAdminSidebarPos('right')">
+                    <strong style="font-size:13.5px; color:var(--text-main);"><i class="fa-solid fa-outdent" style="color:#38bdf8;"></i> Navigasi Sidebar di Kanan</strong>
+                    <span style="font-size:12px; color:var(--text-muted);">Memindahkan panel sidebar ke sisi kanan layar dan area kerja utama ke kiri.</span>
+                </div>
+                <div class="builder-layout-card ${aCfg.kpiColumns === '2' ? 'selected' : ''}" onclick="builderToggleAdminKpiCols()">
+                    <strong style="font-size:13.5px; color:var(--text-main);"><i class="fa-solid fa-grip" style="color:#10b981;"></i> Grid Kartu KPI: ${aCfg.kpiColumns === '2' ? '2×2 Kolom Lebar' : '4 Kolom Sejajar'}</strong>
+                    <span style="font-size:12px; color:var(--text-muted);">Klik untuk mengganti susunan kartu metrik KPI di bagian atas dashboard.</span>
+                </div>
+            </div>
+
+            <div class="builder-block-row" style="margin-top:14px;">
+                <div>
+                    <div style="font-size:13px; font-weight:800;">Header Utama Dashboard Admin</div>
+                    <div style="font-size:11.5px; color:var(--text-muted);">${escapeHtml(aCfg.header.title)} &mdash; ${escapeHtml(aCfg.header.desc)}</div>
+                </div>
+                <div class="builder-row-actions">
+                    <button type="button" class="btn btn-secondary" style="min-height:30px; padding:4px 10px; font-size:11.5px;" onclick="openBuilderEditModal('admin_header', 'admin')"><i class="fa-solid fa-pen"></i> Edit Judul Header</button>
+                    <button type="button" class="btn btn-secondary" style="min-height:30px; padding:4px 10px; font-size:11.5px; color:${aCfg.header.enabled !== false ? '#ef4444' : '#10b981'};" onclick="builderToggleAdminHeader()">
+                        ${aCfg.header.enabled !== false ? 'Sembunyikan' : 'Tampilkan'}
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="glass-card" style="padding:20px 22px; margin-bottom:20px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:14px;">
+                <div>
+                    <h3 style="font-size:15.5px; font-weight:800; margin:0;"><i class="fa-solid fa-cubes-stacked" style="color:var(--gold);"></i> B. Urutan Seksi &amp; Widget Dashboard Utama (Tambah, Edit, Urutkan &amp; Hapus)</h3>
+                    <span style="font-size:12px; color:var(--text-muted);">Atur urutan KPI, Pusat Grafik Data, Peta GIS, Tabel Laporan, atau tambahkan Widget Pengumuman Internal baru.</span>
+                </div>
+                <button type="button" class="btn btn-primary" style="font-size:12px; min-height:36px;" onclick="openBuilderEditModal('add_custom_block', 'admin')">
+                    <i class="fa-solid fa-plus"></i> Tambah Widget / Seksi Baru
+                </button>
+            </div>
+            <div class="builder-block-list">${secRows}</div>
+        </div>
+    `;
+}
+
+/* --------------------------------------------------------------------------
+   BUILDER ACTIONS: LAYOUT, MOVE, TOGGLE, DELETE, RESET
+   -------------------------------------------------------------------------- */
+function builderSetPageLayout(pageKey, layoutVal) {
+    if (!ensureSuperAdminForBuilder()) return;
+    const cfg = getBuilderCfg();
+    cfg[pageKey].layout = layoutVal;
+    commitBuilderCfg(cfg, `Tata letak halaman ${pageKey.toUpperCase()} diperbarui!`, `Mengubah tata letak halaman ${pageKey} ke mode ${layoutVal}`);
+}
+
+function builderToggleUserWidth() {
+    if (!ensureSuperAdminForBuilder()) return;
+    const cfg = getBuilderCfg();
+    cfg.user.containerWidth = cfg.user.containerWidth === 'wide' ? 'normal' : 'wide';
+    commitBuilderCfg(cfg, 'Lebar kontainer Portal User diperbarui!', `Mengubah lebar kontainer halaman user ke ${cfg.user.containerWidth}`);
+}
+
+function builderSetAdminSidebarPos(pos) {
+    if (!ensureSuperAdminForBuilder()) return;
+    const cfg = getBuilderCfg();
+    cfg.admin.sidebarPosition = pos;
+    commitBuilderCfg(cfg, `Posisi sidebar diubah ke sisi ${pos === 'right' ? 'Kanan' : 'Kiri'}!`, `Mengubah posisi sidebar dashboard ke ${pos}`);
+}
+
+function builderToggleAdminKpiCols() {
+    if (!ensureSuperAdminForBuilder()) return;
+    const cfg = getBuilderCfg();
+    cfg.admin.kpiColumns = cfg.admin.kpiColumns === '2' ? '4' : '2';
+    commitBuilderCfg(cfg, `Tata letak kartu KPI diubah ke ${cfg.admin.kpiColumns} kolom!`, `Mengubah kolom KPI dashboard ke ${cfg.admin.kpiColumns}`);
+}
+
+function builderToggleAdminHeader() {
+    if (!ensureSuperAdminForBuilder()) return;
+    const cfg = getBuilderCfg();
+    cfg.admin.header.enabled = !(cfg.admin.header.enabled !== false);
+    commitBuilderCfg(cfg, 'Visibilitas header dashboard diperbarui!', 'Mengubah visibilitas header utama dashboard');
+}
+
+function builderToggleTopBar(pageKey) {
+    if (!ensureSuperAdminForBuilder()) return;
+    const cfg = getBuilderCfg();
+    cfg[pageKey].showTopBar = !cfg[pageKey].showTopBar;
+    commitBuilderCfg(cfg, 'Status bar kontak atas diperbarui!', `Mengubah visibilitas top utility bar pada halaman ${pageKey}`);
+}
+
+function builderMoveOrder(listType, itemId, dir) {
+    if (!ensureSuperAdminForBuilder()) return;
+    const cfg = getBuilderCfg();
+    let arr = null;
+    if (listType === 'login_hero') arr = cfg.login.heroOrder;
+    else if (listType === 'user_page') arr = cfg.user.pageOrder;
+    else if (listType === 'user_tabs') arr = cfg.user.tabOrder;
+    else if (listType === 'admin_sec') arr = cfg.admin.sectionOrder;
+    if (!Array.isArray(arr)) return;
+
+    const idx = arr.indexOf(itemId);
+    if (idx < 0) return;
+    const targetIdx = idx + dir;
+    if (targetIdx < 0 || targetIdx >= arr.length) return;
+    const tmp = arr[idx];
+    arr[idx] = arr[targetIdx];
+    arr[targetIdx] = tmp;
+
+    commitBuilderCfg(cfg, 'Urutan tata letak seksi berhasil digeser!', `Menggeser urutan komponen ${itemId} pada ${listType}`);
+}
+
+function builderMoveLoginFeature(idx, dir) {
+    if (!ensureSuperAdminForBuilder()) return;
+    const cfg = getBuilderCfg();
+    const items = cfg.login.blocks.features_list.items || [];
+    const targetIdx = idx + dir;
+    if (targetIdx < 0 || targetIdx >= items.length) return;
+    const tmp = items[idx];
+    items[idx] = items[targetIdx];
+    items[targetIdx] = tmp;
+    commitBuilderCfg(cfg, 'Urutan kartu fitur login diperbarui!', 'Mengubah urutan kartu fitur sorotan login');
+}
+
+function builderDeleteLoginFeature(idx) {
+    if (!ensureSuperAdminForBuilder()) return;
+    const cfg = getBuilderCfg();
+    const items = cfg.login.blocks.features_list.items || [];
+    const target = items[idx];
+    if (!target) return;
+    if (!confirm(`Hapus kartu fitur "${target.title}" dari halaman Login?`)) return;
+    items.splice(idx, 1);
+    commitBuilderCfg(cfg, 'Kartu fitur dihapus dari halaman Login.', `Menghapus kartu fitur login: ${target.title}`);
+}
+
+function builderDeleteBannerPill(idx) {
+    if (!ensureSuperAdminForBuilder()) return;
+    const cfg = getBuilderCfg();
+    const pills = cfg.user.blocks.user_banner.pills || [];
+    if (!pills[idx]) return;
+    pills.splice(idx, 1);
+    commitBuilderCfg(cfg, 'Pill banner dihapus.', 'Menghapus pill keunggulan pada banner user');
+}
+
+function builderToggleEnabled(pageKey, blockId, isCustom) {
+    if (!ensureSuperAdminForBuilder()) return;
+    const cfg = getBuilderCfg();
+    if (isCustom) {
+        const cb = (cfg[pageKey].customBlocks || []).find(c => c.id === blockId);
+        if (cb) cb.enabled = !(cb.enabled !== false);
+    } else if (cfg[pageKey].blocks && cfg[pageKey].blocks[blockId]) {
+        const b = cfg[pageKey].blocks[blockId];
+        b.enabled = !(b.enabled !== false);
+    }
+    commitBuilderCfg(cfg, 'Status tampilan komponen diperbarui!', `Mengubah visibilitas komponen ${blockId} pada halaman ${pageKey}`);
+}
+
+function builderDeleteCustomBlock(pageKey, blockId) {
+    if (!ensureSuperAdminForBuilder()) return;
+    const cfg = getBuilderCfg();
+    const cb = (cfg[pageKey].customBlocks || []).find(c => c.id === blockId);
+    if (!cb) return;
+    if (!confirm(`Hapus permanen komponen "${cb.title}" dari halaman ${pageKey.toUpperCase()}?`)) return;
+
+    cfg[pageKey].customBlocks = (cfg[pageKey].customBlocks || []).filter(c => c.id !== blockId);
+    if (pageKey === 'login') cfg.login.heroOrder = cfg.login.heroOrder.filter(id => id !== blockId);
+    if (pageKey === 'user') {
+        cfg.user.pageOrder = cfg.user.pageOrder.filter(id => id !== blockId);
+        cfg.user.tabOrder = cfg.user.tabOrder.filter(id => id !== blockId);
+    }
+    if (pageKey === 'admin') cfg.admin.sectionOrder = cfg.admin.sectionOrder.filter(id => id !== blockId);
+
+    commitBuilderCfg(cfg, 'Komponen kustom berhasil dihapus permanen.', `Menghapus komponen kustom ${cb.title} dari halaman ${pageKey}`);
+}
+
+function resetCurrentBuilderPageToDefault() {
+    if (!ensureSuperAdminForBuilder()) return;
+    if (!window.SimpelSiteBuilder) return;
+    const pageNames = { login: 'Halaman Login', user: 'Halaman Portal User', admin: 'Halaman Dashboard Admin' };
+    if (!confirm(`Kembalikan seluruh tata letak dan konten ${pageNames[currentBuilderPageKey]} ke standar awal UINSSC?`)) return;
+
+    const cfg = getBuilderCfg();
+    cfg[currentBuilderPageKey] = JSON.parse(JSON.stringify(window.SimpelSiteBuilder.DEFAULT_SITE_CONFIG[currentBuilderPageKey]));
+    commitBuilderCfg(cfg, `${pageNames[currentBuilderPageKey]} dikembalikan ke pengaturan bawaan!`, `Reset konfigurasi ${pageNames[currentBuilderPageKey]} ke default`);
+}
+
+/* --------------------------------------------------------------------------
+   UNIVERSAL MODAL EDITOR FOR ADDING & EDITING ANY PAGE ITEM
+   -------------------------------------------------------------------------- */
+function buildIconOptionsHtml(selectedVal) {
+    return BUILDER_ICONS_CATALOG.map(ic =>
+        `<option value="${ic.value}" ${ic.value === selectedVal ? 'selected' : ''}>${escapeHtml(ic.label)}</option>`
+    ).join('');
+}
+
+function buildAccentOptionsHtml(selectedVal) {
+    return BUILDER_ACCENT_CATALOG.map(ac =>
+        `<option value="${ac.value}" ${ac.value === selectedVal ? 'selected' : ''}>${escapeHtml(ac.label)}</option>`
+    ).join('');
+}
+
+function openBuilderEditModal(mode, targetId) {
+    if (!ensureSuperAdminForBuilder()) return;
+    const modal = document.getElementById('builderEditorModal');
+    const titleEl = document.getElementById('builderEditorModalTitle');
+    const container = document.getElementById('builderEditorFieldsContainer');
+    if (!modal || !container) return;
+
+    const cfg = getBuilderCfg();
+    activeBuilderModalCtx = { mode, targetId };
+    let html = '';
+
+    if (mode === 'topbar') {
+        const tb = cfg[targetId].topBar;
+        titleEl.innerHTML = `<i class="fa-solid fa-grip-lines" style="color:var(--gold);"></i> Edit Bar Kontak Atas (${targetId.toUpperCase()})`;
+        html = `
+            <div class="form-group"><label>Alamat Email Resmi:</label><input type="text" id="be_email" value="${escapeHtml(tb.email)}" required></div>
+            <div class="form-group"><label>Nomor Telepon Layanan:</label><input type="text" id="be_phone" value="${escapeHtml(tb.phone)}" required></div>
+            <div class="form-group"><label>Jam Operasional:</label><input type="text" id="be_hours" value="${escapeHtml(tb.hours)}" required></div>
+            <div class="form-group"><label>Teks Badge Kanan:</label><input type="text" id="be_badge" value="${escapeHtml(tb.badge)}" required></div>
+        `;
+    } else if (mode === 'login_box') {
+        const lb = cfg.login.loginBox;
+        titleEl.innerHTML = `<i class="fa-solid fa-id-card" style="color:var(--gold);"></i> Edit Kartu Form Login &amp; Akun Demo`;
+        html = `
+            <div class="form-group"><label>Tagline Atas Kartu:</label><input type="text" id="be_sub" value="${escapeHtml(lb.subtitle)}" required></div>
+            <div class="form-group"><label>Judul Kartu Login:</label><input type="text" id="be_title" value="${escapeHtml(lb.title)}" required></div>
+            <div class="form-group"><label>Subjudul Instruksi:</label><input type="text" id="be_desc" value="${escapeHtml(lb.desc)}"></div>
+            <div class="form-group"><label>Judul Kotak Akun Demo Cepat:</label><input type="text" id="be_preset_title" value="${escapeHtml(lb.presetTitle || '')}"></div>
+            <label style="display:flex; align-items:center; gap:8px; font-size:13px; font-weight:700; cursor:pointer;">
+                <input type="checkbox" id="be_show_preset" ${lb.showPresetDemo !== false ? 'checked' : ''} style="width:16px; height:16px; accent-color:var(--gold);">
+                <span>Tampilkan Kotak Akun Demo Uji Coba 1-Klik di Kartu Login</span>
+            </label>
+        `;
+    } else if (mode === 'login_builtin') {
+        const b = cfg.login.blocks[targetId];
+        if (targetId === 'hero_header') {
+            titleEl.innerHTML = `<i class="fa-solid fa-heading" style="color:var(--gold);"></i> Edit Header Sambutan Login`;
+            html = `
+                <div class="form-group"><label>Teks Badge Institusi:</label><input type="text" id="be_badge" value="${escapeHtml(b.badge)}" required></div>
+                <div class="form-group"><label>Judul Utama Halaman Login:</label><input type="text" id="be_title" value="${escapeHtml(b.title)}" required></div>
+                <div class="form-group"><label>Deskripsi Sambutan:</label><textarea id="be_desc" rows="3" required>${escapeHtml(b.desc)}</textarea></div>
+            `;
+        } else if (targetId === 'video_profile') {
+            titleEl.innerHTML = `<i class="fa-brands fa-youtube" style="color:#ef4444;"></i> Edit Video Profil Kampus (YouTube)`;
+            html = `
+                <div class="form-group"><label>Label Badge Video:</label><input type="text" id="be_badge" value="${escapeHtml(b.badge || 'PROFIL KAMPUS CYBER')}"></div>
+                <div class="form-group"><label>Tautan URL YouTube / Video ID:</label><input type="text" id="be_url" value="${escapeHtml(b.url)}" placeholder="https://youtu.be/..." required></div>
+                <div class="form-group"><label>Judul Video:</label><input type="text" id="be_title" value="${escapeHtml(b.title)}" required></div>
+                <div class="form-group"><label>Deskripsi Singkat Video:</label><textarea id="be_desc" rows="2">${escapeHtml(b.desc)}</textarea></div>
+            `;
+        }
+    } else if (mode === 'add_login_feature' || mode === 'login_feature_item') {
+        const isEdit = mode === 'login_feature_item';
+        const f = isEdit
+            ? cfg.login.blocks.features_list.items[parseInt(targetId, 10)]
+            : { icon: 'fa-shield-halved', colorClass: 'icon-emerald', title: '', desc: '' };
+        titleEl.innerHTML = `<i class="fa-solid fa-star" style="color:var(--gold);"></i> ${isEdit ? 'Edit Kartu Fitur Login' : 'Tambah Kartu Fitur Login Baru'}`;
+        html = `
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+                <div class="form-group"><label>Ikon Fitur:</label><select id="be_icon">${buildIconOptionsHtml(f.icon)}</select></div>
+                <div class="form-group"><label>Warna Ikon:</label>
+                    <select id="be_color">
+                        <option value="icon-emerald" ${f.colorClass === 'icon-emerald' ? 'selected' : ''}>Hijau Emerald</option>
+                        <option value="icon-amber" ${f.colorClass === 'icon-amber' ? 'selected' : ''}>Kuning Emas / Amber</option>
+                        <option value="icon-cyan" ${f.colorClass === 'icon-cyan' ? 'selected' : ''}>Biru Siber / Cyan</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group"><label>Judul Fitur:</label><input type="text" id="be_title" value="${escapeHtml(f.title)}" placeholder="Contoh: Respon Cepat SLA Terukur" required></div>
+            <div class="form-group"><label>Deskripsi Fitur:</label><textarea id="be_desc" rows="2" placeholder="Penjelasan singkat keunggulan fitur..." required>${escapeHtml(f.desc)}</textarea></div>
+        `;
+    } else if (mode === 'user_banner') {
+        const b = cfg.user.blocks.user_banner;
+        tempBuilderBannerBg = b.bgImage || '';
+        titleEl.innerHTML = `<i class="fa-solid fa-image" style="color:var(--gold);"></i> Edit Hero Banner Portal Pelapor`;
+        html = `
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+                <div class="form-group"><label>Badge Atas Banner:</label><input type="text" id="be_badge" value="${escapeHtml(b.badge)}" required></div>
+                <div class="form-group"><label>Ikon Latar Dekoratif:</label><select id="be_icon">${buildIconOptionsHtml(b.icon)}</select></div>
+            </div>
+            <div class="form-group"><label>Judul Utama Banner:</label><input type="text" id="be_title" value="${escapeHtml(b.title)}" required></div>
+            <div class="form-group"><label>Deskripsi Banner:</label><textarea id="be_desc" rows="3" required>${escapeHtml(b.desc)}</textarea></div>
+            <div class="form-group">
+                <label>Gambar Latar Banner Opsional (Upload Poster/Foto Gedung):</label>
+                <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+                    <input type="file" accept="image/*" onchange="handleBuilderBannerImgFile(event)" style="font-size:12px;">
+                    <button type="button" class="btn btn-secondary" style="min-height:32px; padding:4px 10px; font-size:11.5px;" onclick="tempBuilderBannerBg=''; showToast('Gambar latar dikosongkan (gunakan gradien hijau-emas).', 'info');">
+                        <i class="fa-solid fa-eraser"></i> Gunakan Gradien Default
+                    </button>
+                </div>
+            </div>
+        `;
+    } else if (mode === 'add_banner_pill' || mode === 'user_banner_pill') {
+        const isEdit = mode === 'user_banner_pill';
+        const p = isEdit
+            ? cfg.user.blocks.user_banner.pills[parseInt(targetId, 10)]
+            : { icon: 'fa-circle-check', text: '' };
+        titleEl.innerHTML = `<i class="fa-solid fa-tag" style="color:var(--gold);"></i> ${isEdit ? 'Edit Pill Banner' : 'Tambah Pill Keunggulan Banner'}`;
+        html = `
+            <div class="form-group"><label>Pilih Ikon:</label><select id="be_icon">${buildIconOptionsHtml(p.icon)}</select></div>
+            <div class="form-group"><label>Teks Pill Singkat:</label><input type="text" id="be_title" value="${escapeHtml(p.text)}" placeholder="Contoh: Terintegrasi SSO UINSSC" required></div>
+        `;
+    } else if (mode === 'user_builtin_tab') {
+        const b = cfg.user.blocks[targetId];
+        titleEl.innerHTML = `<i class="fa-solid fa-folder-open" style="color:var(--gold);"></i> Edit Tab &amp; Seksi: ${escapeHtml(b.tabLabel)}`;
+        html = `
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+                <div class="form-group"><label>Label Tombol Tab:</label><input type="text" id="be_tab_label" value="${escapeHtml(b.tabLabel)}" required></div>
+                <div class="form-group"><label>Ikon Tab &amp; Seksi:</label><select id="be_icon">${buildIconOptionsHtml(b.icon)}</select></div>
+            </div>
+            <div class="form-group"><label>Judul Utama di Dalam Seksi:</label><input type="text" id="be_title" value="${escapeHtml(b.title)}" required></div>
+            <div class="form-group"><label>Subjudul / Instruksi Seksi:</label><textarea id="be_desc" rows="2">${escapeHtml(b.desc)}</textarea></div>
+        `;
+    } else if (mode === 'admin_header') {
+        const h = cfg.admin.header;
+        titleEl.innerHTML = `<i class="fa-solid fa-heading" style="color:var(--gold);"></i> Edit Header Utama Dashboard Admin`;
+        html = `
+            <div class="form-group"><label>Judul Utama Dashboard:</label><input type="text" id="be_title" value="${escapeHtml(h.title)}" required></div>
+            <div class="form-group"><label>Subjudul Operasional:</label><input type="text" id="be_desc" value="${escapeHtml(h.desc)}" required></div>
+        `;
+    } else if (mode === 'admin_builtin') {
+        const b = cfg.admin.blocks[targetId];
+        titleEl.innerHTML = `<i class="fa-solid fa-sliders" style="color:var(--gold);"></i> Edit Seksi Dashboard: ${escapeHtml(b.label)}`;
+        if (targetId === 'admin_kpi') {
+            const lbs = b.kpiLabels || ['Total Laporan', 'Menunggu Verifikasi', 'Dalam Perbaikan', 'Perbaikan Selesai'];
+            html = `
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+                    <div class="form-group"><label>Label Kartu KPI 1:</label><input type="text" id="be_kpi0" value="${escapeHtml(lbs[0])}" required></div>
+                    <div class="form-group"><label>Label Kartu KPI 2:</label><input type="text" id="be_kpi1" value="${escapeHtml(lbs[1])}" required></div>
+                    <div class="form-group"><label>Label Kartu KPI 3:</label><input type="text" id="be_kpi2" value="${escapeHtml(lbs[2])}" required></div>
+                    <div class="form-group"><label>Label Kartu KPI 4:</label><input type="text" id="be_kpi3" value="${escapeHtml(lbs[3])}" required></div>
+                </div>
+            `;
+        } else {
+            html = `
+                <div class="form-group"><label>Judul Seksi:</label><input type="text" id="be_title" value="${escapeHtml(b.title)}" required></div>
+                <div class="form-group"><label>Subjudul / Keterangan:</label><textarea id="be_desc" rows="2">${escapeHtml(b.desc || '')}</textarea></div>
+            `;
+        }
+    } else if (mode === 'add_custom_block' || mode === 'custom_block') {
+        const isEdit = mode === 'custom_block';
+        let cb = {
+            badge: 'INFORMASI SARPRAS',
+            title: '',
+            desc: '',
+            icon: 'fa-bullhorn',
+            accent: 'gold',
+            tabLabel: '',
+            buttonText: '',
+            buttonUrl: '',
+            placement: targetId === 'user_tab' ? 'tab' : 'section'
+        };
+        if (isEdit) {
+            const found = (cfg[currentBuilderPageKey].customBlocks || []).find(c => c.id === targetId);
+            if (found) cb = found;
+        }
+        const isTabItem = cb.placement === 'tab';
+        titleEl.innerHTML = `<i class="fa-solid fa-plus-circle" style="color:var(--gold);"></i> ${isEdit ? 'Edit Komponen Kustom' : (isTabItem ? 'Tambah Menu Tab Baru di Portal User' : 'Tambah Seksi / Widget Baru')}`;
+
+        html = `
+            ${isTabItem ? `<div class="form-group"><label>Nama Tombol Menu Tab:</label><input type="text" id="be_tab_label" value="${escapeHtml(cb.tabLabel || cb.title)}" placeholder="Contoh: SOP &amp; Kontak Darurat" required></div>` : ''}
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+                <div class="form-group"><label>Ikon Visual:</label><select id="be_icon">${buildIconOptionsHtml(cb.icon)}</select></div>
+                <div class="form-group"><label>Tema Warna Aksen:</label><select id="be_accent">${buildAccentOptionsHtml(cb.accent)}</select></div>
+            </div>
+            <div class="form-group"><label>Label Badge Kecil (Opsional):</label><input type="text" id="be_badge" value="${escapeHtml(cb.badge || '')}" placeholder="Contoh: PENGUMUMAN RESMI"></div>
+            <div class="form-group"><label>Judul Seksi / Konten:</label><input type="text" id="be_title" value="${escapeHtml(cb.title)}" placeholder="Contoh: Jadwal Pemeliharaan Listrik Gedung Cyber" required></div>
+            <div class="form-group"><label>Isi Informasi / Deskripsi Lengkap:</label><textarea id="be_desc" rows="4" placeholder="Tuliskan informasi lengkap, panduan SOP, atau pengumuman..." required>${escapeHtml(cb.desc)}</textarea></div>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+                <div class="form-group"><label>Teks Tombol Tautan (Opsional):</label><input type="text" id="be_btn_text" value="${escapeHtml(cb.buttonText || '')}" placeholder="Contoh: Hubungi WhatsApp Piket"></div>
+                <div class="form-group"><label>URL Tujuan Tombol (Opsional):</label><input type="text" id="be_btn_url" value="${escapeHtml(cb.buttonUrl || '')}" placeholder="https://wa.me/62812..."></div>
+            </div>
+        `;
+    }
+
+    container.innerHTML = html;
+    modal.classList.remove('hidden');
+}
+
+function handleBuilderBannerImgFile(event) {
+    const file = event.target.files && event.target.files[0];
+    if (!file) return;
+    if (file.size > 4 * 1024 * 1024) {
+        showToast('Ukuran gambar maksimal 4MB.', 'error');
+        event.target.value = '';
+        return;
+    }
+    const reader = new FileReader();
+    reader.onload = function (ev) {
+        tempBuilderBannerBg = ev.target.result;
+        showToast('Gambar latar banner siap disimpan!', 'success');
+    };
+    reader.readAsDataURL(file);
+}
+
+function closeBuilderEditorModal() {
+    const modal = document.getElementById('builderEditorModal');
+    if (modal) modal.classList.add('hidden');
+    activeBuilderModalCtx = null;
+}
+
+function submitBuilderEditorForm(e) {
+    e.preventDefault();
+    if (!ensureSuperAdminForBuilder() || !activeBuilderModalCtx) return;
+
+    const { mode, targetId } = activeBuilderModalCtx;
+    const cfg = getBuilderCfg();
+    const val = id => {
+        const el = document.getElementById(id);
+        return el ? el.value.trim() : '';
+    };
+
+    if (mode === 'topbar') {
+        cfg[targetId].topBar = {
+            email: val('be_email'),
+            phone: val('be_phone'),
+            hours: val('be_hours'),
+            badge: val('be_badge')
+        };
+    } else if (mode === 'login_box') {
+        cfg.login.loginBox = {
+            subtitle: val('be_sub'),
+            title: val('be_title'),
+            desc: val('be_desc'),
+            presetTitle: val('be_preset_title'),
+            showPresetDemo: !!(document.getElementById('be_show_preset') && document.getElementById('be_show_preset').checked)
+        };
+    } else if (mode === 'login_builtin') {
+        if (targetId === 'hero_header') {
+            Object.assign(cfg.login.blocks.hero_header, {
+                badge: val('be_badge'),
+                title: val('be_title'),
+                desc: val('be_desc')
+            });
+        } else if (targetId === 'video_profile') {
+            const rawUrl = val('be_url');
+            const eid = extractYouTubeEmbedId(rawUrl);
+            if (!eid) {
+                showToast('URL YouTube tidak valid! Gunakan format https://youtu.be/...', 'error');
+                return;
+            }
+            Object.assign(cfg.login.blocks.video_profile, {
+                badge: val('be_badge'),
+                url: rawUrl,
+                embedId: eid,
+                title: val('be_title'),
+                desc: val('be_desc')
+            });
+        }
+    } else if (mode === 'add_login_feature') {
+        cfg.login.blocks.features_list.items.push({
+            id: 'feat_' + Date.now(),
+            icon: val('be_icon'),
+            colorClass: val('be_color'),
+            title: val('be_title'),
+            desc: val('be_desc')
+        });
+    } else if (mode === 'login_feature_item') {
+        const idx = parseInt(targetId, 10);
+        if (cfg.login.blocks.features_list.items[idx]) {
+            Object.assign(cfg.login.blocks.features_list.items[idx], {
+                icon: val('be_icon'),
+                colorClass: val('be_color'),
+                title: val('be_title'),
+                desc: val('be_desc')
+            });
+        }
+    } else if (mode === 'user_banner') {
+        Object.assign(cfg.user.blocks.user_banner, {
+            badge: val('be_badge'),
+            icon: val('be_icon'),
+            title: val('be_title'),
+            desc: val('be_desc'),
+            bgImage: tempBuilderBannerBg || ''
+        });
+    } else if (mode === 'add_banner_pill') {
+        cfg.user.blocks.user_banner.pills.push({
+            id: 'pill_' + Date.now(),
+            icon: val('be_icon'),
+            text: val('be_title')
+        });
+    } else if (mode === 'user_banner_pill') {
+        const idx = parseInt(targetId, 10);
+        if (cfg.user.blocks.user_banner.pills[idx]) {
+            cfg.user.blocks.user_banner.pills[idx].icon = val('be_icon');
+            cfg.user.blocks.user_banner.pills[idx].text = val('be_title');
+        }
+    } else if (mode === 'user_builtin_tab') {
+        if (cfg.user.blocks[targetId]) {
+            Object.assign(cfg.user.blocks[targetId], {
+                tabLabel: val('be_tab_label'),
+                icon: val('be_icon'),
+                title: val('be_title'),
+                desc: val('be_desc')
+            });
+        }
+    } else if (mode === 'admin_header') {
+        Object.assign(cfg.admin.header, {
+            title: val('be_title'),
+            desc: val('be_desc')
+        });
+    } else if (mode === 'admin_builtin') {
+        if (targetId === 'admin_kpi') {
+            cfg.admin.blocks.admin_kpi.kpiLabels = [val('be_kpi0'), val('be_kpi1'), val('be_kpi2'), val('be_kpi3')];
+        } else if (cfg.admin.blocks[targetId]) {
+            Object.assign(cfg.admin.blocks[targetId], {
+                title: val('be_title'),
+                desc: val('be_desc')
+            });
+        }
+    } else if (mode === 'add_custom_block') {
+        const newId = 'custom_' + Date.now();
+        const isTab = targetId === 'user_tab';
+        const pageKey = (targetId === 'user_section' || targetId === 'user_tab') ? 'user' : targetId;
+        const blockObj = {
+            id: newId,
+            enabled: true,
+            placement: isTab ? 'tab' : 'section',
+            tabLabel: isTab ? val('be_tab_label') : '',
+            icon: val('be_icon'),
+            accent: val('be_accent'),
+            badge: val('be_badge'),
+            title: val('be_title'),
+            desc: val('be_desc'),
+            buttonText: val('be_btn_text'),
+            buttonUrl: val('be_btn_url')
+        };
+        cfg[pageKey].customBlocks.push(blockObj);
+        if (pageKey === 'login') cfg.login.heroOrder.push(newId);
+        else if (pageKey === 'user') {
+            if (isTab) cfg.user.tabOrder.push(newId);
+            else cfg.user.pageOrder.splice(1, 0, newId); // Tampil tepat di bawah banner secara default
+        } else if (pageKey === 'admin') {
+            cfg.admin.sectionOrder.unshift(newId); // Tampil di bagian atas dashboard secara default
+        }
+    } else if (mode === 'custom_block') {
+        const found = (cfg[currentBuilderPageKey].customBlocks || []).find(c => c.id === targetId);
+        if (found) {
+            Object.assign(found, {
+                tabLabel: found.placement === 'tab' ? val('be_tab_label') : found.tabLabel,
+                icon: val('be_icon'),
+                accent: val('be_accent'),
+                badge: val('be_badge'),
+                title: val('be_title'),
+                desc: val('be_desc'),
+                buttonText: val('be_btn_text'),
+                buttonUrl: val('be_btn_url')
+            });
+        }
+    }
+
+    closeBuilderEditorModal();
+    commitBuilderCfg(cfg, 'Perubahan berhasil disimpan & aktif di halaman!', `Menyimpan pembaruan komponen (${mode}) pada halaman ${currentBuilderPageKey}`);
+}
+
 
 
 

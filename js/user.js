@@ -458,6 +458,10 @@ function escapeHtml(text) {
 }
 
 function applyUserPortalContent() {
+    if (window.SimpelSiteBuilder) {
+        window.SimpelSiteBuilder.applyUserPage();
+        return;
+    }
     const raw = localStorage.getItem('SIMPEL_PORTAL_CONTENT_V1');
     if (!raw) return;
     try {
