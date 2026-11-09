@@ -4552,6 +4552,18 @@ function savePortalContentChanges() {
 
     localStorage.setItem('SIMPEL_PORTAL_CONTENT_V1', JSON.stringify(payload));
 
+    if (window.SimpelSiteBuilder) {
+        const sCfg = window.SimpelSiteBuilder.getSiteConfig();
+        if (sCfg && sCfg.login && sCfg.login.blocks && sCfg.login.blocks.video_profile) {
+            sCfg.login.blocks.video_profile.enabled = videoEnabled;
+            sCfg.login.blocks.video_profile.title = videoTitle || sCfg.login.blocks.video_profile.title;
+            sCfg.login.blocks.video_profile.desc = videoDesc || '';
+            sCfg.login.blocks.video_profile.url = videoUrl;
+            sCfg.login.blocks.video_profile.embedId = embedId || sCfg.login.blocks.video_profile.embedId;
+            window.SimpelSiteBuilder.saveSiteConfig(sCfg);
+        }
+    }
+
     if (typeof Swal !== 'undefined') {
         Swal.fire({
             icon: 'success',

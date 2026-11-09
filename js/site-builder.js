@@ -569,21 +569,25 @@
                 }
             }
 
-            // Update video_profile content
+            // Update video_profile content & handle Super Admin enable/disable toggle
             const videoCard = document.getElementById('loginVideoCard');
+            const videoBlock = document.getElementById('loginVideoBlock');
             const vp = cfg.blocks.video_profile;
-            if (videoCard && vp) {
-                const embedId = vp.embedId || extractYtId(vp.url) || 'bUhLVKdbRd0';
-                if (vp.enabled !== false && embedId) {
-                    videoCard.style.display = 'block';
+            const isVideoActive = vp && vp.enabled !== false;
+            const isFeatActive = fl && fl.enabled !== false && Array.isArray(fl.items) && fl.items.length > 0;
+
+            if (videoBlock) {
+                if (isVideoActive) {
+                    videoBlock.style.display = 'block';
+                    const embedId = vp.embedId || extractYtId(vp.url) || 'bUhLVKdbRd0';
                     const videoIframe = document.getElementById('loginVideoIframe');
                     const videoTitle = document.getElementById('loginVideoTitle');
                     const videoDesc = document.getElementById('loginVideoDesc');
-                    const badgeEl = videoCard.querySelector('span');
+                    const badgeEl = videoBlock.querySelector('span');
                     if (badgeEl && vp.badge) {
                         badgeEl.innerHTML = `<i class="fa-brands fa-youtube"></i> ${escapeHtmlSafe(vp.badge)}`;
                     }
-                    if (videoIframe) {
+                    if (videoIframe && embedId) {
                         const targetSrc = `https://www.youtube.com/embed/${embedId}?rel=0`;
                         if (!videoIframe.src || !videoIframe.src.includes(embedId)) {
                             videoIframe.src = targetSrc;
@@ -592,7 +596,21 @@
                     if (videoTitle) videoTitle.textContent = vp.title || '';
                     if (videoDesc) videoDesc.textContent = vp.desc || '';
                 } else {
+                    videoBlock.style.display = 'none';
+                }
+            }
+
+            if (videoCard) {
+                if (isVideoActive) {
+                    videoCard.classList.remove('no-video');
+                } else {
+                    videoCard.classList.add('no-video');
+                }
+
+                if (!isVideoActive && !isFeatActive) {
                     videoCard.style.display = 'none';
+                } else {
+                    videoCard.style.display = 'flex';
                 }
             }
 
@@ -1034,11 +1052,23 @@
             ? 'Tukar Tata Letak Kolom'
             : 'Tukar Mode Tab / Bertumpuk';
 
+        const curCfg = getSiteConfig();
+        let videoToggleBtnHtml = '';
+        if (pageKey === 'login') {
+            const isVideoOn = curCfg.login.blocks.video_profile && curCfg.login.blocks.video_profile.enabled !== false;
+            videoToggleBtnHtml = `
+                <button type="button" class="sa-dock-btn" id="saQuickToggleVideoBtn" title="${isVideoOn ? 'Sembunyikan Video & Teks Profil di Halaman Login' : 'Tampilkan Video & Teks Profil di Halaman Login'}">
+                    <i class="fa-solid ${isVideoOn ? 'fa-video-slash' : 'fa-video'}"></i> ${isVideoOn ? 'Nonaktifkan Video' : 'Aktifkan Video'}
+                </button>
+            `;
+        }
+
         dock.innerHTML = `
             <span class="sa-dock-badge"><i class="fa-solid fa-crown"></i> Super Admin</span>
             <button type="button" class="sa-dock-btn" id="saQuickFlipLayoutBtn" title="Ubah tata letak halaman ini secara instan">
                 <i class="fa-solid fa-table-columns"></i> ${layoutBtnLabel}
             </button>
+            ${videoToggleBtnHtml}
             <a href="${adminUrl}" class="sa-dock-btn sa-dock-btn-primary" title="Buka Studio Editor untuk Tambah, Edit, Hapus & Urutkan Seksi">
                 <i class="fa-solid fa-wand-magic-sparkles"></i> Kelola Halaman Ini
             </a>
@@ -1060,6 +1090,29 @@
                     cfg.user.layout = cfg.user.layout === 'tabs' ? 'stacked' : 'tabs';
                     saveSiteConfig(cfg);
                     applyUserPage();
+                }
+            };
+        }
+
+        const quickToggleVideoBtn = document.getElementById('saQuickToggleVideoBtn');
+        if (quickToggleVideoBtn) {
+            quickToggleVideoBtn.onclick = function () {
+                const cfg = getSiteConfig();
+                const wasOn = cfg.login.blocks.video_profile && cfg.login.blocks.video_profile.enabled !== false;
+                cfg.login.blocks.video_profile.enabled = !wasOn;
+                saveSiteConfig(cfg);
+                applyLoginPage();
+
+                if (typeof Swal !== 'undefined') {
+                    Swal.fire({
+                        toast: true,
+                        position: 'top-end',
+                        icon: 'success',
+                        title: !wasOn ? 'Video Profil Diaktifkan' : 'Video Profil Dinonaktifkan',
+                        text: !wasOn ? 'Pemutar video & teks telah ditampilkan di halaman login.' : 'Pemutar video & teks telah disembunyikan.',
+                        showConfirmButton: false,
+                        timer: 2200
+                    });
                 }
             };
         }

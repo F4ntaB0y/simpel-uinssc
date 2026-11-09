@@ -1962,30 +1962,52 @@ body.webgl-active .login-bg-tint {
     color: var(--text-muted);
 }
 
-/* Feature List Cards - Modern, Sleek & Integrated */
+/* Video Block Container (Dapat Dinonaktifkan Super Admin) */
+.login-video-block {
+    width: 100%;
+    transition: all 0.3s ease;
+}
+
+/* Feature List Cards - Modern, Sleek, Evenly Spaced & Integrated */
 .login-features-list {
     display: flex;
     flex-direction: column;
-    gap: 8px;
-    margin-top: auto;
+    justify-content: space-between;
+    gap: 14px;
+    margin-top: 20px;
+    flex: 1;
 }
 
 .login-feature-item {
     display: flex;
     align-items: center;
-    gap: 12px;
-    padding: 9px 14px;
-    border-radius: 12px;
-    background: rgba(255, 255, 255, 0.035);
-    border: 1px solid rgba(212, 163, 67, 0.16);
+    gap: 14px;
+    padding: 13px 18px;
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(212, 163, 67, 0.2);
     backdrop-filter: blur(10px);
     transition: var(--transition);
+    flex: 1;
+    min-height: 52px;
 }
 
 [data-theme="light"] .login-feature-item {
     background: #f8fafc;
-    border-color: #e2ebe6;
-    box-shadow: 0 1px 6px rgba(0, 35, 20, 0.04);
+    border-color: #dbe4df;
+    box-shadow: 0 2px 8px rgba(0, 35, 20, 0.04);
+}
+
+/* When Video is disabled by Super Admin, feature items expand elegantly */
+.login-video-card.no-video .login-features-list {
+    margin-top: 0;
+    gap: 18px;
+}
+
+.login-video-card.no-video .login-feature-item {
+    padding: 22px 22px;
+    border-radius: 16px;
+    min-height: 80px;
 }
 
 .login-feature-item:hover {
