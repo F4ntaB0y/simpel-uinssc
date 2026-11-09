@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -12,7 +13,8 @@
     <!-- Google Fonts & Font Awesome Icons -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/user.css?v=20261110_stabilize">
     <!-- SweetAlert2 Latest CDN -->
@@ -26,10 +28,23 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <style>
         @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            20%, 60% { transform: translateX(-6px); }
-            40%, 80% { transform: translateX(6px); }
+
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+
+            20%,
+            60% {
+                transform: translateX(-6px);
+            }
+
+            40%,
+            80% {
+                transform: translateX(6px);
+            }
         }
+
         .captcha-box-wrapper {
             display: grid;
             grid-template-columns: 140px 44px 1fr;
@@ -37,10 +52,12 @@
             align-items: center;
             width: 100%;
         }
+
         @media (max-width: 640px) {
             .captcha-box-wrapper {
                 grid-template-columns: 1fr 44px;
             }
+
             .captcha-input-col {
                 grid-column: span 2;
                 width: 100%;
@@ -48,6 +65,7 @@
         }
     </style>
 </head>
+
 <body>
 
     <!-- Blurred Background Overlay & Interactive WebGL Campus Tour (UIN Siber Syekh Nurjati Cirebon) -->
@@ -89,7 +107,8 @@
                     <span class="status-pulse-dot"></span> Layanan Online
                 </span>
                 <button type="button" class="nav-link-btn" onclick="openHelpModal()" title="Panduan Peran & Akses">
-                    <i class="fa-solid fa-circle-info" style="color:var(--gold);"></i> <span class="nav-btn-label">Panduan</span>
+                    <i class="fa-solid fa-circle-info" style="color:var(--gold);"></i> <span
+                        class="nav-btn-label">Panduan</span>
                 </button>
                 <button type="button" class="nav-link-btn" onclick="toggleTheme()" title="Ubah Tema Dark/Light">
                     <i class="fa-solid fa-moon" id="themeIcon"></i> <span class="nav-btn-label">Tema</span>
@@ -101,7 +120,7 @@
     <!-- Main Container: Executive Split Portal -->
     <main class="container">
         <div class="login-portal-grid">
-            
+
             <!-- Left Side: Institutional Identity & Key Features -->
             <div class="login-hero-side">
                 <div class="login-inst-badge">
@@ -110,8 +129,10 @@
                 </div>
 
                 <div>
-                    <h1 class="login-main-title" id="loginMainTitle"><span id="typedHeroTitle">Sistem Informasi Pelaporan Fasilitas Kampus</span></h1>
-                    <p class="login-main-desc">Portal resmi civitas akademika untuk efisiensi pelaporan kerusakan sarpras, verifikasi geofencing GIS presisi, dan tindak lanjut perbaikan secara terpadu.</p>
+                    <h1 class="login-main-title" id="loginMainTitle"><span id="typedHeroTitle">Sistem Informasi
+                            Pelaporan Fasilitas Kampus</span></h1>
+                    <p class="login-main-desc">Portal resmi civitas akademika untuk efisiensi pelaporan kerusakan
+                        sarpras, verifikasi geofencing GIS presisi, dan tindak lanjut perbaikan secara terpadu.</p>
                 </div>
 
                 <!-- Highlight Cards (Dapat diatur Super Admin) -->
@@ -148,19 +169,32 @@
                 </div>
 
                 <!-- Video Profil Kampus UINSSC (Dapat diatur Super Admin) -->
-                <div id="loginVideoCard" class="login-video-card" style="margin-top: 14px; margin-bottom: 4px; background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 14px; backdrop-filter: blur(10px); transition: all 0.25s ease;">
+                <div id="loginVideoCard" class="login-video-card"
+                    style="margin-top: 14px; margin-bottom: 4px; background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 14px; backdrop-filter: blur(10px); transition: all 0.25s ease;">
                     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-                        <span style="display:inline-flex; align-items:center; gap:6px; font-size:11px; font-weight:800; color:#ef4444; background:rgba(239,68,68,0.12); border:1px solid rgba(239,68,68,0.25); padding:3px 10px; border-radius:9999px;">
+                        <span
+                            style="display:inline-flex; align-items:center; gap:6px; font-size:11px; font-weight:800; color:#ef4444; background:rgba(239,68,68,0.12); border:1px solid rgba(239,68,68,0.25); padding:3px 10px; border-radius:9999px;">
                             <i class="fa-brands fa-youtube"></i> PROFIL KAMPUS CYBER
                         </span>
-                        <span style="font-size:11px; color:var(--text-muted); font-weight:600;"><i class="fa-solid fa-circle-play" style="color:var(--gold);"></i> Video Resmi</span>
+                        <span style="font-size:11px; color:var(--text-muted); font-weight:600;"><i
+                                class="fa-solid fa-circle-play" style="color:var(--gold);"></i> Video Resmi</span>
                     </div>
-                    <div style="position:relative; width:100%; padding-top:56.25%; border-radius:10px; overflow:hidden; background:#000; box-shadow:0 4px 18px rgba(0,0,0,0.35); border:1px solid rgba(255,255,255,0.08);">
-                        <iframe id="loginVideoIframe" style="position:absolute; top:0; left:0; width:100%; height:100%; border:0;" src="https://www.youtube.com/embed/bUhLVKdbRd0?rel=0" title="Profil Kampus UIN Siber Syekh Nurjati Cirebon" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                    <div
+                        style="position:relative; width:100%; padding-top:56.25%; border-radius:10px; overflow:hidden; background:#000; box-shadow:0 4px 18px rgba(0,0,0,0.35); border:1px solid rgba(255,255,255,0.08);">
+                        <iframe id="loginVideoIframe"
+                            style="position:absolute; top:0; left:0; width:100%; height:100%; border:0;"
+                            src="https://www.youtube.com/embed/bUhLVKdbRd0?rel=0"
+                            title="Profil Kampus UIN Siber Syekh Nurjati Cirebon"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            allowfullscreen></iframe>
                     </div>
                     <div style="margin-top:8px;">
-                        <h4 id="loginVideoTitle" style="font-size:13.5px; font-weight:700; color:var(--text-main); margin:0 0 3px 0;">Profil Kampus UIN Siber Syekh Nurjati Cirebon</h4>
-                        <p id="loginVideoDesc" style="font-size:12px; color:var(--text-muted); margin:0; line-height:1.45;">Kenali lebih dekat fasilitas modern, ekosistem digital, dan layanan sarana prasarana kampus cyber.</p>
+                        <h4 id="loginVideoTitle"
+                            style="font-size:13.5px; font-weight:700; color:var(--text-main); margin:0 0 3px 0;">Profil
+                            Kampus UIN Siber Syekh Nurjati Cirebon</h4>
+                        <p id="loginVideoDesc"
+                            style="font-size:12px; color:var(--text-muted); margin:0; line-height:1.45;">Kenali lebih
+                            dekat fasilitas modern, ekosistem digital, dan layanan sarana prasarana kampus cyber.</p>
                     </div>
                 </div>
             </div>
@@ -169,38 +203,52 @@
             <div class="login-glass-card-wrapper">
                 <div class="glass-card login-glass-card">
                     <div style="text-align: center; margin-bottom: 22px;">
-                        <div style="width: 64px; height: 64px; background: #ffffff; border: 2px solid var(--gold); border-radius: 14px; margin: 0 auto 10px; display: flex; align-items: center; justify-content: center; padding: 5px; box-shadow: 0 4px 16px rgba(197, 146, 53, 0.2);">
-                            <img src="assets/img/logo.png" alt="Logo UINSSC" style="width: 100%; height: 100%; object-fit: contain;">
+                        <div
+                            style="width: 64px; height: 64px; background: #ffffff; border: 2px solid var(--gold); border-radius: 14px; margin: 0 auto 10px; display: flex; align-items: center; justify-content: center; padding: 5px; box-shadow: 0 4px 16px rgba(197, 146, 53, 0.2);">
+                            <img src="assets/img/logo.png" alt="Logo UINSSC"
+                                style="width: 100%; height: 100%; object-fit: contain;">
                         </div>
-                        <div style="font-size: 12px; font-weight: 800; color: var(--gold); letter-spacing: 1.2px; text-transform: uppercase; margin-bottom: 3px;" id="loginCardBrand">SIMPEL UINSSC</div>
-                        <h2 style="font-size: 22px; font-weight: 800; color: var(--text-main); margin-bottom: 4px;" id="loginCardTitle"><span id="typedCardTitle">Portal Masuk Sistem</span></h2>
-                        <p style="color: var(--text-muted); font-size: 13px; line-height: 1.5;" id="loginCardDesc">Gunakan akun resmi kampus Anda untuk mengakses layanan.</p>
+                        <div style="font-size: 12px; font-weight: 800; color: var(--gold); letter-spacing: 1.2px; text-transform: uppercase; margin-bottom: 3px;"
+                            id="loginCardBrand">SIMPEL UINSSC</div>
+                        <h2 style="font-size: 22px; font-weight: 800; color: var(--text-main); margin-bottom: 4px;"
+                            id="loginCardTitle"><span id="typedCardTitle">Portal Masuk Sistem</span></h2>
+                        <p style="color: var(--text-muted); font-size: 13px; line-height: 1.5;" id="loginCardDesc">
+                            Gunakan akun resmi kampus Anda untuk mengakses layanan.</p>
                     </div>
 
                     <form id="loginForm" onsubmit="handleLogin(event)">
                         <!-- Username -->
                         <div style="margin-bottom: 16px;">
-                            <label for="loginUsername" style="font-size: 13px; font-weight: 700; display: block; margin-bottom: 6px; color: var(--text-main);">
-                                <i class="fa-solid fa-user" style="color: var(--gold); margin-right: 4px;"></i> Username Pengguna <span style="color:#ef4444;">*</span>
+                            <label for="loginUsername"
+                                style="font-size: 13px; font-weight: 700; display: block; margin-bottom: 6px; color: var(--text-main);">
+                                <i class="fa-solid fa-user" style="color: var(--gold); margin-right: 4px;"></i> Username
+                                Pengguna <span style="color:#ef4444;">*</span>
                             </label>
                             <div class="login-input-wrapper">
                                 <i class="fa-solid fa-user login-input-icon"></i>
-                                <input type="text" id="loginUsername" class="login-input" placeholder="Masukkan username pengguna" required autocomplete="username">
+                                <input type="text" id="loginUsername" class="login-input"
+                                    placeholder="Masukkan username pengguna" required autocomplete="username">
                             </div>
                         </div>
 
                         <!-- Password with Show/Hide Toggle -->
                         <div style="margin-bottom: 16px;">
-                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-                                <label for="loginPassword" style="font-size: 13px; font-weight: 700; color: var(--text-main);">
-                                    <i class="fa-solid fa-lock" style="color: var(--gold); margin-right: 4px;"></i> Kata Sandi <span style="color:#ef4444;">*</span>
+                            <div
+                                style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                                <label for="loginPassword"
+                                    style="font-size: 13px; font-weight: 700; color: var(--text-main);">
+                                    <i class="fa-solid fa-lock" style="color: var(--gold); margin-right: 4px;"></i> Kata
+                                    Sandi <span style="color:#ef4444;">*</span>
                                 </label>
-                                <a href="javascript:void(0)" onclick="openHelpModal()" style="font-size: 12px; font-weight: 600; color: var(--gold); text-decoration: none;">Bantuan?</a>
+                                <a href="javascript:void(0)" onclick="openHelpModal()"
+                                    style="font-size: 12px; font-weight: 600; color: var(--gold); text-decoration: none;">Bantuan?</a>
                             </div>
                             <div class="login-input-wrapper">
                                 <i class="fa-solid fa-lock login-input-icon"></i>
-                                <input type="password" id="loginPassword" class="login-input" placeholder="Masukkan kata sandi" required autocomplete="current-password">
-                                <button type="button" class="btn-toggle-password" onclick="togglePasswordVisibility()" id="btnTogglePass" title="Tampilkan / Sembunyikan Kata Sandi">
+                                <input type="password" id="loginPassword" class="login-input"
+                                    placeholder="Masukkan kata sandi" required autocomplete="current-password">
+                                <button type="button" class="btn-toggle-password" onclick="togglePasswordVisibility()"
+                                    id="btnTogglePass" title="Tampilkan / Sembunyikan Kata Sandi">
                                     <i class="fa-solid fa-eye" id="eyeIcon"></i>
                                 </button>
                             </div>
@@ -208,24 +256,33 @@
 
                         <!-- CAPTCHA Security Verification -->
                         <div style="margin-bottom: 16px;">
-                            <label for="loginCaptchaInput" style="font-size: 13px; font-weight: 700; display: block; margin-bottom: 6px; color: var(--text-main);">
-                                <i class="fa-solid fa-robot" style="color: var(--gold); margin-right: 4px;"></i> Kode CAPTCHA Keamanan <span style="color:#ef4444;">*</span>
+                            <label for="loginCaptchaInput"
+                                style="font-size: 13px; font-weight: 700; display: block; margin-bottom: 6px; color: var(--text-main);">
+                                <i class="fa-solid fa-robot" style="color: var(--gold); margin-right: 4px;"></i> Kode
+                                CAPTCHA Keamanan <span style="color:#ef4444;">*</span>
                             </label>
-                            
+
                             <div class="captcha-box-wrapper">
                                 <!-- Canvas Captcha Display -->
-                                <div style="position: relative; border-radius: 8px; overflow: hidden; border: 1px solid var(--border-color); background: #ffffff; height: 42px; display: flex; align-items: center; justify-content: center; box-shadow: inset 0 1px 3px rgba(0,0,0,0.12);">
-                                    <canvas id="captchaCanvas" width="140" height="42" style="display: block; cursor: pointer;" onclick="generateCaptcha()" title="Klik untuk ganti kode CAPTCHA"></canvas>
+                                <div
+                                    style="position: relative; border-radius: 8px; overflow: hidden; border: 1px solid var(--border-color); background: #ffffff; height: 42px; display: flex; align-items: center; justify-content: center; box-shadow: inset 0 1px 3px rgba(0,0,0,0.12);">
+                                    <canvas id="captchaCanvas" width="140" height="42"
+                                        style="display: block; cursor: pointer;" onclick="generateCaptcha()"
+                                        title="Klik untuk ganti kode CAPTCHA"></canvas>
                                 </div>
-                                
+
                                 <!-- Refresh Button -->
-                                <button type="button" class="btn-toggle-password" onclick="generateCaptcha()" id="btnRefreshCaptcha" title="Ganti Kode CAPTCHA Baru" style="position: static; width: 42px; height: 42px; background: rgba(255,255,255,0.06); border: 1px solid var(--border-color); border-radius: 8px; color: var(--gold); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.3s ease;">
+                                <button type="button" class="btn-toggle-password" onclick="generateCaptcha()"
+                                    id="btnRefreshCaptcha" title="Ganti Kode CAPTCHA Baru"
+                                    style="position: static; width: 42px; height: 42px; background: rgba(255,255,255,0.06); border: 1px solid var(--border-color); border-radius: 8px; color: var(--gold); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.3s ease;">
                                     <i class="fa-solid fa-rotate" id="captchaReloadIcon"></i>
                                 </button>
-                                
+
                                 <!-- Input Code -->
                                 <div class="login-input-wrapper captcha-input-col">
-                                    <input type="text" id="loginCaptchaInput" class="login-input" placeholder="Ketik CAPTCHA" required maxlength="5" autocomplete="off" style="text-transform: uppercase; font-weight: 700; letter-spacing: 3px; font-family: monospace; font-size: 13px; text-align: center;">
+                                    <input type="text" id="loginCaptchaInput" class="login-input"
+                                        placeholder="Ketik CAPTCHA" required maxlength="5" autocomplete="off"
+                                        style="text-transform: uppercase; font-weight: 700; letter-spacing: 3px; font-family: monospace; font-size: 13px; text-align: center;">
                                 </div>
                             </div>
                             <small style="font-size: 11px; color: var(--text-muted); margin-top: 4px; display: block;">
@@ -234,12 +291,16 @@
                         </div>
 
                         <!-- Remember session -->
-                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; font-size: 13px;">
-                            <label style="display: flex; align-items: center; gap: 8px; color: var(--text-muted); cursor: pointer; user-select: none;">
-                                <input type="checkbox" id="rememberMe" checked style="accent-color: var(--gold); width: 16px; height: 16px; cursor: pointer;">
+                        <div
+                            style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; font-size: 13px;">
+                            <label
+                                style="display: flex; align-items: center; gap: 8px; color: var(--text-muted); cursor: pointer; user-select: none;">
+                                <input type="checkbox" id="rememberMe" checked
+                                    style="accent-color: var(--gold); width: 16px; height: 16px; cursor: pointer;">
                                 <span>Ingat Sesi Login</span>
                             </label>
-                            <span style="color: #10b981; font-size: 12px; font-weight: 700; display: inline-flex; align-items: center; gap: 4px;">
+                            <span
+                                style="color: #10b981; font-size: 12px; font-weight: 700; display: inline-flex; align-items: center; gap: 4px;">
                                 <i class="fa-solid fa-circle-check"></i> Server Siap
                             </span>
                         </div>
@@ -253,38 +314,49 @@
 
                     <!-- Quick Fill Preset Demo Credentials -->
                     <div class="login-preset-box">
-                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+                        <div
+                            style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
                             <span style="font-size: 12px; font-weight: 700; color: var(--text-muted);">
-                                <i class="fa-solid fa-bolt" style="color: var(--gold);"></i> Akun Demo Uji Coba Cepat (1-Klik):
+                                <i class="fa-solid fa-bolt" style="color: var(--gold);"></i> Akun Demo Uji Coba Cepat
+                                (1-Klik):
                             </span>
-                            <span style="font-size: 11px; color: var(--gold); font-weight: 700; background: rgba(197, 146, 53, 0.12); padding: 2px 8px; border-radius: 10px;">Siap Pakai</span>
+                            <span
+                                style="font-size: 11px; color: var(--gold); font-weight: 700; background: rgba(197, 146, 53, 0.12); padding: 2px 8px; border-radius: 10px;">Siap
+                                Pakai</span>
                         </div>
 
                         <div class="login-preset-grid" style="grid-template-columns: repeat(2, 1fr);">
-                            <div class="login-preset-card" id="presetUserCard" onclick="quickFillAccount('user')" title="User: Mahasiswa SSO dengan profil terisi otomatis ke form laporan">
+                            <div class="login-preset-card" id="presetUserCard" onclick="quickFillAccount('user')"
+                                title="User: Mahasiswa SSO dengan profil terisi otomatis ke form laporan">
                                 <div class="preset-avatar preset-user">
                                     <i class="fa-solid fa-graduation-cap"></i>
                                 </div>
                                 <div class="preset-info">
                                     <span class="preset-role-name">Mahasiswa (SSO)</span>
-                                    <span style="font-size:10px; color:var(--gold); display:block; font-weight:700;">Autofill Portal Kampus</span>
+                                    <span
+                                        style="font-size:10px; color:var(--gold); display:block; font-weight:700;">Autofill
+                                        Portal Kampus</span>
                                     <span class="preset-cred">user / user123</span>
                                 </div>
                             </div>
 
-                            <div class="login-preset-card" id="presetAdminCard" onclick="quickFillAccount('admin')" title="Admin: Yang menghubungkan petugas dengan user dan mengelola petugas">
+                            <div class="login-preset-card" id="presetAdminCard" onclick="quickFillAccount('admin')"
+                                title="Admin: Yang menghubungkan petugas dengan user dan mengelola petugas">
                                 <div class="preset-avatar preset-admin">
                                     <i class="fa-solid fa-user-shield"></i>
                                 </div>
                                 <div class="preset-info">
                                     <span class="preset-role-name">Admin Sarpras</span>
-                                    <span style="font-size:10px; color:#2dd4bf; display:block; font-weight:700;">Pengelola Sarpras</span>
+                                    <span
+                                        style="font-size:10px; color:#2dd4bf; display:block; font-weight:700;">Pengelola
+                                        Sarpras</span>
                                     <span class="preset-cred">admin / admin123</span>
                                 </div>
                             </div>
 
                             <!-- Fitur Akun Mitra Dinonaktifkan Sementara -->
-                            <div class="login-preset-card" id="presetMitraCard" style="display:none;" onclick="quickFillAccount('mitra')">
+                            <div class="login-preset-card" id="presetMitraCard" style="display:none;"
+                                onclick="quickFillAccount('mitra')">
                                 <div class="preset-avatar preset-mitra">
                                     <i class="fa-solid fa-handshake"></i>
                                 </div>
@@ -295,13 +367,19 @@
                             </div>
 
                             <!-- Secret Super Admin Preset Card (Hidden by default, revealed via Secret Trigger) -->
-                            <div class="login-preset-card" id="presetSuperAdminCard" onclick="quickFillAccount('superadmin')" title="Super Admin (Rahasia): Yang mengatur siapa admin, petugas, dan mitra" style="display:none; grid-column: 1 / -1; border-color:#facc15; background:rgba(250,204,21,0.08); animation: fadeIn 0.4s ease;">
+                            <div class="login-preset-card" id="presetSuperAdminCard"
+                                onclick="quickFillAccount('superadmin')"
+                                title="Super Admin (Rahasia): Yang mengatur siapa admin, petugas, dan mitra"
+                                style="display:none; grid-column: 1 / -1; border-color:#facc15; background:rgba(250,204,21,0.08); animation: fadeIn 0.4s ease;">
                                 <div class="preset-avatar preset-superadmin">
                                     <i class="fa-solid fa-user-shield"></i>
                                 </div>
                                 <div class="preset-info">
-                                    <span class="preset-role-name" style="color:#facc15;"><i class="fa-solid fa-key" style="font-size:10px;"></i> Super Admin (Mode Rahasia Terbuka)</span>
-                                    <span style="font-size:10px; color:#facc15; display:block; font-weight:700;">Pengatur Admin, Petugas &amp; Mitra</span>
+                                    <span class="preset-role-name" style="color:#facc15;"><i class="fa-solid fa-key"
+                                            style="font-size:10px;"></i> Super Admin (Mode Rahasia Terbuka)</span>
+                                    <span
+                                        style="font-size:10px; color:#facc15; display:block; font-weight:700;">Pengatur
+                                        Admin, Petugas &amp; Mitra</span>
                                     <span class="preset-cred">superadmin / superadmin123</span>
                                 </div>
                             </div>
@@ -309,12 +387,18 @@
                     </div>
 
                     <!-- Feedback Alert Container -->
-                    <div id="loginFeedback" style="margin-top: 14px; text-align: center; font-size: 13px; font-weight: 700; min-height: 22px; transition: all 0.3s ease;"></div>
+                    <div id="loginFeedback"
+                        style="margin-top: 14px; text-align: center; font-size: 13px; font-weight: 700; min-height: 22px; transition: all 0.3s ease;">
+                    </div>
 
                     <!-- Card Security Guarantee Footer with Secret Super Admin Trigger -->
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 14px; padding-top: 12px; border-top: 1px dashed var(--border-color); font-size: 11px; color: var(--text-muted);">
-                        <span><i class="fa-solid fa-shield-halved" style="color: var(--gold); margin-right: 4px;"></i> Akses Terproteksi & Terenkripsi</span>
-                        <button type="button" id="secretSuperAdminBtn" onclick="triggerSecretSuperAdmin()" title="Akses Otoritas Rahasia" style="background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 11px; padding: 2px 6px; border-radius: 4px; opacity: 0.35; transition: all 0.3s ease;">
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: center; margin-top: 14px; padding-top: 12px; border-top: 1px dashed var(--border-color); font-size: 11px; color: var(--text-muted);">
+                        <span><i class="fa-solid fa-shield-halved" style="color: var(--gold); margin-right: 4px;"></i>
+                            Akses Terproteksi & Terenkripsi</span>
+                        <button type="button" id="secretSuperAdminBtn" onclick="triggerSecretSuperAdmin()"
+                            title="Akses Otoritas Rahasia"
+                            style="background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 11px; padding: 2px 6px; border-radius: 4px; opacity: 0.35; transition: all 0.3s ease;">
                             <i class="fa-solid fa-shield-halved"></i>
                         </button>
                     </div>
@@ -331,55 +415,70 @@
                 <h3 style="font-size: 18px; font-weight: 800; color: var(--text-main); margin:0;">
                     <i class="fa-solid fa-circle-question" style="color: var(--gold);"></i> Struktur Peran & Hak Akses
                 </h3>
-                <button type="button" onclick="closeHelpModal()" style="background: none; border: none; font-size: 18px; color: var(--text-muted); cursor: pointer;"><i class="fa-solid fa-xmark"></i></button>
+                <button type="button" onclick="closeHelpModal()"
+                    style="background: none; border: none; font-size: 18px; color: var(--text-muted); cursor: pointer;"><i
+                        class="fa-solid fa-xmark"></i></button>
             </div>
-            
+
             <p style="font-size: 13px; color: var(--text-muted); line-height: 1.5; margin-bottom: 14px;">
-                Sistem Informasi Pelaporan Fasilitas Kampus (SIMPEL UINSSC) membagi alur kerja operasional ke dalam 3 tingkatan peran resmi:
+                Sistem Informasi Pelaporan Fasilitas Kampus (SIMPEL UINSSC) membagi alur kerja operasional ke dalam 3
+                tingkatan peran resmi:
             </p>
 
             <div style="display:flex; flex-direction:column; gap:10px; margin-bottom:16px;">
-                <div style="background:rgba(255,255,255,0.03); border:1px solid var(--border-color); border-left:3px solid var(--gold); padding:10px 12px; border-radius:8px;">
+                <div
+                    style="background:rgba(255,255,255,0.03); border:1px solid var(--border-color); border-left:3px solid var(--gold); padding:10px 12px; border-radius:8px;">
                     <strong style="font-size:12px; color:var(--gold); display:flex; align-items:center; gap:6px;">
                         <i class="fa-solid fa-graduation-cap"></i> 1. User (Pelapor Kampus)
                     </strong>
                     <div style="font-size:12px; color:var(--text-muted); margin-top:2px;">
-                        Yang <strong>membuat pelaporan</strong> kerusakan sarana & prasarana kampus serta melacak proses penanganannya.
+                        Yang <strong>membuat pelaporan</strong> kerusakan sarana & prasarana kampus serta melacak proses
+                        penanganannya.
                     </div>
                 </div>
 
-                <div style="background:rgba(45,212,191,0.06); border:1px solid rgba(45,212,191,0.3); border-left:3px solid #2dd4bf; padding:10px 12px; border-radius:8px;">
+                <div
+                    style="background:rgba(45,212,191,0.06); border:1px solid rgba(45,212,191,0.3); border-left:3px solid #2dd4bf; padding:10px 12px; border-radius:8px;">
                     <strong style="font-size:12px; color:#2dd4bf; display:flex; align-items:center; gap:6px;">
                         <i class="fa-solid fa-user-shield"></i> 2. Admin (Admin Sarpras)
                     </strong>
                     <div style="font-size:12px; color:var(--text-muted); margin-top:2px;">
-                        Yang <strong>menghubungkan petugas dengan user</strong>: memverifikasi tiket, menugaskan petugas spesialis yang tepat, mengirim disposisi penugasan WhatsApp ke petugas, serta menyampaikan perkembangan status perbaikan ke user pelapor.
+                        Yang <strong>menghubungkan petugas dengan user</strong>: memverifikasi tiket, menugaskan petugas
+                        spesialis yang tepat, mengirim disposisi penugasan WhatsApp ke petugas, serta menyampaikan
+                        perkembangan status perbaikan ke user pelapor.
                     </div>
                 </div>
 
-                <div style="background:rgba(250,204,21,0.06); border:1px solid rgba(250,204,21,0.3); border-left:3px solid #facc15; padding:10px 12px; border-radius:8px;">
+                <div
+                    style="background:rgba(250,204,21,0.06); border:1px solid rgba(250,204,21,0.3); border-left:3px solid #facc15; padding:10px 12px; border-radius:8px;">
                     <strong style="font-size:12px; color:#facc15; display:flex; align-items:center; gap:6px;">
                         <i class="fa-solid fa-shield-halved"></i> 3. Super Admin
                     </strong>
                     <div style="font-size:12px; color:var(--text-muted); margin-top:2px;">
-                        Yang <strong>mengatur siapa admin dan petugas</strong>: mendaftarkan, mengaktifkan/menonaktifkan akun Admin & Petugas lapangan, serta memegang hak eksklusif hapus tiket dan pembersihan database.
+                        Yang <strong>mengatur siapa admin dan petugas</strong>: mendaftarkan, mengaktifkan/menonaktifkan
+                        akun Admin & Petugas lapangan, serta memegang hak eksklusif hapus tiket dan pembersihan
+                        database.
                     </div>
                 </div>
             </div>
 
-            <div style="background: rgba(197, 146, 53, 0.08); border: 1px solid var(--border-color); border-radius: 8px; padding: 10px 12px; font-size: 11px; margin-bottom: 14px;">
+            <div
+                style="background: rgba(197, 146, 53, 0.08); border: 1px solid var(--border-color); border-radius: 8px; padding: 10px 12px; font-size: 11px; margin-bottom: 14px;">
                 <strong>Akun Demo Uji Coba:</strong><br>
-                &bull; <code>user</code> / <code>user123</code> &bull; <code>admin</code> / <code>admin123</code> &bull; <code>superadmin</code> / <code>superadmin123</code>
+                &bull; <code>user</code> / <code>user123</code> &bull; <code>admin</code> / <code>admin123</code> &bull;
+                <code>superadmin</code> / <code>superadmin123</code>
             </div>
 
-            <button class="btn btn-primary" onclick="closeHelpModal()" style="width: 100%; justify-content: center; font-size:13px;">Tutup Panduan</button>
+            <button class="btn btn-primary" onclick="closeHelpModal()"
+                style="width: 100%; justify-content: center; font-size:13px;">Tutup Panduan</button>
         </div>
     </div>
 
     <!-- Footer -->
     <footer class="app-footer">
         <div class="container">
-            &copy; 2026 <strong>UIN Siber Syekh Nurjati Cirebon (UINSSC)</strong> &bull; Bagian Pengelolaan Sarana &amp; Prasarana Kampus.
+            &copy; 2026 <strong>UIN Siber Syekh Nurjati Cirebon (UINSSC)</strong> &bull; Bagian Pengelolaan Sarana &amp;
+            Prasarana Kampus.
         </div>
     </footer>
 
@@ -387,20 +486,20 @@
         const BRIDGE_API_BASE = 'https://bridge.uinssc.ac.id';
 
         const ACCOUNTS = {
-            user: { 
-                username: 'user', 
-                password: 'user123', 
-                role: 'user', 
-                name: 'Ahmad Rizki Pratama', 
-                nimNip: '220101892', 
-                peran: 'Mahasiswa', 
-                prodi: 'S1 Pendidikan Agama Islam (Cyber)', 
-                fakultas: 'Ilmu Tarbiyah & Keguruan', 
-                wa: '081234567890', 
+            user: {
+                username: 'user',
+                password: 'user123',
+                role: 'user',
+                name: 'Ahmad Rizki Pratama',
+                nimNip: '220101892',
+                peran: 'Mahasiswa',
+                prodi: 'S1 Pendidikan Agama Islam (Cyber)',
+                fakultas: 'Ilmu Tarbiyah & Keguruan',
+                wa: '081234567890',
                 email: 'ahmad.rizki@uinssc.ac.id',
                 foto: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=250&auto=format&fit=crop&q=80',
                 isCampusPortal: true,
-                redirect: 'pages/user.html' 
+                redirect: 'pages/user.html'
             },
             mitra: { username: 'mitra', password: 'mitra123', role: 'mitra', name: 'Kantin Berkah Sejahtera (Mitra Kampus)', redirect: 'pages/user.html', nimNip: 'MTR-01', bidang: 'Kantin Kampus & Pujasera', wa: '081288990001' },
             admin: { username: 'admin', password: 'admin123', role: 'admin', name: 'Administrator Sarpras', redirect: 'pages/admin.html' },
@@ -457,7 +556,7 @@
 
             // Garis distorsi pengacak bot
             for (let i = 0; i < 4; i++) {
-                ctx.strokeStyle = `rgba(${Math.floor(Math.random()*120)}, ${Math.floor(Math.random()*120)}, ${Math.floor(Math.random()*120)}, 0.35)`;
+                ctx.strokeStyle = `rgba(${Math.floor(Math.random() * 120)}, ${Math.floor(Math.random() * 120)}, ${Math.floor(Math.random() * 120)}, 0.35)`;
                 ctx.lineWidth = 1.2;
                 ctx.beginPath();
                 ctx.moveTo(Math.random() * width, Math.random() * height);
@@ -467,7 +566,7 @@
 
             // Titik noise acak
             for (let i = 0; i < 28; i++) {
-                ctx.fillStyle = `rgba(${Math.floor(Math.random()*150)}, ${Math.floor(Math.random()*150)}, ${Math.floor(Math.random()*150)}, 0.45)`;
+                ctx.fillStyle = `rgba(${Math.floor(Math.random() * 150)}, ${Math.floor(Math.random() * 150)}, ${Math.floor(Math.random() * 150)}, 0.45)`;
                 ctx.beginPath();
                 ctx.arc(Math.random() * width, Math.random() * height, Math.random() * 1.5, 0, Math.PI * 2);
                 ctx.fill();
@@ -703,8 +802,8 @@
             if (savedStaffRaw) {
                 try {
                     const savedStaff = JSON.parse(savedStaffRaw);
-                    const matchedAccount = savedStaff.find(s => 
-                        (s.username && s.username.toLowerCase() === uname.toLowerCase()) || 
+                    const matchedAccount = savedStaff.find(s =>
+                        (s.username && s.username.toLowerCase() === uname.toLowerCase()) ||
                         (s.id && s.id.toLowerCase() === uname.toLowerCase())
                     );
                     if (matchedAccount) {
@@ -748,7 +847,7 @@
                             }
                         }
                     }
-                } catch(e) {
+                } catch (e) {
                     console.warn('Gagal membaca akun staf/mitra lokal:', e);
                 }
             }
@@ -812,7 +911,7 @@
                                 peran = 'Mahasiswa';
                             }
                         }
-                    } catch(pe) {
+                    } catch (pe) {
                         console.info('Gagal ambil detail profil API, gunakan username dasar.');
                     }
 
@@ -943,7 +1042,7 @@
             generateCaptcha();
         }
 
-        (function() {
+        (function () {
             const saved = localStorage.getItem('SIMPEL_FK_THEME') || 'dark';
             document.documentElement.setAttribute('data-theme', saved);
             const icon = document.getElementById('themeIcon');
@@ -1073,14 +1172,14 @@
                 ruler.style.pointerEvents = 'none';
                 ruler.style.left = '-9999px';
                 ruler.style.top = '-9999px';
-                
+
                 const currentWidth = heroTitle.clientWidth || (heroTitle.getBoundingClientRect ? heroTitle.getBoundingClientRect().width : 0);
                 if (currentWidth > 0) {
                     ruler.style.width = currentWidth + 'px';
                 } else {
                     ruler.style.width = '100%';
                 }
-                
+
                 ruler.style.font = comp.font;
                 ruler.style.fontSize = comp.fontSize;
                 ruler.style.fontWeight = comp.fontWeight;
@@ -1113,7 +1212,7 @@
             const heroTarget = document.getElementById('typedHeroTitle');
             if (heroTarget) {
                 if (typedHeroInstance && typeof typedHeroInstance.destroy === 'function') {
-                    try { typedHeroInstance.destroy(); } catch (e) {}
+                    try { typedHeroInstance.destroy(); } catch (e) { }
                     typedHeroInstance = null;
                 }
 
@@ -1242,13 +1341,16 @@
         </div>
         <div class="webgl-hud-title" id="webglBuildingName">Gedung Cyber UIN Siber Cirebon</div>
         <div class="webgl-hud-actions">
-            <button type="button" class="webgl-nav-btn" id="webglPrevBtn" title="Gedung Sebelumnya (Panah Kiri / Scroll Atas)">
+            <button type="button" class="webgl-nav-btn" id="webglPrevBtn"
+                title="Gedung Sebelumnya (Panah Kiri / Scroll Atas)">
                 <i class="fa-solid fa-chevron-left"></i>
             </button>
-            <button type="button" class="webgl-nav-btn" id="webglNextBtn" title="Gedung Berikutnya (Panah Kanan / Scroll Bawah)">
+            <button type="button" class="webgl-nav-btn" id="webglNextBtn"
+                title="Gedung Berikutnya (Panah Kanan / Scroll Bawah)">
                 <i class="fa-solid fa-chevron-right"></i>
             </button>
-            <a href="https://codepen.io/collection/AGZywR" target="_blank" rel="noopener" class="webgl-collection-link" title="WebGL Collection by soju22">
+            <a href="https://codepen.io/collection/AGZywR" target="_blank" rel="noopener" class="webgl-collection-link"
+                title="WebGL Collection by soju22">
                 <i class="fa-brands fa-codepen"></i> WebGL Collection
             </a>
         </div>
@@ -1258,4 +1360,5 @@
     <script src="js/webgl-tour.js?v=20261110_1"></script>
     <script src="js/site-builder.js?v=20261107_ui4"></script>
 </body>
+
 </html>
