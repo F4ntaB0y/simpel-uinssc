@@ -1752,7 +1752,9 @@ textarea {
     transition: opacity 0.8s ease-in-out;
 }
 
-body.webgl-active {
+body.webgl-active,
+body.has-bg-overlay,
+body:has(.login-bg-overlay) {
     background: transparent !important;
     background-image: none !important;
 }

@@ -25,15 +25,11 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <!-- html2pdf.js Official PDF Exporter -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-    <!-- Three.js & GSAP for WebGL Campus Showcase -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 </head>
-<body>
+<body class="has-bg-overlay">
 
-    <!-- Blurred Background Overlay & Interactive WebGL Campus Tour (UIN Siber Syekh Nurjati Cirebon) -->
+    <!-- Static Blurred Campus Background Overlay (Gedung Cyber UINSSC) -->
     <div class="login-bg-overlay">
-        <canvas id="canvas" class="login-webgl-canvas"></canvas>
         <div class="login-bg-image" style="background-image: url('../assets/img/gedungCyber.png');"></div>
         <div class="login-bg-tint"></div>
     </div>
@@ -612,8 +608,6 @@
 
     <script src="../js/user.js"></script>
     <script src="../js/site-builder.js?v=20261107_ui4"></script>
-    <!-- WebGL Zoom-Blur Campus Script -->
-    <script src="../js/webgl-tour.js?v=20261110_tour"></script>
     <script>
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
