@@ -37,7 +37,6 @@
   const campusImages = [
     { src: basePath + 'assets/img/gedungCyber.png', title: 'Gedung Cyber UIN Siber Cirebon', tag: 'Pusat Siber Terpadu' },
     { src: basePath + 'assets/img/uinssc_siber.jpg', title: 'Pusat Pembelajaran Siber UINSSC', tag: 'Smart Learning Center' },
-    { src: basePath + 'assets/img/library_bg.jpg', title: 'Smart Library & Lab Terpadu UINSSC', tag: 'Perpustakaan Digital' },
     { src: basePath + 'assets/img/uinssc_fasya.jpg', title: 'Gedung Fakultas Syariah (FASYA)', tag: 'Kawasan Akademik' },
     { src: basePath + 'assets/img/uinssc_fdk.jpg', title: 'Gedung Fakultas Dakwah & Komunikasi', tag: 'Kawasan Pembelajaran' }
   ];
