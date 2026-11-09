@@ -1517,7 +1517,15 @@ textarea {
     letter-spacing: -0.6px;
     color: var(--text-main);
     margin-bottom: 10px;
-    min-height: 1.25em;
+    /* Cadangan tinggi agar posisi video card dan elemen di bawahnya tidak bergeser naik-turun saat teks diketik atau terhapus */
+    min-height: 2.6em;
+    display: block;
+}
+
+@media (max-width: 640px) {
+    .login-main-title {
+        min-height: 3.8em; /* Cadangan untuk viewport smartphone saat teks wrap hingga 3 baris */
+    }
 }
 
 [data-theme="light"] .login-main-title {

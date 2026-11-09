@@ -14,7 +14,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="css/user.css?v=20261109_typed">
+    <link rel="stylesheet" href="css/user.css?v=20261110_stabilize">
     <!-- SweetAlert2 Latest CDN -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <!-- DOMPurify Security Sanitizer -->
@@ -1050,6 +1050,60 @@
         // ======================================================================
         let typedHeroInstance = null;
         let typedCardInstance = null;
+        let activeHeroStrings = [];
+        let heroResizeTimer = null;
+
+        /**
+         * Mengunci tinggi loginMainTitle berdasarkan tinggi maksimum dari seluruh kalimat
+         * yang akan diketik, agar video card dan layout di bawahnya tidak bergeser/naik-turun.
+         */
+        function lockHeroTitleHeight(stringsList) {
+            const heroTitle = document.getElementById('loginMainTitle');
+            if (!heroTitle || !stringsList || stringsList.length === 0) return;
+
+            try {
+                const ruler = document.createElement('div');
+                const comp = window.getComputedStyle(heroTitle);
+                ruler.style.position = 'absolute';
+                ruler.style.visibility = 'hidden';
+                ruler.style.pointerEvents = 'none';
+                ruler.style.left = '-9999px';
+                ruler.style.top = '-9999px';
+                
+                const currentWidth = heroTitle.clientWidth || (heroTitle.getBoundingClientRect ? heroTitle.getBoundingClientRect().width : 0);
+                if (currentWidth > 0) {
+                    ruler.style.width = currentWidth + 'px';
+                } else {
+                    ruler.style.width = '100%';
+                }
+                
+                ruler.style.font = comp.font;
+                ruler.style.fontSize = comp.fontSize;
+                ruler.style.fontWeight = comp.fontWeight;
+                ruler.style.fontFamily = comp.fontFamily;
+                ruler.style.lineHeight = comp.lineHeight;
+                ruler.style.letterSpacing = comp.letterSpacing;
+                ruler.style.boxSizing = 'border-box';
+                ruler.style.wordBreak = 'break-word';
+
+                document.body.appendChild(ruler);
+
+                let maxH = 0;
+                stringsList.forEach(text => {
+                    ruler.textContent = text + ' |';
+                    const h = ruler.offsetHeight;
+                    if (h > maxH) maxH = h;
+                });
+
+                document.body.removeChild(ruler);
+
+                if (maxH > 0) {
+                    heroTitle.style.minHeight = Math.ceil(maxH) + 'px';
+                }
+            } catch (err) {
+                console.debug('Height lock notice:', err);
+            }
+        }
 
         function initLoginTypedAnimation(customMainTitle) {
             const heroTarget = document.getElementById('typedHeroTitle');
@@ -1068,6 +1122,10 @@
                     'Validasi Geofencing GIS Presisi 5 Kawasan',
                     'Transparansi Tracking SLA & Respon Cepat'
                 ];
+                activeHeroStrings = stringsList;
+
+                // Hitung & kunci min-height elemen judul
+                lockHeroTitleHeight(stringsList);
 
                 if (window.Typed) {
                     heroTarget.textContent = '';
@@ -1102,6 +1160,16 @@
                 }
             }
         }
+
+        // Listener resize untuk menyesuaikan min-height secara dinamis saat ukuran layar/rotasi berubah
+        window.addEventListener('resize', () => {
+            clearTimeout(heroResizeTimer);
+            heroResizeTimer = setTimeout(() => {
+                if (activeHeroStrings && activeHeroStrings.length > 0) {
+                    lockHeroTitleHeight(activeHeroStrings);
+                }
+            }, 120);
+        });
 
         function fallbackTypewriter(element, strings, strIdx = 0) {
             if (!element) return;
