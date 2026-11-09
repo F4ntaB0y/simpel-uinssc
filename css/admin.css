@@ -1323,6 +1323,24 @@
     .admin-table, .staff-table, .audit-table {
         min-width: 720px;
     }
+
+    /* Mencegah auto-zoom iOS Safari & memastikan kenyamanan tap jari pada perangkat mobile */
+    input[type="text"],
+    input[type="password"],
+    input[type="email"],
+    input[type="number"],
+    select,
+    textarea {
+        font-size: 16px !important;
+        min-height: 46px;
+    }
+
+    button,
+    .btn,
+    .btn-action {
+        touch-action: manipulation;
+        -webkit-tap-highlight-color: transparent;
+    }
 }
 
 @media (max-width: 480px) {

@@ -16,16 +16,13 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="css/user.css?v=20261110_parallel">
+    <link rel="stylesheet" href="css/user.css?v=20261110_responsive">
     <!-- SweetAlert2 Latest CDN -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <!-- DOMPurify Security Sanitizer -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.1.6/purify.min.js"></script>
     <!-- Typed.js Typing / Letter-by-Letter Animation Library -->
     <script src="https://cdn.jsdelivr.net/npm/typed.js@2.1.0/dist/typed.umd.js"></script>
-    <!-- Three.js & GSAP for WebGL Campus Zoom-Blur Showcase -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <style>
         @keyframes shake {
 
@@ -68,9 +65,8 @@
 
 <body>
 
-    <!-- Blurred Background Overlay & Interactive WebGL Campus Tour (UIN Siber Syekh Nurjati Cirebon) -->
+    <!-- Blurred Background Overlay (Gedung Cyber UINSSC) -->
     <div class="login-bg-overlay">
-        <canvas id="canvas" class="login-webgl-canvas"></canvas>
         <div class="login-bg-image" style="background-image: url('assets/img/gedungCyber.png');"></div>
         <div class="login-bg-tint"></div>
     </div>
@@ -1334,32 +1330,6 @@
             });
         }
     </script>
-    <!-- Interactive WebGL Campus Tour HUD (UIN Siber Syekh Nurjati Cirebon) -->
-    <div class="webgl-campus-hud" id="webglCampusHud" aria-label="WebGL 3D Campus Tour Widget">
-        <div class="webgl-hud-header">
-            <span class="webgl-hud-icon"><i class="fa-solid fa-cube"></i></span>
-            <span class="webgl-hud-badge">WebGL 3D Campus Tour</span>
-            <span class="webgl-hud-counter" id="webglSlideCounter">1 / 5</span>
-        </div>
-        <div class="webgl-hud-title" id="webglBuildingName">Gedung Cyber UIN Siber Cirebon</div>
-        <div class="webgl-hud-actions">
-            <button type="button" class="webgl-nav-btn" id="webglPrevBtn"
-                title="Gedung Sebelumnya (Panah Kiri / Scroll Atas)">
-                <i class="fa-solid fa-chevron-left"></i>
-            </button>
-            <button type="button" class="webgl-nav-btn" id="webglNextBtn"
-                title="Gedung Berikutnya (Panah Kanan / Scroll Bawah)">
-                <i class="fa-solid fa-chevron-right"></i>
-            </button>
-            <a href="https://codepen.io/collection/AGZywR" target="_blank" rel="noopener" class="webgl-collection-link"
-                title="WebGL Collection by soju22">
-                <i class="fa-brands fa-codepen"></i> WebGL Collection
-            </a>
-        </div>
-    </div>
-
-    <!-- WebGL Zoom-Blur Campus Script -->
-    <script src="js/webgl-tour.js?v=20261110_1"></script>
     <script src="js/site-builder.js?v=20261107_ui4"></script>
 </body>
 
