@@ -1752,6 +1752,11 @@ textarea {
     transition: opacity 0.8s ease-in-out;
 }
 
+body.webgl-active {
+    background: transparent !important;
+    background-image: none !important;
+}
+
 body.webgl-active .login-webgl-canvas {
     opacity: 1;
 }

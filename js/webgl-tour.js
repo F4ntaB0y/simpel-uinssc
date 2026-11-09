@@ -29,13 +29,17 @@
     return ((n % m) + m) % m;
   }
 
+  // Dynamic base path resolver: works in root ('/') and subfolders ('/pages/')
+  const isSubdir = window.location.pathname.replace(/\\/g, '/').includes('/pages/');
+  const basePath = isSubdir ? '../' : '';
+
   // UIN Siber Syekh Nurjati Cirebon Campus Photos
   const campusImages = [
-    { src: 'assets/img/gedungCyber.png', title: 'Gedung Cyber UIN Siber Cirebon', tag: 'Pusat Siber Terpadu' },
-    { src: 'assets/img/uinssc_siber.jpg', title: 'Pusat Pembelajaran Siber UINSSC', tag: 'Smart Learning Center' },
-    { src: 'assets/img/library_bg.jpg', title: 'Smart Library & Lab Terpadu UINSSC', tag: 'Perpustakaan Digital' },
-    { src: 'assets/img/uinssc_fasya.jpg', title: 'Gedung Fakultas Syariah (FASYA)', tag: 'Kawasan Akademik' },
-    { src: 'assets/img/uinssc_fdk.jpg', title: 'Gedung Fakultas Dakwah & Komunikasi', tag: 'Kawasan Pembelajaran' }
+    { src: basePath + 'assets/img/gedungCyber.png', title: 'Gedung Cyber UIN Siber Cirebon', tag: 'Pusat Siber Terpadu' },
+    { src: basePath + 'assets/img/uinssc_siber.jpg', title: 'Pusat Pembelajaran Siber UINSSC', tag: 'Smart Learning Center' },
+    { src: basePath + 'assets/img/library_bg.jpg', title: 'Smart Library & Lab Terpadu UINSSC', tag: 'Perpustakaan Digital' },
+    { src: basePath + 'assets/img/uinssc_fasya.jpg', title: 'Gedung Fakultas Syariah (FASYA)', tag: 'Kawasan Akademik' },
+    { src: basePath + 'assets/img/uinssc_fdk.jpg', title: 'Gedung Fakultas Dakwah & Komunikasi', tag: 'Kawasan Pembelajaran' }
   ];
 
   function createThreeContext(canvas) {
@@ -283,9 +287,9 @@
     }
 
     function initListeners(images) {
-      // Mouse Wheel Navigation (hanya jika scroll di luar form input / modal)
+      // Mouse Wheel Navigation (hanya jika scroll di luar form input / modal / map)
       window.addEventListener('wheel', e => {
-        if (e.target.closest('input, textarea, select, .login-glass-card-wrapper, .modal-backdrop, .swal2-container')) {
+        if (e.target.closest('input, textarea, select, .login-glass-card-wrapper, .modal-backdrop, .swal2-container, #map, .leaflet-container')) {
           return;
         }
         if (Math.abs(e.deltaY) > 4) {
@@ -299,7 +303,7 @@
 
       // Click Navigation: Atas = Previous, Bawah = Next (hanya jika klik di latar canvas)
       document.addEventListener('click', e => {
-        if (e.target.closest('input, button, a, select, textarea, label, .login-glass-card, .login-hero-side, .modal-backdrop, .swal2-container, .webgl-campus-hud')) {
+        if (e.target.closest('input, button, a, select, textarea, label, .login-glass-card, .login-hero-side, .modal-backdrop, .swal2-container, .webgl-campus-hud, .form-card, .user-banner-card, .table-card, .modal-content, .card, .sso-profile-card, #sectionRiwayat, #sectionLacak, #map, .leaflet-container')) {
           return;
         }
         if (e.clientY < three.size.height / 2) {
