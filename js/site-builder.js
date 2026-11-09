@@ -1027,8 +1027,25 @@
         }
     }
 
-    document.addEventListener('DOMContentLoaded', applyCurrentPage);
-    window.addEventListener('load', applyCurrentPage);
+    function handleNavbarScroll() {
+        const navbar = document.querySelector('.navbar');
+        if (!navbar) return;
+        if (window.scrollY > 15) {
+            navbar.classList.add('is-scrolled');
+        } else {
+            navbar.classList.remove('is-scrolled');
+        }
+    }
+
+    window.addEventListener('scroll', handleNavbarScroll, { passive: true });
+    document.addEventListener('DOMContentLoaded', function () {
+        applyCurrentPage();
+        handleNavbarScroll();
+    });
+    window.addEventListener('load', function () {
+        applyCurrentPage();
+        handleNavbarScroll();
+    });
     window.addEventListener('storage', function (e) {
         if (e.key === SITE_BUILDER_KEY || e.key === LEGACY_CMS_KEY || e.key === 'SIMPEL_AUTH_SESSION') {
             applyCurrentPage();
