@@ -16,7 +16,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="css/user.css?v=20261110_responsive">
+    <link rel="stylesheet" href="css/user.css?v=20261110_timeline">
     <!-- SweetAlert2 Latest CDN -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <!-- DOMPurify Security Sanitizer -->
@@ -406,69 +406,167 @@
         </div>
     </main>
 
-    <!-- Help Modal -->
+    <!-- Help / Panduan Modal (Interactive Timeline) -->
     <div id="helpModal" class="modal-overlay hidden" onclick="closeHelpModalOnBackdrop(event)">
-        <div class="modal-card" style="max-width: 480px; padding: 26px; text-align: left;">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
-                <h3 style="font-size: 18px; font-weight: 800; color: var(--text-main); margin:0;">
-                    <i class="fa-solid fa-circle-question" style="color: var(--gold);"></i> Struktur Peran & Hak Akses
+        <div class="modal-card modal-timeline-card">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; border-bottom: 1px solid var(--border-color); padding-bottom: 12px;">
+                <h3 style="font-size: 18px; font-weight: 800; color: var(--text-main); margin:0; display:flex; align-items:center; gap:8px;">
+                    <i class="fa-solid fa-timeline" style="color: var(--gold);"></i> Panduan Alur Pelaporan &amp; Peran Sistem
                 </h3>
                 <button type="button" onclick="closeHelpModal()"
-                    style="background: none; border: none; font-size: 18px; color: var(--text-muted); cursor: pointer;"><i
-                        class="fa-solid fa-xmark"></i></button>
+                    style="background: none; border: none; font-size: 20px; color: var(--text-muted); cursor: pointer;" title="Tutup Modal Panduan">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
             </div>
 
-            <p style="font-size: 13px; color: var(--text-muted); line-height: 1.5; margin-bottom: 14px;">
-                Sistem Informasi Pelaporan Fasilitas Kampus (SIMPEL UINSSC) membagi alur kerja operasional ke dalam 3
-                tingkatan peran resmi:
+            <!-- TIMELINE PANDUAN -->
+            <p class="fs-3 fw-bold text-center" style="margin-bottom: 4px; color: var(--text-main);">
+                <i class="fa-solid fa-timeline" style="color: var(--gold);"></i> Timeline Panduan
+            </p>
+            <div class="hr-line mt-4 mb-4"></div>
+            <p class="intro fs-4 fw-bold text-center" style="margin: 14px 0 24px; color: var(--text-main);">
+                Alur &amp; Prosedur Pengaduan Sarpras SIMPEL UINSSC
             </p>
 
-            <div style="display:flex; flex-direction:column; gap:10px; margin-bottom:16px;">
-                <div
-                    style="background:rgba(255,255,255,0.03); border:1px solid var(--border-color); border-left:3px solid var(--gold); padding:10px 12px; border-radius:8px;">
-                    <strong style="font-size:12px; color:var(--gold); display:flex; align-items:center; gap:6px;">
-                        <i class="fa-solid fa-graduation-cap"></i> 1. User (Pelapor Kampus)
-                    </strong>
-                    <div style="font-size:12px; color:var(--text-muted); margin-top:2px;">
-                        Yang <strong>membuat pelaporan</strong> kerusakan sarana & prasarana kampus serta melacak proses
-                        penanganannya.
+            <div class="tl-container ps-3 pe-3">
+                <div class="main-timeline">
+                    <!-- Step 1: Brainstorm / Identifikasi -->
+                    <div class="timeline left">
+                        <div class="card tl-card origin-right">
+                            <div class="tl-img-container image-1 scale"></div>
+                            <div class="card-body p-0">
+                                <div class="accordion" id="alwaysOpen-1">
+                                    <div class="accordion-item">
+                                        <p class="accordion-header" style="margin:0;">
+                                            <button class="accordion-button fw-bold justify-content-center" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                                <i class="fa-solid fa-lightbulb fa-lg me-2" style="color: var(--gold);"></i>1. Identifikasi &amp; Lapor (User)
+                                            </button>
+                                        </p>
+                                        <div id="collapseOne" class="accordion-collapse collapse show">
+                                            <div class="accordion-body">
+                                                <p class="fw-light p-2">Civitas akademika (Mahasiswa, Dosen, Tendik) mendeteksi sarpras kampus yang mengalami kerusakan, mengambil foto bukti, memvalidasi koordinat GPS via Peta Geofencing 5 Kawasan UINSSC, lalu mengirimkan tiket laporan.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-footer">
+                                    <div class="icons d-flex justify-content-center m-3">
+                                        <a class="icon-link" title="Panduan Pelapor" aria-label="More Info" href="javascript:void(0)">
+                                            <i class="fa-solid fa-info fa-md"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>
 
-                <div
-                    style="background:rgba(45,212,191,0.06); border:1px solid rgba(45,212,191,0.3); border-left:3px solid #2dd4bf; padding:10px 12px; border-radius:8px;">
-                    <strong style="font-size:12px; color:#2dd4bf; display:flex; align-items:center; gap:6px;">
-                        <i class="fa-solid fa-user-shield"></i> 2. Admin (Admin Sarpras)
-                    </strong>
-                    <div style="font-size:12px; color:var(--text-muted); margin-top:2px;">
-                        Yang <strong>menghubungkan petugas dengan user</strong>: memverifikasi tiket, menugaskan petugas
-                        spesialis yang tepat, mengirim disposisi penugasan WhatsApp ke petugas, serta menyampaikan
-                        perkembangan status perbaikan ke user pelapor.
+                    <!-- Step 2: Mindmap / Verifikasi Admin -->
+                    <div class="timeline right">
+                        <div class="card tl-card origin-left">
+                            <div class="tl-img-container image-2 scale"></div>
+                            <div class="card-body p-0">
+                                <div class="accordion" id="alwaysOpen-2">
+                                    <div class="accordion-item">
+                                        <p class="accordion-header" style="margin:0;">
+                                            <button class="accordion-button fw-bold justify-content-center collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                                <i class="fa-solid fa-signs-post fa-lg me-2" style="color: #2dd4bf;"></i>2. Verifikasi &amp; Disposisi (Admin)
+                                            </button>
+                                        </p>
+                                        <div id="collapseTwo" class="accordion-collapse collapse">
+                                            <div class="accordion-body">
+                                                <p class="fw-light p-2">Admin Sarpras memvalidasi tiket, memeriksa deteksi duplikasi pintar (smart anti-spam), menetapkan target SLA waktu penyelesaian, dan mendisposisikan tugas ke teknisi spesialis via notifikasi WhatsApp resmi.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-footer">
+                                    <div class="icons d-flex justify-content-center m-3">
+                                        <a class="icon-link" title="Panduan Admin" aria-label="More Info" href="javascript:void(0)">
+                                            <i class="fa-solid fa-info fa-md"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>
 
-                <div
-                    style="background:rgba(250,204,21,0.06); border:1px solid rgba(250,204,21,0.3); border-left:3px solid #facc15; padding:10px 12px; border-radius:8px;">
-                    <strong style="font-size:12px; color:#facc15; display:flex; align-items:center; gap:6px;">
-                        <i class="fa-solid fa-shield-halved"></i> 3. Super Admin
-                    </strong>
-                    <div style="font-size:12px; color:var(--text-muted); margin-top:2px;">
-                        Yang <strong>mengatur siapa admin dan petugas</strong>: mendaftarkan, mengaktifkan/menonaktifkan
-                        akun Admin & Petugas lapangan, serta memegang hak eksklusif hapus tiket dan pembersihan
-                        database.
+                    <!-- Step 3: Write Draft / Perbaikan Teknisi -->
+                    <div class="timeline left">
+                        <div class="card tl-card origin-right">
+                            <div class="tl-img-container image-3 scale"></div>
+                            <div class="card-body p-0">
+                                <div class="accordion" id="alwaysOpen-3">
+                                    <div class="accordion-item">
+                                        <p class="accordion-header" style="margin:0;">
+                                            <button class="accordion-button fw-bold justify-content-center collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                                <i class="fa-solid fa-pencil fa-lg me-2" style="color: #facc15;"></i>3. Eksekusi Perbaikan (Teknisi)
+                                            </button>
+                                        </p>
+                                        <div id="collapseThree" class="accordion-collapse collapse">
+                                            <div class="accordion-body">
+                                                <p class="fw-light p-2">Teknisi menuju titik gedung & ruangan sesuai koordinat GPS, memperbarui status tiket menjadi "Sedang Diproses", melakukan perbaikan fisik sarpras, dan mengunggah foto bukti hasil reparasi sebelum batas waktu SLA.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-footer">
+                                    <div class="icons d-flex justify-content-center m-3">
+                                        <a class="icon-link" title="Panduan Teknisi" aria-label="More Info" href="javascript:void(0)">
+                                            <i class="fa-solid fa-info fa-md"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 4: Proofread / Selesai & Audit -->
+                    <div class="timeline right">
+                        <div class="card tl-card origin-left">
+                            <div class="tl-img-container image-4 scale"></div>
+                            <div class="card-body p-0">
+                                <div class="accordion" id="alwaysOpen-4">
+                                    <div class="accordion-item">
+                                        <p class="accordion-header" style="margin:0;">
+                                            <button class="accordion-button fw-bold justify-content-center collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                                                <i class="fa-solid fa-magnifying-glass fa-lg me-2" style="color: #10b981;"></i>4. Selesai &amp; Audit (Super Admin)
+                                            </button>
+                                        </p>
+                                        <div id="collapseFour" class="accordion-collapse collapse">
+                                            <div class="accordion-body">
+                                                <p class="fw-light p-2">Tiket ditandai Selesai. Pelapor menerima pemberitahuan dan dapat mengunduh QR Tiket resmi. Super Admin mengawasi analitik KPI, kinerja SLA, keamanan log SOC, serta manajemen pemeliharaan sarpras kampus secara holistik.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-footer">
+                                    <div class="icons d-flex justify-content-center m-3">
+                                        <a class="icon-link d-flex align-items-center" title="Panduan Super Admin" aria-label="More Info" href="javascript:void(0)">
+                                            <i class="fa-solid fa-info fa-md"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <div
-                style="background: rgba(197, 146, 53, 0.08); border: 1px solid var(--border-color); border-radius: 8px; padding: 10px 12px; font-size: 11px; margin-bottom: 14px;">
-                <strong>Akun Demo Uji Coba:</strong><br>
-                &bull; <code>user</code> / <code>user123</code> &bull; <code>admin</code> / <code>admin123</code> &bull;
-                <code>superadmin</code> / <code>superadmin123</code>
+            <!-- Akun Demo Reference -->
+            <div style="background: rgba(197, 146, 53, 0.08); border: 1px solid var(--border-color); border-radius: 12px; padding: 12px 16px; font-size: 12px; margin-top: 24px; margin-bottom: 16px;">
+                <strong style="color: var(--gold);"><i class="fa-solid fa-key"></i> Kredensial Uji Coba Demo:</strong><br>
+                &bull; Pelapor: <code>user</code> / <code>user123</code> &bull; Admin Sarpras: <code>admin</code> / <code>admin123</code> &bull; Super Admin: <code>superadmin</code> / <code>superadmin123</code>
             </div>
 
-            <button class="btn btn-primary" onclick="closeHelpModal()"
-                style="width: 100%; justify-content: center; font-size:13px;">Tutup Panduan</button>
+            <div class="hr-line mt-4 mb-4"></div>
+            <p class="footer fs-6 fw-bold text-center text-muted" style="margin-bottom: 8px;">Powered by:</p>
+            <p class="text-center" style="display:flex; justify-content:center; gap:16px; margin-bottom: 20px;">
+                <a title="Bootstrap" aria-label="More information about Bootstrap" href="https://getbootstrap.com" target="_blank" rel="noopener"><img src="https://assets.codepen.io/9400490/Bootstrap.svg" alt="Bootstrap" width="28" height="28"></a>
+                <a title="Fontawesome" aria-label="More information about Fontawesome" href="https://fontawesome.com" target="_blank" rel="noopener"><img src="https://assets.codepen.io/9400490/Fontawesome.svg" alt="FontAwesome" width="28" height="28"></a>
+                <a title="Magnific" aria-label="More information about Magnific" href="https://www.magnific.com" target="_blank" rel="noopener"><img src="https://assets.codepen.io/9400490/Magnific.svg" alt="Magnific" width="28" height="28"></a>
+            </p>
+
+            <button class="btn btn-primary" onclick="closeHelpModal()" style="width: 100%; justify-content: center; font-size:14px; min-height:46px;">Tutup Panduan</button>
         </div>
     </div>
 
@@ -1029,6 +1127,28 @@
                 closeHelpModal();
             }
         }
+
+        // Generic Vanilla Bootstrap 5 Accordion Collapse Handler for Panduan Timeline
+        document.addEventListener('click', (e) => {
+            const btn = e.target.closest('[data-bs-toggle="collapse"]');
+            if (!btn) return;
+            e.preventDefault();
+            const targetSelector = btn.getAttribute('data-bs-target');
+            if (!targetSelector) return;
+            const targetEl = document.querySelector(targetSelector);
+            if (!targetEl) return;
+
+            const isShown = targetEl.classList.contains('show');
+            if (isShown) {
+                targetEl.classList.remove('show');
+                btn.classList.add('collapsed');
+                btn.setAttribute('aria-expanded', 'false');
+            } else {
+                targetEl.classList.add('show');
+                btn.classList.remove('collapsed');
+                btn.setAttribute('aria-expanded', 'true');
+            }
+        });
 
         function toggleTheme() {
             const current = document.documentElement.getAttribute('data-theme') || 'dark';
