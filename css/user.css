@@ -1628,18 +1628,52 @@ body.webgl-active .webgl-campus-hud {
     background: radial-gradient(circle at 65% 35%, rgba(255, 255, 255, 0.78) 0%, rgba(235, 246, 239, 0.94) 100%);
 }
 
-/* Split-Hero Layout Grid for Login - Sticky Right Form & Balanced Left Showcase */
+/* Full-Width Institutional Header Text ("text full") */
+.login-full-header {
+    width: 100%;
+    margin-top: 18px;
+    margin-bottom: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.login-full-header .login-main-title {
+    font-size: clamp(26px, 3.2vw, 40px);
+    font-weight: 800;
+    line-height: 1.22;
+    letter-spacing: -0.6px;
+    color: var(--text-main);
+    margin: 0;
+    min-height: 1.25em;
+    display: block;
+}
+
+.login-full-header .login-main-desc {
+    font-size: 15px;
+    line-height: 1.62;
+    color: var(--text-muted);
+    max-width: 960px;
+    margin: 0;
+}
+
+/* Split-Hero Layout Grid for Login - Parallel Left Video & Right Form */
 .login-portal-grid {
     display: grid;
     grid-template-columns: minmax(0, 1.22fr) minmax(380px, 490px);
-    gap: 48px;
+    gap: 44px;
     align-items: start;
-    padding: 34px 0 48px;
+    padding: 0 0 48px;
 }
 
 .login-glass-card-wrapper {
     position: sticky;
-    top: 90px;
+    top: 86px;
+    margin-top: 0;
+}
+
+.login-video-card {
+    margin-top: 0 !important;
 }
 
 /* Left Hero Showcase */
@@ -2093,6 +2127,17 @@ textarea.login-input {
    MOBILE & TABLET RESPONSIVE BREAKPOINTS
    ========================================================================== */
 @media (max-width: 992px) {
+    .login-full-header {
+        text-align: center;
+        align-items: center;
+        margin-top: 10px;
+        margin-bottom: 20px;
+    }
+
+    .login-full-header .login-main-desc {
+        text-align: center;
+    }
+
     .login-portal-grid {
         display: flex;
         flex-direction: column;

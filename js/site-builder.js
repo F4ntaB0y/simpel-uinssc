@@ -54,7 +54,7 @@
                 showPresetDemo: true,
                 presetTitle: 'Akun Demo Uji Coba Cepat (1-Klik):'
             },
-            heroOrder: ['hero_header', 'features_list', 'video_profile'],
+            heroOrder: ['hero_header', 'video_profile', 'features_list'],
             blocks: {
                 hero_header: {
                     id: 'hero_header',
@@ -507,21 +507,26 @@
         // 4. Hero Side Blocks & Ordering
         const heroSide = document.querySelector('.login-hero-side');
         if (heroSide) {
-            // Ensure hero_header wrapper exists around badge + title/desc
+            // Ensure hero_header wrapper exists as full-width header before grid
             let heroHeaderWrap = document.getElementById('loginHeroHeaderBlock');
+            const mainContainer = grid.parentElement;
             if (!heroHeaderWrap) {
-                const badgeEl = heroSide.querySelector('.login-inst-badge');
-                const titleWrap = heroSide.querySelector('.login-main-title') ? heroSide.querySelector('.login-main-title').parentElement : null;
+                const badgeEl = document.querySelector('.login-inst-badge');
+                const titleWrap = document.querySelector('.login-main-title') ? document.querySelector('.login-main-title').parentElement : null;
                 if (badgeEl || titleWrap) {
-                    heroHeaderWrap = document.createElement('div');
+                    heroHeaderWrap = document.createElement('header');
                     heroHeaderWrap.id = 'loginHeroHeaderBlock';
-                    heroHeaderWrap.style.display = 'flex';
-                    heroHeaderWrap.style.flexDirection = 'column';
-                    heroHeaderWrap.style.gap = '14px';
-                    heroSide.insertBefore(heroHeaderWrap, heroSide.firstChild);
+                    heroHeaderWrap.className = 'login-full-header';
+                    if (mainContainer) {
+                        mainContainer.insertBefore(heroHeaderWrap, grid);
+                    } else {
+                        heroSide.insertBefore(heroHeaderWrap, heroSide.firstChild);
+                    }
                     if (badgeEl) heroHeaderWrap.appendChild(badgeEl);
                     if (titleWrap && titleWrap !== heroSide) heroHeaderWrap.appendChild(titleWrap);
                 }
+            } else if (mainContainer && heroHeaderWrap.parentElement !== mainContainer) {
+                mainContainer.insertBefore(heroHeaderWrap, grid);
             }
 
             // Update hero_header content
@@ -610,7 +615,7 @@
             });
 
             (cfg.heroOrder || []).forEach(id => {
-                if (domMap[id]) {
+                if (id !== 'hero_header' && domMap[id]) {
                     heroSide.appendChild(domMap[id]);
                 }
             });

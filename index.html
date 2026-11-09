@@ -16,7 +16,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="css/user.css?v=20261110_width1400">
+    <link rel="stylesheet" href="css/user.css?v=20261110_parallel">
     <!-- SweetAlert2 Latest CDN -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <!-- DOMPurify Security Sanitizer -->
@@ -117,22 +117,54 @@
         </div>
     </header>
 
-    <!-- Main Container: Executive Split Portal -->
+    <!-- Main Container: Executive Full Header + Parallel Split Grid -->
     <main class="container">
+        <!-- Full-Width Hero Header Text ("text full") -->
+        <header class="login-full-header" id="loginHeroHeaderBlock">
+            <div class="login-inst-badge">
+                <span class="status-live-dot"></span>
+                <span>UIN Siber Syekh Nurjati Cirebon</span>
+            </div>
+
+            <div>
+                <h1 class="login-main-title" id="loginMainTitle"><span id="typedHeroTitle">Sistem Informasi
+                        Pelaporan Fasilitas Kampus</span></h1>
+                <p class="login-main-desc">Portal resmi civitas akademika untuk efisiensi pelaporan kerusakan
+                    sarpras, verifikasi geofencing GIS presisi, dan tindak lanjut perbaikan secara terpadu.</p>
+            </div>
+        </header>
+
         <div class="login-portal-grid">
 
-            <!-- Left Side: Institutional Identity & Key Features -->
+            <!-- Left Side: Video & Key Features (Sejajar dengan Login Card!) -->
             <div class="login-hero-side">
-                <div class="login-inst-badge">
-                    <span class="status-live-dot"></span>
-                    <span>UIN Siber Syekh Nurjati Cirebon</span>
-                </div>
-
-                <div>
-                    <h1 class="login-main-title" id="loginMainTitle"><span id="typedHeroTitle">Sistem Informasi
-                            Pelaporan Fasilitas Kampus</span></h1>
-                    <p class="login-main-desc">Portal resmi civitas akademika untuk efisiensi pelaporan kerusakan
-                        sarpras, verifikasi geofencing GIS presisi, dan tindak lanjut perbaikan secara terpadu.</p>
+                <!-- Video Profil Kampus UINSSC (Dapat diatur Super Admin) -->
+                <div id="loginVideoCard" class="login-video-card">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                        <span
+                            style="display:inline-flex; align-items:center; gap:6px; font-size:11px; font-weight:800; color:#ef4444; background:rgba(239,68,68,0.12); border:1px solid rgba(239,68,68,0.25); padding:3px 10px; border-radius:9999px;">
+                            <i class="fa-brands fa-youtube"></i> PROFIL KAMPUS CYBER
+                        </span>
+                        <span style="font-size:11px; color:var(--text-muted); font-weight:600;"><i
+                                class="fa-solid fa-circle-play" style="color:var(--gold);"></i> Video Resmi</span>
+                    </div>
+                    <div
+                        style="position:relative; width:100%; padding-top:56.25%; border-radius:10px; overflow:hidden; background:#000; box-shadow:0 4px 18px rgba(0,0,0,0.35); border:1px solid rgba(255,255,255,0.08);">
+                        <iframe id="loginVideoIframe"
+                            style="position:absolute; top:0; left:0; width:100%; height:100%; border:0;"
+                            src="https://www.youtube.com/embed/bUhLVKdbRd0?rel=0"
+                            title="Profil Kampus UIN Siber Syekh Nurjati Cirebon"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            allowfullscreen></iframe>
+                    </div>
+                    <div style="margin-top:8px;">
+                        <h4 id="loginVideoTitle"
+                            style="font-size:13.5px; font-weight:700; color:var(--text-main); margin:0 0 3px 0;">Profil
+                            Kampus UIN Siber Syekh Nurjati Cirebon</h4>
+                        <p id="loginVideoDesc"
+                            style="font-size:12px; color:var(--text-muted); margin:0; line-height:1.45;">Kenali lebih
+                            dekat fasilitas modern, ekosistem digital, dan layanan sarana prasarana kampus cyber.</p>
+                    </div>
                 </div>
 
                 <!-- Highlight Cards (Dapat diatur Super Admin) -->
@@ -165,36 +197,6 @@
                             <h4>Transparansi Tracking & SLA</h4>
                             <p>Pantau status perbaikan mulai dari Diajukan, Diproses teknisi, hingga Selesai tuntas.</p>
                         </div>
-                    </div>
-                </div>
-
-                <!-- Video Profil Kampus UINSSC (Dapat diatur Super Admin) -->
-                <div id="loginVideoCard" class="login-video-card"
-                    style="margin-top: 14px; margin-bottom: 4px; background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 14px; backdrop-filter: blur(10px); transition: all 0.25s ease;">
-                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-                        <span
-                            style="display:inline-flex; align-items:center; gap:6px; font-size:11px; font-weight:800; color:#ef4444; background:rgba(239,68,68,0.12); border:1px solid rgba(239,68,68,0.25); padding:3px 10px; border-radius:9999px;">
-                            <i class="fa-brands fa-youtube"></i> PROFIL KAMPUS CYBER
-                        </span>
-                        <span style="font-size:11px; color:var(--text-muted); font-weight:600;"><i
-                                class="fa-solid fa-circle-play" style="color:var(--gold);"></i> Video Resmi</span>
-                    </div>
-                    <div
-                        style="position:relative; width:100%; padding-top:56.25%; border-radius:10px; overflow:hidden; background:#000; box-shadow:0 4px 18px rgba(0,0,0,0.35); border:1px solid rgba(255,255,255,0.08);">
-                        <iframe id="loginVideoIframe"
-                            style="position:absolute; top:0; left:0; width:100%; height:100%; border:0;"
-                            src="https://www.youtube.com/embed/bUhLVKdbRd0?rel=0"
-                            title="Profil Kampus UIN Siber Syekh Nurjati Cirebon"
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                            allowfullscreen></iframe>
-                    </div>
-                    <div style="margin-top:8px;">
-                        <h4 id="loginVideoTitle"
-                            style="font-size:13.5px; font-weight:700; color:var(--text-main); margin:0 0 3px 0;">Profil
-                            Kampus UIN Siber Syekh Nurjati Cirebon</h4>
-                        <p id="loginVideoDesc"
-                            style="font-size:12px; color:var(--text-muted); margin:0; line-height:1.45;">Kenali lebih
-                            dekat fasilitas modern, ekosistem digital, dan layanan sarana prasarana kampus cyber.</p>
                     </div>
                 </div>
             </div>
