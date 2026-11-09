@@ -23,6 +23,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.1.6/purify.min.js"></script>
     <!-- Typed.js Typing / Letter-by-Letter Animation Library -->
     <script src="https://cdn.jsdelivr.net/npm/typed.js@2.1.0/dist/typed.umd.js"></script>
+    <!-- Three.js & GSAP for WebGL Campus Zoom-Blur Showcase -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <style>
         @keyframes shake {
 
@@ -65,8 +68,9 @@
 
 <body>
 
-    <!-- Blurred Background Overlay (Gedung Cyber UINSSC) -->
+    <!-- Blurred Background Overlay & Interactive WebGL Campus Tour (UIN Siber Syekh Nurjati Cirebon) -->
     <div class="login-bg-overlay">
+        <canvas id="canvas" class="login-webgl-canvas"></canvas>
         <div class="login-bg-image" style="background-image: url('assets/img/gedungCyber.png');"></div>
         <div class="login-bg-tint"></div>
     </div>
@@ -1442,6 +1446,8 @@
             });
         }
     </script>
+    <!-- WebGL Zoom-Blur Campus Script -->
+    <script src="js/webgl-tour.js?v=20261110_tour"></script>
     <script src="js/site-builder.js?v=20261107_ui4"></script>
 </body>
 
