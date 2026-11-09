@@ -1848,14 +1848,15 @@ body.webgl-active .login-bg-tint {
 .login-portal-grid {
     display: grid;
     grid-template-columns: minmax(0, 1.22fr) minmax(380px, 490px);
-    gap: 44px;
-    align-items: start;
+    gap: 40px;
+    align-items: stretch !important;
     padding: 0 0 48px;
 }
 
 .login-glass-card-wrapper {
-    position: sticky;
-    top: 86px;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
     margin-top: 0;
 }
 
@@ -1867,6 +1868,7 @@ body.webgl-active .login-bg-tint {
 .login-hero-side {
     display: flex;
     flex-direction: column;
+    height: 100%;
     gap: 20px;
 }
 
@@ -1954,51 +1956,52 @@ body.webgl-active .login-bg-tint {
     color: var(--text-muted);
 }
 
-/* Feature List Cards - Modern & Uncluttered */
+/* Feature List Cards - Modern, Sleek & Integrated */
 .login-features-list {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 8px;
+    margin-top: auto;
 }
 
 .login-feature-item {
     display: flex;
     align-items: center;
-    gap: 15px;
-    padding: 14px 18px;
-    border-radius: var(--radius-md);
-    background: rgba(11, 33, 24, 0.62);
-    border: 1px solid var(--border-color);
-    backdrop-filter: blur(12px);
+    gap: 12px;
+    padding: 9px 14px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.035);
+    border: 1px solid rgba(212, 163, 67, 0.16);
+    backdrop-filter: blur(10px);
     transition: var(--transition);
 }
 
 [data-theme="light"] .login-feature-item {
-    background: rgba(255, 255, 255, 0.92);
-    border-color: #dbe4df;
-    box-shadow: 0 2px 10px rgba(0, 35, 20, 0.04);
+    background: #f8fafc;
+    border-color: #e2ebe6;
+    box-shadow: 0 1px 6px rgba(0, 35, 20, 0.04);
 }
 
 .login-feature-item:hover {
     transform: translateX(4px);
     border-color: var(--gold);
-    background: rgba(14, 42, 31, 0.8);
+    background: rgba(212, 163, 67, 0.08);
 }
 
 [data-theme="light"] .login-feature-item:hover {
     background: #ffffff;
     border-color: #005a36;
-    box-shadow: 0 6px 18px rgba(0, 90, 54, 0.08);
+    box-shadow: 0 4px 14px rgba(0, 90, 54, 0.08);
 }
 
 .login-feature-icon {
-    width: 42px;
-    height: 42px;
-    border-radius: 11px;
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 17px;
+    font-size: 15px;
     flex-shrink: 0;
 }
 
@@ -2034,22 +2037,41 @@ body.webgl-active .login-bg-tint {
     line-height: 1.45;
 }
 
-/* Video Card on Login */
+/* Video Card on Login - Equal Length/Height & Aesthetics to Login Card */
 .login-video-card {
-    background: rgba(11, 33, 24, 0.62) !important;
-    border: 1px solid var(--border-color) !important;
-    border-radius: var(--radius-md) !important;
-    padding: 16px !important;
-    backdrop-filter: blur(12px) !important;
+    background: rgba(9, 28, 20, 0.9) !important;
+    backdrop-filter: blur(22px) !important;
+    -webkit-backdrop-filter: blur(22px) !important;
+    border: 1px solid rgba(212, 163, 67, 0.28) !important;
+    border-radius: 22px !important;
+    padding: 28px 24px !important;
+    box-shadow: 0 24px 54px rgba(0, 0, 0, 0.48) !important;
+    position: relative;
+    overflow: hidden;
+    height: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;
+    box-sizing: border-box;
+}
+
+.login-video-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #d4a343, #005a36, #10b981);
 }
 
 [data-theme="light"] .login-video-card {
-    background: rgba(255, 255, 255, 0.92) !important;
-    border-color: #dbe4df !important;
-    box-shadow: 0 4px 16px rgba(0, 35, 20, 0.05);
+    background: rgba(255, 255, 255, 0.98) !important;
+    border: 1px solid #dbe4df !important;
+    box-shadow: 0 22px 48px -12px rgba(0, 65, 38, 0.12), 0 4px 16px rgba(0, 0, 0, 0.04) !important;
 }
 
-/* Enhanced Login Glass Card */
+/* Enhanced Login Glass Card - Equal Length/Height */
 .login-glass-card {
     background: rgba(9, 28, 20, 0.9) !important;
     backdrop-filter: blur(22px) !important;
@@ -2060,6 +2082,11 @@ body.webgl-active .login-bg-tint {
     box-shadow: 0 24px 54px rgba(0, 0, 0, 0.48) !important;
     position: relative;
     overflow: hidden;
+    height: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;
+    box-sizing: border-box;
 }
 
 .login-glass-card::before {
@@ -2332,22 +2359,30 @@ textarea.login-input {
         display: grid;
         grid-template-columns: minmax(0, 1.15fr) minmax(360px, 440px);
         gap: 24px;
-        align-items: start;
+        align-items: stretch !important;
         padding-bottom: 36px;
     }
 
+    .login-hero-side,
     .login-glass-card-wrapper {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        position: static;
         width: 100%;
-        position: sticky;
-        top: 80px;
     }
 
+    .login-video-card,
     .login-glass-card {
-        padding: 26px 22px !important;
+        height: 100% !important;
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: space-between !important;
+        padding: 24px 20px !important;
     }
 
     .login-video-card iframe {
-        min-height: 270px;
+        min-height: 250px;
     }
 }
 
@@ -2405,12 +2440,14 @@ textarea.login-input {
         margin-left: auto;
         margin-right: auto;
         text-align: left;
+        height: auto !important;
     }
 
     .login-glass-card {
         max-width: 520px;
         margin: 0 auto;
         padding: 28px 22px !important;
+        height: auto !important;
     }
 }
 

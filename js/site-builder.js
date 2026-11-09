@@ -616,7 +616,13 @@
 
             (cfg.heroOrder || []).forEach(id => {
                 if (id !== 'hero_header' && domMap[id]) {
-                    heroSide.appendChild(domMap[id]);
+                    if (id === 'features_list' && videoCard) {
+                        if (!videoCard.contains(featList)) {
+                            videoCard.appendChild(featList);
+                        }
+                    } else if (domMap[id] !== featList) {
+                        heroSide.appendChild(domMap[id]);
+                    }
                 }
             });
         }
