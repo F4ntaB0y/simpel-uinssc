@@ -164,11 +164,17 @@ body {
 }
 
 .container {
-    max-width: 1220px;
+    max-width: 1400px;
     margin: 0 auto;
-    padding: 0 24px;
+    padding: 0 28px;
     width: 100%;
     box-sizing: border-box;
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 0 20px;
+    }
 }
 
 @media (max-width: 640px) {
@@ -1625,8 +1631,8 @@ body.webgl-active .webgl-campus-hud {
 /* Split-Hero Layout Grid for Login - Sticky Right Form & Balanced Left Showcase */
 .login-portal-grid {
     display: grid;
-    grid-template-columns: 1.15fr 0.85fr;
-    gap: 44px;
+    grid-template-columns: minmax(0, 1.22fr) minmax(380px, 490px);
+    gap: 48px;
     align-items: start;
     padding: 34px 0 48px;
 }
@@ -2360,13 +2366,13 @@ textarea.login-input {
    DYNAMIC SITE BUILDER LAYOUT VARIANTS & FLOATING SUPER ADMIN DOCK
    ========================================================================== */
 .container.container-wide {
-    max-width: 1460px !important;
+    max-width: 1540px !important;
 }
 
 /* Login Page Layout: Split-Left (Login Card on Left, Hero Info on Right) */
 @media (min-width: 961px) {
     .login-portal-grid.layout-split-left {
-        grid-template-columns: 460px minmax(0, 1.15fr) !important;
+        grid-template-columns: minmax(380px, 490px) minmax(0, 1.22fr) !important;
     }
     .login-portal-grid.layout-split-left .login-glass-card-wrapper {
         order: -1;
