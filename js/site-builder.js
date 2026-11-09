@@ -627,7 +627,52 @@
             });
         }
 
+        initLoginEqualHeightSync();
         renderSuperAdminFloatingBar('login');
+    }
+
+    function syncLoginEqualHeights() {
+        const videoCard = document.getElementById('loginVideoCard');
+        const glassCard = document.querySelector('.login-glass-card');
+        const grid = document.querySelector('.login-portal-grid');
+        if (!videoCard || !glassCard || !grid) return;
+
+        requestAnimationFrame(() => {
+            const compDisplay = window.getComputedStyle(grid).display;
+            const isTwoCol = (window.innerWidth > 820 || (compDisplay === 'grid' && window.getComputedStyle(grid).gridTemplateColumns.includes(' ')));
+            if (isTwoCol) {
+                videoCard.style.minHeight = '';
+                glassCard.style.minHeight = '';
+                const h1 = videoCard.scrollHeight || videoCard.offsetHeight;
+                const h2 = glassCard.scrollHeight || glassCard.offsetHeight;
+                const maxH = Math.max(h1, h2);
+                if (maxH > 150) {
+                    videoCard.style.minHeight = maxH + 'px';
+                    glassCard.style.minHeight = maxH + 'px';
+                }
+            } else {
+                videoCard.style.minHeight = '';
+                glassCard.style.minHeight = '';
+            }
+        });
+    }
+
+    let _loginResizeObserver = null;
+    function initLoginEqualHeightSync() {
+        const videoCard = document.getElementById('loginVideoCard');
+        const glassCard = document.querySelector('.login-glass-card');
+        if (!videoCard || !glassCard) return;
+
+        syncLoginEqualHeights();
+        window.addEventListener('resize', syncLoginEqualHeights, { passive: true });
+        window.addEventListener('orientationchange', syncLoginEqualHeights, { passive: true });
+        window.addEventListener('load', syncLoginEqualHeights, { passive: true });
+
+        if ('ResizeObserver' in window && !_loginResizeObserver) {
+            _loginResizeObserver = new ResizeObserver(() => syncLoginEqualHeights());
+            _loginResizeObserver.observe(glassCard);
+            _loginResizeObserver.observe(videoCard);
+        }
     }
 
     /* ======================================================================

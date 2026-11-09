@@ -1854,9 +1854,12 @@ body.webgl-active .login-bg-tint {
 }
 
 .login-glass-card-wrapper {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
+    display: flex !important;
+    flex-direction: column !important;
+    align-self: stretch !important;
+    height: 100% !important;
+    min-height: 100% !important;
+    flex: 1 1 auto !important;
     margin-top: 0;
 }
 
@@ -1866,9 +1869,12 @@ body.webgl-active .login-bg-tint {
 
 /* Left Hero Showcase */
 .login-hero-side {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
+    display: flex !important;
+    flex-direction: column !important;
+    align-self: stretch !important;
+    height: 100% !important;
+    min-height: 100% !important;
+    flex: 1 1 auto !important;
     gap: 20px;
 }
 
@@ -2049,10 +2055,13 @@ body.webgl-active .login-bg-tint {
     position: relative;
     overflow: hidden;
     height: 100% !important;
+    min-height: 100% !important;
+    flex: 1 1 auto !important;
+    flex-grow: 1 !important;
     display: flex !important;
     flex-direction: column !important;
     justify-content: space-between !important;
-    box-sizing: border-box;
+    box-sizing: border-box !important;
 }
 
 .login-video-card::before {
@@ -2083,10 +2092,13 @@ body.webgl-active .login-bg-tint {
     position: relative;
     overflow: hidden;
     height: 100% !important;
+    min-height: 100% !important;
+    flex: 1 1 auto !important;
+    flex-grow: 1 !important;
     display: flex !important;
     flex-direction: column !important;
     justify-content: space-between !important;
-    box-sizing: border-box;
+    box-sizing: border-box !important;
 }
 
 .login-glass-card::before {
@@ -2365,9 +2377,12 @@ textarea.login-input {
 
     .login-hero-side,
     .login-glass-card-wrapper {
-        height: 100%;
-        display: flex;
-        flex-direction: column;
+        height: 100% !important;
+        min-height: 100% !important;
+        align-self: stretch !important;
+        display: flex !important;
+        flex-direction: column !important;
+        flex: 1 1 auto !important;
         position: static;
         width: 100%;
     }
@@ -2375,10 +2390,14 @@ textarea.login-input {
     .login-video-card,
     .login-glass-card {
         height: 100% !important;
+        min-height: 100% !important;
+        flex: 1 1 auto !important;
+        flex-grow: 1 !important;
         display: flex !important;
         flex-direction: column !important;
         justify-content: space-between !important;
         padding: 24px 20px !important;
+        box-sizing: border-box !important;
     }
 
     .login-video-card iframe {
