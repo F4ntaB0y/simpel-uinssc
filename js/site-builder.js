@@ -484,7 +484,14 @@
                 const h2El = headerWrap.querySelector('h2');
                 const pEl = headerWrap.querySelector('p');
                 if (subEl) subEl.textContent = cfg.loginBox.subtitle || 'SIMPEL UINSSC';
-                if (h2El) h2El.textContent = cfg.loginBox.title || 'Portal Masuk Sistem';
+                if (h2El) {
+                    const cardTyped = h2El.querySelector('#typedCardTitle');
+                    if (cardTyped) {
+                        cardTyped.textContent = cfg.loginBox.title || 'Portal Masuk Sistem';
+                    } else {
+                        h2El.textContent = cfg.loginBox.title || 'Portal Masuk Sistem';
+                    }
+                }
                 if (pEl) pEl.textContent = cfg.loginBox.desc || '';
             }
             const presetBox = loginCard.querySelector('.login-preset-box');
@@ -525,7 +532,15 @@
                 const mainTitle = heroHeaderWrap.querySelector('.login-main-title');
                 const mainDesc = heroHeaderWrap.querySelector('.login-main-desc');
                 if (badgeSpan) badgeSpan.textContent = hh.badge || 'UIN Siber Syekh Nurjati Cirebon';
-                if (mainTitle) mainTitle.textContent = hh.title || '';
+                if (mainTitle) {
+                    if (typeof window.initLoginTypedAnimation === 'function') {
+                        window.initLoginTypedAnimation(hh.title || '');
+                    } else {
+                        const typedSpan = mainTitle.querySelector('#typedHeroTitle');
+                        if (typedSpan) typedSpan.textContent = hh.title || '';
+                        else mainTitle.textContent = hh.title || '';
+                    }
+                }
                 if (mainDesc) mainDesc.textContent = hh.desc || '';
             }
 
@@ -1032,3 +1047,4 @@
         }
     };
 })();
+

@@ -14,11 +14,13 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="css/user.css?v=20261107_ui4">
+    <link rel="stylesheet" href="css/user.css?v=20261109_typed">
     <!-- SweetAlert2 Latest CDN -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <!-- DOMPurify Security Sanitizer -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.1.6/purify.min.js"></script>
+    <!-- Typed.js Typing / Letter-by-Letter Animation Library -->
+    <script src="https://cdn.jsdelivr.net/npm/typed.js@2.1.0/dist/typed.umd.js"></script>
     <style>
         @keyframes shake {
             0%, 100% { transform: translateX(0); }
@@ -104,7 +106,7 @@
                 </div>
 
                 <div>
-                    <h1 class="login-main-title">Sistem Informasi Pelaporan Fasilitas Kampus</h1>
+                    <h1 class="login-main-title" id="loginMainTitle"><span id="typedHeroTitle">Sistem Informasi Pelaporan Fasilitas Kampus</span></h1>
                     <p class="login-main-desc">Portal resmi civitas akademika untuk efisiensi pelaporan kerusakan sarpras, verifikasi geofencing GIS presisi, dan tindak lanjut perbaikan secara terpadu.</p>
                 </div>
 
@@ -166,9 +168,9 @@
                         <div style="width: 64px; height: 64px; background: #ffffff; border: 2px solid var(--gold); border-radius: 14px; margin: 0 auto 10px; display: flex; align-items: center; justify-content: center; padding: 5px; box-shadow: 0 4px 16px rgba(197, 146, 53, 0.2);">
                             <img src="assets/img/logo.png" alt="Logo UINSSC" style="width: 100%; height: 100%; object-fit: contain;">
                         </div>
-                        <div style="font-size: 12px; font-weight: 800; color: var(--gold); letter-spacing: 1.2px; text-transform: uppercase; margin-bottom: 3px;">SIMPEL UINSSC</div>
-                        <h2 style="font-size: 22px; font-weight: 800; color: var(--text-main); margin-bottom: 4px;">Portal Masuk Sistem</h2>
-                        <p style="color: var(--text-muted); font-size: 13px; line-height: 1.5;">Gunakan akun resmi kampus Anda untuk mengakses layanan.</p>
+                        <div style="font-size: 12px; font-weight: 800; color: var(--gold); letter-spacing: 1.2px; text-transform: uppercase; margin-bottom: 3px;" id="loginCardBrand">SIMPEL UINSSC</div>
+                        <h2 style="font-size: 22px; font-weight: 800; color: var(--text-main); margin-bottom: 4px;" id="loginCardTitle"><span id="typedCardTitle">Portal Masuk Sistem</span></h2>
+                        <p style="color: var(--text-muted); font-size: 13px; line-height: 1.5;" id="loginCardDesc">Gunakan akun resmi kampus Anda untuk mengakses layanan.</p>
                     </div>
 
                     <form id="loginForm" onsubmit="handleLogin(event)">
@@ -1043,13 +1045,106 @@
             }
         }
 
+        // ======================================================================
+        // TYPED.JS LETTER-BY-LETTER ANIMATION FOR LOGIN MENU
+        // ======================================================================
+        let typedHeroInstance = null;
+        let typedCardInstance = null;
+
+        function initLoginTypedAnimation(customMainTitle) {
+            const heroTarget = document.getElementById('typedHeroTitle');
+            if (heroTarget) {
+                if (typedHeroInstance && typeof typedHeroInstance.destroy === 'function') {
+                    try { typedHeroInstance.destroy(); } catch (e) {}
+                    typedHeroInstance = null;
+                }
+
+                const primaryTitle = customMainTitle || heroTarget.getAttribute('data-default-title') || heroTarget.textContent.trim() || 'Sistem Informasi Pelaporan Fasilitas Kampus';
+                heroTarget.setAttribute('data-default-title', primaryTitle);
+
+                const stringsList = [
+                    primaryTitle,
+                    'Layanan Pengaduan Sarpras UIN Siber Cirebon',
+                    'Validasi Geofencing GIS Presisi 5 Kawasan',
+                    'Transparansi Tracking SLA & Respon Cepat'
+                ];
+
+                if (window.Typed) {
+                    heroTarget.textContent = '';
+                    typedHeroInstance = new window.Typed(heroTarget, {
+                        strings: stringsList,
+                        typeSpeed: 40,
+                        backSpeed: 22,
+                        backDelay: 2200,
+                        startDelay: 300,
+                        loop: true,
+                        smartBackspace: true,
+                        showCursor: true,
+                        cursorChar: '|'
+                    });
+                } else {
+                    fallbackTypewriter(heroTarget, stringsList);
+                }
+            }
+
+            const cardTarget = document.getElementById('typedCardTitle');
+            if (cardTarget && !typedCardInstance) {
+                const cardTitleText = cardTarget.textContent.trim() || 'Portal Masuk Sistem';
+                if (window.Typed) {
+                    cardTarget.textContent = '';
+                    typedCardInstance = new window.Typed(cardTarget, {
+                        strings: [cardTitleText],
+                        typeSpeed: 45,
+                        showCursor: false,
+                        loop: false,
+                        startDelay: 200
+                    });
+                }
+            }
+        }
+
+        function fallbackTypewriter(element, strings, strIdx = 0) {
+            if (!element) return;
+            const currentStr = strings[strIdx % strings.length];
+            let charIdx = 0;
+            element.textContent = '';
+
+            function typeChar() {
+                if (charIdx <= currentStr.length) {
+                    element.textContent = currentStr.slice(0, charIdx);
+                    charIdx++;
+                    setTimeout(typeChar, 40);
+                } else {
+                    setTimeout(eraseChar, 2200);
+                }
+            }
+
+            function eraseChar() {
+                if (charIdx >= 0) {
+                    element.textContent = currentStr.slice(0, charIdx);
+                    charIdx--;
+                    setTimeout(eraseChar, 22);
+                } else {
+                    fallbackTypewriter(element, strings, strIdx + 1);
+                }
+            }
+
+            typeChar();
+        }
+
+        window.initLoginTypedAnimation = initLoginTypedAnimation;
+
         document.addEventListener('DOMContentLoaded', () => {
             generateCaptcha();
             applyLoginPortalContent();
+            initLoginTypedAnimation();
         });
         window.addEventListener('load', () => {
             generateCaptcha();
             applyLoginPortalContent();
+            if (!typedHeroInstance) {
+                initLoginTypedAnimation();
+            }
         });
         window.addEventListener('storage', (e) => {
             if (e.key === 'SIMPEL_PORTAL_CONTENT_V1') {

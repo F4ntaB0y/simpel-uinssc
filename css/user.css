@@ -1517,10 +1517,31 @@ textarea {
     letter-spacing: -0.6px;
     color: var(--text-main);
     margin-bottom: 10px;
+    min-height: 1.25em;
 }
 
 [data-theme="light"] .login-main-title {
     color: #004227;
+}
+
+/* Typed.js Typing / Letter-by-Letter Cursor Styling */
+.typed-cursor {
+    color: var(--gold);
+    font-weight: 300;
+    opacity: 1;
+    animation: typedBlink 0.75s infinite;
+    margin-left: 2px;
+    display: inline-block;
+    vertical-align: baseline;
+}
+
+@keyframes typedBlink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+}
+
+.login-main-title #typedHeroTitle {
+    display: inline;
 }
 
 .login-main-desc {
