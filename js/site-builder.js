@@ -1043,6 +1043,43 @@
         }
     }
 
+    // Modal Panduan Helpers (Available globally across Login, User, & Admin pages)
+    window.openHelpModal = function () {
+        const modal = document.getElementById('helpModal');
+        if (modal) modal.classList.remove('hidden');
+    };
+    window.closeHelpModal = function () {
+        const modal = document.getElementById('helpModal');
+        if (modal) modal.classList.add('hidden');
+    };
+    window.closeHelpModalOnBackdrop = function (e) {
+        if (e && e.target && e.target.id === 'helpModal') {
+            window.closeHelpModal();
+        }
+    };
+
+    // Generic Vanilla Bootstrap 5 Accordion Collapse Handler for Panduan Timeline
+    document.addEventListener('click', function (e) {
+        const btn = e.target.closest('[data-bs-toggle="collapse"]');
+        if (!btn) return;
+        e.preventDefault();
+        const targetSelector = btn.getAttribute('data-bs-target');
+        if (!targetSelector) return;
+        const targetEl = document.querySelector(targetSelector);
+        if (!targetEl) return;
+
+        const isShown = targetEl.classList.contains('show');
+        if (isShown) {
+            targetEl.classList.remove('show');
+            btn.classList.add('collapsed');
+            btn.setAttribute('aria-expanded', 'false');
+        } else {
+            targetEl.classList.add('show');
+            btn.classList.remove('collapsed');
+            btn.setAttribute('aria-expanded', 'true');
+        }
+    });
+
     window.addEventListener('scroll', handleNavbarScroll, { passive: true });
     document.addEventListener('DOMContentLoaded', function () {
         applyCurrentPage();

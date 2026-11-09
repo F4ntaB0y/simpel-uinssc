@@ -62,6 +62,9 @@
             </a>
 
             <div class="nav-links">
+                <button type="button" class="nav-link-btn" onclick="openHelpModal()" title="Panduan Alur Pengaduan Sarpras">
+                    <i class="fa-solid fa-circle-question" style="color:var(--gold);"></i> <span class="nav-btn-label">Panduan</span>
+                </button>
                 <button type="button" class="nav-link-btn" onclick="toggleTheme()" title="Ubah Tema Mode">
                     <i class="fa-solid fa-moon" id="themeIcon"></i> <span class="nav-btn-label">Tema</span>
                 </button>
@@ -592,6 +595,182 @@
                 <button type="button" id="detailModalPrintBtn" class="btn btn-secondary"><i class="fa-solid fa-print"></i> Cetak Bukti PDF</button>
                 <button type="button" class="btn btn-primary" onclick="closeDetailReviewModal()">Tutup</button>
             </div>
+        </div>
+    </div>
+
+    <!-- MODAL PANDUAN TIMELINE PENGADUAN & ALUR SISTEM -->
+    <div id="helpModal" class="modal-overlay hidden" onclick="closeHelpModalOnBackdrop(event)">
+        <div class="modal-card modal-timeline-card">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; border-bottom: 1px solid var(--border-color); padding-bottom: 12px;">
+                <h3 style="font-size: 18px; font-weight: 800; color: var(--text-main); margin:0; display:flex; align-items:center; gap:8px;">
+                    <i class="fa-solid fa-timeline" style="color: var(--gold);"></i> Panduan Alur Pelaporan &amp; Peran Sistem
+                </h3>
+                <button type="button" onclick="closeHelpModal()"
+                    style="background: none; border: none; font-size: 20px; color: var(--text-muted); cursor: pointer;" title="Tutup Modal Panduan">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <!-- TIMELINE PANDUAN -->
+            <p class="fs-3 fw-bold text-center" style="margin-bottom: 4px; color: var(--text-main);">
+                <i class="fa-solid fa-timeline" style="color: var(--gold);"></i> Timeline Panduan
+            </p>
+            <div class="hr-line mt-4 mb-4"></div>
+            <p class="intro fs-4 fw-bold text-center" style="margin: 14px 0 24px; color: var(--text-main);">
+                Alur &amp; Prosedur Pengaduan Sarpras SIMPEL UINSSC
+            </p>
+
+            <div class="tl-container ps-3 pe-3">
+                <div class="main-timeline">
+                    <!-- Step 1: Brainstorm / Identifikasi -->
+                    <div class="timeline left">
+                        <div class="card tl-card origin-right">
+                            <div class="tl-img-container image-1 scale"></div>
+                            <div class="card-body p-0">
+                                <div class="accordion" id="alwaysOpen-1">
+                                    <div class="accordion-item">
+                                        <p class="accordion-header" style="margin:0;">
+                                            <button class="accordion-button fw-bold justify-content-center" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                                <i class="fa-solid fa-lightbulb fa-lg me-2" style="color: var(--gold);"></i>1. Identifikasi &amp; Lapor (User / Civitas)
+                                            </button>
+                                        </p>
+                                        <div id="collapseOne" class="accordion-collapse collapse show">
+                                            <div class="accordion-body">
+                                                <p class="fw-light p-2" style="margin-bottom: 8px;">Civitas akademika (Mahasiswa, Dosen, Tendik) yang mendeteksi kendala atau kerusakan sarpras kampus dapat langsung membuat laporan melalui portal pelapor. Sistem menyediakan form terstruktur dengan fitur unggah foto bukti kerusakan, deskripsi permasalahan, dan deteksi koordinat GPS otomatis via Peta Geofencing 5 Kawasan Kampus UINSSC.</p>
+                                                <div style="margin: 4px 8px 10px; display: flex; gap: 6px; flex-wrap: wrap;">
+                                                    <span style="font-size: 11px; padding: 3px 8px; border-radius: 6px; background: rgba(197, 146, 53, 0.15); color: var(--gold); font-weight: 600;"><i class="fa-solid fa-camera"></i> Foto Bukti</span>
+                                                    <span style="font-size: 11px; padding: 3px 8px; border-radius: 6px; background: rgba(197, 146, 53, 0.15); color: var(--gold); font-weight: 600;"><i class="fa-solid fa-location-dot"></i> Geofencing GIS</span>
+                                                    <span style="font-size: 11px; padding: 3px 8px; border-radius: 6px; background: rgba(197, 146, 53, 0.15); color: var(--gold); font-weight: 600;"><i class="fa-solid fa-ticket"></i> Kode TRK &amp; QR</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-footer">
+                                    <div class="icons d-flex justify-content-center m-3">
+                                        <a class="icon-link" title="Panduan Pelapor" aria-label="More Info" href="javascript:void(0)">
+                                            <i class="fa-solid fa-info fa-md"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 2: Mindmap / Verifikasi Admin -->
+                    <div class="timeline right">
+                        <div class="card tl-card origin-left">
+                            <div class="tl-img-container image-2 scale"></div>
+                            <div class="card-body p-0">
+                                <div class="accordion" id="alwaysOpen-2">
+                                    <div class="accordion-item">
+                                        <p class="accordion-header" style="margin:0;">
+                                            <button class="accordion-button fw-bold justify-content-center" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+                                                <i class="fa-solid fa-signs-post fa-lg me-2" style="color: #2dd4bf;"></i>2. Verifikasi &amp; Disposisi (Admin Sarpras)
+                                            </button>
+                                        </p>
+                                        <div id="collapseTwo" class="accordion-collapse collapse show">
+                                            <div class="accordion-body">
+                                                <p class="fw-light p-2" style="margin-bottom: 8px;">Admin Sarpras memvalidasi tiket masuk melalui Dasbor Manajemen. Sistem memeriksa deteksi duplikasi pintar (smart anti-spam) agar tidak terjadi pengaduan ganda, menetapkan tingkat prioritas serta target SLA (Service Level Agreement), lalu mendisposisikan tugas ke teknisi spesialis terkait dengan notifikasi instan.</p>
+                                                <div style="margin: 4px 8px 10px; display: flex; gap: 6px; flex-wrap: wrap;">
+                                                    <span style="font-size: 11px; padding: 3px 8px; border-radius: 6px; background: rgba(45, 212, 191, 0.15); color: #2dd4bf; font-weight: 600;"><i class="fa-solid fa-shield-virus"></i> Smart Anti-Spam</span>
+                                                    <span style="font-size: 11px; padding: 3px 8px; border-radius: 6px; background: rgba(45, 212, 191, 0.15); color: #2dd4bf; font-weight: 600;"><i class="fa-solid fa-stopwatch"></i> Target SLA Waktu</span>
+                                                    <span style="font-size: 11px; padding: 3px 8px; border-radius: 6px; background: rgba(45, 212, 191, 0.15); color: #2dd4bf; font-weight: 600;"><i class="fa-brands fa-whatsapp"></i> Disposisi Teknisi</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-footer">
+                                    <div class="icons d-flex justify-content-center m-3">
+                                        <a class="icon-link" title="Panduan Admin" aria-label="More Info" href="javascript:void(0)">
+                                            <i class="fa-solid fa-info fa-md"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 3: Write Draft / Perbaikan Teknisi -->
+                    <div class="timeline left">
+                        <div class="card tl-card origin-right">
+                            <div class="tl-img-container image-3 scale"></div>
+                            <div class="card-body p-0">
+                                <div class="accordion" id="alwaysOpen-3">
+                                    <div class="accordion-item">
+                                        <p class="accordion-header" style="margin:0;">
+                                            <button class="accordion-button fw-bold justify-content-center" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
+                                                <i class="fa-solid fa-screwdriver-wrench fa-lg me-2" style="color: #facc15;"></i>3. Eksekusi Perbaikan (Teknisi Lapangan)
+                                            </button>
+                                        </p>
+                                        <div id="collapseThree" class="accordion-collapse collapse show">
+                                            <div class="accordion-body">
+                                                <p class="fw-light p-2" style="margin-bottom: 8px;">Teknisi lapangan menuju titik gedung, lantai, dan ruangan sesuai rincian disposisi dan koordinat GPS. Teknisi memperbarui status tiket menjadi "Sedang Diproses", melakukan perbaikan fisik sarana prasarana, serta mengunggah foto bukti hasil reparasi sebelum batas waktu SLA tercapai.</p>
+                                                <div style="margin: 4px 8px 10px; display: flex; gap: 6px; flex-wrap: wrap;">
+                                                    <span style="font-size: 11px; padding: 3px 8px; border-radius: 6px; background: rgba(250, 204, 21, 0.15); color: #facc15; font-weight: 600;"><i class="fa-solid fa-person-digging"></i> Respon Lapangan</span>
+                                                    <span style="font-size: 11px; padding: 3px 8px; border-radius: 6px; background: rgba(250, 204, 21, 0.15); color: #facc15; font-weight: 600;"><i class="fa-solid fa-cloud-arrow-up"></i> Bukti Hasil Reparasi</span>
+                                                    <span style="font-size: 11px; padding: 3px 8px; border-radius: 6px; background: rgba(250, 204, 21, 0.15); color: #facc15; font-weight: 600;"><i class="fa-solid fa-clock-rotate-left"></i> On-Time SLA</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-footer">
+                                    <div class="icons d-flex justify-content-center m-3">
+                                        <a class="icon-link" title="Panduan Teknisi" aria-label="More Info" href="javascript:void(0)">
+                                            <i class="fa-solid fa-info fa-md"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 4: Proofread / Selesai & Audit -->
+                    <div class="timeline right">
+                        <div class="card tl-card origin-left">
+                            <div class="tl-img-container image-4 scale"></div>
+                            <div class="card-body p-0">
+                                <div class="accordion" id="alwaysOpen-4">
+                                    <div class="accordion-item">
+                                        <p class="accordion-header" style="margin:0;">
+                                            <button class="accordion-button fw-bold justify-content-center" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="true" aria-controls="collapseFour">
+                                                <i class="fa-solid fa-shield-halved fa-lg me-2" style="color: #10b981;"></i>4. Selesai, Verifikasi &amp; Audit (Super Admin)
+                                            </button>
+                                        </p>
+                                        <div id="collapseFour" class="accordion-collapse collapse show">
+                                            <div class="accordion-body">
+                                                <p class="fw-light p-2" style="margin-bottom: 8px;">Tiket ditandai "Selesai" dan pelapor mendapatkan notifikasi hasil tindak lanjut serta dapat mencetak lembar bukti PDF ber-QR Code. Super Admin dan pimpinan kampus memantau KPI penyelesaian, kepatuhan SLA, analitik sebaran fasilitas, dan rekap audit trail secara transparan.</p>
+                                                <div style="margin: 4px 8px 10px; display: flex; gap: 6px; flex-wrap: wrap;">
+                                                    <span style="font-size: 11px; padding: 3px 8px; border-radius: 6px; background: rgba(16, 185, 129, 0.15); color: #10b981; font-weight: 600;"><i class="fa-solid fa-file-pdf"></i> Unduh Lembar Tiket</span>
+                                                    <span style="font-size: 11px; padding: 3px 8px; border-radius: 6px; background: rgba(16, 185, 129, 0.15); color: #10b981; font-weight: 600;"><i class="fa-solid fa-chart-line"></i> Analitik KPI Kampus</span>
+                                                    <span style="font-size: 11px; padding: 3px 8px; border-radius: 6px; background: rgba(16, 185, 129, 0.15); color: #10b981; font-weight: 600;"><i class="fa-solid fa-fingerprint"></i> Audit Trail Terpadu</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-footer">
+                                    <div class="icons d-flex justify-content-center m-3">
+                                        <a class="icon-link d-flex align-items-center" title="Panduan Super Admin" aria-label="More Info" href="javascript:void(0)">
+                                            <i class="fa-solid fa-info fa-md"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bantuan & Helpdesk Sarpras Reference -->
+            <div style="background: rgba(197, 146, 53, 0.08); border: 1px solid var(--border-color); border-radius: 12px; padding: 12px 16px; font-size: 12px; margin-top: 24px; margin-bottom: 20px;">
+                <strong style="color: var(--gold);"><i class="fa-solid fa-circle-question"></i> Bantuan &amp; Helpdesk Sarpras:</strong><br>
+                Jika ada kendala mendesak atau butuh konfirmasi darurat fasilitas kampus, hubungi Unit Layanan Terpadu Sarpras UINSSC via Email: <code>sarpras@uinssc.ac.id</code> atau Telepon: <code>(0231) 481-264</code> (Senin - Jumat 07.30 - 16.00 WIB).
+            </div>
+
+            <button class="btn btn-primary" onclick="closeHelpModal()" style="width: 100%; justify-content: center; font-size:14px; min-height:46px;">Tutup Panduan</button>
         </div>
     </div>
 

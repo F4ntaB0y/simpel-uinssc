@@ -444,12 +444,17 @@
                                     <div class="accordion-item">
                                         <p class="accordion-header" style="margin:0;">
                                             <button class="accordion-button fw-bold justify-content-center" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                                <i class="fa-solid fa-lightbulb fa-lg me-2" style="color: var(--gold);"></i>1. Identifikasi &amp; Lapor (User)
+                                                <i class="fa-solid fa-lightbulb fa-lg me-2" style="color: var(--gold);"></i>1. Identifikasi &amp; Lapor (User / Civitas)
                                             </button>
                                         </p>
                                         <div id="collapseOne" class="accordion-collapse collapse show">
                                             <div class="accordion-body">
-                                                <p class="fw-light p-2">Civitas akademika (Mahasiswa, Dosen, Tendik) mendeteksi sarpras kampus yang mengalami kerusakan, mengambil foto bukti, memvalidasi koordinat GPS via Peta Geofencing 5 Kawasan UINSSC, lalu mengirimkan tiket laporan.</p>
+                                                <p class="fw-light p-2" style="margin-bottom: 8px;">Civitas akademika (Mahasiswa, Dosen, Tendik) yang mendeteksi kendala atau kerusakan sarpras kampus dapat langsung membuat laporan melalui portal pelapor. Sistem menyediakan form terstruktur dengan fitur unggah foto bukti kerusakan, deskripsi permasalahan, dan deteksi koordinat GPS otomatis via Peta Geofencing 5 Kawasan Kampus UINSSC.</p>
+                                                <div style="margin: 4px 8px 10px; display: flex; gap: 6px; flex-wrap: wrap;">
+                                                    <span style="font-size: 11px; padding: 3px 8px; border-radius: 6px; background: rgba(197, 146, 53, 0.15); color: var(--gold); font-weight: 600;"><i class="fa-solid fa-camera"></i> Foto Bukti</span>
+                                                    <span style="font-size: 11px; padding: 3px 8px; border-radius: 6px; background: rgba(197, 146, 53, 0.15); color: var(--gold); font-weight: 600;"><i class="fa-solid fa-location-dot"></i> Geofencing GIS</span>
+                                                    <span style="font-size: 11px; padding: 3px 8px; border-radius: 6px; background: rgba(197, 146, 53, 0.15); color: var(--gold); font-weight: 600;"><i class="fa-solid fa-ticket"></i> Kode TRK &amp; QR</span>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -473,13 +478,18 @@
                                 <div class="accordion" id="alwaysOpen-2">
                                     <div class="accordion-item">
                                         <p class="accordion-header" style="margin:0;">
-                                            <button class="accordion-button fw-bold justify-content-center collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                                <i class="fa-solid fa-signs-post fa-lg me-2" style="color: #2dd4bf;"></i>2. Verifikasi &amp; Disposisi (Admin)
+                                            <button class="accordion-button fw-bold justify-content-center" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+                                                <i class="fa-solid fa-signs-post fa-lg me-2" style="color: #2dd4bf;"></i>2. Verifikasi &amp; Disposisi (Admin Sarpras)
                                             </button>
                                         </p>
-                                        <div id="collapseTwo" class="accordion-collapse collapse">
+                                        <div id="collapseTwo" class="accordion-collapse collapse show">
                                             <div class="accordion-body">
-                                                <p class="fw-light p-2">Admin Sarpras memvalidasi tiket, memeriksa deteksi duplikasi pintar (smart anti-spam), menetapkan target SLA waktu penyelesaian, dan mendisposisikan tugas ke teknisi spesialis via notifikasi WhatsApp resmi.</p>
+                                                <p class="fw-light p-2" style="margin-bottom: 8px;">Admin Sarpras memvalidasi tiket masuk melalui Dasbor Manajemen. Sistem memeriksa deteksi duplikasi pintar (smart anti-spam) agar tidak terjadi pengaduan ganda, menetapkan tingkat prioritas serta target SLA (Service Level Agreement), lalu mendisposisikan tugas ke teknisi spesialis terkait dengan notifikasi instan.</p>
+                                                <div style="margin: 4px 8px 10px; display: flex; gap: 6px; flex-wrap: wrap;">
+                                                    <span style="font-size: 11px; padding: 3px 8px; border-radius: 6px; background: rgba(45, 212, 191, 0.15); color: #2dd4bf; font-weight: 600;"><i class="fa-solid fa-shield-virus"></i> Smart Anti-Spam</span>
+                                                    <span style="font-size: 11px; padding: 3px 8px; border-radius: 6px; background: rgba(45, 212, 191, 0.15); color: #2dd4bf; font-weight: 600;"><i class="fa-solid fa-stopwatch"></i> Target SLA Waktu</span>
+                                                    <span style="font-size: 11px; padding: 3px 8px; border-radius: 6px; background: rgba(45, 212, 191, 0.15); color: #2dd4bf; font-weight: 600;"><i class="fa-brands fa-whatsapp"></i> Disposisi Teknisi</span>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -503,13 +513,18 @@
                                 <div class="accordion" id="alwaysOpen-3">
                                     <div class="accordion-item">
                                         <p class="accordion-header" style="margin:0;">
-                                            <button class="accordion-button fw-bold justify-content-center collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                                                <i class="fa-solid fa-pencil fa-lg me-2" style="color: #facc15;"></i>3. Eksekusi Perbaikan (Teknisi)
+                                            <button class="accordion-button fw-bold justify-content-center" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
+                                                <i class="fa-solid fa-screwdriver-wrench fa-lg me-2" style="color: #facc15;"></i>3. Eksekusi Perbaikan (Teknisi Lapangan)
                                             </button>
                                         </p>
-                                        <div id="collapseThree" class="accordion-collapse collapse">
+                                        <div id="collapseThree" class="accordion-collapse collapse show">
                                             <div class="accordion-body">
-                                                <p class="fw-light p-2">Teknisi menuju titik gedung & ruangan sesuai koordinat GPS, memperbarui status tiket menjadi "Sedang Diproses", melakukan perbaikan fisik sarpras, dan mengunggah foto bukti hasil reparasi sebelum batas waktu SLA.</p>
+                                                <p class="fw-light p-2" style="margin-bottom: 8px;">Teknisi lapangan menuju titik gedung, lantai, dan ruangan sesuai rincian disposisi dan koordinat GPS. Teknisi memperbarui status tiket menjadi "Sedang Diproses", melakukan perbaikan fisik sarana prasarana, serta mengunggah foto bukti hasil reparasi sebelum batas waktu SLA tercapai.</p>
+                                                <div style="margin: 4px 8px 10px; display: flex; gap: 6px; flex-wrap: wrap;">
+                                                    <span style="font-size: 11px; padding: 3px 8px; border-radius: 6px; background: rgba(250, 204, 21, 0.15); color: #facc15; font-weight: 600;"><i class="fa-solid fa-person-digging"></i> Respon Lapangan</span>
+                                                    <span style="font-size: 11px; padding: 3px 8px; border-radius: 6px; background: rgba(250, 204, 21, 0.15); color: #facc15; font-weight: 600;"><i class="fa-solid fa-cloud-arrow-up"></i> Bukti Hasil Reparasi</span>
+                                                    <span style="font-size: 11px; padding: 3px 8px; border-radius: 6px; background: rgba(250, 204, 21, 0.15); color: #facc15; font-weight: 600;"><i class="fa-solid fa-clock-rotate-left"></i> On-Time SLA</span>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -533,13 +548,18 @@
                                 <div class="accordion" id="alwaysOpen-4">
                                     <div class="accordion-item">
                                         <p class="accordion-header" style="margin:0;">
-                                            <button class="accordion-button fw-bold justify-content-center collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
-                                                <i class="fa-solid fa-magnifying-glass fa-lg me-2" style="color: #10b981;"></i>4. Selesai &amp; Audit (Super Admin)
+                                            <button class="accordion-button fw-bold justify-content-center" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="true" aria-controls="collapseFour">
+                                                <i class="fa-solid fa-shield-halved fa-lg me-2" style="color: #10b981;"></i>4. Selesai, Verifikasi &amp; Audit (Super Admin)
                                             </button>
                                         </p>
-                                        <div id="collapseFour" class="accordion-collapse collapse">
+                                        <div id="collapseFour" class="accordion-collapse collapse show">
                                             <div class="accordion-body">
-                                                <p class="fw-light p-2">Tiket ditandai Selesai. Pelapor menerima pemberitahuan dan dapat mengunduh QR Tiket resmi. Super Admin mengawasi analitik KPI, kinerja SLA, keamanan log SOC, serta manajemen pemeliharaan sarpras kampus secara holistik.</p>
+                                                <p class="fw-light p-2" style="margin-bottom: 8px;">Tiket ditandai "Selesai" dan pelapor mendapatkan notifikasi hasil tindak lanjut serta dapat mencetak lembar bukti PDF ber-QR Code. Super Admin dan pimpinan kampus memantau KPI penyelesaian, kepatuhan SLA, analitik sebaran fasilitas, dan rekap audit trail secara transparan.</p>
+                                                <div style="margin: 4px 8px 10px; display: flex; gap: 6px; flex-wrap: wrap;">
+                                                    <span style="font-size: 11px; padding: 3px 8px; border-radius: 6px; background: rgba(16, 185, 129, 0.15); color: #10b981; font-weight: 600;"><i class="fa-solid fa-file-pdf"></i> Unduh Lembar Tiket</span>
+                                                    <span style="font-size: 11px; padding: 3px 8px; border-radius: 6px; background: rgba(16, 185, 129, 0.15); color: #10b981; font-weight: 600;"><i class="fa-solid fa-chart-line"></i> Analitik KPI Kampus</span>
+                                                    <span style="font-size: 11px; padding: 3px 8px; border-radius: 6px; background: rgba(16, 185, 129, 0.15); color: #10b981; font-weight: 600;"><i class="fa-solid fa-fingerprint"></i> Audit Trail Terpadu</span>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
