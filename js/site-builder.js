@@ -578,7 +578,8 @@
 
             if (videoBlock) {
                 if (isVideoActive) {
-                    videoBlock.style.display = 'block';
+                    videoBlock.classList.remove('hidden');
+                    videoBlock.style.removeProperty('display');
                     const embedId = vp.embedId || extractYtId(vp.url) || 'bUhLVKdbRd0';
                     const videoIframe = document.getElementById('loginVideoIframe');
                     const videoTitle = document.getElementById('loginVideoTitle');
@@ -596,21 +597,21 @@
                     if (videoTitle) videoTitle.textContent = vp.title || '';
                     if (videoDesc) videoDesc.textContent = vp.desc || '';
                 } else {
-                    videoBlock.style.display = 'none';
+                    videoBlock.classList.add('hidden');
+                    videoBlock.style.setProperty('display', 'none', 'important');
                 }
             }
 
             if (videoCard) {
                 if (isVideoActive) {
+                    videoCard.classList.remove('hidden');
                     videoCard.classList.remove('no-video');
+                    videoCard.style.removeProperty('display');
                 } else {
+                    // Ketika video dan text dinonaktifkan, shape (kartu video) ikut nonaktif
+                    videoCard.classList.add('hidden');
                     videoCard.classList.add('no-video');
-                }
-
-                if (!isVideoActive && !isFeatActive) {
-                    videoCard.style.display = 'none';
-                } else {
-                    videoCard.style.display = 'flex';
+                    videoCard.style.setProperty('display', 'none', 'important');
                 }
             }
 
@@ -634,15 +635,35 @@
 
             (cfg.heroOrder || []).forEach(id => {
                 if (id !== 'hero_header' && domMap[id]) {
-                    if (id === 'features_list' && videoCard) {
-                        if (!videoCard.contains(featList)) {
-                            videoCard.appendChild(featList);
+                    if (id === 'features_list' && featList) {
+                        if (isVideoActive && videoCard) {
+                            if (!videoCard.contains(featList)) {
+                                videoCard.appendChild(featList);
+                            }
+                        } else {
+                            if (videoCard && videoCard.contains(featList)) {
+                                heroSide.appendChild(featList);
+                            } else {
+                                heroSide.appendChild(featList);
+                            }
                         }
                     } else if (domMap[id] !== featList) {
                         heroSide.appendChild(domMap[id]);
                     }
                 }
             });
+
+            // Check if heroSide has any active/visible components
+            const hasVisibleHeroBlocks = isVideoActive || isFeatActive || (cfg.customBlocks || []).some(cb => cb.enabled !== false);
+            if (!hasVisibleHeroBlocks) {
+                heroSide.classList.add('hidden');
+                heroSide.style.setProperty('display', 'none', 'important');
+                if (grid) grid.classList.add('hero-empty');
+            } else {
+                heroSide.classList.remove('hidden');
+                heroSide.style.removeProperty('display');
+                if (grid) grid.classList.remove('hero-empty');
+            }
         }
 
         initLoginEqualHeightSync();
@@ -658,7 +679,9 @@
         requestAnimationFrame(() => {
             const compDisplay = window.getComputedStyle(grid).display;
             const isTwoCol = (window.innerWidth > 820 || (compDisplay === 'grid' && window.getComputedStyle(grid).gridTemplateColumns.includes(' ')));
-            if (isTwoCol) {
+            const isVideoVisible = !videoCard.classList.contains('hidden') && videoCard.style.display !== 'none' && videoCard.offsetParent !== null;
+
+            if (isTwoCol && isVideoVisible) {
                 videoCard.style.minHeight = '';
                 glassCard.style.minHeight = '';
                 const h1 = videoCard.scrollHeight || videoCard.offsetHeight;

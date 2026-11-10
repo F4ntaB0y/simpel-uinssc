@@ -2080,10 +2080,33 @@ body.webgl-active .login-bg-tint {
     min-height: 100% !important;
     flex: 1 1 auto !important;
     flex-grow: 1 !important;
-    display: flex !important;
+    display: flex;
     flex-direction: column !important;
     justify-content: space-between !important;
     box-sizing: border-box !important;
+}
+
+.login-video-card.hidden,
+.login-video-card[hidden],
+.login-hero-side.hidden,
+.login-hero-side[hidden] {
+    display: none !important;
+}
+
+/* Centered layout when left hero side has no content/is disabled */
+.login-portal-grid.hero-empty {
+    grid-template-columns: minmax(0, 480px) !important;
+    justify-content: center !important;
+}
+
+.login-portal-grid.hero-empty .login-hero-side {
+    display: none !important;
+}
+
+.login-portal-grid.hero-empty .login-glass-card-wrapper {
+    max-width: 480px;
+    margin: 0 auto;
+    width: 100%;
 }
 
 .login-video-card::before {
@@ -2415,7 +2438,7 @@ textarea.login-input {
         min-height: 100% !important;
         flex: 1 1 auto !important;
         flex-grow: 1 !important;
-        display: flex !important;
+        display: flex;
         flex-direction: column !important;
         justify-content: space-between !important;
         padding: 24px 20px !important;
