@@ -135,7 +135,7 @@
             box-shadow: 0 20px 45px -10px rgba(0, 0, 0, 0.35);
             display: flex;
             flex-direction: column;
-            justify-content: flex-start;
+            justify-content: space-between;
             position: relative;
             overflow: hidden;
             box-sizing: border-box;
@@ -146,7 +146,7 @@
         .poster-header {
             background: linear-gradient(135deg, #00361f 0%, #005a36 65%, #024124 100%);
             color: #ffffff;
-            padding: 12px 18px 10px;
+            padding: 13px 18px 11px;
             position: relative;
             border-bottom: 3.5px solid var(--gold);
             flex-shrink: 0;
@@ -154,17 +154,17 @@
 
         .header-grid {
             display: grid;
-            grid-template-columns: 56px 1fr auto;
+            grid-template-columns: 60px 1fr auto;
             gap: 14px;
             align-items: center;
         }
 
         .header-logo-box {
-            width: 56px;
-            height: 56px;
+            width: 60px;
+            height: 60px;
             background: #ffffff;
             border-radius: 12px;
-            padding: 4px;
+            padding: 5px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -179,7 +179,7 @@
         }
 
         .header-text h4 {
-            font-size: 9px;
+            font-size: 9.2px;
             font-weight: 800;
             letter-spacing: 1.2px;
             color: var(--gold);
@@ -189,7 +189,7 @@
 
         .header-text h1 {
             font-family: 'Space Grotesk', sans-serif;
-            font-size: 18px;
+            font-size: 19px;
             font-weight: 800;
             line-height: 1.2;
             letter-spacing: -0.3px;
@@ -198,7 +198,7 @@
         }
 
         .header-text p {
-            font-size: 9.6px;
+            font-size: 9.8px;
             color: #d1fae5;
             font-weight: 500;
         }
@@ -208,7 +208,7 @@
             backdrop-filter: blur(8px);
             border: 1px solid rgba(212, 163, 67, 0.5);
             border-radius: 9px;
-            padding: 5px 12px;
+            padding: 6px 12px;
             text-align: right;
         }
 
@@ -228,9 +228,10 @@
         /* 2. Main Body Content (Dense, Tightly Connected Layout) */
         .poster-body {
             flex: 1 1 auto;
-            padding: 8px 14px 6px;
+            padding: 9px 14px 7px;
             display: flex;
             flex-direction: column;
+            justify-content: space-between;
             gap: 7px;
             background: #ffffff;
             overflow: hidden;
@@ -239,8 +240,8 @@
         .section-card {
             background: #ffffff;
             border: 1px solid var(--slate-200);
-            border-radius: 7px;
-            padding: 6px 9px;
+            border-radius: 8px;
+            padding: 7px 10px;
             box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
             position: relative;
         }
@@ -257,7 +258,7 @@
             display: flex;
             align-items: center;
             gap: 5px;
-            font-size: 10.5px;
+            font-size: 10.8px;
             font-weight: 800;
             color: var(--primary-dark);
             margin-bottom: 5px;
@@ -275,14 +276,14 @@
         /* Blok 1: Deskripsi Proyek + Alur Kerja Sistem (Workflow) */
         .grid-row-top {
             display: grid;
-            grid-template-columns: 1.05fr 1.55fr;
-            gap: 7px;
+            grid-template-columns: 1fr 1.6fr;
+            gap: 8px;
         }
 
         .desc-text {
-            font-size: 8.6px;
+            font-size: 8.7px;
             color: var(--slate-700);
-            line-height: 1.42;
+            line-height: 1.44;
             margin-bottom: 5px;
         }
 
@@ -296,7 +297,7 @@
             display: flex;
             align-items: center;
             gap: 5px;
-            font-size: 8.3px;
+            font-size: 8.4px;
             color: var(--slate-800);
             background: var(--slate-50);
             border: 1px solid var(--slate-200);
@@ -372,7 +373,7 @@
         .guide-steps-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 6px;
+            gap: 7px;
         }
 
         .guide-step-box {
@@ -392,12 +393,12 @@
         }
 
         .step-badge {
-            width: 18px;
-            height: 18px;
-            border-radius: 4px;
+            width: 19px;
+            height: 19px;
+            border-radius: 5px;
             background: var(--primary);
             color: #ffffff;
-            font-size: 9.5px;
+            font-size: 10px;
             font-weight: 800;
             display: flex;
             align-items: center;
@@ -406,24 +407,24 @@
         }
 
         .step-title {
-            font-size: 9.2px;
+            font-size: 9.4px;
             font-weight: 800;
             color: var(--slate-900);
             line-height: 1.15;
         }
 
         .step-desc {
-            font-size: 7.8px;
+            font-size: 8px;
             color: var(--slate-600);
-            line-height: 1.32;
+            line-height: 1.34;
         }
 
-        /* Blok 3: Galeri Tangkapan Layar (Screenshot Showcase Interaktif) */
+        /* Blok 3: Galeri Tangkapan Layar (Screenshot Showcase Interaktif DIPERBESAR) */
         .screenshot-section-card {
             background: #ffffff;
             border: 1px solid var(--slate-200);
             border-radius: 8px;
-            padding: 7px 9px;
+            padding: 7px 10px;
             box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
             border-left: 3.5px solid var(--gold);
         }
@@ -431,31 +432,31 @@
         .showcase-gallery-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 7px;
+            gap: 8px;
         }
 
         .screenshot-card {
             background: #ffffff;
-            border: 1px solid var(--slate-200);
+            border: 1.2px solid var(--slate-200);
             border-radius: 6px;
             overflow: hidden;
             display: flex;
             flex-direction: column;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
         }
 
         .mockup-top-bar {
-            height: 10px;
+            height: 11px;
             background: #0f172a;
             display: flex;
             align-items: center;
-            padding: 0 5px;
-            gap: 2.5px;
+            padding: 0 6px;
+            gap: 3px;
         }
 
         .mockup-dot {
-            width: 3.5px;
-            height: 3.5px;
+            width: 4px;
+            height: 4px;
             border-radius: 50%;
         }
 
@@ -463,9 +464,10 @@
         .dot-yellow { background: #eab308; }
         .dot-green { background: #22c55e; }
 
+        /* Tinggi Gambar Screenshot Diperbesar agar Menutupi Seluruh Celah Kosong */
         .screenshot-media {
             width: 100%;
-            height: 110px;
+            height: 140px;
             background: #0f172a;
             position: relative;
             overflow: hidden;
@@ -482,13 +484,13 @@
         }
 
         .screenshot-caption {
-            padding: 4px 6px 5px;
+            padding: 5px 6px 6px;
             background: #ffffff;
             border-top: 1px solid var(--slate-100);
         }
 
         .screenshot-tag {
-            font-size: 7px;
+            font-size: 7.2px;
             font-weight: 800;
             color: var(--primary);
             text-transform: uppercase;
@@ -498,10 +500,10 @@
         }
 
         .screenshot-title {
-            font-size: 8.8px;
+            font-size: 9px;
             font-weight: 800;
             color: var(--slate-900);
-            margin-bottom: 1px;
+            margin-bottom: 2px;
             line-height: 1.15;
             white-space: nowrap;
             overflow: hidden;
@@ -509,33 +511,33 @@
         }
 
         .screenshot-detail {
-            font-size: 7.4px;
+            font-size: 7.6px;
             color: var(--slate-600);
-            line-height: 1.25;
+            line-height: 1.28;
         }
 
-        /* Blok 4 (Informasi Tambahan Baru): Pemetaan 5 Zona Geofencing GIS & Matriks SLA */
+        /* Blok 4: Pemetaan 5 Zona Geofencing GIS & Matriks SLA */
         .grid-row-zones-sla {
             display: grid;
             grid-template-columns: 1.25fr 1fr;
-            gap: 7px;
+            gap: 8px;
         }
 
         .zones-list-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 4px;
+            gap: 5px;
         }
 
         .zone-chip {
             background: var(--slate-50);
             border: 1px solid var(--slate-200);
             border-radius: 5px;
-            padding: 3.5px 5px;
+            padding: 4px 6px;
         }
 
         .zone-chip h6 {
-            font-size: 8px;
+            font-size: 8.2px;
             font-weight: 800;
             color: var(--primary);
             margin-bottom: 1px;
@@ -545,29 +547,29 @@
         }
 
         .zone-chip p {
-            font-size: 7.2px;
+            font-size: 7.4px;
             color: var(--slate-600);
-            line-height: 1.2;
+            line-height: 1.22;
         }
 
         /* Tabel Standarisasi SLA Penanganan */
         .sla-mini-table {
             width: 100%;
             border-collapse: collapse;
-            font-size: 7.6px;
+            font-size: 7.8px;
         }
 
         .sla-mini-table th {
             background: var(--slate-100);
             color: var(--slate-700);
             font-weight: 800;
-            padding: 3px 5px;
+            padding: 3.5px 6px;
             text-align: left;
             border-bottom: 1px solid var(--slate-200);
         }
 
         .sla-mini-table td {
-            padding: 3px 5px;
+            padding: 3.5px 6px;
             border-bottom: 1px solid var(--slate-100);
             color: var(--slate-700);
         }
@@ -585,25 +587,57 @@
         .sla-sedang { background: #e0f2fe; color: #0369a1; }
         .sla-biasa { background: #dcfce7; color: #15803d; }
 
-        /* Blok 5: Metrik Capaian & Keunggulan Sistem */
-        .grid-row-bottom-metrics {
+        /* Blok 5: Arsitektur Teknologi & Metrik Capaian Kinerja */
+        .grid-row-bottom-tech {
+            display: grid;
+            grid-template-columns: 1.4fr 1.6fr;
+            gap: 8px;
+        }
+
+        .tech-stack-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4px;
+        }
+
+        .tech-pill-mini {
+            background: var(--slate-50);
+            border: 1px solid var(--slate-200);
+            border-radius: 5px;
+            padding: 4px 6px;
+            font-size: 7.4px;
+            color: var(--slate-700);
+            line-height: 1.25;
+        }
+
+        .tech-pill-mini strong {
+            color: var(--primary);
+            display: block;
+            font-size: 7.8px;
+            margin-bottom: 1px;
+        }
+
+        .metrics-grid-four {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 6px;
+            gap: 5px;
         }
 
         .stat-metric-card {
             background: linear-gradient(135deg, var(--slate-50) 0%, #ffffff 100%);
             border: 1px solid var(--slate-200);
             border-radius: 6px;
-            padding: 5px 7px;
+            padding: 5px 6px;
             text-align: center;
             box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
 
         .stat-metric-num {
             font-family: 'Space Grotesk', sans-serif;
-            font-size: 13.5px;
+            font-size: 14px;
             font-weight: 800;
             color: var(--primary);
             line-height: 1.1;
@@ -626,11 +660,11 @@
         .poster-footer {
             background: var(--slate-900);
             color: #ffffff;
-            padding: 7px 18px;
+            padding: 8px 18px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            font-size: 8.5px;
+            font-size: 8.8px;
             border-top: 2.5px solid var(--gold);
             flex-shrink: 0;
         }
@@ -649,7 +683,7 @@
 
         .footer-right {
             color: #94a3b8;
-            font-size: 8px;
+            font-size: 8.2px;
         }
 
         /* ==========================================================================
@@ -762,11 +796,11 @@
                     </div>
 
                     <!-- Inovasi & Keunggulan Strategis -->
-                    <div style="margin-top: 6px; background: var(--slate-50); border: 1px solid var(--slate-200); border-radius: 5px; padding: 4px 7px;">
+                    <div style="margin-top: 5px; background: var(--slate-50); border: 1px solid var(--slate-200); border-radius: 5px; padding: 4px 7px;">
                         <div style="font-size: 7.8px; font-weight: 800; color: var(--primary); margin-bottom: 2px;">
                             <i class="fa-solid fa-star" style="color: var(--gold);"></i> Dampak Strategis Kampus Cyber:
                         </div>
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 4px; font-size: 7.2px; color: var(--slate-600); line-height: 1.25;">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 3px; font-size: 7.2px; color: var(--slate-600); line-height: 1.25;">
                             <div>&bull; Efisiensi anggaran perawatan berkala</div>
                             <div>&bull; Akurasi titik koordinat presisi</div>
                             <div>&bull; Transparansi audit sarpras kampus</div>
@@ -776,72 +810,74 @@
                 </div>
 
                 <!-- Alur Kerja Sistem (System Workflow Diagram) -->
-                <div class="section-card gold-accent">
-                    <h3 class="section-title">
-                        <i class="fa-solid fa-diagram-project"></i> Diagram Alur Sistem (System Workflow)
-                    </h3>
-                    <p style="font-size: 8px; color: var(--slate-600); margin-bottom: 4px;">
-                        Integrasi 5 tahapan dari pelaporan civitas akademika hingga perbaikan tuntas oleh teknisi:
-                    </p>
-                    <div class="system-workflow-grid">
-                        <div class="wf-node">
-                            <div class="wf-node-icon"><i class="fa-solid fa-user-pen"></i></div>
-                            <div class="wf-node-title">1. Input Lapor</div>
-                            <div class="wf-node-sub">Kategori & bukti fisik</div>
+                <div class="section-card gold-accent" style="display: flex; flex-direction: column; justify-content: space-between;">
+                    <div>
+                        <h3 class="section-title">
+                            <i class="fa-solid fa-diagram-project"></i> Diagram Alur Sistem (System Workflow)
+                        </h3>
+                        <p style="font-size: 8px; color: var(--slate-600); margin-bottom: 4px;">
+                            Integrasi 5 tahapan dari pelaporan civitas akademika hingga perbaikan tuntas oleh teknisi:
+                        </p>
+                        <div class="system-workflow-grid">
+                            <div class="wf-node">
+                                <div class="wf-node-icon"><i class="fa-solid fa-user-pen"></i></div>
+                                <div class="wf-node-title">1. Input Lapor</div>
+                                <div class="wf-node-sub">Kategori & foto fisik</div>
+                            </div>
+                            <div class="wf-node active-gold">
+                                <div class="wf-node-icon"><i class="fa-solid fa-location-crosshairs"></i></div>
+                                <div class="wf-node-title">2. Cek Spasial</div>
+                                <div class="wf-node-sub">GPS 5 zona & filter</div>
+                            </div>
+                            <div class="wf-node">
+                                <div class="wf-node-icon"><i class="fa-solid fa-clipboard-check"></i></div>
+                                <div class="wf-node-title">3. Verifikasi</div>
+                                <div class="wf-node-sub">Admin tentukan SLA</div>
+                            </div>
+                            <div class="wf-node">
+                                <div class="wf-node-icon"><i class="fa-solid fa-screwdriver-wrench"></i></div>
+                                <div class="wf-node-title">4. Eksekusi</div>
+                                <div class="wf-node-sub">Teknisi lapangan</div>
+                            </div>
+                            <div class="wf-node active-green">
+                                <div class="wf-node-icon"><i class="fa-solid fa-circle-check"></i></div>
+                                <div class="wf-node-title">5. Tuntas</div>
+                                <div class="wf-node-sub">Bukti QR Code PDF</div>
+                            </div>
                         </div>
-                        <div class="wf-node active-gold">
-                            <div class="wf-node-icon"><i class="fa-solid fa-location-crosshairs"></i></div>
-                            <div class="wf-node-title">2. Cek Spasial</div>
-                            <div class="wf-node-sub">GPS 5 zona & filter</div>
-                        </div>
-                        <div class="wf-node">
-                            <div class="wf-node-icon"><i class="fa-solid fa-clipboard-check"></i></div>
-                            <div class="wf-node-title">3. Verifikasi</div>
-                            <div class="wf-node-sub">Admin tentukan SLA</div>
-                        </div>
-                        <div class="wf-node">
-                            <div class="wf-node-icon"><i class="fa-solid fa-screwdriver-wrench"></i></div>
-                            <div class="wf-node-title">4. Eksekusi</div>
-                            <div class="wf-node-sub">Teknisi lapangan</div>
-                        </div>
-                        <div class="wf-node active-green">
-                            <div class="wf-node-icon"><i class="fa-solid fa-circle-check"></i></div>
-                            <div class="wf-node-title">5. Tuntas</div>
-                            <div class="wf-node-sub">Bukti QR Code PDF</div>
-                        </div>
-                    </div>
 
-                    <!-- Detail Mekanisme Alur Kerja & Otomasi Sistem -->
-                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px; margin-top: 6px;">
-                        <div style="background: #ffffff; border: 1px solid var(--slate-200); border-radius: 5px; padding: 4px 6px;">
-                            <div style="font-size: 7.8px; font-weight: 800; color: var(--primary); display: flex; align-items: center; gap: 4px; margin-bottom: 2px;">
-                                <i class="fa-solid fa-map-pin" style="color: var(--gold);"></i> Validasi Spasial GIS
+                        <!-- Detail Mekanisme Alur Kerja & Otomasi Sistem -->
+                        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; margin-top: 5px;">
+                            <div style="background: #ffffff; border: 1px solid var(--slate-200); border-radius: 5px; padding: 4px 5px;">
+                                <div style="font-size: 7.6px; font-weight: 800; color: var(--primary); display: flex; align-items: center; gap: 4px; margin-bottom: 2px;">
+                                    <i class="fa-solid fa-map-pin" style="color: var(--gold);"></i> Validasi GIS
+                                </div>
+                                <div style="font-size: 7px; color: var(--slate-600); line-height: 1.25;">
+                                    Koordinat GPS diverifikasi 5 zona kawasan. Di luar area diarahkan ke kampus utama.
+                                </div>
                             </div>
-                            <div style="font-size: 7.2px; color: var(--slate-600); line-height: 1.25;">
-                                Koordinat GPS pelapor diverifikasi otomatis terhadap 5 zona kawasan. Bila di luar radius, titik diarahkan ke pusat kampus utama.
+                            <div style="background: #ffffff; border: 1px solid var(--slate-200); border-radius: 5px; padding: 4px 5px;">
+                                <div style="font-size: 7.6px; font-weight: 800; color: var(--primary); display: flex; align-items: center; gap: 4px; margin-bottom: 2px;">
+                                    <i class="fa-solid fa-layer-group" style="color: var(--gold);"></i> Anti-Spam & Kuota
+                                </div>
+                                <div style="font-size: 7px; color: var(--slate-600); line-height: 1.25;">
+                                    Deteksi dini laporan duplikat ruangan & batas kuota maksimal 3 tiket aktif per akun.
+                                </div>
                             </div>
-                        </div>
-                        <div style="background: #ffffff; border: 1px solid var(--slate-200); border-radius: 5px; padding: 4px 6px;">
-                            <div style="font-size: 7.8px; font-weight: 800; color: var(--primary); display: flex; align-items: center; gap: 4px; margin-bottom: 2px;">
-                                <i class="fa-solid fa-layer-group" style="color: var(--gold);"></i> Filter Anti-Spam & Kuota
-                            </div>
-                            <div style="font-size: 7.2px; color: var(--slate-600); line-height: 1.25;">
-                                Mencegah duplikasi laporan serupa di ruangan yang sama serta membatasi maksimal 3 tiket aktif per akun civitas akademika.
-                            </div>
-                        </div>
-                        <div style="background: #ffffff; border: 1px solid var(--slate-200); border-radius: 5px; padding: 4px 6px;">
-                            <div style="font-size: 7.8px; font-weight: 800; color: var(--primary); display: flex; align-items: center; gap: 4px; margin-bottom: 2px;">
-                                <i class="fa-solid fa-qrcode" style="color: var(--gold);"></i> Bukti PDF & QR Code
-                            </div>
-                            <div style="font-size: 7.2px; color: var(--slate-600); line-height: 1.25;">
-                                Penerbitan nomor tiket unik TRK resmi, pelacakan real-time tahapan SLA, dan cetak dokumen bukti tanda terima 1 lembar A4.
+                            <div style="background: #ffffff; border: 1px solid var(--slate-200); border-radius: 5px; padding: 4px 5px;">
+                                <div style="font-size: 7.6px; font-weight: 800; color: var(--primary); display: flex; align-items: center; gap: 4px; margin-bottom: 2px;">
+                                    <i class="fa-solid fa-qrcode" style="color: var(--gold);"></i> Bukti PDF & QR
+                                </div>
+                                <div style="font-size: 7px; color: var(--slate-600); line-height: 1.25;">
+                                    Nomor tiket resmi TRK, pelacakan tahapan SLA, dan cetak bukti tanda terima 1 lembar.
+                                </div>
                             </div>
                         </div>
                     </div>
 
                     <!-- Baris Pembagian Peran Aktor (Role Matrix) -->
-                    <div style="margin-top: 5px; background: var(--slate-50); border: 1px solid var(--slate-200); border-radius: 5px; padding: 4px 8px; display: flex; justify-content: space-between; align-items: center; font-size: 7.4px;">
-                        <div><strong style="color: var(--primary);"><i class="fa-solid fa-user-graduate"></i> Pelapor:</strong> Input Laporan &bull; Unggah Foto &bull; Pantau Progres</div>
+                    <div style="margin-top: 4px; background: var(--slate-50); border: 1px solid var(--slate-200); border-radius: 5px; padding: 3px 7px; display: flex; justify-content: space-between; align-items: center; font-size: 7.2px;">
+                        <div><strong style="color: var(--primary);"><i class="fa-solid fa-user-graduate"></i> Pelapor:</strong> Form Lapor &bull; Foto Fisik &bull; Pantau Progres</div>
                         <div style="color: var(--slate-400);">&bull;</div>
                         <div><strong style="color: var(--primary);"><i class="fa-solid fa-user-tie"></i> Admin Sarpras:</strong> Verifikasi Tiket &bull; Atur Batas SLA &bull; Disposisi</div>
                         <div style="color: var(--slate-400);">&bull;</div>
@@ -977,7 +1013,7 @@
                 </div>
             </div>
 
-            <!-- Blok 4 (Informasi Tambahan): Cakupan 5 Zona GIS & Matriks Standar SLA -->
+            <!-- Blok 4: Cakupan 5 Zona GIS & Matriks Standar SLA -->
             <div class="grid-row-zones-sla">
 
                 <!-- 5 Zona GIS Kampus -->
@@ -1045,28 +1081,58 @@
 
             </div>
 
-            <!-- Blok 5 (Metrik Hasil & Capaian Kinerja Sistem) -->
-            <div class="grid-row-bottom-metrics">
-                <div class="stat-metric-card">
-                    <div class="stat-metric-num">100%</div>
-                    <div class="stat-metric-label">Validasi Spasial GIS</div>
-                    <div class="stat-metric-sub">Zero laporan fiktif luar kampus</div>
+            <!-- Blok 5 (Tambahan Lengkap Penutup Ruang Bawah): Arsitektur Teknologi & Metrik Capaian Kinerja -->
+            <div class="grid-row-bottom-tech">
+
+                <!-- Arsitektur & Keamanan Stack -->
+                <div class="section-card primary-accent" style="padding: 5px 8px;">
+                    <div style="font-size: 8.4px; font-weight: 800; color: var(--primary-dark); text-transform: uppercase; margin-bottom: 3px; display: flex; align-items: center; gap: 4px;">
+                        <i class="fa-solid fa-layer-group" style="color: var(--gold);"></i> Arsitektur Teknologi & Keamanan
+                    </div>
+                    <div class="tech-stack-row">
+                        <div class="tech-pill-mini">
+                            <strong>PWA & Service Worker</strong>
+                            Offline caching V8.3 & fast load
+                        </div>
+                        <div class="tech-pill-mini">
+                            <strong>Formula Haversine</strong>
+                            Validasi jarak spasial presisi
+                        </div>
+                        <div class="tech-pill-mini">
+                            <strong>Canvas CAPTCHA</strong>
+                            Proteksi bot & brute-force
+                        </div>
+                        <div class="tech-pill-mini">
+                            <strong>Leaflet.js GIS</strong>
+                            Pemetaan poligon batas 5 zona
+                        </div>
+                    </div>
                 </div>
-                <div class="stat-metric-card">
-                    <div class="stat-metric-num">-85%</div>
-                    <div class="stat-metric-label">Reduksi Tiket Ganda</div>
-                    <div class="stat-metric-sub">Smart duplicate & anti-spam</div>
+
+                <!-- 4 Kartu Metrik Hasil Implementasi -->
+                <div class="metrics-grid-four">
+                    <div class="stat-metric-card">
+                        <div class="stat-metric-num">100%</div>
+                        <div class="stat-metric-label">Validasi GIS</div>
+                        <div class="stat-metric-sub">Zero laporan fiktif</div>
+                    </div>
+                    <div class="stat-metric-card">
+                        <div class="stat-metric-num">-85%</div>
+                        <div class="stat-metric-label">Anti-Spam</div>
+                        <div class="stat-metric-sub">Reduksi tiket ganda</div>
+                    </div>
+                    <div class="stat-metric-card">
+                        <div class="stat-metric-num">&le; 6 Jam</div>
+                        <div class="stat-metric-label">Respon SLA</div>
+                        <div class="stat-metric-sub">Disposisi terarah</div>
+                    </div>
+                    <div class="stat-metric-card">
+                        <div class="stat-metric-num">1 Lembar</div>
+                        <div class="stat-metric-label">Bukti PDF</div>
+                        <div class="stat-metric-sub">QR Code resmi</div>
+                    </div>
                 </div>
-                <div class="stat-metric-card">
-                    <div class="stat-metric-num">&le; 6 Jam</div>
-                    <div class="stat-metric-label">Rata-rata Respon SLA</div>
-                    <div class="stat-metric-sub">Disposisi terarah ke teknisi</div>
-                </div>
-                <div class="stat-metric-card">
-                    <div class="stat-metric-num">1 Lembar</div>
-                    <div class="stat-metric-label">Bukti PDF & QR Code</div>
-                    <div class="stat-metric-sub">Format cetak A4 presisi tervalidasi</div>
-                </div>
+
             </div>
 
         </div>
