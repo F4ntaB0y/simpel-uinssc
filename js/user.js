@@ -1903,68 +1903,68 @@ function downloadOfficialTicketPDF(ticketId) {
     pdfContainer.style.left = '-9999px';
     pdfContainer.style.top = '0';
     pdfContainer.style.width = '750px';
-    pdfContainer.style.padding = '36px 40px';
+    pdfContainer.style.padding = '18px 24px';
     pdfContainer.style.background = '#ffffff';
     pdfContainer.style.color = '#0f172a';
     pdfContainer.style.fontFamily = "'Plus Jakarta Sans', Arial, sans-serif";
 
     pdfContainer.innerHTML = `
-        <div style="border-bottom: 3px double #c59235; padding-bottom: 16px; margin-bottom: 24px; display: flex; align-items: center; justify-content: space-between;">
-            <div style="display:flex; align-items:center; gap:16px;">
-                <img src="../assets/img/logo.png" style="height:64px;" onerror="this.style.display='none'">
+        <div style="border-bottom: 2px solid #c59235; padding-bottom: 10px; margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between;">
+            <div style="display:flex; align-items:center; gap:12px;">
+                <img src="../assets/img/logo.png" style="height:50px; object-fit:contain;" onerror="this.style.display='none'">
                 <div>
-                    <h2 style="font-size: 18px; font-weight: 800; color: #005a36; margin: 0; text-transform: uppercase;">UIN Siber Syekh Nurjati Cirebon</h2>
-                    <p style="font-size: 12px; color: #64748b; margin: 3px 0 0 0; font-weight: 600;">Sistem Informasi Pelaporan & Pemeliharaan Sarpras Kampus (SIMPEL UINSSC)</p>
-                    <span style="font-size: 10px; color: #94a3b8;">Jl. Perjuangan, Sunyaragi, Kec. Kesambi, Kota Cirebon, Jawa Barat 45132</span>
+                    <h2 style="font-size: 15px; font-weight: 800; color: #005a36; margin: 0; text-transform: uppercase;">UIN Siber Syekh Nurjati Cirebon</h2>
+                    <p style="font-size: 11px; color: #64748b; margin: 2px 0 0 0; font-weight: 600;">Sistem Informasi Pelaporan & Pemeliharaan Sarpras Kampus (SIMPEL UINSSC)</p>
+                    <span style="font-size: 9.5px; color: #94a3b8;">Jl. Perjuangan, Sunyaragi, Kec. Kesambi, Kota Cirebon, Jawa Barat 45132</span>
                 </div>
             </div>
             <div style="text-align: right;">
-                <span style="font-size: 10px; font-weight: 700; color: #c59235; text-transform: uppercase; letter-spacing: 0.5px;">Dokumen Resmi</span>
-                <div style="font-family: monospace; font-size: 16px; font-weight: 800; color: #005a36;">${escapeHtml(report.id)}</div>
+                <span style="font-size: 9.5px; font-weight: 700; color: #c59235; text-transform: uppercase; letter-spacing: 0.5px;">Dokumen Resmi</span>
+                <div style="font-family: monospace; font-size: 15px; font-weight: 800; color: #005a36;">${escapeHtml(report.id)}</div>
             </div>
         </div>
 
-        <div style="background: #f8fafc; border: 1.5px dashed #c59235; border-radius: 12px; padding: 18px 24px; margin-bottom: 24px; display: flex; justify-content: space-between; align-items: center;">
+        <div style="background: #f8fafc; border: 1.5px dashed #c59235; border-radius: 8px; padding: 10px 16px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center;">
             <div>
-                <span style="font-size: 11px; text-transform: uppercase; font-weight: 700; color: #64748b; letter-spacing: 0.5px;">Bukti Pengajuan Tiket Sarpras</span>
-                <div style="font-size: 26px; font-weight: 900; font-family: monospace; color: #005a36; margin: 2px 0;">${escapeHtml(report.id)}</div>
-                <div style="font-size: 12px; color: #475569;">Diajukan pada: <strong>${escapeHtml(report.tanggalLapor)}</strong></div>
+                <span style="font-size: 10px; text-transform: uppercase; font-weight: 700; color: #64748b; letter-spacing: 0.5px;">Bukti Pengajuan Tiket Sarpras</span>
+                <div style="font-size: 20px; font-weight: 900; font-family: monospace; color: #005a36; margin: 1px 0;">${escapeHtml(report.id)}</div>
+                <div style="font-size: 11px; color: #475569;">Diajukan pada: <strong>${escapeHtml(report.tanggalLapor)}</strong></div>
             </div>
             <div style="text-align: center;">
-                <div style="background: #005a36; color: #ffffff; padding: 6px 16px; border-radius: 20px; font-size: 12px; font-weight: 800;">
+                <div style="background: #005a36; color: #ffffff; padding: 4px 14px; border-radius: 12px; font-size: 11px; font-weight: 800;">
                     STATUS: ${escapeHtml(report.status).toUpperCase()}
                 </div>
-                <span style="font-size: 10px; color: #64748b; display: block; margin-top: 4px;">Urgensi: ${escapeHtml(report.urgensi)}</span>
+                <span style="font-size: 10px; color: #64748b; display: block; margin-top: 3px;">Urgensi: ${escapeHtml(report.urgensi)}</span>
             </div>
         </div>
 
-        <table style="width: 100%; border-collapse: collapse; margin-bottom: 24px; font-size: 13px;">
+        <table style="width: 100%; border-collapse: collapse; margin-bottom: 12px; font-size: 11.5px; border: 1px solid #cbd5e1;">
             <tbody>
-                <tr style="border-bottom: 1px solid #e2e8f0;"><td style="padding: 10px; font-weight: 700; width: 30%; color: #475569; background: #f8fafc;">Nama Pelapor</td><td style="padding: 10px; color: #0f172a; font-weight: 700;">${escapeHtml(report.namaPelapor)} (${escapeHtml(report.nimNip)})</td></tr>
-                <tr style="border-bottom: 1px solid #e2e8f0;"><td style="padding: 10px; font-weight: 700; color: #475569; background: #f8fafc;">Status / Peran</td><td style="padding: 10px; color: #0f172a;">${escapeHtml(report.peranPelapor)} | Kontak: ${escapeHtml(report.kontakPelapor)}</td></tr>
-                <tr style="border-bottom: 1px solid #e2e8f0;"><td style="padding: 10px; font-weight: 700; color: #475569; background: #f8fafc;">Kawasan & Gedung</td><td style="padding: 10px; color: #0f172a; font-weight: 700;">${escapeHtml(report.gedung)}</td></tr>
-                <tr style="border-bottom: 1px solid #e2e8f0;"><td style="padding: 10px; font-weight: 700; color: #475569; background: #f8fafc;">Ruangan / Lokasi Spesifik</td><td style="padding: 10px; color: #0f172a;">${escapeHtml(report.ruangan)}</td></tr>
-                <tr style="border-bottom: 1px solid #e2e8f0;"><td style="padding: 10px; font-weight: 700; color: #475569; background: #f8fafc;">Koordinat GPS Geofencing</td><td style="padding: 10px; color: #c59235; font-family: monospace; font-weight: 700;">Lat: ${escapeHtml(report.lat || '-6.735000')}, Lng: ${escapeHtml(report.lng || '108.533600')}</td></tr>
-                <tr style="border-bottom: 1px solid #e2e8f0;"><td style="padding: 10px; font-weight: 700; color: #475569; background: #f8fafc;">Kategori Fasilitas</td><td style="padding: 10px; color: #005a36; font-weight: 800;">${escapeHtml(report.kategori)}</td></tr>
-                <tr style="border-bottom: 1px solid #e2e8f0;"><td style="padding: 10px; font-weight: 700; color: #475569; background: #f8fafc;">Rincian Masalah</td><td style="padding: 10px; color: #1e293b; line-height: 1.5;">${escapeHtml(report.deskripsi)}</td></tr>
-                <tr style="border-bottom: 1px solid #e2e8f0;"><td style="padding: 10px; font-weight: 700; color: #475569; background: #f8fafc;">Teknisi Ditunjuk</td><td style="padding: 10px; color: #0f172a; font-weight: 700;">${escapeHtml(report.teknisi)}</td></tr>
-                <tr><td style="padding: 10px; font-weight: 700; color: #475569; background: #f8fafc;">Catatan Tindak Lanjut</td><td style="padding: 10px; color: #1e293b;">${escapeHtml(report.catatanAdmin || 'Menunggu verifikasi lapangan.')}</td></tr>
+                <tr style="border-bottom: 1px solid #e2e8f0;"><td style="padding: 6px 10px; font-weight: 700; width: 28%; color: #475569; background: #f8fafc;">Nama Pelapor</td><td style="padding: 6px 10px; color: #0f172a; font-weight: 700;">${escapeHtml(report.namaPelapor)} (${escapeHtml(report.nimNip)})</td></tr>
+                <tr style="border-bottom: 1px solid #e2e8f0;"><td style="padding: 6px 10px; font-weight: 700; color: #475569; background: #f8fafc;">Status / Peran</td><td style="padding: 6px 10px; color: #0f172a;">${escapeHtml(report.peranPelapor)} | Kontak: ${escapeHtml(report.kontakPelapor)}</td></tr>
+                <tr style="border-bottom: 1px solid #e2e8f0;"><td style="padding: 6px 10px; font-weight: 700; color: #475569; background: #f8fafc;">Kawasan & Gedung</td><td style="padding: 6px 10px; color: #0f172a; font-weight: 700;">${escapeHtml(report.gedung)}</td></tr>
+                <tr style="border-bottom: 1px solid #e2e8f0;"><td style="padding: 6px 10px; font-weight: 700; color: #475569; background: #f8fafc;">Ruangan / Lokasi Spesifik</td><td style="padding: 6px 10px; color: #0f172a;">${escapeHtml(report.ruangan)}</td></tr>
+                <tr style="border-bottom: 1px solid #e2e8f0;"><td style="padding: 6px 10px; font-weight: 700; color: #475569; background: #f8fafc;">Koordinat GPS Geofencing</td><td style="padding: 6px 10px; color: #c59235; font-family: monospace; font-weight: 700;">Lat: ${escapeHtml(report.lat || '-6.735000')}, Lng: ${escapeHtml(report.lng || '108.533600')}</td></tr>
+                <tr style="border-bottom: 1px solid #e2e8f0;"><td style="padding: 6px 10px; font-weight: 700; color: #475569; background: #f8fafc;">Kategori Fasilitas</td><td style="padding: 6px 10px; color: #005a36; font-weight: 800;">${escapeHtml(report.kategori)}</td></tr>
+                <tr style="border-bottom: 1px solid #e2e8f0;"><td style="padding: 6px 10px; font-weight: 700; color: #475569; background: #f8fafc;">Rincian Masalah</td><td style="padding: 6px 10px; color: #1e293b; line-height: 1.4;">${escapeHtml(report.deskripsi)}</td></tr>
+                <tr style="border-bottom: 1px solid #e2e8f0;"><td style="padding: 6px 10px; font-weight: 700; color: #475569; background: #f8fafc;">Teknisi Ditunjuk</td><td style="padding: 6px 10px; color: #0f172a; font-weight: 700;">${escapeHtml(report.teknisi)}</td></tr>
+                <tr><td style="padding: 6px 10px; font-weight: 700; color: #475569; background: #f8fafc;">Catatan Tindak Lanjut</td><td style="padding: 6px 10px; color: #1e293b;">${escapeHtml(report.catatanAdmin || 'Menunggu verifikasi lapangan.')}</td></tr>
             </tbody>
         </table>
 
-        <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-top: 32px; border-top: 1px solid #e2e8f0; padding-top: 20px;">
-            <div style="font-size: 11px; color: #64748b; line-height: 1.6;">
+        <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-top: 14px; border-top: 1px solid #e2e8f0; padding-top: 10px;">
+            <div style="font-size: 10px; color: #64748b; line-height: 1.5;">
                 <strong style="color: #005a36;">Verifikasi Digital SIMPEL UINSSC:</strong><br>
                 1. Dokumen ini sah dan terdaftar dalam sistem database sarpras UINSSC.<br>
-                2. Tunjukkan kode tiket atau scan QR code kepada teknisi lapangan.<br>
+                2. Tunjukkan kode tiket atau bukti PDF ini kepada teknisi sarpras di lapangan.<br>
                 Diterbitkan secara elektronik pada: ${new Date().toLocaleString('id-ID')}
             </div>
-            <div style="text-align: center; min-width: 160px;">
-                <div style="font-size: 11px; color: #475569; margin-bottom: 8px;">Unit Sarana & Prasarana</div>
-                <div style="border-bottom: 1px dashed #94a3b8; height: 46px; display: flex; align-items: center; justify-content: center;">
-                    <span style="font-size: 11px; font-weight: 800; color: #005a36; letter-spacing: 1px;">[ TERVERIFIKASI SISTEM ]</span>
+            <div style="text-align: center; min-width: 150px;">
+                <div style="font-size: 10px; color: #475569; margin-bottom: 4px;">Unit Sarana &amp; Prasarana</div>
+                <div style="border-bottom: 1px dashed #94a3b8; height: 36px; display: flex; align-items: center; justify-content: center;">
+                    <span style="font-size: 10px; font-weight: 800; color: #005a36; letter-spacing: 0.5px;">[ TERVERIFIKASI SISTEM ]</span>
                 </div>
-                <div style="font-size: 11px; font-weight: 700; color: #0f172a; margin-top: 4px;">SIMPEL UINSSC Digital Sign</div>
+                <div style="font-size: 10px; font-weight: 700; color: #0f172a; margin-top: 2px;">SIMPEL UINSSC Digital Sign</div>
             </div>
         </div>
     `;
@@ -1972,7 +1972,7 @@ function downloadOfficialTicketPDF(ticketId) {
     document.body.appendChild(pdfContainer);
 
     const opt = {
-        margin: [8, 8, 8, 8],
+        margin: [6, 8, 6, 8],
         filename: `TIKET_SARPRAS_UINSSC_${report.id}.pdf`,
         image: { type: 'jpeg', quality: 0.98 },
         html2canvas: { scale: 2, useCORS: true, logging: false },
@@ -2283,56 +2283,198 @@ function printTicketPDF(ticketId) {
     if (!report) return;
 
     const printWin = window.open('', '_blank', 'width=800,height=900');
+    if (!printWin) {
+        showToast('Popup terblokir oleh peramban. Izinkan popup untuk mencetak.', 'warning');
+        return;
+    }
+
     printWin.document.write(`
         <!DOCTYPE html>
-        <html>
+        <html lang="id">
         <head>
-            <title>Bukti Pelaporan Fasilitas UINSSC - ${report.id}</title>
+            <meta charset="UTF-8">
+            <title>Bukti Pelaporan Fasilitas UINSSC - ${escapeHtml(report.id)}</title>
             <style>
-                body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; padding: 40px; color: #005a36; line-height: 1.6; }
-                .header { text-align: center; border-bottom: 3px double #c59235; padding-bottom: 20px; margin-bottom: 30px; }
-                .logo { height: 75px; margin-bottom: 10px; }
-                .title { font-size: 20px; font-weight: bold; color: #005a36; margin: 0; }
-                .sub { font-size: 13px; color: #555; margin-top: 4px; }
-                .ticket-box { background: #f4f8f5; border: 2px dashed #c59235; border-radius: 10px; padding: 20px; text-align: center; margin-bottom: 30px; }
-                .ticket-code { font-size: 28px; font-weight: bold; font-family: monospace; color: #005a36; letter-spacing:1px; }
-                table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-                th, td { padding: 12px; border-bottom: 1px solid #e2e8f0; text-align: left; font-size: 14px; }
-                th { background: #005a36; color: #ffffff; width: 30%; }
-                .footer { margin-top: 50px; font-size: 12px; color: #777; text-align: center; border-top: 1px solid #ddd; padding-top: 20px; }
+                @page {
+                    size: A4 portrait;
+                    margin: 8mm 12mm;
+                }
+                * {
+                    box-sizing: border-box;
+                    -webkit-print-color-adjust: exact !important;
+                    print-color-adjust: exact !important;
+                }
+                html, body {
+                    margin: 0 !important;
+                    padding: 0 !important;
+                    background: #ffffff !important;
+                    color: #1e293b;
+                    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                    font-size: 11.5px;
+                    line-height: 1.35;
+                }
+                .print-sheet {
+                    width: 100%;
+                    max-width: 100%;
+                    margin: 0 auto;
+                    padding: 4px 6px;
+                    page-break-inside: avoid !important;
+                    page-break-after: avoid !important;
+                    break-inside: avoid !important;
+                    break-after: avoid !important;
+                }
+                .header {
+                    text-align: center;
+                    border-bottom: 2px solid #c59235;
+                    padding-bottom: 8px;
+                    margin-bottom: 10px;
+                }
+                .logo {
+                    height: 48px;
+                    margin-bottom: 4px;
+                    object-fit: contain;
+                }
+                .title {
+                    font-size: 15px;
+                    font-weight: 800;
+                    color: #005a36;
+                    margin: 0;
+                    letter-spacing: 0.5px;
+                    text-transform: uppercase;
+                }
+                .sub {
+                    font-size: 11px;
+                    color: #4b5563;
+                    margin: 2px 0 0 0;
+                    font-weight: 600;
+                }
+                .sub-addr {
+                    font-size: 9.5px;
+                    color: #64748b;
+                    margin: 1px 0 0 0;
+                }
+                .ticket-box {
+                    background: #f4f8f5;
+                    border: 1.5px dashed #c59235;
+                    border-radius: 8px;
+                    padding: 8px 14px;
+                    text-align: center;
+                    margin-bottom: 10px;
+                }
+                .ticket-label {
+                    font-size: 10px;
+                    color: #475569;
+                    font-weight: 800;
+                    text-transform: uppercase;
+                    letter-spacing: 0.8px;
+                }
+                .ticket-code {
+                    font-size: 20px;
+                    font-weight: 900;
+                    font-family: monospace;
+                    color: #005a36;
+                    letter-spacing: 1px;
+                    margin: 1px 0;
+                }
+                .ticket-meta {
+                    font-size: 10.5px;
+                    color: #475569;
+                }
+                table {
+                    width: 100%;
+                    border-collapse: collapse;
+                    border: 1px solid #cbd5e1;
+                    margin-bottom: 8px;
+                }
+                th, td {
+                    padding: 5px 8px;
+                    border: 1px solid #e2e8f0;
+                    text-align: left;
+                    font-size: 11px;
+                    line-height: 1.35;
+                    vertical-align: top;
+                }
+                th {
+                    background: #005a36 !important;
+                    color: #ffffff !important;
+                    width: 28%;
+                    font-weight: 700;
+                }
+                td {
+                    color: #1e293b;
+                }
+                .status-badge {
+                    background: rgba(16, 185, 129, 0.15);
+                    color: #005a36;
+                    font-weight: 800;
+                    padding: 1px 6px;
+                    border-radius: 4px;
+                    display: inline-block;
+                }
+                .footer {
+                    margin-top: 8px;
+                    font-size: 9.5px;
+                    color: #64748b;
+                    text-align: center;
+                    border-top: 1px solid #e2e8f0;
+                    padding-top: 6px;
+                    line-height: 1.35;
+                }
+                @media screen {
+                    body {
+                        padding: 16px !important;
+                        background: #f1f5f9 !important;
+                    }
+                    .print-sheet {
+                        background: #ffffff;
+                        padding: 16px 20px;
+                        border-radius: 8px;
+                        box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+                        max-width: 680px;
+                    }
+                }
             </style>
         </head>
         <body>
-            <div class="header">
-                <img src="../assets/img/logo.png" class="logo">
-                <h1 class="title">UIN SIBER SYEKH NURJATI CIREBON (UINSSC)</h1>
-                <p class="sub">Sistem Informasi Pelaporan & Pemeliharaan Fasilitas Kampus (SIMPEL UINSSC)</p>
-            </div>
+            <div class="print-sheet">
+                <div class="header">
+                    <img src="../assets/img/logo.png" class="logo" alt="Logo UINSSC" onerror="this.style.display='none'">
+                    <h1 class="title">UIN SIBER SYEKH NURJATI CIREBON (UINSSC)</h1>
+                    <p class="sub">Sistem Informasi Pelaporan &amp; Pemeliharaan Fasilitas Kampus (SIMPEL UINSSC)</p>
+                    <p class="sub-addr">Jl. Perjuangan, Sunyaragi, Kec. Kesambi, Kota Cirebon, Jawa Barat 45132</p>
+                </div>
 
-            <div class="ticket-box">
-                <div style="font-size:13px; color:#555; font-weight:bold;">BUKTI TIKET PELAPORAN RESMI</div>
-                <div class="ticket-code">${report.id}</div>
-                <div style="font-size:12px; color:#666; margin-top:4px;">Tanggal Lapor: ${report.tanggalLapor}</div>
-            </div>
+                <div class="ticket-box">
+                    <div class="ticket-label">BUKTI TIKET PELAPORAN RESMI</div>
+                    <div class="ticket-code">${escapeHtml(report.id)}</div>
+                    <div class="ticket-meta">Tanggal Lapor: <strong>${escapeHtml(report.tanggalLapor)}</strong> &bull; Status: <span class="status-badge">${escapeHtml(report.status).toUpperCase()}</span></div>
+                </div>
 
-            <table>
-                <tr><th>Nama Pelapor</th><td>${report.namaPelapor} (${report.nimNip}) - ${report.peranPelapor}</td></tr>
-                <tr><th>Kontak HP/WA</th><td>${report.kontakPelapor}</td></tr>
-                <tr><th>Lokasi Fasilitas</th><td>${report.gedung} - ${report.ruangan}</td></tr>
-                <tr><th>Koordinat GPS Presisi</th><td>Latitude: ${report.lat || '-6.737400'}, Longitude: ${report.lng || '108.553100'}</td></tr>
-                <tr><th>Kategori</th><td>${report.kategori}</td></tr>
-                <tr><th>Tingkat Urgensi</th><td>${report.urgensi}</td></tr>
-                <tr><th>Status Perbaikan</th><td><strong>${report.status}</strong></td></tr>
-                <tr><th>Deskripsi Kerusakan</th><td>${report.deskripsi}</td></tr>
-                <tr><th>Teknisi Sarpras</th><td>${report.teknisi}</td></tr>
-                <tr><th>Catatan Sarpras</th><td>${report.catatanAdmin || '-'}</td></tr>
-            </table>
+                <table>
+                    <tr><th>Nama Pelapor</th><td><strong>${escapeHtml(report.namaPelapor)}</strong> (${escapeHtml(report.nimNip)}) &mdash; ${escapeHtml(report.peranPelapor)}</td></tr>
+                    <tr><th>Kontak HP/WA</th><td>${escapeHtml(report.kontakPelapor)}</td></tr>
+                    <tr><th>Lokasi Fasilitas</th><td><strong>${escapeHtml(report.gedung)}</strong> &mdash; ${escapeHtml(report.ruangan)}</td></tr>
+                    <tr><th>Koordinat GPS Presisi</th><td>Latitude: ${escapeHtml(report.lat || '-6.735000')}, Longitude: ${escapeHtml(report.lng || '108.533600')}</td></tr>
+                    <tr><th>Kategori</th><td>${escapeHtml(report.kategori)}</td></tr>
+                    <tr><th>Tingkat Urgensi</th><td>${escapeHtml(report.urgensi)}</td></tr>
+                    <tr><th>Status Perbaikan</th><td><strong>${escapeHtml(report.status)}</strong></td></tr>
+                    <tr><th>Deskripsi Kerusakan</th><td>${escapeHtml(report.deskripsi)}</td></tr>
+                    <tr><th>Teknisi Sarpras</th><td>${escapeHtml(report.teknisi)}</td></tr>
+                    <tr><th>Catatan Sarpras</th><td>${escapeHtml(report.catatanAdmin || '-')}</td></tr>
+                </table>
 
-            <div class="footer">
-                Dokumen ini diterbitkan secara resmi oleh SIMPEL UINSSC.<br>
-                &copy; 2026 UIN Siber Syekh Nurjati Cirebon. All Rights Reserved.
+                <div class="footer">
+                    Dokumen ini diterbitkan secara resmi oleh SIMPEL UINSSC &bull; Layanan Sarpras Kampus Terpadu.<br>
+                    &copy; 2026 UIN Siber Syekh Nurjati Cirebon. All Rights Reserved.
+                </div>
             </div>
-            <script>window.onload = function() { window.print(); }</script>
+            <script>
+                window.onload = function() {
+                    setTimeout(function() {
+                        window.print();
+                    }, 250);
+                };
+            </script>
         </body>
         </html>
     `);

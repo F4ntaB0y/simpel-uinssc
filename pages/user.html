@@ -975,12 +975,12 @@
     <!-- Toast Notifications -->
     <div id="toastBox" class="toast-box"></div>
 
-    <script src="../js/user.js?v=20261110_staticbg"></script>
-    <script src="../js/site-builder.js?v=20261110_staticbg"></script>
+    <script src="../js/user.js?v=20261110_print1page"></script>
+    <script src="../js/site-builder.js?v=20261110_print1page"></script>
     <script>
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('../sw.js?v=20261110_staticbg')
+                navigator.serviceWorker.register('../sw.js?v=20261110_print1page')
                     .then(reg => {
                         reg.update();
                         console.log('SIMPEL User PWA Registered & Checked for Updates', reg.scope);
