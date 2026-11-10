@@ -16,7 +16,7 @@
     <!-- Leaflet.js Interactive Map CSS & JS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <link rel="stylesheet" href="../css/user.css?v=20261110_bannerpills">
+    <link rel="stylesheet" href="../css/user.css?v=20261110_idcardv2">
     <!-- SweetAlert2 Latest CDN -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <!-- DOMPurify Security Sanitizer -->
@@ -140,35 +140,49 @@
 
                         <!-- KARTU IDENTITAS DIGITAL CIVITAS KAMPUS (SSO INTEGRATION) -->
                         <div id="ssoProfileBanner" class="sso-profile-card" style="display:none;">
-                            <div class="sso-card-watermark" style="position: absolute; right: -20px; bottom: -25px; opacity: 0.08; pointer-events: none; width: 170px; height: 170px;">
-                                <img src="../assets/img/logo.png?v=20261110_logo" alt="UINSSC Emblem" style="width: 100%; height: 100%; object-fit: contain;">
+                            <div class="sso-card-watermark">
+                                <img src="../assets/img/logo.png?v=20261110_logo" alt="UINSSC Emblem">
                             </div>
 
                             <div class="sso-card-content">
-                                <div class="sso-card-left">
-                                    <div class="sso-avatar-row">
-                                        <div class="sso-avatar-wrap">
-                                            <img id="ssoUserPhotoImg" src="../assets/img/avatar_dummy.svg" alt="Avatar"
-                                                 onerror="this.onerror=null; this.src='../assets/img/avatar_dummy.svg';">
-                                            <span class="sso-status-dot" title="Status Akun Aktif & Terverifikasi"></span>
-                                        </div>
-
-                                        <div class="sso-user-heading">
-                                            <div class="sso-badges-row">
-                                                <span class="sso-pill-badge">
-                                                    <i class="fa-solid fa-circle-check"></i> Terverifikasi Portal Kampus UINSSC
-                                                </span>
-                                                <span id="ssoUserRoleBadge" class="sso-role-tag">
-                                                    Mahasiswa Aktif
-                                                </span>
-                                            </div>
-                                            <h3 id="ssoUserNameDetail">Ahmad Rizki Pratama</h3>
-                                            <div id="ssoNimDetail" class="sso-nim-badge">
-                                                <i class="fa-solid fa-id-badge" style="color:var(--gold);"></i> NIM: <strong id="ssoNimText">220101892</strong>
-                                            </div>
-                                        </div>
+                                <!-- Col 1: Identity Profile (Avatar, Name, NIM, Badges) -->
+                                <div class="sso-identity-col">
+                                    <div class="sso-avatar-wrap">
+                                        <img id="ssoUserPhotoImg" src="../assets/img/avatar_dummy.svg" alt="Avatar"
+                                             onerror="this.onerror=null; this.src='../assets/img/avatar_dummy.svg';">
+                                        <span class="sso-status-dot" title="Status Akun Aktif &amp; Terverifikasi"></span>
                                     </div>
 
+                                    <div class="sso-identity-meta">
+                                        <div class="sso-badges-desktop">
+                                            <span class="sso-pill-badge">
+                                                <i class="fa-solid fa-circle-check"></i> Terverifikasi Portal Kampus UINSSC
+                                            </span>
+                                            <span id="ssoUserRoleBadgeDesktop" class="sso-role-tag">
+                                                Mahasiswa Aktif
+                                            </span>
+                                        </div>
+                                        <h3 id="ssoUserNameDetail">Ahmad Rizki Pratama</h3>
+                                        <div class="sso-id-subrow">
+                                            <span id="ssoNimDetail" class="sso-nim-badge">
+                                                <i class="fa-solid fa-id-badge" style="color:var(--gold);"></i> NIM: <strong id="ssoNimText">220101892</strong>
+                                            </span>
+                                            <span id="ssoUserRoleBadge" class="sso-role-tag sso-role-mobile">
+                                                Mahasiswa Aktif
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Mobile Only: Full-Width Verification Strip -->
+                                <div class="sso-verified-strip">
+                                    <span class="sso-pill-badge">
+                                        <i class="fa-solid fa-circle-check"></i> Terverifikasi Portal Kampus UINSSC
+                                    </span>
+                                </div>
+
+                                <!-- Col 2: Academic Information (Prodi, Fakultas, Email) -->
+                                <div class="sso-academic-col">
                                     <div class="sso-info-box">
                                         <div id="ssoUserProdiDetail" class="sso-info-item">
                                             <i class="fa-solid fa-graduation-cap" style="color:#06b6d4;"></i>
@@ -179,7 +193,6 @@
                                                 <i class="fa-solid fa-building-columns" style="color:var(--gold);"></i>
                                                 <span>Fakultas Ilmu Tarbiyah &amp; Keguruan</span>
                                             </div>
-                                            <span class="sso-dot-sep">•</span>
                                             <div class="sso-info-sub">
                                                 <i class="fa-solid fa-envelope" style="color:#38bdf8;"></i>
                                                 <span>ahmad.rizki@uinssc.ac.id</span>
@@ -188,7 +201,8 @@
                                     </div>
                                 </div>
 
-                                <div class="sso-card-right">
+                                <!-- Col 3: Official Security Badge & Sync Note -->
+                                <div class="sso-security-col">
                                     <span class="sso-secure-badge">
                                         <i class="fa-solid fa-shield-halved"></i> Data Sah &amp; Terkunci SSO
                                     </span>
@@ -775,12 +789,12 @@
     <!-- Toast Notifications -->
     <div id="toastBox" class="toast-box"></div>
 
-    <script src="../js/user.js?v=20261110_bannerpills"></script>
-    <script src="../js/site-builder.js?v=20261110_bannerpills"></script>
+    <script src="../js/user.js?v=20261110_idcardv2"></script>
+    <script src="../js/site-builder.js?v=20261110_idcardv2"></script>
     <script>
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('../sw.js?v=20261110_bannerpills')
+                navigator.serviceWorker.register('../sw.js?v=20261110_idcardv2')
                     .then(reg => {
                         reg.update();
                         console.log('SIMPEL User PWA Registered & Checked for Updates', reg.scope);

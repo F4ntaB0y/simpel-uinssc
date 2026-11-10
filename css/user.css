@@ -773,7 +773,7 @@ body {
     grid-column: 1 / -1;
     margin-bottom: 6px;
     border-radius: 16px;
-    padding: 20px 22px;
+    padding: 18px 24px;
     backdrop-filter: blur(14px);
     -webkit-backdrop-filter: blur(14px);
     position: relative;
@@ -790,39 +790,52 @@ body {
     box-shadow: 0 6px 20px rgba(0, 45, 25, 0.06);
 }
 
+.sso-card-watermark {
+    position: absolute;
+    right: -15px;
+    bottom: -20px;
+    opacity: 0.08;
+    pointer-events: none;
+    width: 160px;
+    height: 160px;
+    z-index: 0;
+}
+
+.sso-card-watermark img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
 .sso-card-content {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 18px;
+    gap: 24px;
     position: relative;
     z-index: 1;
+    width: 100%;
 }
 
-.sso-card-left {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    flex: 1;
-    min-width: 0;
-}
-
-.sso-avatar-row {
+/* Col 1: Identity Profile (Avatar, Name, NIM, Badges) */
+.sso-identity-col {
     display: flex;
     align-items: center;
     gap: 16px;
+    min-width: 0;
+    flex-shrink: 0;
 }
 
 .sso-avatar-wrap {
     position: relative;
-    width: 70px;
-    height: 70px;
+    width: 66px;
+    height: 66px;
     flex-shrink: 0;
 }
 
 .sso-avatar-wrap img {
-    width: 70px;
-    height: 70px;
+    width: 66px;
+    height: 66px;
     border-radius: 50%;
     object-fit: cover;
     border: 2.5px solid var(--gold);
@@ -837,27 +850,39 @@ body {
     position: absolute;
     bottom: 2px;
     right: 2px;
-    width: 15px;
-    height: 15px;
+    width: 14px;
+    height: 14px;
     background: #10b981;
     border: 2.5px solid var(--bg-card-solid);
     border-radius: 50%;
     box-shadow: 0 0 8px #10b981;
 }
 
-.sso-user-heading {
+.sso-identity-meta {
     display: flex;
     flex-direction: column;
     gap: 4px;
-    flex: 1;
-    min-width: 0;
 }
 
-.sso-badges-row {
+.sso-badges-desktop {
     display: flex;
     align-items: center;
     gap: 8px;
     flex-wrap: wrap;
+    margin-bottom: 2px;
+}
+
+.sso-pill-badge {
+    font-size: 11px;
+    font-weight: 700;
+    color: #10b981;
+    background: rgba(16, 185, 129, 0.12);
+    border: 1px solid rgba(16, 185, 129, 0.35);
+    padding: 3px 10px;
+    border-radius: 20px;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
 }
 
 .sso-role-tag {
@@ -866,16 +891,26 @@ body {
     color: var(--gold);
     background: var(--gold-light);
     border: 1px solid rgba(212, 163, 67, 0.35);
-    padding: 2px 8px;
+    padding: 2.5px 8px;
     border-radius: 6px;
+    display: inline-flex;
+    align-items: center;
 }
 
-.sso-user-heading h3 {
+.sso-identity-meta h3 {
     font-size: 17px;
     font-weight: 800;
-    margin: 2px 0 0 0;
+    margin: 0;
     color: var(--text-main);
+    line-height: 1.25;
     word-break: break-word;
+}
+
+.sso-id-subrow {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
 }
 
 .sso-nim-badge {
@@ -893,41 +928,66 @@ body {
     font-size: 13.5px;
 }
 
+.sso-role-mobile {
+    display: none;
+}
+
+.sso-verified-strip {
+    display: none;
+}
+
+/* Col 2: Academic Information (Prodi, Fakultas, Email) */
+.sso-academic-col {
+    flex: 1;
+    border-left: 1px solid rgba(255, 255, 255, 0.1);
+    padding-left: 24px;
+    min-width: 0;
+}
+
+[data-theme="light"] .sso-academic-col {
+    border-left-color: rgba(0, 90, 54, 0.14);
+}
+
 .sso-info-box {
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: 6px;
 }
 
 .sso-info-item {
     display: inline-flex;
     align-items: center;
-    gap: 6px;
+    gap: 7px;
     font-size: 13px;
-    color: var(--text-muted);
+    color: var(--text-main);
+    font-weight: 600;
+    word-break: break-word;
 }
 
 .sso-info-item-group {
     display: flex;
-    align-items: center;
-    gap: 8px;
-    flex-wrap: wrap;
-    font-size: 12px;
-    color: var(--text-muted);
+    flex-direction: column;
+    gap: 4px;
 }
 
 .sso-info-sub {
     display: inline-flex;
     align-items: center;
-    gap: 5px;
-}
-
-.sso-dot-sep {
+    gap: 6px;
+    font-size: 12px;
     color: var(--text-muted);
-    opacity: 0.6;
+    word-break: break-word;
 }
 
-.sso-card-right {
+.sso-info-sub i,
+.sso-info-item i {
+    width: 16px;
+    text-align: center;
+    flex-shrink: 0;
+}
+
+/* Col 3: Official Security Badge & Sync Note */
+.sso-security-col {
     display: flex;
     flex-direction: column;
     align-items: flex-end;
@@ -2961,8 +3021,8 @@ textarea.login-input {
     }
 
     .sso-card-watermark {
-        width: 100px !important;
-        height: 100px !important;
+        width: 90px !important;
+        height: 90px !important;
         right: -10px !important;
         bottom: -10px !important;
         opacity: 0.035 !important;
@@ -2971,48 +3031,47 @@ textarea.login-input {
     .sso-card-content {
         flex-direction: column !important;
         align-items: stretch !important;
-        gap: 12px !important;
-    }
-
-    .sso-card-left {
-        flex-direction: column !important;
-        align-items: stretch !important;
         gap: 10px !important;
-        width: 100% !important;
     }
 
-    .sso-avatar-row {
+    /* Row 1: Avatar + Name + Subrow (NIM & Role Tag) */
+    .sso-identity-col {
         display: flex !important;
         align-items: center !important;
         gap: 12px !important;
         width: 100% !important;
+        flex-shrink: 1 !important;
     }
 
     .sso-avatar-wrap {
-        width: 54px !important;
-        height: 54px !important;
+        width: 52px !important;
+        height: 52px !important;
         flex-shrink: 0 !important;
     }
 
     .sso-avatar-wrap img {
-        width: 54px !important;
-        height: 54px !important;
+        width: 52px !important;
+        height: 52px !important;
         border-width: 2px !important;
     }
 
     .sso-status-dot {
-        width: 13px !important;
-        height: 13px !important;
+        width: 12px !important;
+        height: 12px !important;
         border-width: 2px !important;
     }
 
-    .sso-user-heading {
+    .sso-identity-meta {
         flex: 1 !important;
         min-width: 0 !important;
-        gap: 2px !important;
+        gap: 3px !important;
     }
 
-    .sso-user-heading h3 {
+    .sso-badges-desktop {
+        display: none !important;
+    }
+
+    .sso-identity-meta h3 {
         font-size: 15px !important;
         font-weight: 800 !important;
         margin: 0 !important;
@@ -3020,19 +3079,12 @@ textarea.login-input {
         word-break: break-word !important;
     }
 
-    .sso-badges-row {
-        gap: 6px !important;
-        margin-bottom: 2px !important;
-    }
-
-    .sso-pill-badge {
-        font-size: 10.5px !important;
-        padding: 3px 8px !important;
-    }
-
-    .sso-role-tag {
-        font-size: 10.5px !important;
-        padding: 2px 7px !important;
+    .sso-id-subrow {
+        display: flex !important;
+        align-items: center !important;
+        gap: 8px !important;
+        flex-wrap: wrap !important;
+        margin-top: 1px !important;
     }
 
     .sso-nim-badge {
@@ -3041,6 +3093,37 @@ textarea.login-input {
 
     .sso-nim-badge strong {
         font-size: 12.5px !important;
+    }
+
+    .sso-role-mobile {
+        display: inline-flex !important;
+        font-size: 10.5px !important;
+        padding: 2px 7px !important;
+    }
+
+    /* Row 2: Verification Strip Full-Width (Never Line-Breaks) */
+    .sso-verified-strip {
+        display: flex !important;
+        width: 100% !important;
+        margin: 2px 0 !important;
+    }
+
+    .sso-verified-strip .sso-pill-badge {
+        width: 100% !important;
+        justify-content: center !important;
+        font-size: 11px !important;
+        padding: 5.5px 10px !important;
+        border-radius: 8px !important;
+        box-sizing: border-box !important;
+        text-align: center !important;
+    }
+
+    /* Row 3: Academic Details Box */
+    .sso-academic-col {
+        border-left: none !important;
+        padding-left: 0 !important;
+        width: 100% !important;
+        margin: 0 !important;
     }
 
     .sso-info-box {
@@ -3061,16 +3144,17 @@ textarea.login-input {
     }
 
     .sso-info-item {
-        font-size: 11.5px !important;
+        font-size: 12px !important;
         line-height: 1.35 !important;
         color: var(--text-main) !important;
         word-break: break-word !important;
     }
 
     .sso-info-item-group {
+        display: flex !important;
         flex-direction: column !important;
         align-items: flex-start !important;
-        gap: 5px !important;
+        gap: 4px !important;
         width: 100% !important;
     }
 
@@ -3094,7 +3178,8 @@ textarea.login-input {
         text-align: center !important;
     }
 
-    .sso-card-right {
+    /* Row 4: Security Seal & Sync Note */
+    .sso-security-col {
         width: 100% !important;
         align-items: center !important;
         border-top: 1px dashed var(--border-color) !important;
@@ -3105,7 +3190,7 @@ textarea.login-input {
     .sso-secure-badge {
         width: 100% !important;
         justify-content: center !important;
-        padding: 6px 12px !important;
+        padding: 6.5px 12px !important;
         font-size: 11px !important;
         box-sizing: border-box !important;
     }

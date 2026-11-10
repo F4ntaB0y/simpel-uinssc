@@ -704,6 +704,7 @@ function prefillPelaporDataFromSession() {
 
         const ssoBanner = document.getElementById('ssoProfileBanner');
         const ssoRoleBadge = document.getElementById('ssoUserRoleBadge');
+        const ssoRoleBadgeDesktop = document.getElementById('ssoUserRoleBadgeDesktop');
         const ssoNameDetail = document.getElementById('ssoUserNameDetail');
         const ssoNimText = document.getElementById('ssoNimText');
         const ssoProdiDetail = document.getElementById('ssoUserProdiDetail');
@@ -782,8 +783,12 @@ function prefillPelaporDataFromSession() {
                 };
             }
 
+            const roleText = sess.peran ? (sess.peran + ' Aktif') : 'Mahasiswa Aktif';
             if (ssoRoleBadge) {
-                ssoRoleBadge.textContent = sess.peran ? (sess.peran + ' Aktif') : 'Mahasiswa Aktif';
+                ssoRoleBadge.textContent = roleText;
+            }
+            if (ssoRoleBadgeDesktop) {
+                ssoRoleBadgeDesktop.textContent = roleText;
             }
             if (ssoNameDetail) {
                 ssoNameDetail.textContent = sess.name || 'Civitas Kampus';
