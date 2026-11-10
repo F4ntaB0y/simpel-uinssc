@@ -16,8 +16,8 @@
     <!-- Leaflet.js Interactive Map CSS & JS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <link rel="stylesheet" href="../css/user.css?v=20261107_ui4">
-    <link rel="stylesheet" href="../css/admin.css?v=20261110_responsive">
+    <link rel="stylesheet" href="../css/user.css?v=20261110_navwidth">
+    <link rel="stylesheet" href="../css/admin.css?v=20261110_sidebarlogout">
     <!-- SweetAlert2 Latest CDN -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <!-- Chart.js Modern Data Analytics -->
@@ -114,19 +114,14 @@
                         <i class="fa-solid fa-server" style="color:#facc15;"></i> <span>Security War Room (SOC)</span>
                     </a>
                 </li>
-
-                <!-- ================= LOGOUT / SISTEM ================= -->
-                <li style="border-top:1px dashed var(--border-color); margin:10px 0 6px; padding-top:4px;"></li>
-                <li>
-                    <a href="javascript:void(0)" onclick="handleLogout(); closeAdminSidebar();" class="menu-logout" title="Keluar / Logout">
-                        <i class="fa-solid fa-right-from-bracket"></i> <span>Keluar / Logout</span>
-                    </a>
-                </li>
             </ul>
 
             <div class="sidebar-footer">
                 <button type="button" class="btn-sidebar-theme" onclick="toggleTheme()" title="Ubah Tema Dark/Light">
                     <i class="fa-solid fa-moon" id="adminThemeIcon"></i> <span>Tampilan Dark/Light</span>
+                </button>
+                <button type="button" class="btn-sidebar-logout" onclick="handleLogout(); closeAdminSidebar();" title="Keluar dari Sistem / Logout">
+                    <i class="fa-solid fa-right-from-bracket"></i> <span>Keluar / Logout</span>
                 </button>
             </div>
         </aside>
@@ -1867,12 +1862,12 @@
     <!-- Toast Notifications -->
     <div id="toastBox" class="toast-box"></div>
 
-    <script src="../js/site-builder.js?v=20261107_ui4"></script>
-    <script src="../js/admin.js"></script>
+    <script src="../js/site-builder.js?v=20261110_navwidth"></script>
+    <script src="../js/admin.js?v=20261110_sidebarlogout"></script>
     <script>
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('../sw.js')
+                navigator.serviceWorker.register('../sw.js?v=20261110_sidebarlogout')
                     .then(reg => console.log('SIMPEL Admin PWA Registered', reg.scope))
                     .catch(err => console.debug('SIMPEL PWA Registration Notice:', err));
             });

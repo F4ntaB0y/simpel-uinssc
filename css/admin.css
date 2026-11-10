@@ -172,10 +172,13 @@
 }
 
 .sidebar-footer {
-    padding-top: 14px;
+    padding-top: 12px;
     border-top: 1px solid var(--border-color);
     margin-top: auto;
     flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
 }
 
 .btn-sidebar-theme {
@@ -212,6 +215,43 @@
     background: #eff6f2;
     color: #005a36;
     border-color: #005a36;
+}
+
+.btn-sidebar-logout {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 10px 14px;
+    background: rgba(239, 68, 68, 0.1);
+    border: 1px solid rgba(239, 68, 68, 0.28);
+    border-radius: 11px;
+    color: #f87171;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.btn-sidebar-logout:hover {
+    background: rgba(239, 68, 68, 0.2);
+    color: #ef4444;
+    border-color: #ef4444;
+    transform: translateY(-1px);
+}
+
+[data-theme="light"] .btn-sidebar-logout {
+    background: #fef2f2;
+    color: #dc2626;
+    border-color: #fca5a5;
+}
+
+[data-theme="light"] .btn-sidebar-logout:hover {
+    background: #fee2e2;
+    color: #b91c1c;
+    border-color: #ef4444;
 }
 
 /* Collapsed State for Sidebar (Desktop) */
@@ -274,7 +314,8 @@
     margin: 0;
 }
 
-.admin-wrapper.sidebar-collapsed .btn-sidebar-theme {
+.admin-wrapper.sidebar-collapsed .btn-sidebar-theme,
+.admin-wrapper.sidebar-collapsed .btn-sidebar-logout {
     width: 46px;
     height: 46px;
     padding: 0;
@@ -282,8 +323,14 @@
     margin: 0 auto;
 }
 
-.admin-wrapper.sidebar-collapsed .btn-sidebar-theme span {
+.admin-wrapper.sidebar-collapsed .btn-sidebar-theme span,
+.admin-wrapper.sidebar-collapsed .btn-sidebar-logout span {
     display: none !important;
+}
+
+.admin-wrapper.sidebar-collapsed .btn-sidebar-logout i {
+    font-size: 16px;
+    margin: 0;
 }
 
 .admin-wrapper.sidebar-collapsed .admin-main {
@@ -1275,14 +1322,18 @@
     }
 
     .admin-wrapper.sidebar-collapsed .btn-sidebar-theme,
-    .btn-sidebar-theme {
+    .btn-sidebar-theme,
+    .admin-wrapper.sidebar-collapsed .btn-sidebar-logout,
+    .btn-sidebar-logout {
         width: 100% !important;
         height: auto !important;
         padding: 10px 14px !important;
     }
 
     .admin-wrapper.sidebar-collapsed .btn-sidebar-theme span,
-    .btn-sidebar-theme span {
+    .btn-sidebar-theme span,
+    .admin-wrapper.sidebar-collapsed .btn-sidebar-logout span,
+    .btn-sidebar-logout span {
         display: inline !important;
     }
 
