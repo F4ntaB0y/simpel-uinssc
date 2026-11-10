@@ -1028,6 +1028,11 @@ function initMapPicker() {
 
         // Map Click Event: Menempatkan / memindahkan marker ke titik klik secara presisi
         mapPickerInstance.on('click', function (e) {
+            // Abaikan jika klik berasal dari dalam popup atau kontrol/tombol
+            if (e.originalEvent && e.originalEvent.target && e.originalEvent.target.closest('.leaflet-popup, .leaflet-control, button, a')) {
+                return;
+            }
+
             if (isDrawModeActive) {
                 handleMapClickForPolygon(e.latlng.lat, e.latlng.lng);
                 return;
@@ -1046,13 +1051,16 @@ function initMapPicker() {
             const insideClick = isInsideCampus(e.latlng.lat, e.latlng.lng);
             if (!insideClick) {
                 mapMarkerInstance.bindPopup(`
-                    <div style="font-family:sans-serif; text-align:center; padding:4px;">
-                        <div style="color:#ef4444; font-weight:700; font-size:12.5px; margin-bottom:3px;">
+                    <div style="font-family:sans-serif; text-align:center; padding:6px 4px; min-width:180px;">
+                        <div style="color:#ef4444; font-weight:700; font-size:12.5px; margin-bottom:4px;">
                             <i class="fa-solid fa-triangle-exclamation"></i> Di Luar Kawasan Kampus!
                         </div>
-                        <div style="font-size:11px; color:#475569;">
+                        <div style="font-size:11px; color:#475569; margin-bottom:6px;">
                             Titik ini berada di luar area kampus UINSSC. Laporan tidak dapat diinput.
                         </div>
+                        <button type="button" onclick="event.stopPropagation(); event.preventDefault(); focusMapToCampus(event);" onmousedown="event.stopPropagation();" style="background:#ef4444; color:#fff; border:none; padding:5px 12px; border-radius:6px; font-size:11px; font-weight:600; cursor:pointer;">
+                            <i class="fa-solid fa-building-flag"></i> Area Kampus
+                        </button>
                     </div>
                 `).openPopup();
             } else {
@@ -1109,7 +1117,11 @@ function handleGedungSelectChange() {
     checkDuplicateWarning();
 }
 
-function focusMapToCampus() {
+function focusMapToCampus(event) {
+    if (event) {
+        if (typeof event.stopPropagation === 'function') event.stopPropagation();
+        if (typeof event.preventDefault === 'function') event.preventDefault();
+    }
     if (!mapPickerInstance || CAMPUS_ZONES.length === 0) return;
 
     // Ambil Kawasan Kampus Utama secara presisi
@@ -1409,7 +1421,10 @@ function getCurrentGPSLocation() {
                             <div style="color:#ef4444; font-weight:700; font-size:12px; margin-bottom:4px;">
                                 <i class="fa-solid fa-triangle-exclamation"></i> Di Luar Kawasan Kampus
                             </div>
-                            <button type="button" onclick="focusMapToCampus()" style="background:#ef4444; color:#fff; border:none; padding:5px 12px; border-radius:6px; font-size:11px; font-weight:600; cursor:pointer;">
+                            <div style="font-size:11px; color:#475569; margin-bottom:6px;">
+                                Titik GPS Anda berada di luar area kampus UINSSC.
+                            </div>
+                            <button type="button" onclick="event.stopPropagation(); event.preventDefault(); focusMapToCampus(event);" onmousedown="event.stopPropagation();" style="background:#ef4444; color:#fff; border:none; padding:5px 12px; border-radius:6px; font-size:11px; font-weight:600; cursor:pointer;">
                                 <i class="fa-solid fa-building-flag"></i> Area Kampus
                             </button>
                         </div>

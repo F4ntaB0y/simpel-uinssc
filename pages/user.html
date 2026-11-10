@@ -345,7 +345,7 @@
                                             <i class="fa-solid fa-eye-slash"></i> Masking
                                         </button>
                                         <button type="button" id="btnFocusCampus"
-                                            class="chip-btn map-toolbar-btn btn-campus" onclick="focusMapToCampus()">
+                                            class="chip-btn map-toolbar-btn btn-campus" onclick="focusMapToCampus(event)">
                                             <i class="fa-solid fa-building-flag"></i> Area Kampus
                                         </button>
                                         <button type="button" id="btnGpsLocation"
@@ -975,12 +975,12 @@
     <!-- Toast Notifications -->
     <div id="toastBox" class="toast-box"></div>
 
-    <script src="../js/user.js?v=20261110_cleandot"></script>
-    <script src="../js/site-builder.js?v=20261110_cleandot"></script>
+    <script src="../js/user.js?v=20261110_campusfocusfix"></script>
+    <script src="../js/site-builder.js?v=20261110_campusfocusfix"></script>
     <script>
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('../sw.js?v=20261110_cleandot')
+                navigator.serviceWorker.register('../sw.js?v=20261110_campusfocusfix')
                     .then(reg => {
                         reg.update();
                         console.log('SIMPEL User PWA Registered & Checked for Updates', reg.scope);
