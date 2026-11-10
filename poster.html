@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Poster Ilmiah - SIMPEL UINSSC: Panduan, Alur Sistem & Showcase Aplikasi</title>
+    <title>Poster Ilmiah SIMPEL UINSSC - 1 Halaman A4 Full</title>
     <link rel="icon" type="image/png" href="assets/img/favicon.png">
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -16,10 +16,9 @@
     <style>
         :root {
             --primary: #005a36;
-            --primary-dark: #003a22;
+            --primary-dark: #003820;
             --primary-light: #e8f5ee;
             --emerald-600: #059669;
-            --emerald-500: #10b981;
             --gold: #d4a343;
             --gold-dark: #b88628;
             --gold-light: #fef7ea;
@@ -33,10 +32,6 @@
             --slate-100: #f1f5f9;
             --slate-50: #f8fafc;
             --white: #ffffff;
-            --danger: #dc2626;
-            --danger-light: #fef2f2;
-            --info: #0284c7;
-            --info-light: #f0f9ff;
         }
 
         * {
@@ -53,53 +48,50 @@
             flex-direction: column;
             align-items: center;
             min-height: 100vh;
-            padding: 24px 16px 60px;
+            padding: 20px 10px 40px;
             -webkit-print-color-adjust: exact !important;
             print-color-adjust: exact !important;
         }
 
-        /* Screen Control Toolbar */
+        /* Screen Control Toolbar (Hanya Tampil di Layar Browser) */
         .control-toolbar {
-            width: 100%;
-            max-width: 1060px;
+            width: 210mm;
             background: #ffffff;
-            border-radius: 16px;
-            padding: 16px 24px;
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.15);
-            margin-bottom: 22px;
+            border-radius: 12px;
+            padding: 12px 18px;
+            box-shadow: 0 8px 20px -4px rgba(0, 0, 0, 0.15);
+            margin-bottom: 16px;
             display: flex;
-            flex-wrap: wrap;
             align-items: center;
             justify-content: space-between;
-            gap: 14px;
+            gap: 12px;
         }
 
         .toolbar-info h2 {
-            font-size: 16px;
+            font-size: 14.5px;
             font-weight: 800;
             color: var(--primary);
-            margin-bottom: 4px;
+            margin-bottom: 2px;
         }
 
         .toolbar-info p {
-            font-size: 13px;
+            font-size: 11.5px;
             color: var(--slate-600);
-            line-height: 1.4;
         }
 
         .toolbar-actions {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
         }
 
         .btn-action {
             display: inline-flex;
             align-items: center;
-            gap: 8px;
-            padding: 10px 18px;
-            border-radius: 10px;
-            font-size: 13.5px;
+            gap: 6px;
+            padding: 8px 14px;
+            border-radius: 8px;
+            font-size: 12px;
             font-weight: 700;
             font-family: inherit;
             cursor: pointer;
@@ -111,12 +103,11 @@
         .btn-print {
             background: var(--primary);
             color: #ffffff;
-            box-shadow: 0 4px 12px rgba(0, 90, 54, 0.25);
+            box-shadow: 0 3px 10px rgba(0, 90, 54, 0.25);
         }
 
         .btn-print:hover {
             background: var(--primary-dark);
-            transform: translateY(-1px);
         }
 
         .btn-canva-guide {
@@ -129,46 +120,52 @@
             background: #faecd5;
         }
 
-        /* Poster Canvas Artboard (Fixed Ratio A3/A4 1 : 1.414) */
+        /* ==========================================================================
+           POSTER ARTBOARD - TEPAT 1 HALAMAN A4 FULL (210mm x 297mm)
+           ========================================================================== */
         .poster-artboard {
-            width: 280mm;
-            min-height: 396mm;
+            width: 210mm;
+            height: 297mm;
+            max-height: 297mm;
             background: #ffffff;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.35);
+            box-shadow: 0 20px 45px -10px rgba(0, 0, 0, 0.35);
             display: flex;
             flex-direction: column;
+            justify-content: space-between;
             position: relative;
             overflow: hidden;
             box-sizing: border-box;
+            border-radius: 4px;
         }
 
-        /* Top Banner Header */
+        /* 1. Top Header Banner */
         .poster-header {
-            background: linear-gradient(135deg, #003e23 0%, #005a36 60%, #034428 100%);
+            background: linear-gradient(135deg, #003820 0%, #005a36 65%, #024124 100%);
             color: #ffffff;
-            padding: 24px 32px 20px;
+            padding: 14px 20px 12px;
             position: relative;
-            border-bottom: 5px solid var(--gold);
+            border-bottom: 3.5px solid var(--gold);
+            flex-shrink: 0;
         }
 
         .header-grid {
             display: grid;
-            grid-template-columns: 86px 1fr auto;
-            gap: 22px;
+            grid-template-columns: 56px 1fr auto;
+            gap: 14px;
             align-items: center;
         }
 
         .header-logo-box {
-            width: 86px;
-            height: 86px;
+            width: 56px;
+            height: 56px;
             background: #ffffff;
-            border-radius: 16px;
-            padding: 8px;
+            border-radius: 12px;
+            padding: 5px;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
-            border: 2px solid var(--gold);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+            border: 1.5px solid var(--gold);
         }
 
         .header-logo-box img {
@@ -178,160 +175,157 @@
         }
 
         .header-text h4 {
-            font-size: 12.5px;
+            font-size: 9.5px;
             font-weight: 800;
-            letter-spacing: 1.5px;
+            letter-spacing: 1.2px;
             color: var(--gold);
             text-transform: uppercase;
-            margin-bottom: 3px;
+            margin-bottom: 1px;
         }
 
         .header-text h1 {
             font-family: 'Space Grotesk', sans-serif;
-            font-size: 27px;
+            font-size: 18.5px;
             font-weight: 800;
-            line-height: 1.25;
-            letter-spacing: -0.5px;
+            line-height: 1.2;
+            letter-spacing: -0.3px;
             color: #ffffff;
-            margin-bottom: 4px;
+            margin-bottom: 2px;
         }
 
         .header-text p {
-            font-size: 13.5px;
+            font-size: 9.8px;
             color: #d1fae5;
             font-weight: 500;
         }
 
         .header-meta-badge {
             background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
+            backdrop-filter: blur(8px);
             border: 1px solid rgba(212, 163, 67, 0.5);
-            border-radius: 14px;
-            padding: 10px 18px;
+            border-radius: 10px;
+            padding: 6px 12px;
             text-align: right;
         }
 
         .meta-inst {
-            font-size: 13.5px;
+            font-size: 10.5px;
             font-weight: 800;
             color: #ffffff;
         }
 
         .meta-sub {
-            font-size: 11px;
+            font-size: 8.5px;
             color: var(--gold);
             font-weight: 700;
-            margin-top: 2px;
+            margin-top: 1px;
         }
 
-        /* Poster Body Grid Layout */
+        /* 2. Main Content Body (Compact Proportional Grid) */
         .poster-body {
-            flex: 1;
-            padding: 22px 28px 18px;
+            flex: 1 1 auto;
+            padding: 10px 16px;
             display: flex;
             flex-direction: column;
-            gap: 16px;
+            justify-content: space-between;
+            gap: 8px;
             background: #ffffff;
+            overflow: hidden;
         }
 
-        /* Section Cards */
         .section-card {
             background: #ffffff;
             border: 1px solid var(--slate-200);
-            border-radius: 12px;
-            padding: 14px 16px;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+            border-radius: 8px;
+            padding: 8px 10px;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.03);
             position: relative;
         }
 
         .section-card.primary-accent {
-            border-left: 4px solid var(--primary);
+            border-left: 3.5px solid var(--primary);
         }
 
         .section-card.gold-accent {
-            border-left: 4px solid var(--gold);
-        }
-
-        .section-card.info-accent {
-            border-left: 4px solid var(--info);
+            border-left: 3.5px solid var(--gold);
         }
 
         .section-title {
             display: flex;
             align-items: center;
-            gap: 8px;
-            font-size: 13.5px;
+            gap: 6px;
+            font-size: 11px;
             font-weight: 800;
             color: var(--primary-dark);
-            margin-bottom: 10px;
+            margin-bottom: 6px;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
-            border-bottom: 1.5px solid var(--slate-100);
-            padding-bottom: 5px;
+            letter-spacing: 0.4px;
+            border-bottom: 1px solid var(--slate-100);
+            padding-bottom: 4px;
         }
 
         .section-title i {
             color: var(--gold);
-            font-size: 14px;
+            font-size: 11px;
         }
 
-        /* Top Row: Deskripsi Proyek + Alur Sistem Visual */
+        /* Top Row: Deskripsi Proyek + Alur Sistem */
         .top-row-grid {
             display: grid;
-            grid-template-columns: 1fr 1.6fr;
-            gap: 16px;
+            grid-template-columns: 1.05fr 1.55fr;
+            gap: 8px;
         }
 
         .desc-text {
-            font-size: 11.5px;
+            font-size: 9.2px;
             color: var(--slate-700);
-            line-height: 1.5;
-            margin-bottom: 10px;
+            line-height: 1.45;
+            margin-bottom: 6px;
         }
 
         .desc-pills {
             display: flex;
             flex-direction: column;
-            gap: 6px;
+            gap: 4px;
         }
 
         .desc-pill-item {
             display: flex;
             align-items: center;
             gap: 6px;
-            font-size: 11px;
+            font-size: 8.8px;
             color: var(--slate-800);
             background: var(--slate-50);
             border: 1px solid var(--slate-200);
-            padding: 5px 8px;
-            border-radius: 6px;
+            padding: 3px 6px;
+            border-radius: 5px;
         }
 
         .desc-pill-item i {
             color: var(--primary);
-            font-size: 12px;
+            font-size: 9.5px;
+            flex-shrink: 0;
         }
 
-        /* Full System Workflow Diagram */
+        /* Alur Kerja Sistem (5 Nodes) */
         .system-workflow-grid {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
-            gap: 8px;
+            gap: 5px;
             align-items: center;
             background: var(--slate-50);
             border: 1px solid var(--slate-200);
-            border-radius: 10px;
-            padding: 10px 10px;
+            border-radius: 7px;
+            padding: 6px 5px;
         }
 
         .wf-node {
             background: #ffffff;
-            border: 1.5px solid var(--primary);
-            border-radius: 8px;
-            padding: 8px 6px;
+            border: 1.2px solid var(--primary);
+            border-radius: 6px;
+            padding: 5px 3px;
             text-align: center;
-            position: relative;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.04);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
         }
 
         .wf-node.active-gold {
@@ -345,9 +339,9 @@
         }
 
         .wf-node-icon {
-            font-size: 14px;
+            font-size: 11px;
             color: var(--primary);
-            margin-bottom: 4px;
+            margin-bottom: 2px;
         }
 
         .wf-node.active-gold .wf-node-icon {
@@ -359,48 +353,49 @@
         }
 
         .wf-node-title {
-            font-size: 10.5px;
+            font-size: 8.8px;
             font-weight: 800;
             color: var(--slate-900);
-            margin-bottom: 2px;
+            margin-bottom: 1px;
+            line-height: 1.2;
         }
 
         .wf-node-sub {
-            font-size: 9px;
+            font-size: 7.2px;
             color: var(--slate-600);
-            line-height: 1.3;
+            line-height: 1.2;
         }
 
-        /* Middle Row: Buku Panduan Penggunaan Sistem (4 Langkah) */
+        /* Middle Row: Buku Panduan Penggunaan Sistem (4 Steps) */
         .guide-steps-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 12px;
+            gap: 7px;
         }
 
         .guide-step-box {
             background: var(--slate-50);
             border: 1px solid var(--slate-200);
-            border-radius: 10px;
-            padding: 10px 10px;
+            border-radius: 7px;
+            padding: 7px 7px;
             display: flex;
             flex-direction: column;
-            gap: 6px;
+            gap: 4px;
         }
 
         .step-header {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
         }
 
         .step-badge {
-            width: 24px;
-            height: 24px;
-            border-radius: 6px;
+            width: 19px;
+            height: 19px;
+            border-radius: 5px;
             background: var(--primary);
             color: #ffffff;
-            font-size: 12px;
+            font-size: 9.5px;
             font-weight: 800;
             display: flex;
             align-items: center;
@@ -409,37 +404,38 @@
         }
 
         .step-title {
-            font-size: 11.5px;
+            font-size: 9.8px;
             font-weight: 800;
             color: var(--slate-900);
+            line-height: 1.2;
         }
 
         .step-desc {
-            font-size: 10px;
+            font-size: 8.2px;
             color: var(--slate-600);
-            line-height: 1.45;
+            line-height: 1.35;
         }
 
-        /* Bottom Row: Showcase Gambar Tangkapan Layar (SS) Aplikasi */
+        /* Bottom Row: Showcase Screenshot Aplikasi */
         .showcase-gallery-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 12px;
+            gap: 7px;
         }
 
         .screenshot-card {
             background: #ffffff;
             border: 1px solid var(--slate-200);
-            border-radius: 10px;
+            border-radius: 7px;
             overflow: hidden;
             display: flex;
             flex-direction: column;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
         }
 
         .screenshot-media {
             width: 100%;
-            height: 145px;
+            height: 70px;
             background: #0f172a;
             position: relative;
             overflow: hidden;
@@ -453,105 +449,113 @@
             height: 100%;
             object-fit: cover;
             display: block;
-            transition: transform 0.3s ease;
         }
 
         .screenshot-caption {
-            padding: 8px 10px;
+            padding: 5px 6px 6px;
             background: #ffffff;
             border-top: 1px solid var(--slate-100);
         }
 
         .screenshot-tag {
-            font-size: 9px;
+            font-size: 7.2px;
             font-weight: 800;
             color: var(--primary);
             text-transform: uppercase;
-            letter-spacing: 0.5px;
-            display: inline-block;
-            margin-bottom: 2px;
+            letter-spacing: 0.4px;
+            display: block;
+            margin-bottom: 1px;
         }
 
         .screenshot-title {
-            font-size: 11px;
+            font-size: 9px;
             font-weight: 800;
             color: var(--slate-900);
             margin-bottom: 2px;
-            line-height: 1.3;
+            line-height: 1.2;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .screenshot-detail {
-            font-size: 9.5px;
+            font-size: 7.6px;
             color: var(--slate-600);
-            line-height: 1.35;
+            line-height: 1.3;
         }
 
         /* Technical Details Bar */
         .tech-details-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 10px;
-            margin-top: 2px;
+            gap: 6px;
         }
 
         .tech-pill {
             background: var(--slate-50);
             border: 1px solid var(--slate-200);
-            border-radius: 8px;
-            padding: 8px 10px;
+            border-radius: 6px;
+            padding: 5px 7px;
         }
 
         .tech-pill h5 {
-            font-size: 11px;
+            font-size: 9px;
             font-weight: 800;
             color: var(--primary);
-            margin-bottom: 2px;
+            margin-bottom: 1px;
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 4px;
         }
 
         .tech-pill p {
-            font-size: 10px;
+            font-size: 7.8px;
             color: var(--slate-600);
-            line-height: 1.35;
+            line-height: 1.3;
         }
 
-        /* Poster Footer Bar */
+        /* 3. Footer Bar */
         .poster-footer {
             background: var(--slate-900);
             color: #ffffff;
-            padding: 14px 32px;
+            padding: 8px 20px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            font-size: 11.5px;
-            border-top: 3px solid var(--gold);
+            font-size: 9px;
+            border-top: 2.5px solid var(--gold);
+            flex-shrink: 0;
         }
 
         .footer-left {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
         }
 
         .footer-tag {
             color: var(--gold);
             font-weight: 800;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.4px;
         }
 
         .footer-right {
             color: #94a3b8;
-            font-size: 11px;
+            font-size: 8.5px;
         }
 
-        /* Print Media Styles (Exact Vector-grade Single Page) */
+        /* ==========================================================================
+           PRINT MEDIA QUERIES - TEPAT 1 LEMBAR A4 FULL TANPA OVERFLOW
+           ========================================================================== */
         @media print {
-            body {
-                background: none !important;
+            html, body {
+                background: #ffffff !important;
                 padding: 0 !important;
                 margin: 0 !important;
+                width: 210mm !important;
+                height: 297mm !important;
+                max-height: 297mm !important;
+                overflow: hidden !important;
             }
 
             .control-toolbar {
@@ -559,16 +563,20 @@
             }
 
             .poster-artboard {
-                width: 100vw !important;
-                height: 100vh !important;
-                max-width: none !important;
+                width: 210mm !important;
+                height: 297mm !important;
+                max-height: 297mm !important;
                 box-shadow: none !important;
-                page-break-after: avoid !important;
+                border-radius: 0 !important;
                 page-break-inside: avoid !important;
+                page-break-after: avoid !important;
+                page-break-before: avoid !important;
+                overflow: hidden !important;
+                margin: 0 !important;
             }
 
             @page {
-                size: A3 portrait;
+                size: A4 portrait;
                 margin: 0;
             }
         }
@@ -577,15 +585,15 @@
 
 <body>
 
-    <!-- Control Toolbar (Layar Browser Saja) -->
+    <!-- Control Toolbar (Hanya Tampil di Layar Browser) -->
     <div class="control-toolbar">
         <div class="toolbar-info">
-            <h2>Poster SIMPEL UINSSC: Panduan, Alur Sistem & Gambar SS Aplikasi</h2>
-            <p>Dapat langsung disimpan sebagai PDF atau diimpor ke <strong>Canva.com</strong> (semua teks, diagram, dan gambar SS otomatis dapat diedit bebas).</p>
+            <h2>Poster SIMPEL UINSSC (1 Halaman A4 Presisi)</h2>
+            <p>Format 210mm x 297mm pas 1 lembar A4. Siap disimpan sebagai PDF & diimpor ke <strong>Canva.com</strong>.</p>
         </div>
         <div class="toolbar-actions">
             <button class="btn-action btn-print" onclick="window.print()">
-                <i class="fa-solid fa-file-pdf"></i> Simpan / Cetak PDF
+                <i class="fa-solid fa-file-pdf"></i> Simpan / Cetak PDF (1 Lembar)
             </button>
             <button class="btn-action btn-canva-guide" onclick="showCanvaInstructions()">
                 <i class="fa-solid fa-circle-info"></i> Cara Edit di Canva
@@ -593,10 +601,10 @@
         </div>
     </div>
 
-    <!-- Poster Artboard (Standar Rasio Poster Ilmiah / Pameran) -->
+    <!-- Poster Artboard (Format Presisi 1 Halaman A4 210mm x 297mm) -->
     <main class="poster-artboard" id="posterCanvas">
 
-        <!-- Header Banner -->
+        <!-- 1. Header Banner -->
         <header class="poster-header">
             <div class="header-grid">
                 <div class="header-logo-box">
@@ -614,19 +622,19 @@
             </div>
         </header>
 
-        <!-- Main Body -->
+        <!-- 2. Main Body Content (Proporsional Pas di Kertas A4) -->
         <div class="poster-body">
 
-            <!-- Baris 1: Deskripsi Proyek + Diagram Alur Sistem -->
+            <!-- Baris 1: Deskripsi Proyek + Alur Kerja Sistem -->
             <div class="top-row-grid">
 
-                <!-- 1. Deskripsi Proyek -->
+                <!-- Deskripsi Proyek -->
                 <div class="section-card primary-accent">
                     <h3 class="section-title">
                         <i class="fa-solid fa-circle-info"></i> Deskripsi Proyek
                     </h3>
                     <p class="desc-text">
-                        <strong>SIMPEL UINSSC</strong> adalah portal terpadu berbasis *Progressive Web Application* (PWA) untuk digitalisasi pelaporan kerusakan fasilitas fisik kampus secara akuntabel, mencegah pengaduan fiktif di luar area kampus, dan meniadakan duplikasi laporan serupa.
+                        <strong>SIMPEL UINSSC</strong> adalah portal terpadu berbasis *Progressive Web Application* (PWA) untuk digitalisasi pelaporan kerusakan fasilitas fisik kampus secara akuntabel, meniadakan laporan fiktif di luar kampus, dan mencegah duplikasi tiket.
                     </p>
                     <div class="desc-pills">
                         <div class="desc-pill-item">
@@ -644,92 +652,88 @@
                     </div>
                 </div>
 
-                <!-- 2. Alur Sistem (System Workflow Diagram) -->
+                <!-- Alur Sistem (System Workflow Diagram) -->
                 <div class="section-card gold-accent">
                     <h3 class="section-title">
-                        <i class="fa-solid fa-diagram-project"></i> Diagram Alur Kerja Sistem (System Workflow)
+                        <i class="fa-solid fa-diagram-project"></i> Diagram Alur Sistem (System Workflow)
                     </h3>
-                    <p style="font-size: 10.5px; color: var(--slate-600); margin-bottom: 8px;">
-                        Integrasi terpadu 5 tahapan dari pelaporan civitas akademika hingga perbaikan tuntas oleh teknisi:
+                    <p style="font-size: 8.5px; color: var(--slate-600); margin-bottom: 5px;">
+                        Integrasi 5 tahapan dari pelaporan civitas akademika hingga perbaikan tuntas oleh teknisi:
                     </p>
                     <div class="system-workflow-grid">
                         <div class="wf-node">
                             <div class="wf-node-icon"><i class="fa-solid fa-user-pen"></i></div>
                             <div class="wf-node-title">1. Input Lapor</div>
-                            <div class="wf-node-sub">Pilih kategori, ruangan & foto fisik</div>
+                            <div class="wf-node-sub">Kategori & foto fisik</div>
                         </div>
                         <div class="wf-node active-gold">
                             <div class="wf-node-icon"><i class="fa-solid fa-location-crosshairs"></i></div>
                             <div class="wf-node-title">2. Cek Spasial</div>
-                            <div class="wf-node-sub">Validasi GPS 5 zona & anti-spam</div>
+                            <div class="wf-node-sub">GPS 5 zona & filter</div>
                         </div>
                         <div class="wf-node">
                             <div class="wf-node-icon"><i class="fa-solid fa-clipboard-check"></i></div>
                             <div class="wf-node-title">3. Verifikasi</div>
-                            <div class="wf-node-sub">Admin cek tiket & tentukan SLA</div>
+                            <div class="wf-node-sub">Admin tentukan SLA</div>
                         </div>
                         <div class="wf-node">
                             <div class="wf-node-icon"><i class="fa-solid fa-screwdriver-wrench"></i></div>
-                            <div class="wf-node-title">4. Pengerjaan</div>
-                            <div class="wf-node-sub">Teknisi spesialis eksekusi lapangan</div>
+                            <div class="wf-node-title">4. Eksekusi</div>
+                            <div class="wf-node-sub">Teknisi lapangan</div>
                         </div>
                         <div class="wf-node active-green">
                             <div class="wf-node-icon"><i class="fa-solid fa-circle-check"></i></div>
-                            <div class="wf-node-title">5. Tuntas & PDF</div>
-                            <div class="wf-node-sub">Tiket selesai & cetak QR Code</div>
+                            <div class="wf-node-title">5. Tuntas</div>
+                            <div class="wf-node-sub">Bukti QR Code PDF</div>
                         </div>
                     </div>
                 </div>
 
             </div>
 
-            <!-- Baris 2: Buku Panduan Penggunaan Sistem (Step-by-Step Manual) -->
+            <!-- Baris 2: Buku Panduan Penggunaan Sistem (4 Langkah) -->
             <div class="section-card primary-accent">
                 <h3 class="section-title">
                     <i class="fa-solid fa-book-open"></i> Panduan Penggunaan Sistem (Buku Panduan Step-by-Step)
                 </h3>
                 <div class="guide-steps-grid">
-                    <!-- Step 1 -->
                     <div class="guide-step-box">
                         <div class="step-header">
                             <div class="step-badge">1</div>
-                            <div class="step-title">Login Akun Kampus</div>
+                            <div class="step-title">Login SSO Kampus</div>
                         </div>
                         <div class="step-desc">
-                            Buka portal, masukkan kredensial akun SSO resmi (Mahasiswa/Tendik/Admin), ketik kode CAPTCHA 5 karakter untuk verifikasi anti-bot, lalu klik <em>Masuk Ke Sistem</em>.
+                            Buka portal, masukkan akun SSO resmi, ketik kode CAPTCHA 5 karakter untuk verifikasi anti-bot, lalu klik <em>Masuk Ke Sistem</em>.
                         </div>
                     </div>
 
-                    <!-- Step 2 -->
                     <div class="guide-step-box">
                         <div class="step-header">
                             <div class="step-badge">2</div>
-                            <div class="step-title">Isi Form & Validasi GIS</div>
+                            <div class="step-title">Form & Validasi GIS</div>
                         </div>
                         <div class="step-desc">
-                            Buka tab <em>Buat Laporan</em>, tentukan kategori fasilitas & ruangan. Periksa peta geofencing: pastikan titik GPS berada di dalam 5 kawasan kampus (otomatis diarahkan jika di luar).
+                            Pilih kategori sarpras & ruangan. Periksa peta geofencing: pastikan titik GPS berada di dalam 5 zona kampus (auto-kalibrasi jika di luar).
                         </div>
                     </div>
 
-                    <!-- Step 3 -->
                     <div class="guide-step-box">
                         <div class="step-header">
                             <div class="step-badge">3</div>
                             <div class="step-title">Unggah Foto & Kirim</div>
                         </div>
                         <div class="step-desc">
-                            Lampirkan foto bukti kondisi fisik kerusakan, atur tingkat urgensi, dan kirimkan laporan. Sistem langsung menerbitkan nomor tiket resmi (contoh: <code>TRK-2026-839</code>).
+                            Lampirkan foto bukti fisik, atur tingkat urgensi, dan kirim laporan. Sistem otomatis menerbitkan nomor tiket resmi (contoh: <code>TRK-2026-839</code>).
                         </div>
                     </div>
 
-                    <!-- Step 4 -->
                     <div class="guide-step-box">
                         <div class="step-header">
                             <div class="step-badge">4</div>
                             <div class="step-title">Pantau & Cetak Tiket</div>
                         </div>
                         <div class="step-desc">
-                            Buka <em>Riwayat Laporan</em> untuk memantau progres teknisi secara real-time. Klik tombol <em>Cetak Bukti PDF</em> untuk mengunduh bukti tiket resmi 1 halaman ber-QR Code.
+                            Buka tab <em>Riwayat Laporan</em> untuk pantau status perbaikan real-time. Klik <em>Cetak Bukti PDF</em> untuk unduh tiket resmi 1 halaman A4.
                         </div>
                     </div>
                 </div>
@@ -750,7 +754,7 @@
                         <div class="screenshot-caption">
                             <span class="screenshot-tag">Tampilan 1</span>
                             <div class="screenshot-title">Portal Masuk Sistem</div>
-                            <div class="screenshot-detail">Autentikasi akun SSO, proteksi CAPTCHA dinamis & responsive mobile desktop mode.</div>
+                            <div class="screenshot-detail">Login SSO kampus, proteksi CAPTCHA & responsive mobile desktop mode.</div>
                         </div>
                     </div>
 
@@ -762,7 +766,7 @@
                         <div class="screenshot-caption">
                             <span class="screenshot-tag">Tampilan 2</span>
                             <div class="screenshot-title">Geofencing GIS 5 Zona</div>
-                            <div class="screenshot-detail">Peta interaktif Leaflet.js dengan tombol otomatisasi kalibrasi titik pusat kampus utama.</div>
+                            <div class="screenshot-detail">Peta interaktif Leaflet dengan tombol kalibrasi pusat kampus utama.</div>
                         </div>
                     </div>
 
@@ -774,7 +778,7 @@
                         <div class="screenshot-caption">
                             <span class="screenshot-tag">Tampilan 3</span>
                             <div class="screenshot-title">Riwayat Pengaduan</div>
-                            <div class="screenshot-detail">Pelacakan status tiket (Diajukan, Diproses, Tuntas), filter pencarian & kuota 3 laporan.</div>
+                            <div class="screenshot-detail">Pelacakan status tiket (Diajukan, Diproses, Tuntas) & kuota 3 laporan.</div>
                         </div>
                     </div>
 
@@ -786,7 +790,7 @@
                         <div class="screenshot-caption">
                             <span class="screenshot-tag">Tampilan 4</span>
                             <div class="screenshot-title">Bukti Tiket PDF Resmi</div>
-                            <div class="screenshot-detail">Output cetak dokumen 1 halaman A4 presisi lengkap dengan tabel teknisi & kode QR digital.</div>
+                            <div class="screenshot-detail">Output cetak dokumen 1 lembar A4 presisi dengan kode QR digital autentik.</div>
                         </div>
                     </div>
 
@@ -797,25 +801,25 @@
             <div class="tech-details-grid">
                 <div class="tech-pill">
                     <h5><i class="fa-solid fa-satellite-dish"></i> Formula Haversine GIS</h5>
-                    <p>Kalkulasi jarak sferis bumi presisi milimeter untuk memvalidasi radius batas 5 zona kawasan kampus.</p>
+                    <p>Kalkulasi jarak spasial sferis bumi guna memvalidasi batas poligon 5 kawasan kampus.</p>
                 </div>
                 <div class="tech-pill">
                     <h5><i class="fa-solid fa-filter-circle-dollar"></i> Smart Anti-Spam & Kuota</h5>
-                    <p>Mencegah duplikasi laporan serupa di ruangan yang sama serta membatasi maksimal 3 tiket aktif per akun.</p>
+                    <p>Mencegah laporan berulang di ruangan sama serta batas maksimal 3 tiket per akun.</p>
                 </div>
                 <div class="tech-pill">
                     <h5><i class="fa-solid fa-file-contract"></i> Standarisasi SLA</h5>
-                    <p>Manajemen batas waktu penanganan terstruktur berdasarkan tingkat keparahan (Biasa, Sedang, Darurat).</p>
+                    <p>Batas waktu perbaikan terstruktur berdasarkan tingkat keparahan (Biasa, Sedang, Darurat).</p>
                 </div>
                 <div class="tech-pill">
                     <h5><i class="fa-solid fa-bolt"></i> Arsitektur PWA Modern</h5>
-                    <p>Aplikasi web progresif berbasis Service Worker V8.3 Caching dengan performa tinggi & visual Three.js WebGL.</p>
+                    <p>Aplikasi web progresif berbasis Service Worker V8.3 Caching & visual Three.js WebGL.</p>
                 </div>
             </div>
 
         </div>
 
-        <!-- Footer Bar -->
+        <!-- 3. Footer Bar -->
         <footer class="poster-footer">
             <div class="footer-left">
                 <span class="footer-tag">SIMPEL UINSSC</span>
@@ -833,7 +837,7 @@
         function showCanvaInstructions() {
             alert(
                 "CARA EDIT POSTER DI CANVA:\n\n" +
-                "1. Klik tombol 'Simpan / Cetak PDF' di pojok atas.\n" +
+                "1. Klik tombol 'Simpan / Cetak PDF (1 Lembar)' di pojok atas.\n" +
                 "2. Pada jendela cetak peramban, pilih Destination: 'Save as PDF' (Simpan sebagai PDF) dan klik Save.\n" +
                 "3. Buka situs https://www.canva.com di browser Anda.\n" +
                 "4. Klik tombol 'Upload' / 'Unggah' atau 'Import file' di kanan atas Canva.\n" +
