@@ -16,7 +16,7 @@
     <!-- Leaflet.js Interactive Map CSS & JS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <link rel="stylesheet" href="../css/user.css?v=20261110_idcard">
+    <link rel="stylesheet" href="../css/user.css?v=20261110_mapclean">
     <!-- SweetAlert2 Latest CDN -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <!-- DOMPurify Security Sanitizer -->
@@ -294,38 +294,22 @@
                                         </span>
                                         <small style="color:var(--text-muted); font-size:11.5px; display:block;">Klik pada peta atau geser pin ke titik gedung yang mengalami kerusakan.</small>
                                     </div>
-                                    <div style="display:flex; gap:8px; flex-wrap:wrap;">
-                                        <button type="button" id="toggleMaskBtn" class="chip-btn" onclick="toggleCampusMask()">
-                                            <i class="fa-solid fa-eye-slash"></i> Sembunyikan Masking
+                                    <div class="map-toolbar-actions">
+                                        <button type="button" id="toggleMaskBtn" class="chip-btn map-toolbar-btn" onclick="toggleCampusMask()">
+                                            <i class="fa-solid fa-eye-slash"></i> Masking On/Off
                                         </button>
-                                        <button type="button" class="chip-btn" onclick="focusMapToCampus()" style="border-color:var(--gold); color:var(--gold);">
-                                            <i class="fa-solid fa-building-flag"></i> Fokus Kampus
+                                        <button type="button" id="btnFocusCampus" class="chip-btn map-toolbar-btn btn-campus" onclick="focusMapToCampus()">
+                                            <i class="fa-solid fa-building-flag"></i> Area Kampus
                                         </button>
-                                        <button type="button" class="chip-btn" onclick="getCurrentGPSLocation()" style="background:var(--primary); color:#fff; border-color:var(--gold);">
-                                            <i class="fa-solid fa-location-crosshairs"></i> Lokasi GPS Saya
+                                        <button type="button" id="btnGpsLocation" class="chip-btn map-toolbar-btn btn-gps" onclick="getCurrentGPSLocation()">
+                                            <i class="fa-solid fa-location-crosshairs"></i> GPS Saya
                                         </button>
-                                    </div>
-                                </div>
-
-                                <!-- Geofence Outside Campus Alert Banner -->
-                                <div id="geofenceAlertBox" class="geofence-alert-box hidden">
-                                    <div style="display:flex; align-items:flex-start; gap:12px;">
-                                        <i class="fa-solid fa-triangle-exclamation" style="font-size:22px; margin-top:2px;"></i>
-                                        <div style="flex:1;">
-                                            <strong style="display:block; font-size:14px; margin-bottom:3px;">⚠️ Anda Berada di Luar Kawasan Kampus!</strong>
-                                            <span>Posisi Anda terdeteksi di luar batas resmi wilayah kampus UIN Siber Syekh Nurjati Cirebon. Sesuai ketentuan SOP, <strong>pengaduan sarpras tidak dapat diinput atau dikirim dari luar area kampus</strong>.</span>
-                                            <div style="margin-top:10px; display:flex; gap:8px; flex-wrap:wrap;">
-                                                <button type="button" class="chip-btn" onclick="focusMapToCampus()" style="background:#ef4444; color:#fff; border:none;">
-                                                    <i class="fa-solid fa-building-flag"></i> Fokus Kembali ke Kampus
-                                                </button>
-                                            </div>
-                                        </div>
                                     </div>
                                 </div>
 
                                 <div id="mapPicker" class="map-box"></div>
 
-                                <div class="map-coord-footer">
+                                <div id="mapCoordFooter" class="map-coord-footer">
                                     <div class="input-wrapper">
                                         <i class="fa-solid fa-location-dot"></i>
                                         <input type="text" id="latInput" placeholder="Latitude (otomatis dari peta)" value="" readonly>
@@ -333,6 +317,10 @@
                                     <div class="input-wrapper">
                                         <i class="fa-solid fa-compass"></i>
                                         <input type="text" id="lngInput" placeholder="Longitude (otomatis dari peta)" value="" readonly>
+                                    </div>
+                                    <div id="coordWarningMsg" class="coord-warning-msg" style="display:none;">
+                                        <i class="fa-solid fa-triangle-exclamation"></i>
+                                        <span>Posisi di luar kawasan kampus UINSSC. Silakan tentukan titik di dalam area kampus.</span>
                                     </div>
                                 </div>
                             </div>
@@ -787,7 +775,7 @@
     <!-- Toast Notifications -->
     <div id="toastBox" class="toast-box"></div>
 
-    <script src="../js/user.js?v=20261110_idcard"></script>
+    <script src="../js/user.js?v=20261110_mapclean"></script>
     <script src="../js/site-builder.js?v=20261107_ui4"></script>
     <script>
         if ('serviceWorker' in navigator) {

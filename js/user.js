@@ -1142,14 +1142,20 @@ function toggleCampusMask() {
         mapPickerInstance.removeLayer(campusMaskPolygon);
         isMaskEnabled = false;
         if (container) container.style.background = '#ffffff';
-        if (btn) btn.innerHTML = `<i class="fa-solid fa-eye" style="color:var(--gold);"></i> Tampilkan Masking`;
-        showToast('Masking putih dinonaktifkan (Peta penuh)', 'info');
+        if (btn) {
+            btn.innerHTML = `<i class="fa-solid fa-eye" style="color:var(--gold);"></i> Masking On/Off`;
+            btn.style.opacity = '0.75';
+        }
+        showToast('Masking dinonaktifkan (Peta penuh)', 'info');
     } else {
         campusMaskPolygon.addTo(mapPickerInstance);
         isMaskEnabled = true;
         if (container) container.style.background = '#ffffff';
-        if (btn) btn.innerHTML = `<i class="fa-solid fa-eye-slash" style="color:var(--gold);"></i> Sembunyikan Masking`;
-        showToast('Masking putih fokus kampus diaktifkan', 'info');
+        if (btn) {
+            btn.innerHTML = `<i class="fa-solid fa-eye-slash" style="color:var(--gold);"></i> Masking On/Off`;
+            btn.style.opacity = '1';
+        }
+        showToast('Masking fokus kampus diaktifkan', 'info');
     }
 }
 
@@ -1258,22 +1264,27 @@ function copyPolygonCode() {
 let isLocationGeofenceValid = true;
 
 function applyGeofenceState(inside, lat, lng, isGps = false) {
-    const alertBox = document.getElementById('geofenceAlertBox');
     const latInp = document.getElementById('latInput');
     const lngInp = document.getElementById('lngInput');
+    const coordFooter = document.getElementById('mapCoordFooter');
+    const coordWarning = document.getElementById('coordWarningMsg');
+    const btnGps = document.getElementById('btnGpsLocation');
     const btnSubmit = document.getElementById('btnSubmitReport');
     const btnReview = document.getElementById('btnReviewReport');
 
     if (inside) {
         isLocationGeofenceValid = true;
-        if (alertBox) alertBox.classList.add('hidden');
+
+        if (coordFooter) coordFooter.classList.remove('coord-footer-error');
+        if (coordWarning) coordWarning.style.display = 'none';
+
         if (latInp) {
             latInp.classList.remove('input-error-geofence');
-            latInp.placeholder = 'Latitude (klik lokasi di peta)';
+            latInp.placeholder = 'Latitude (otomatis dari peta)';
         }
         if (lngInp) {
             lngInp.classList.remove('input-error-geofence');
-            lngInp.placeholder = 'Longitude (klik lokasi di peta)';
+            lngInp.placeholder = 'Longitude (otomatis dari peta)';
         }
         if (lat !== undefined && lng !== undefined) {
             currentLat = parseFloat(lat).toFixed(6);
@@ -1281,6 +1292,13 @@ function applyGeofenceState(inside, lat, lng, isGps = false) {
             if (latInp) latInp.value = currentLat;
             if (lngInp) lngInp.value = currentLng;
         }
+
+        // Pulihkan warna tombol GPS ke normal
+        if (btnGps) {
+            btnGps.classList.remove('btn-gps-error');
+            btnGps.innerHTML = '<i class="fa-solid fa-location-crosshairs"></i> GPS Saya';
+        }
+
         if (btnSubmit) {
             btnSubmit.disabled = false;
             btnSubmit.classList.remove('btn-disabled-geofence');
@@ -1297,20 +1315,28 @@ function applyGeofenceState(inside, lat, lng, isGps = false) {
         isLocationGeofenceValid = false;
         currentLat = '';
         currentLng = '';
+
+        // Beri warna merah pada kolom koordinat di bawah peta agar pengguna paham
+        if (coordFooter) coordFooter.classList.add('coord-footer-error');
+        if (coordWarning) coordWarning.style.display = 'flex';
+
         if (latInp) {
             latInp.value = '';
-            latInp.placeholder = 'Ditolak: Di luar kawasan kampus';
+            latInp.placeholder = '⚠️ Di luar kawasan kampus';
             latInp.classList.add('input-error-geofence');
         }
         if (lngInp) {
             lngInp.value = '';
-            lngInp.placeholder = 'Ditolak: Di luar kawasan kampus';
+            lngInp.placeholder = '⚠️ Titik koordinat ditolak';
             lngInp.classList.add('input-error-geofence');
         }
-        if (alertBox) {
-            alertBox.classList.remove('hidden');
-            alertBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+        // Tombol GPS jadi merah jika lokasi tidak sesuai
+        if (btnGps && isGps) {
+            btnGps.classList.add('btn-gps-error');
+            btnGps.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> GPS Saya (Di Luar Kampus)';
         }
+
         if (btnSubmit) {
             btnSubmit.disabled = true;
             btnSubmit.classList.add('btn-disabled-geofence');
@@ -1321,12 +1347,6 @@ function applyGeofenceState(inside, lat, lng, isGps = false) {
             btnReview.disabled = true;
             btnReview.classList.add('btn-disabled-geofence');
             btnReview.title = 'Formulir terkunci karena posisi berada di luar batas wilayah kampus UINSSC';
-        }
-
-        if (isGps) {
-            showToast('⚠️ Anda berada di luar kawasan kampus! Pengaduan sarpras tidak dapat diinput dari luar area kampus.', 'error');
-        } else {
-            showToast('⚠️ Titik lokasi berada di luar batas kawasan kampus UINSSC! Laporan tidak dapat diajukan.', 'error');
         }
     }
 }
@@ -1349,6 +1369,7 @@ function getCurrentGPSLocation() {
             const lat = position.coords.latitude;
             const lng = position.coords.longitude;
             const inside = isInsideCampus(lat, lng);
+            const btnGps = document.getElementById('btnGpsLocation');
 
             if (mapPickerInstance) {
                 mapPickerInstance.setView([lat, lng], 17);
@@ -1363,22 +1384,27 @@ function getCurrentGPSLocation() {
                 }
 
                 if (!inside) {
+                    if (btnGps) {
+                        btnGps.classList.add('btn-gps-error');
+                        btnGps.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> GPS Saya (Di Luar Kampus)';
+                    }
                     mapMarkerInstance.bindPopup(`
-                        <div style="font-family:sans-serif; text-align:center; padding:6px 4px; min-width:210px;">
-                            <div style="color:#ef4444; font-weight:700; font-size:13px; margin-bottom:4px;">
-                                <i class="fa-solid fa-triangle-exclamation"></i> Anda di Luar Kawasan Kampus!
+                        <div style="font-family:sans-serif; text-align:center; padding:6px 4px; min-width:180px;">
+                            <div style="color:#ef4444; font-weight:700; font-size:12px; margin-bottom:4px;">
+                                <i class="fa-solid fa-triangle-exclamation"></i> Di Luar Kawasan Kampus
                             </div>
-                            <div style="font-size:11.5px; color:#475569; margin-bottom:8px; line-height:1.4;">
-                                Posisi GPS terdeteksi di luar kawasan kampus UINSSC. Sesuai SOP, formulir pelaporan <b>dikunci dan tidak dapat diinput</b>.
-                            </div>
-                            <button type="button" onclick="focusMapToCampus()" style="background:#ef4444; color:#fff; border:none; padding:5px 12px; border-radius:6px; font-size:11.5px; font-weight:600; cursor:pointer;">
-                                <i class="fa-solid fa-building-flag"></i> Pilih Lokasi Kampus
+                            <button type="button" onclick="focusMapToCampus()" style="background:#ef4444; color:#fff; border:none; padding:5px 12px; border-radius:6px; font-size:11px; font-weight:600; cursor:pointer;">
+                                <i class="fa-solid fa-building-flag"></i> Area Kampus
                             </button>
                         </div>
                     `).openPopup();
                 } else {
+                    if (btnGps) {
+                        btnGps.classList.remove('btn-gps-error');
+                        btnGps.innerHTML = '<i class="fa-solid fa-location-crosshairs"></i> GPS Saya';
+                    }
                     mapMarkerInstance.bindPopup('<b>Lokasi GPS Anda Terkunci (Dalam Kampus)!</b><br>Geser pin jika perlu disesuaikan.').openPopup();
-                    showToast('Lokasi presisi GPS terverifikasi di dalam kawasan kampus!', 'success');
+                    showToast('Lokasi presisi GPS terverifikasi di area kampus!', 'success');
                 }
             }
 
@@ -1401,18 +1427,28 @@ function resetReportLocationMarker() {
     currentLng = '';
     const latInp = document.getElementById('latInput');
     const lngInp = document.getElementById('lngInput');
+    const coordFooter = document.getElementById('mapCoordFooter');
+    const coordWarning = document.getElementById('coordWarningMsg');
+    const btnGps = document.getElementById('btnGpsLocation');
+
+    if (coordFooter) coordFooter.classList.remove('coord-footer-error');
+    if (coordWarning) coordWarning.style.display = 'none';
+
+    if (btnGps) {
+        btnGps.classList.remove('btn-gps-error');
+        btnGps.innerHTML = '<i class="fa-solid fa-location-crosshairs"></i> GPS Saya';
+    }
+
     if (latInp) {
         latInp.value = '';
         latInp.classList.remove('input-error-geofence');
-        latInp.placeholder = 'Latitude (klik lokasi di peta)';
+        latInp.placeholder = 'Latitude (otomatis dari peta)';
     }
     if (lngInp) {
         lngInp.value = '';
         lngInp.classList.remove('input-error-geofence');
-        lngInp.placeholder = 'Longitude (klik lokasi di peta)';
+        lngInp.placeholder = 'Longitude (otomatis dari peta)';
     }
-    const alertBox = document.getElementById('geofenceAlertBox');
-    if (alertBox) alertBox.classList.add('hidden');
     const btnSubmit = document.getElementById('btnSubmitReport');
     if (btnSubmit) {
         btnSubmit.disabled = false;
@@ -1582,12 +1618,14 @@ function openReviewBeforeSubmit() {
     const latCheck = document.getElementById('latInput').value || currentLat;
     const lngCheck = document.getElementById('lngInput').value || currentLng;
     if (!latCheck || !lngCheck || !isInsideCampus(latCheck, lngCheck)) {
-        showToast('⚠️ Anda berada di luar kawasan kampus! Pengaduan sarpras tidak dapat diinput atau dikirim.', 'error');
-        const alertBox = document.getElementById('geofenceAlertBox');
-        if (alertBox) {
-            alertBox.classList.remove('hidden');
-            alertBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        showToast('⚠️ Posisi di luar kawasan kampus UINSSC! Tentukan lokasi di dalam area kampus.', 'error');
+        const coordFooter = document.getElementById('mapCoordFooter');
+        if (coordFooter) {
+            coordFooter.classList.add('coord-footer-error');
+            coordFooter.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
+        const coordWarning = document.getElementById('coordWarningMsg');
+        if (coordWarning) coordWarning.style.display = 'flex';
         return;
     }
 
@@ -1673,11 +1711,13 @@ async function handlePublicFormSubmit(event) {
     const submitLng = document.getElementById('lngInput').value || currentLng;
     if (!submitLat || !submitLng || !isInsideCampus(submitLat, submitLng)) {
         showToast('⚠️ Gagal mengirim! Posisi Anda terdeteksi di luar kawasan kampus UINSSC. Pengaduan sarpras tidak dapat diinput.', 'error');
-        const alertBox = document.getElementById('geofenceAlertBox');
-        if (alertBox) {
-            alertBox.classList.remove('hidden');
-            alertBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        const coordFooter = document.getElementById('mapCoordFooter');
+        if (coordFooter) {
+            coordFooter.classList.add('coord-footer-error');
+            coordFooter.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
+        const coordWarning = document.getElementById('coordWarningMsg');
+        if (coordWarning) coordWarning.style.display = 'flex';
         return;
     }
 
