@@ -4,7 +4,7 @@
  * UIN Siber Syekh Nurjati Cirebon
  */
 
-const CACHE_NAME = 'simpel-uinssc-v6.4';
+const CACHE_NAME = 'simpel-uinssc-v6.5';
 const STATIC_ASSETS = [
     './',
     './index.html',
@@ -18,6 +18,7 @@ const STATIC_ASSETS = [
     './js/admin.js',
     './assets/img/logo.png',
     './assets/img/favicon.png',
+    './assets/img/avatar_dummy.svg',
     './assets/img/gedungCyber.png',
     './assets/img/uinssc_siber.jpg',
     './assets/img/uinssc_fasya.jpg',

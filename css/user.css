@@ -801,10 +801,16 @@ body {
 
 .sso-card-left {
     display: flex;
-    align-items: center;
-    gap: 16px;
+    flex-direction: column;
+    gap: 12px;
     flex: 1;
     min-width: 0;
+}
+
+.sso-avatar-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
 }
 
 .sso-avatar-wrap {
@@ -827,17 +833,98 @@ body {
     color: transparent;
 }
 
-.sso-card-meta {
+.sso-status-dot {
+    position: absolute;
+    bottom: 2px;
+    right: 2px;
+    width: 15px;
+    height: 15px;
+    background: #10b981;
+    border: 2.5px solid var(--bg-card-solid);
+    border-radius: 50%;
+    box-shadow: 0 0 8px #10b981;
+}
+
+.sso-user-heading {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
     flex: 1;
     min-width: 0;
 }
 
-.sso-card-meta h3 {
+.sso-badges-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.sso-role-tag {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--gold);
+    background: var(--gold-light);
+    border: 1px solid rgba(212, 163, 67, 0.35);
+    padding: 2px 8px;
+    border-radius: 6px;
+}
+
+.sso-user-heading h3 {
     font-size: 17px;
     font-weight: 800;
-    margin: 0 0 4px 0;
+    margin: 2px 0 0 0;
     color: var(--text-main);
     word-break: break-word;
+}
+
+.sso-nim-badge {
+    color: var(--text-main);
+    font-weight: 600;
+    font-size: 13px;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.sso-nim-badge strong {
+    color: var(--gold);
+    font-family: monospace;
+    font-size: 13.5px;
+}
+
+.sso-info-box {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.sso-info-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    color: var(--text-muted);
+}
+
+.sso-info-item-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    font-size: 12px;
+    color: var(--text-muted);
+}
+
+.sso-info-sub {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.sso-dot-sep {
+    color: var(--text-muted);
+    opacity: 0.6;
 }
 
 .sso-card-right {
@@ -846,6 +933,25 @@ body {
     align-items: flex-end;
     gap: 5px;
     flex-shrink: 0;
+}
+
+.sso-secure-badge {
+    font-size: 11.5px;
+    color: #10b981;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(16, 185, 129, 0.1);
+    padding: 7px 14px;
+    border-radius: 10px;
+    border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.sso-sync-note {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-top: 2px;
 }
 
 /* ==========================================================================
@@ -2650,27 +2756,168 @@ textarea.login-input {
         gap: 14px;
     }
 
+    /* Mobile-Optimized SSO Digital Campus Card: Super Clean, Organized & Balanced */
     .sso-profile-card {
-        padding: 14px;
-        border-radius: 14px;
+        padding: 14px 12px !important;
+        border-radius: 14px !important;
+        margin-bottom: 12px !important;
+        position: relative !important;
+        overflow: hidden !important;
+    }
+
+    .sso-card-watermark {
+        width: 100px !important;
+        height: 100px !important;
+        right: -10px !important;
+        bottom: -10px !important;
+        opacity: 0.035 !important;
     }
 
     .sso-card-content {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 12px;
+        flex-direction: column !important;
+        align-items: stretch !important;
+        gap: 12px !important;
+    }
+
+    .sso-card-left {
+        flex-direction: column !important;
+        align-items: stretch !important;
+        gap: 10px !important;
+        width: 100% !important;
+    }
+
+    .sso-avatar-row {
+        display: flex !important;
+        align-items: center !important;
+        gap: 12px !important;
+        width: 100% !important;
+    }
+
+    .sso-avatar-wrap {
+        width: 54px !important;
+        height: 54px !important;
+        flex-shrink: 0 !important;
+    }
+
+    .sso-avatar-wrap img {
+        width: 54px !important;
+        height: 54px !important;
+        border-width: 2px !important;
+    }
+
+    .sso-status-dot {
+        width: 13px !important;
+        height: 13px !important;
+        border-width: 2px !important;
+    }
+
+    .sso-user-heading {
+        flex: 1 !important;
+        min-width: 0 !important;
+        gap: 2px !important;
+    }
+
+    .sso-user-heading h3 {
+        font-size: 15px !important;
+        font-weight: 800 !important;
+        margin: 0 !important;
+        line-height: 1.25 !important;
+        word-break: break-word !important;
+    }
+
+    .sso-badges-row {
+        gap: 6px !important;
+        margin-bottom: 2px !important;
+    }
+
+    .sso-pill-badge {
+        font-size: 10.5px !important;
+        padding: 3px 8px !important;
+    }
+
+    .sso-role-tag {
+        font-size: 10.5px !important;
+        padding: 2px 7px !important;
+    }
+
+    .sso-nim-badge {
+        font-size: 12px !important;
+    }
+
+    .sso-nim-badge strong {
+        font-size: 12.5px !important;
+    }
+
+    .sso-info-box {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 6px !important;
+        background: rgba(0, 0, 0, 0.18) !important;
+        border: 1px solid rgba(255, 255, 255, 0.08) !important;
+        border-radius: 10px !important;
+        padding: 10px 12px !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+    }
+
+    [data-theme="light"] .sso-info-box {
+        background: rgba(0, 90, 54, 0.04) !important;
+        border-color: rgba(0, 90, 54, 0.12) !important;
+    }
+
+    .sso-info-item {
+        font-size: 11.5px !important;
+        line-height: 1.35 !important;
+        color: var(--text-main) !important;
+        word-break: break-word !important;
+    }
+
+    .sso-info-item-group {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 5px !important;
+        width: 100% !important;
+    }
+
+    .sso-dot-sep {
+        display: none !important;
+    }
+
+    .sso-info-sub {
+        font-size: 11.5px !important;
+        line-height: 1.35 !important;
+        color: var(--text-muted) !important;
+        word-break: break-word !important;
+        width: 100% !important;
+    }
+
+    .sso-info-sub i,
+    .sso-info-item i {
+        font-size: 12px !important;
+        flex-shrink: 0 !important;
+        width: 14px !important;
+        text-align: center !important;
     }
 
     .sso-card-right {
-        width: 100%;
-        align-items: stretch;
-        border-top: 1px dashed var(--border-color);
-        padding-top: 10px;
-        text-align: center;
+        width: 100% !important;
+        align-items: center !important;
+        border-top: 1px dashed var(--border-color) !important;
+        padding-top: 10px !important;
+        text-align: center !important;
     }
 
-    .sso-card-right span {
-        justify-content: center;
+    .sso-secure-badge {
+        width: 100% !important;
+        justify-content: center !important;
+        padding: 6px 12px !important;
+        font-size: 11px !important;
+        box-sizing: border-box !important;
+    }
+
+    .sso-sync-note {
+        font-size: 10.5px !important;
+        text-align: center !important;
     }
 
     /* Mencegah auto-zoom browser iOS/Android dan memastikan target sentuh ramah jari (min 48px) */

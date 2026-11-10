@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" width="240" height="240">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#034e30"/>
+      <stop offset="100%" stop-color="#012416"/>
+    </linearGradient>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fde047"/>
+      <stop offset="50%" stop-color="#d4af37"/>
+      <stop offset="100%" stop-color="#a16207"/>
+    </linearGradient>
+    <linearGradient id="silGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#f8fafc"/>
+      <stop offset="100%" stop-color="#cbd5e1"/>
+    </linearGradient>
+    <filter id="avatarDropShadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="4" stdDeviation="5" flood-color="#000000" flood-opacity="0.35"/>
+    </filter>
+  </defs>
+
+  <!-- Circular Outer Container -->
+  <circle cx="120" cy="120" r="113" fill="url(#bgGrad)" stroke="url(#goldGrad)" stroke-width="6"/>
+
+  <!-- Inner Soft Ring Glow -->
+  <circle cx="120" cy="120" r="108" fill="none" stroke="rgba(255,255,255,0.12)" stroke-width="1.5"/>
+
+  <!-- Faceless Profile Silhouette (Clean & Modern Student Dummy) -->
+  <g filter="url(#avatarDropShadow)">
+    <!-- Head (Faceless) -->
+    <circle cx="120" cy="86" r="40" fill="url(#silGrad)"/>
+
+    <!-- Shoulders & Upper Body -->
+    <path d="M 45 202 C 45 156, 76 142, 120 142 C 164 142, 195 156, 195 202 C 195 214, 178 221, 120 221 C 62 221, 45 214, 45 202 Z" fill="url(#silGrad)"/>
+
+    <!-- Subtle Academic Collar / Tie Accent -->
+    <path d="M 107 146 L 120 164 L 133 146" fill="none" stroke="#94a3b8" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+</svg>

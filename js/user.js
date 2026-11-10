@@ -597,6 +597,17 @@ function generateInitialAvatarSvg(name, size) {
 }
 window.generateInitialAvatarSvg = generateInitialAvatarSvg;
 
+function resolveUserAvatar(foto, name) {
+    const dummyAvatar = '../assets/img/avatar_dummy.svg';
+    if (!foto || String(foto).trim() === '' || String(foto).includes('photo-1539571696357-5a69c17a67c6') || String(foto).includes('avatar_dummy')) {
+        return dummyAvatar;
+    }
+    if (String(foto).startsWith('assets/')) {
+        return '../' + foto;
+    }
+    return foto;
+}
+
 function checkUserAuth() {
     const sessionRaw = localStorage.getItem('SIMPEL_AUTH_SESSION');
     if (!sessionRaw) {
@@ -610,19 +621,22 @@ function checkUserAuth() {
         const isMitra = (sess.role === 'mitra');
         const nimDisplay = sess.nimNip ? (' (' + sess.nimNip + ')') : '';
 
-        // Tampilkan foto profil di navbar jika tersedia (atau Avatar Inisial Elegan UINSSC)
+        // Otomatis bersihkan foto wajah eksternal lama ke avatar dummy tanpa wajah resmi
+        if (sess.foto && (String(sess.foto).includes('photo-1539571696357-5a69c17a67c6') || String(sess.foto).includes('avatar_dummy'))) {
+            sess.foto = '../assets/img/avatar_dummy.svg';
+            try { localStorage.setItem('SIMPEL_AUTH_SESSION', JSON.stringify(sess)); } catch (e) {}
+        }
+
+        // Tampilkan foto profil di navbar jika tersedia (atau Avatar Dummy Tanpa Wajah UINSSC)
         const navPhoto = document.getElementById('navUserPhoto');
         const navDefaultIcon = document.getElementById('navDefaultUserIcon');
         if (navPhoto) {
-            if (sess.foto && String(sess.foto).trim() !== '') {
-                navPhoto.src = sess.foto;
-                navPhoto.onerror = function() {
-                    this.onerror = null;
-                    this.src = generateInitialAvatarSvg(displayName, 64);
-                };
-            } else {
-                navPhoto.src = generateInitialAvatarSvg(displayName, 64);
-            }
+            const avatarUrl = resolveUserAvatar(sess.foto, displayName);
+            navPhoto.src = avatarUrl;
+            navPhoto.onerror = function() {
+                this.onerror = null;
+                this.src = '../assets/img/avatar_dummy.svg';
+            };
             navPhoto.style.display = 'inline-block';
             if (navDefaultIcon) navDefaultIcon.style.display = 'none';
         }
@@ -758,21 +772,18 @@ function prefillPelaporDataFromSession() {
             if (fieldNamaGroup) fieldNamaGroup.style.display = 'none';
             if (fieldNimGroup) fieldNimGroup.style.display = 'none';
 
-            // Pasang Foto Profil dari Portal API (atau Avatar Inisial Elegan UINSSC jika null/kosong)
+            // Pasang Foto Profil dari Portal API (atau Avatar Dummy Tanpa Wajah UINSSC)
             if (ssoPhotoImg) {
-                if (sess.foto && String(sess.foto).trim() !== '') {
-                    ssoPhotoImg.src = sess.foto;
-                    ssoPhotoImg.onerror = function() {
-                        this.onerror = null;
-                        this.src = generateInitialAvatarSvg(sess.name || 'Civitas', 150);
-                    };
-                } else {
-                    ssoPhotoImg.src = generateInitialAvatarSvg(sess.name || 'Civitas', 150);
-                }
+                const ssoAvatarUrl = resolveUserAvatar(sess.foto, sess.name || 'Civitas');
+                ssoPhotoImg.src = ssoAvatarUrl;
+                ssoPhotoImg.onerror = function() {
+                    this.onerror = null;
+                    this.src = '../assets/img/avatar_dummy.svg';
+                };
             }
 
             if (ssoRoleBadge) {
-                ssoRoleBadge.textContent = sess.peran ? (sess.peran + ' Aktif') : 'Civitas Aktif';
+                ssoRoleBadge.textContent = sess.peran ? (sess.peran + ' Aktif') : 'Mahasiswa Aktif';
             }
             if (ssoNameDetail) {
                 ssoNameDetail.textContent = sess.name || 'Civitas Kampus';
@@ -782,12 +793,15 @@ function prefillPelaporDataFromSession() {
             }
             if (ssoProdiDetail) {
                 const prodiText = sess.prodi || 'Program Studi Terdaftar di UINSSC';
-                ssoProdiDetail.innerHTML = '<i class="fa-solid fa-graduation-cap" style="color:#06b6d4; margin-right:5px;"></i> ' + escapeHtml(prodiText);
+                ssoProdiDetail.innerHTML = '<i class="fa-solid fa-graduation-cap" style="color:#06b6d4; margin-right:6px;"></i> <span>' + escapeHtml(prodiText) + '</span>';
             }
             if (ssoEmailFakDetail) {
-                const fakText = sess.fakultas ? ('<i class="fa-solid fa-building-columns" style="margin-right:4px; opacity:0.75;"></i> ' + escapeHtml(sess.fakultas)) : '<i class="fa-solid fa-building-columns" style="margin-right:4px; opacity:0.75;"></i> UIN Siber Syekh Nurjati Cirebon';
-                const emailText = sess.email ? (' • <i class="fa-solid fa-envelope" style="margin-left:4px; margin-right:3px; opacity:0.75;"></i> ' + escapeHtml(sess.email)) : '';
-                ssoEmailFakDetail.innerHTML = fakText + emailText;
+                const fakText = sess.fakultas ? escapeHtml(sess.fakultas) : 'Fakultas Ilmu Tarbiyah & Keguruan';
+                const emailText = sess.email ? escapeHtml(sess.email) : (sess.username ? (sess.username + '@uinssc.ac.id') : 'ahmad.rizki@uinssc.ac.id');
+                ssoEmailFakDetail.innerHTML = 
+                    '<div class="sso-info-sub"><i class="fa-solid fa-building-columns" style="color:var(--gold); margin-right:6px;"></i> <span>' + fakText + '</span></div>' +
+                    '<span class="sso-dot-sep">•</span>' +
+                    '<div class="sso-info-sub"><i class="fa-solid fa-envelope" style="color:#38bdf8; margin-right:6px;"></i> <span>' + emailText + '</span></div>';
             }
         }
     } catch (e) {
