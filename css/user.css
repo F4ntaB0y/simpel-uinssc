@@ -2565,7 +2565,7 @@ body.webgl-active .login-bg-tint {
 
 /* Centered layout when left hero side has no content/is disabled */
 .login-portal-grid.hero-empty {
-    grid-template-columns: minmax(0, 480px) !important;
+    grid-template-columns: minmax(0, 560px) !important;
     justify-content: center !important;
 }
 
@@ -2574,7 +2574,7 @@ body.webgl-active .login-bg-tint {
 }
 
 .login-portal-grid.hero-empty .login-glass-card-wrapper {
-    max-width: 480px;
+    max-width: 560px;
     margin: 0 auto;
     width: 100%;
 }
@@ -2917,6 +2917,238 @@ textarea.login-input {
 
     .login-video-card iframe {
         min-height: 250px;
+    }
+}
+
+/* ==========================================================================
+   MOBILE DESKTOP MODE OPTIMIZATION (Android/iOS "Situs Desktop" / Touch 980px)
+   Memastikan card login proporsional, besar, dan nyaman dibaca saat mode desktop
+   aktif di perangkat ponsel/tablet tanpa menjadi kerdil di tengah layar 980px.
+   ========================================================================== */
+@media (hover: none) and (pointer: coarse) and (min-width: 769px),
+       html.mobile-desktop-mode,
+       body.mobile-desktop-mode {
+    .container {
+        padding: 0 20px !important;
+        max-width: 900px !important;
+    }
+
+    .login-full-header {
+        text-align: center !important;
+        align-items: center !important;
+        margin-top: 16px !important;
+        margin-bottom: 22px !important;
+    }
+
+    .login-full-header .login-main-title {
+        font-size: 28px !important;
+        line-height: 1.3 !important;
+    }
+
+    .login-full-header .login-main-desc {
+        font-size: 14.5px !important;
+        max-width: 680px !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+        line-height: 1.55 !important;
+    }
+
+    /* Grid login dibuat single-column centered yang gagah & nyaman */
+    .login-portal-grid {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 28px !important;
+        width: 100% !important;
+        max-width: 680px !important;
+        margin: 0 auto !important;
+        padding-bottom: 44px !important;
+    }
+
+    .login-portal-grid.hero-empty {
+        display: block !important;
+        max-width: 680px !important;
+        width: 100% !important;
+        margin: 0 auto !important;
+    }
+
+    .login-glass-card-wrapper {
+        width: 100% !important;
+        max-width: 680px !important;
+        margin: 0 auto !important;
+        order: 1 !important;
+    }
+
+    .login-hero-side {
+        width: 100% !important;
+        max-width: 680px !important;
+        margin: 0 auto !important;
+        order: 2 !important;
+    }
+
+    /* Card login dengan dimensi lega, padding proporsional & mewah */
+    .login-glass-card {
+        width: 100% !important;
+        max-width: 680px !important;
+        margin: 0 auto !important;
+        padding: 38px 36px 34px !important;
+        border-radius: 26px !important;
+        box-shadow: 0 28px 64px rgba(0, 0, 0, 0.45) !important;
+    }
+
+    /* Logo Box di dalam card */
+    .login-logo-box,
+    .login-glass-card > div:first-child > div:first-child {
+        width: 76px !important;
+        height: 76px !important;
+        border-radius: 18px !important;
+        margin: 0 auto 12px !important;
+        padding: 6px !important;
+        box-shadow: 0 6px 20px rgba(197, 146, 53, 0.25) !important;
+    }
+
+    #loginCardBrand {
+        font-size: 13.5px !important;
+        letter-spacing: 1.5px !important;
+        margin-bottom: 5px !important;
+    }
+
+    #loginCardTitle,
+    #loginCardTitle span {
+        font-size: 26px !important;
+        font-weight: 800 !important;
+        line-height: 1.3 !important;
+        margin-bottom: 6px !important;
+    }
+
+    #loginCardDesc {
+        font-size: 14.5px !important;
+        line-height: 1.55 !important;
+        margin-bottom: 20px !important;
+    }
+
+    /* Form Labels */
+    #loginForm label {
+        font-size: 14.5px !important;
+        font-weight: 700 !important;
+        margin-bottom: 8px !important;
+    }
+
+    #loginForm label i {
+        font-size: 15px !important;
+        margin-right: 6px !important;
+    }
+
+    /* Input Fields */
+    .login-input {
+        min-height: 52px !important;
+        font-size: 16px !important;
+        border-radius: 13px !important;
+        padding: 12px 18px !important;
+    }
+
+    .login-input-wrapper .login-input {
+        padding-left: 52px !important;
+        padding-right: 48px !important;
+    }
+
+    .login-input-icon {
+        left: 18px !important;
+        font-size: 17px !important;
+    }
+
+    .btn-toggle-password {
+        font-size: 17px !important;
+        padding: 12px !important;
+        right: 8px !important;
+    }
+
+    /* Captcha Section */
+    .captcha-box-wrapper {
+        display: grid !important;
+        grid-template-columns: 155px 52px 1fr !important;
+        gap: 10px !important;
+    }
+
+    .captcha-box-wrapper > div:first-child {
+        height: 52px !important;
+        border-radius: 12px !important;
+    }
+
+    #captchaCanvas {
+        height: 52px !important;
+        width: 155px !important;
+    }
+
+    #btnRefreshCaptcha {
+        width: 52px !important;
+        height: 52px !important;
+        border-radius: 12px !important;
+        font-size: 18px !important;
+    }
+
+    .login-input-wrapper.captcha-input-col .login-input {
+        min-height: 52px !important;
+        font-size: 16.5px !important;
+        letter-spacing: 4px !important;
+    }
+
+    #loginForm small {
+        font-size: 12.5px !important;
+        margin-top: 6px !important;
+    }
+
+    /* Remember me & Server siap */
+    #rememberMe {
+        width: 19px !important;
+        height: 19px !important;
+    }
+
+    #loginForm label[style*="user-select: none"] {
+        font-size: 14px !important;
+        gap: 10px !important;
+    }
+
+    /* Submit Button */
+    .btn-login-submit {
+        height: 54px !important;
+        font-size: 16.5px !important;
+        font-weight: 800 !important;
+        border-radius: 14px !important;
+        letter-spacing: 0.3px !important;
+        margin-top: 8px !important;
+    }
+
+    /* Preset Demo Cards */
+    .login-preset-box {
+        margin-top: 26px !important;
+        padding-top: 18px !important;
+    }
+
+    .login-preset-grid {
+        gap: 12px !important;
+    }
+
+    .login-preset-card {
+        padding: 13px 15px !important;
+        border-radius: 14px !important;
+        min-height: 56px !important;
+    }
+
+    .preset-avatar {
+        width: 42px !important;
+        height: 42px !important;
+        font-size: 18px !important;
+        border-radius: 12px !important;
+    }
+
+    .preset-role-name {
+        font-size: 14px !important;
+    }
+
+    .preset-cred {
+        font-size: 12px !important;
     }
 }
 
