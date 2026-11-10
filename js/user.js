@@ -1148,7 +1148,7 @@ function toggleCampusMask() {
         isMaskEnabled = false;
         if (container) container.style.background = '#ffffff';
         if (btn) {
-            btn.innerHTML = `<i class="fa-solid fa-eye" style="color:var(--gold);"></i> Masking On/Off`;
+            btn.innerHTML = `<i class="fa-solid fa-eye" style="color:var(--gold);"></i> Masking`;
             btn.style.opacity = '0.75';
         }
         showToast('Masking dinonaktifkan (Peta penuh)', 'info');
@@ -1157,7 +1157,7 @@ function toggleCampusMask() {
         isMaskEnabled = true;
         if (container) container.style.background = '#ffffff';
         if (btn) {
-            btn.innerHTML = `<i class="fa-solid fa-eye-slash" style="color:var(--gold);"></i> Masking On/Off`;
+            btn.innerHTML = `<i class="fa-solid fa-eye-slash" style="color:var(--gold);"></i> Masking`;
             btn.style.opacity = '1';
         }
         showToast('Masking fokus kampus diaktifkan', 'info');
