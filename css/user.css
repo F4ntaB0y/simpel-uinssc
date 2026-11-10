@@ -3622,6 +3622,78 @@ textarea.login-input {
     box-sizing: border-box !important;
 }
 
+/* User Report Quota Limit Notice (Maks 3 Laporan per Akun) */
+.user-quota-alert {
+    background: rgba(239, 68, 68, 0.08);
+    border: 1.5px solid rgba(239, 68, 68, 0.35);
+    border-radius: 12px;
+    padding: 16px 20px;
+    margin-bottom: 22px;
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+}
+
+[data-theme="light"] .user-quota-alert {
+    background: #fef2f2;
+    border-color: #fca5a5;
+}
+
+.user-quota-alert.hidden {
+    display: none !important;
+}
+
+.user-quota-icon {
+    font-size: 24px;
+    color: #ef4444;
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+.user-quota-title {
+    font-size: 14.5px;
+    font-weight: 800;
+    color: #ef4444;
+    margin-bottom: 4px;
+}
+
+.user-quota-desc {
+    font-size: 12.5px;
+    color: var(--text-muted);
+    line-height: 1.55;
+}
+
+.user-quota-desc strong {
+    color: var(--text-main);
+}
+
+.user-quota-desc code {
+    background: rgba(0, 0, 0, 0.15);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 11.5px;
+    color: var(--gold);
+}
+
+[data-theme="light"] .user-quota-desc code {
+    background: rgba(0, 90, 54, 0.08);
+    color: #005a36;
+}
+
+.pill-quota-full {
+    border-color: #ef4444 !important;
+    color: #ef4444 !important;
+    background: rgba(239, 68, 68, 0.12) !important;
+}
+
+.btn-disabled-quota {
+    background: rgba(239, 68, 68, 0.15) !important;
+    border-color: rgba(239, 68, 68, 0.4) !important;
+    color: #f87171 !important;
+    cursor: not-allowed !important;
+    opacity: 0.85 !important;
+}
+
 [data-theme="light"] .swal2-popup.swal2-toast {
     background: rgba(255, 255, 255, 0.96) !important;
     border-color: rgba(0, 90, 54, 0.22) !important;

@@ -545,6 +545,7 @@ document.addEventListener('DOMContentLoaded', () => {
     loadReports().then(() => {
         updateMyReportsBadge();
         updateUserKPIs();
+        checkUserReportQuota();
     });
     initMapPicker();
 });
@@ -555,6 +556,11 @@ window.addEventListener('storage', (e) => {
     }
     if (e.key === 'SIMPEL_CATEGORIES_DATA_V1') {
         initUserCategories();
+    }
+    if (e.key === 'SIMPEL_REPORTS_DATA' || e.key === 'SIMPEL_MY_TICKETS') {
+        updateMyReportsBadge();
+        updateUserKPIs();
+        checkUserReportQuota();
     }
 });
 
@@ -894,7 +900,7 @@ async function loadReports() {
         if (saved) {
             try {
                 reportsData = JSON.parse(saved);
-                if (!Array.isArray(reportsData) || reportsData.length < 3) {
+                if (!Array.isArray(reportsData) || reportsData.length === 0) {
                     reportsData = JSON.parse(JSON.stringify(DEFAULT_SEED_DATA));
                     saveReports();
                 }
@@ -1328,15 +1334,32 @@ function applyGeofenceState(inside, lat, lng, isGps = false) {
         }
 
         if (btnSubmit) {
-            btnSubmit.disabled = false;
-            btnSubmit.classList.remove('btn-disabled-geofence');
-            btnSubmit.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Kirim Laporan';
-            btnSubmit.removeAttribute('title');
+            const quota = getUserReportCount();
+            if (quota.count >= 3) {
+                btnSubmit.disabled = true;
+                btnSubmit.classList.add('btn-disabled-quota');
+                btnSubmit.title = 'Batas maksimal 3 laporan per akun tercapai. Hubungi pihak kampus secara langsung atau hapus laporan sebelumnya.';
+                btnSubmit.innerHTML = '<i class="fa-solid fa-ban"></i> Batas Kuota Tercapai (3/3)';
+            } else {
+                btnSubmit.disabled = false;
+                btnSubmit.classList.remove('btn-disabled-geofence');
+                btnSubmit.classList.remove('btn-disabled-quota');
+                btnSubmit.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Kirim Laporan';
+                btnSubmit.removeAttribute('title');
+            }
         }
         if (btnReview) {
-            btnReview.disabled = false;
-            btnReview.classList.remove('btn-disabled-geofence');
-            btnReview.removeAttribute('title');
+            const quota = getUserReportCount();
+            if (quota.count >= 3) {
+                btnReview.disabled = true;
+                btnReview.classList.add('btn-disabled-quota');
+                btnReview.title = 'Batas maksimal 3 laporan per akun tercapai.';
+            } else {
+                btnReview.disabled = false;
+                btnReview.classList.remove('btn-disabled-geofence');
+                btnReview.classList.remove('btn-disabled-quota');
+                btnReview.removeAttribute('title');
+            }
         }
     } else {
         // DI LUAR KAWASAN KAMPUS
@@ -1523,6 +1546,7 @@ function switchUserTab(tab) {
     if (tab === 'lapor') {
         if (tabLapor) tabLapor.classList.add('active');
         if (secForm) secForm.classList.remove('hidden');
+        checkUserReportQuota();
         if (mapPickerInstance) {
             setTimeout(() => mapPickerInstance.invalidateSize(), 300);
         }
@@ -1625,6 +1649,37 @@ function removeFoto(event) {
 
 // Modal Tinjau Laporan Sebelum Dikirim (Pre-Submission Review)
 function openReviewBeforeSubmit() {
+    const quota = getUserReportCount();
+    if (quota.count >= 3) {
+        if (typeof Swal !== 'undefined') {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Batas Maksimal 3 Laporan Tercapai',
+                html: `
+                    <div style="font-size:13px; line-height:1.6; color:#475569; text-align:left;">
+                        <p style="margin-bottom:8px;">Akun Anda saat ini telah memiliki <strong>${quota.count} laporan</strong> yang tercatat di sistem.</p>
+                        <p style="margin-bottom:8px;">Satu akun dibatasi maksimal mengirim <strong>3 laporan</strong>. Jika Anda memerlukan pengaduan fasilitas lainnya:</p>
+                        <ul style="padding-left:18px; margin:0 0 10px 0;">
+                            <li>Hubungi pihak kampus secara langsung via Unit Sarpras (Email: <strong>sarpras@uinssc.ac.id</strong> / Telp: <strong>(0231) 481-264</strong>).</li>
+                            <li>Atau <strong>hapus laporan sebelumnya</strong> yang sudah tidak diperlukan pada tab <strong>Riwayat Laporan</strong>.</li>
+                        </ul>
+                    </div>
+                `,
+                confirmButtonText: 'Buka Riwayat Laporan',
+                showCancelButton: true,
+                cancelButtonText: 'Tutup',
+                confirmButtonColor: '#005a36'
+            }).then((res) => {
+                if (res.isConfirmed) {
+                    switchUserTab('riwayat');
+                }
+            });
+        } else {
+            showToast('Satu akun maksimal mengirim 3 laporan. Hapus laporan sebelumnya atau hubungi pihak kampus secara langsung.', 'error');
+        }
+        return;
+    }
+
     const form = document.getElementById('publicReportForm');
     if (!form.checkValidity()) {
         form.reportValidity();
@@ -1720,6 +1775,38 @@ const SUBMIT_COOLDOWN_MS = 45 * 1000; // 45 Detik Cooldown Anti-Spam
 
 async function handlePublicFormSubmit(event) {
     event.preventDefault();
+
+    // 0. Quota Guard: Maksimal 3 Laporan per Akun
+    const quota = getUserReportCount();
+    if (quota.count >= 3) {
+        if (typeof Swal !== 'undefined') {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Batas Maksimal 3 Laporan Tercapai',
+                html: `
+                    <div style="font-size:13px; line-height:1.6; color:#475569; text-align:left;">
+                        <p style="margin-bottom:8px;">Akun Anda saat ini telah memiliki <strong>${quota.count} laporan</strong> yang tercatat di sistem.</p>
+                        <p style="margin-bottom:8px;">Satu akun dibatasi maksimal mengirim <strong>3 laporan</strong>. Jika Anda memerlukan pengaduan fasilitas lainnya:</p>
+                        <ul style="padding-left:18px; margin:0 0 10px 0;">
+                            <li>Hubungi pihak kampus secara langsung via Unit Sarpras (Email: <strong>sarpras@uinssc.ac.id</strong> / Telp: <strong>(0231) 481-264</strong>).</li>
+                            <li>Atau <strong>hapus laporan sebelumnya</strong> yang sudah tidak diperlukan pada tab <strong>Riwayat Laporan</strong>.</li>
+                        </ul>
+                    </div>
+                `,
+                confirmButtonText: 'Buka Riwayat Laporan',
+                showCancelButton: true,
+                cancelButtonText: 'Tutup',
+                confirmButtonColor: '#005a36'
+            }).then((res) => {
+                if (res.isConfirmed) {
+                    switchUserTab('riwayat');
+                }
+            });
+        } else {
+            showToast('Satu akun maksimal mengirim 3 laporan. Hapus laporan sebelumnya atau hubungi pihak kampus secara langsung.', 'error');
+        }
+        return;
+    }
 
     // 1. Wajib Gambar Check
     if (!selectedImage) {
@@ -2003,6 +2090,149 @@ function downloadOfficialTicketPDF(ticketId) {
     });
 }
 
+// ==========================================================================
+// PENGELOLAAN KUOTA MAKSIMAL 3 LAPORAN PER AKUN & RIWAYAT PENGGUNA
+// ==========================================================================
+
+function getUserReportCount() {
+    let myTicketIds = [];
+    try {
+        myTicketIds = JSON.parse(localStorage.getItem('SIMPEL_MY_TICKETS') || '[]');
+    } catch (e) {
+        myTicketIds = [];
+    }
+
+    const sessionRaw = localStorage.getItem('SIMPEL_AUTH_SESSION');
+    let userNim = '';
+    if (sessionRaw) {
+        try {
+            const sess = JSON.parse(sessionRaw);
+            userNim = (sess.nimNip || sess.username || '').toLowerCase();
+        } catch (e) {}
+    }
+
+    const myReports = reportsData.filter(r => {
+        if (myTicketIds.includes(r.id)) return true;
+        if (userNim && r.nimNip && r.nimNip.toLowerCase() === userNim) return true;
+        return false;
+    });
+
+    return {
+        count: myReports.length,
+        reports: myReports,
+        isLimitReached: myReports.length >= 3
+    };
+}
+
+function checkUserReportQuota() {
+    const quota = getUserReportCount();
+    const quotaWarningBox = document.getElementById('userQuotaWarningBox');
+    const userQuotaCount = document.getElementById('userQuotaCount');
+    const userQuotaPill = document.getElementById('userQuotaPill');
+    const btnSubmit = document.getElementById('btnSubmitReport');
+    const btnReview = document.getElementById('btnReviewReport');
+
+    if (userQuotaCount) {
+        userQuotaCount.innerText = `${quota.count}/3`;
+    }
+
+    if (userQuotaPill) {
+        if (quota.count >= 3) {
+            userQuotaPill.classList.add('pill-quota-full');
+            userQuotaPill.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> Kuota: <strong id="userQuotaCount">${quota.count}/3 (Penuh)</strong>`;
+        } else {
+            userQuotaPill.classList.remove('pill-quota-full');
+            userQuotaPill.innerHTML = `<i class="fa-solid fa-file-lines"></i> Kuota: <strong id="userQuotaCount">${quota.count}/3</strong>`;
+        }
+    }
+
+    if (quota.count >= 3) {
+        if (quotaWarningBox) quotaWarningBox.classList.remove('hidden');
+        if (btnSubmit) {
+            btnSubmit.disabled = true;
+            btnSubmit.classList.add('btn-disabled-quota');
+            btnSubmit.title = 'Batas maksimal 3 laporan per akun tercapai. Hubungi pihak kampus secara langsung atau hapus laporan sebelumnya.';
+            btnSubmit.innerHTML = '<i class="fa-solid fa-ban"></i> Batas Kuota Tercapai (3/3)';
+        }
+        if (btnReview) {
+            btnReview.disabled = true;
+            btnReview.classList.add('btn-disabled-quota');
+            btnReview.title = 'Batas maksimal 3 laporan per akun tercapai.';
+        }
+    } else {
+        if (quotaWarningBox) quotaWarningBox.classList.add('hidden');
+        if (btnSubmit && !btnSubmit.classList.contains('btn-disabled-geofence')) {
+            btnSubmit.disabled = false;
+            btnSubmit.classList.remove('btn-disabled-quota');
+            btnSubmit.removeAttribute('title');
+            btnSubmit.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Kirim Laporan';
+        }
+        if (btnReview && !btnReview.classList.contains('btn-disabled-geofence')) {
+            btnReview.disabled = false;
+            btnReview.classList.remove('btn-disabled-quota');
+            btnReview.removeAttribute('title');
+        }
+    }
+}
+
+// Hapus Laporan Pengguna (Membatalkan Laporan & Mengembalikan Kuota)
+async function deleteMyReport(ticketId) {
+    const report = reportsData.find(r => r.id === ticketId);
+    if (!report) {
+        showToast('Data laporan tidak ditemukan.', 'error');
+        return;
+    }
+
+    let confirmed = false;
+    if (typeof Swal !== 'undefined') {
+        const result = await Swal.fire({
+            title: 'Hapus Laporan Ini?',
+            html: `
+                <div style="text-align:left; font-size:13px; color:#475569; line-height:1.6;">
+                    <p style="margin-bottom:6px;">Apakah Anda yakin ingin membatalkan &amp; menghapus laporan tiket <strong>#${escapeHtml(ticketId)}</strong>?</p>
+                    <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:10px; margin:10px 0;">
+                        <div><strong>Kategori:</strong> ${escapeHtml(report.kategori)}</div>
+                        <div><strong>Lokasi:</strong> ${escapeHtml(report.gedung)} (${escapeHtml(report.ruangan)})</div>
+                        <div><strong>Status:</strong> ${escapeHtml(report.status)}</div>
+                    </div>
+                    <p style="color:#ef4444; font-size:12px; margin:0;">Laporan yang dihapus akan dibatalkan dari sistem dan kuota pelaporan akun Anda akan dikembalikan.</p>
+                </div>
+            `,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Ya, Hapus Laporan',
+            cancelButtonText: 'Batal',
+            confirmButtonColor: '#ef4444'
+        });
+        confirmed = result.isConfirmed;
+    } else {
+        confirmed = confirm(`Apakah Anda yakin ingin menghapus laporan #${ticketId}? Kuota pelaporan akun Anda akan dikembalikan.`);
+    }
+
+    if (!confirmed) return;
+
+    // 1. Hapus dari daftar reportsData
+    reportsData = reportsData.filter(r => r.id !== ticketId);
+    await saveReports();
+
+    // 2. Hapus dari tiket lokal perangkat
+    try {
+        let myTickets = JSON.parse(localStorage.getItem('SIMPEL_MY_TICKETS') || '[]');
+        myTickets = myTickets.filter(id => id !== ticketId);
+        localStorage.setItem('SIMPEL_MY_TICKETS', JSON.stringify(myTickets));
+    } catch (e) {}
+
+    // 3. Tutup modal detail jika sedang dibuka
+    closeDetailReviewModal();
+
+    // 4. Perbarui badge, riwayat, dan kuota
+    updateMyReportsBadge();
+    renderMyReportsHistory();
+    checkUserReportQuota();
+
+    showToast(`Laporan #${ticketId} berhasil dihapus. Kuota akun diperbarui.`, 'success');
+}
+
 // Penyimpanan & Badge Riwayat Laporan Pengguna
 function saveMyTicketId(ticketId) {
     try {
@@ -2013,16 +2243,13 @@ function saveMyTicketId(ticketId) {
         }
     } catch (e) {}
     updateMyReportsBadge();
+    checkUserReportQuota();
 }
 
 function updateMyReportsBadge() {
     const badge = document.getElementById('myReportsBadge');
-    try {
-        const myTickets = JSON.parse(localStorage.getItem('SIMPEL_MY_TICKETS') || '[]');
-        if (badge) badge.innerText = myTickets.length;
-    } catch (e) {
-        if (badge) badge.innerText = '0';
-    }
+    const quota = getUserReportCount();
+    if (badge) badge.innerText = quota.count;
     updateUserKPIs();
 }
 
@@ -2035,7 +2262,21 @@ function updateUserKPIs() {
         myTicketIds = [];
     }
 
-    const myReports = reportsData.filter(r => myTicketIds.includes(r.id));
+    const sessionRaw = localStorage.getItem('SIMPEL_AUTH_SESSION');
+    let userNim = '';
+    if (sessionRaw) {
+        try {
+            const sess = JSON.parse(sessionRaw);
+            userNim = (sess.nimNip || sess.username || '').toLowerCase();
+        } catch (e) {}
+    }
+
+    const myReports = reportsData.filter(r => {
+        if (myTicketIds.includes(r.id)) return true;
+        if (userNim && r.nimNip && r.nimNip.toLowerCase() === userNim) return true;
+        return false;
+    });
+
     const isUserPersonal = myReports.length > 0;
     const dataSource = isUserPersonal ? myReports : reportsData;
 
@@ -2073,8 +2314,19 @@ function renderMyReportsHistory(nimFilter = null) {
     if (nimFilter) {
         myReports = reportsData.filter(r => r.nimNip.toLowerCase() === nimFilter.toLowerCase());
     } else {
-        // Ambil tiket yang ID-nya tercatat di local device
-        myReports = reportsData.filter(r => myTicketIds.includes(r.id));
+        const sessionRaw = localStorage.getItem('SIMPEL_AUTH_SESSION');
+        let userNim = '';
+        if (sessionRaw) {
+            try {
+                const sess = JSON.parse(sessionRaw);
+                userNim = (sess.nimNip || sess.username || '').toLowerCase();
+            } catch (e) {}
+        }
+        myReports = reportsData.filter(r => {
+            if (myTicketIds.includes(r.id)) return true;
+            if (userNim && r.nimNip && r.nimNip.toLowerCase() === userNim) return true;
+            return false;
+        });
     }
 
     if (myReports.length === 0) {
@@ -2135,6 +2387,9 @@ function renderMyReportsHistory(nimFilter = null) {
                         </button>
                         <button class="btn btn-secondary" onclick="printTicketPDF('${r.id}')" style="padding:6px 14px; font-size:12px;">
                             <i class="fa-solid fa-print"></i> Cetak Bukti PDF
+                        </button>
+                        <button class="btn btn-secondary" onclick="deleteMyReport('${r.id}')" style="padding:6px 14px; font-size:12px; color:#ef4444; border-color:rgba(239,68,68,0.4);">
+                            <i class="fa-solid fa-trash-can"></i> Hapus Laporan
                         </button>
                     </div>
                 </div>
@@ -2214,6 +2469,10 @@ function openDetailReviewModal(ticketId) {
     `;
 
     document.getElementById('detailModalPrintBtn').onclick = () => printTicketPDF(r.id);
+    const deleteBtn = document.getElementById('detailModalDeleteBtn');
+    if (deleteBtn) {
+        deleteBtn.onclick = () => deleteMyReport(r.id);
+    }
     document.getElementById('detailReviewModal').classList.remove('hidden');
 }
 

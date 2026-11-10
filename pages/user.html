@@ -18,7 +18,7 @@
     <!-- Leaflet.js Interactive Map CSS & JS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <link rel="stylesheet" href="../css/user.css?v=20261110_toastclean">
+    <link rel="stylesheet" href="../css/user.css?v=20261110_quotalimit">
     <!-- SweetAlert2 Latest CDN -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <!-- DOMPurify Security Sanitizer -->
@@ -136,9 +136,26 @@
                         terstruktur di bawah agar teknisi sarpras dapat menindaklanjuti di titik ruangan yang tepat.</p>
                 </div>
                 <div class="form-steps-indicator">
+                    <span id="userQuotaPill" class="step-indicator-pill"><i class="fa-solid fa-file-lines"></i> Kuota: <strong id="userQuotaCount">0/3</strong></span>
                     <span class="step-indicator-pill"><span class="num">1</span> Identitas</span>
                     <span class="step-indicator-pill"><span class="num">2</span> Lokasi &amp; GIS</span>
                     <span class="step-indicator-pill"><span class="num">3</span> Rincian &amp; Bukti</span>
+                </div>
+            </div>
+
+            <!-- User Report Quota Limit Notice (Maksimal 3 Laporan) -->
+            <div id="userQuotaWarningBox" class="user-quota-alert hidden">
+                <i class="fa-solid fa-triangle-exclamation user-quota-icon"></i>
+                <div style="flex:1;">
+                    <div class="user-quota-title">Batas Maksimal Pengiriman Laporan Tercapai (3 / 3)</div>
+                    <div class="user-quota-desc">
+                        Satu akun dibatasi maksimal mengirim <strong>3 laporan</strong>. Jika Anda memerlukan penanganan fasilitas tambahan, silakan <strong>hubungi pihak kampus secara langsung</strong> via Unit Layanan Sarpras (Email: <code>sarpras@uinssc.ac.id</code> / Telepon: <code>(0231) 481-264</code>) atau <strong>hapus laporan sebelumnya</strong> pada tab Riwayat Laporan.
+                    </div>
+                    <div style="margin-top:12px; display:flex; gap:10px; flex-wrap:wrap;">
+                        <button type="button" class="btn btn-secondary" onclick="switchUserTab('riwayat')" style="font-size:12px; padding:6px 14px; background:rgba(0,90,54,0.15); border-color:var(--gold); color:var(--text-main);">
+                            <i class="fa-solid fa-clock-rotate-left"></i> Buka Riwayat &amp; Hapus Laporan
+                        </button>
+                    </div>
                 </div>
             </div>
 
@@ -709,6 +726,8 @@
 
             <div
                 style="display:flex; justify-content:flex-end; gap:10px; margin-top:20px; border-top:1px dashed var(--border-color); padding-top:16px; flex-wrap:wrap;">
+                <button type="button" id="detailModalDeleteBtn" class="btn btn-secondary" style="border-color:rgba(239,68,68,0.5); color:#ef4444;"><i
+                        class="fa-solid fa-trash-can"></i> Hapus Laporan</button>
                 <button type="button" id="detailModalPrintBtn" class="btn btn-secondary"><i
                         class="fa-solid fa-print"></i> Cetak Bukti PDF</button>
                 <button type="button" class="btn btn-primary" onclick="closeDetailReviewModal()">Tutup</button>
@@ -975,12 +994,12 @@
     <!-- Toast Notifications -->
     <div id="toastBox" class="toast-box"></div>
 
-    <script src="../js/user.js?v=20261110_toastclean"></script>
-    <script src="../js/site-builder.js?v=20261110_toastclean"></script>
+    <script src="../js/user.js?v=20261110_quotalimit"></script>
+    <script src="../js/site-builder.js?v=20261110_quotalimit"></script>
     <script>
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('../sw.js?v=20261110_toastclean')
+                navigator.serviceWorker.register('../sw.js?v=20261110_quotalimit')
                     .then(reg => {
                         reg.update();
                         console.log('SIMPEL User PWA Registered & Checked for Updates', reg.scope);
