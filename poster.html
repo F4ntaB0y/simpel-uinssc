@@ -16,7 +16,7 @@
     <style>
         :root {
             --primary: #005a36;
-            --primary-dark: #023821;
+            --primary-dark: #00361f;
             --primary-deep: #012415;
             --primary-light: #e8f5ee;
             --emerald-600: #059669;
@@ -54,7 +54,7 @@
             flex-direction: column;
             align-items: center;
             min-height: 100vh;
-            padding: 20px 10px 40px;
+            padding: 18px 10px 40px;
             -webkit-print-color-adjust: exact !important;
             print-color-adjust: exact !important;
         }
@@ -127,8 +127,8 @@
         }
 
         /* ==========================================================================
-           POSTER ARTBOARD - TEPAT 1 HALAMAN A4 FULL (210mm x 297mm)
-           Mengikuti Layout Standar Resmi Poster Kampus UIN Siber Syekh Nurjati Cirebon
+           POSTER ARTBOARD - TEPAT 1 HALAMAN A4 FULL PADAT (210mm x 297mm)
+           Mengikuti Format Resmi Kampus UIN Siber Syekh Nurjati Cirebon
            ========================================================================== */
         .poster-artboard {
             width: 210mm;
@@ -222,14 +222,14 @@
             border: 1px solid #cbd5e1;
         }
 
-        /* 2. HERO BANNER WITH 3 SMARTPHONE MOCKUPS */
+        /* 2. HERO BANNER WITH LAPTOP / DESKTOP MOCKUP */
         .hero-banner-section {
-            background: linear-gradient(135deg, #022315 0%, #004d2e 55%, #013b22 100%);
+            background: linear-gradient(135deg, #012415 0%, #004d2e 55%, #013b22 100%);
             color: #ffffff;
             padding: 10px 16px 8px;
             position: relative;
             display: grid;
-            grid-template-columns: 1.15fr 0.95fr;
+            grid-template-columns: 1.05fr 1.05fr;
             gap: 12px;
             align-items: center;
             flex-shrink: 0;
@@ -293,7 +293,7 @@
             font-size: 7.4px;
             color: #d1fae5;
             line-height: 1.35;
-            margin-bottom: 7px;
+            margin-bottom: 6px;
         }
 
         /* 4 Key Stat Metric Pills on Hero */
@@ -327,76 +327,139 @@
             margin-top: 1px;
         }
 
-        /* Right Side: 3 Phone Mockups Showcase */
-        .hero-phone-showcase {
+        /* Right Side: Desktop / Laptop Device Mockup */
+        .hero-desktop-showcase {
             position: relative;
-            height: 125px;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
+            height: 125px;
         }
 
-        /* Phone Mockup Frame */
-        .phone-frame {
-            position: absolute;
-            width: 66px;
-            height: 118px;
+        .desktop-device-frame {
+            width: 100%;
+            max-width: 205px;
             background: #0f172a;
-            border-radius: 12px;
-            box-shadow: 0 10px 25px -4px rgba(0, 0, 0, 0.6);
+            border-radius: 8px 8px 2px 2px;
+            box-shadow: 0 12px 28px -5px rgba(0, 0, 0, 0.7);
             border: 2px solid #334155;
             overflow: hidden;
             display: flex;
             flex-direction: column;
-            transition: all 0.3s ease;
+            position: relative;
         }
 
-        .phone-notch {
-            position: absolute;
-            top: 2px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 22px;
+        .desktop-browser-bar {
+            height: 11px;
+            background: #1e293b;
+            display: flex;
+            align-items: center;
+            padding: 0 6px;
+            gap: 3px;
+            border-bottom: 1px solid #334155;
+        }
+
+        .browser-dots {
+            display: flex;
+            gap: 2.5px;
+        }
+
+        .b-dot {
+            width: 3.5px;
             height: 3.5px;
-            background: #000000;
-            border-radius: 4px;
-            z-index: 10;
+            border-radius: 50%;
         }
 
-        .phone-screen {
+        .b-red { background: #ef4444; }
+        .b-yellow { background: #eab308; }
+        .b-green { background: #22c55e; }
+
+        .browser-url-pill {
+            font-size: 5.5px;
+            color: #94a3b8;
+            background: #0f172a;
+            padding: 1px 6px;
+            border-radius: 3px;
+            margin-left: 4px;
+            font-family: monospace;
+            display: flex;
+            align-items: center;
+            gap: 3px;
+        }
+
+        .browser-url-pill i {
+            color: #10b981;
+            font-size: 4.5px;
+        }
+
+        .desktop-screen-viewport {
+            width: 100%;
+            height: 98px;
+            background: #000000;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .desktop-screen-viewport img {
             width: 100%;
             height: 100%;
             object-fit: cover;
             display: block;
         }
 
-        /* Staggered 3-Phone Positioning */
-        .phone-left {
-            left: 10px;
-            bottom: 0px;
-            transform: scale(0.88) rotate(-4deg);
-            z-index: 1;
-            opacity: 0.92;
+        /* Laptop Bottom Base */
+        .laptop-bottom-base {
+            width: 220px;
+            height: 5px;
+            background: linear-gradient(180deg, #64748b 0%, #334155 100%);
+            border-radius: 0 0 8px 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+            position: relative;
         }
 
-        .phone-center {
-            left: 50%;
-            bottom: 3px;
-            transform: translateX(-50%) scale(1.04);
-            z-index: 3;
-            border-color: var(--gold);
-            box-shadow: 0 12px 30px -4px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(212, 163, 67, 0.4);
+        .laptop-notch-cut {
+            width: 28px;
+            height: 2px;
+            background: #1e293b;
+            margin: 0 auto;
+            border-radius: 0 0 3px 3px;
         }
 
-        .phone-right {
-            right: 10px;
-            bottom: 0px;
-            transform: scale(0.88) rotate(4deg);
-            z-index: 2;
-            opacity: 0.92;
+        /* Floating Secondary Tablet Card: GIS Map Highlight */
+        .floating-gis-badge-card {
+            position: absolute;
+            bottom: -2px;
+            right: 0px;
+            width: 82px;
+            background: #ffffff;
+            border-radius: 6px;
+            padding: 3px;
+            box-shadow: 0 8px 18px rgba(0, 0, 0, 0.5);
+            border: 1.5px solid var(--gold);
+            z-index: 5;
         }
 
-        /* 3. MAIN BODY CONTAINER (Penuh & Rapat) */
+        .floating-gis-badge-card .gis-card-header {
+            display: flex;
+            align-items: center;
+            gap: 3px;
+            font-size: 5.8px;
+            font-weight: 900;
+            color: var(--primary);
+            margin-bottom: 2px;
+            text-transform: uppercase;
+        }
+
+        .floating-gis-badge-card img {
+            width: 100%;
+            height: 38px;
+            object-fit: cover;
+            border-radius: 3px;
+            display: block;
+        }
+
+        /* 3. MAIN BODY CONTAINER (Penuh, Rapat & Kaya Informasi) */
         .poster-content-body {
             flex: 1 1 auto;
             padding: 6px 14px 4px;
@@ -590,7 +653,7 @@
             line-height: 1.15;
         }
 
-        /* SECTION ROW 3: DARK BANNER (5 TAHAP PERKEMBANGAN PERKARA / TIKET & SLA) */
+        /* SECTION ROW 3: DARK BANNER (5 TAHAP SIKLUS PENANGANAN TIKET & STANDAR SLA) */
         .sla-banner-box {
             background: linear-gradient(135deg, #022c19 0%, #004d2e 60%, #033c23 100%);
             border-radius: 6px;
@@ -904,7 +967,7 @@
 
         /* 4. BOTTOM FOOTER BAR */
         .poster-bottom-footer {
-            background: #022315;
+            background: #012415;
             color: #ffffff;
             padding: 6px 16px;
             display: flex;
@@ -1003,8 +1066,8 @@
     <!-- Control Toolbar (Layar Browser Saja) -->
     <div class="control-toolbar">
         <div class="toolbar-info">
-            <h2>Poster SIMPEL UINSSC (Standar Format Resmi Kampus UIN Siber Cirebon)</h2>
-            <p>Layout identik dengan contoh acuan: Hero gelap + 3 Mockup Smartphone + Alur 8 Tahap + 5 Tahap SLA + Fitur + Sasaran + Teknologi.</p>
+            <h2>Poster SIMPEL UINSSC (Format Desktop Mockup & Full Kanvas A4)</h2>
+            <p>Mockup HP telah diganti Laptop/Desktop interaktif + Floating GIS Window. Seluruh kanvas A4 terisi padat, kaya informasi & siap cetak/Canva.</p>
         </div>
         <div class="toolbar-actions">
             <button class="btn-action btn-print" onclick="window.print()">
@@ -1037,11 +1100,11 @@
             </div>
         </header>
 
-        <!-- 2. HERO BANNER WITH 3 SMARTPHONE MOCKUPS -->
+        <!-- 2. HERO BANNER WITH LAPTOP / DESKTOP MOCKUP + FLOATING GIS WINDOW -->
         <section class="hero-banner-section">
             <div class="hero-text-col">
                 <div class="hero-badge-pill">
-                    <i class="fa-solid fa-mobile-screen-button"></i> APLIKASI WEB PWA & MOBILE RESPONSIVE
+                    <i class="fa-solid fa-laptop-code"></i> APLIKASI WEB PWA & DESKTOP DASHBOARD
                 </div>
                 <h1 class="hero-main-title">SIMPEL <span>SARPRAS</span></h1>
                 <div class="hero-app-name">Sistem Informasi Pelaporan & Pemeliharaan Fasilitas Digital</div>
@@ -1071,22 +1134,35 @@
                 </div>
             </div>
 
-            <!-- Right: 3 Smartphone Mockups -->
-            <div class="hero-phone-showcase">
-                <!-- Phone Left: Login Portal -->
-                <div class="phone-frame phone-left">
-                    <div class="phone-notch"></div>
-                    <img src="assets/img/ss_login.jpg" alt="Screen Login" class="phone-screen">
+            <!-- Right: Sleek Desktop / Laptop Device Showcase -->
+            <div class="hero-desktop-showcase">
+                <!-- Laptop Screen -->
+                <div class="desktop-device-frame">
+                    <div class="desktop-browser-bar">
+                        <div class="browser-dots">
+                            <span class="b-dot b-red"></span>
+                            <span class="b-dot b-yellow"></span>
+                            <span class="b-dot b-green"></span>
+                        </div>
+                        <div class="browser-url-pill">
+                            <i class="fa-solid fa-lock"></i> simpel.uinssc.ac.id/dashboard
+                        </div>
+                    </div>
+                    <div class="desktop-screen-viewport">
+                        <img src="assets/img/ss_dashboard.jpg" alt="Screen Dashboard Desktop View">
+                    </div>
                 </div>
-                <!-- Phone Center: Geofencing GIS (Front & Highlighted) -->
-                <div class="phone-frame phone-center">
-                    <div class="phone-notch"></div>
-                    <img src="assets/img/ss_gis_map.png" alt="Screen GIS Map" class="phone-screen">
+                <!-- Laptop Bottom Base -->
+                <div class="laptop-bottom-base">
+                    <div class="laptop-notch-cut"></div>
                 </div>
-                <!-- Phone Right: Dashboard & Tiket -->
-                <div class="phone-frame phone-right">
-                    <div class="phone-notch"></div>
-                    <img src="assets/img/ss_dashboard.jpg" alt="Screen Riwayat Tiket" class="phone-screen">
+
+                <!-- Floating Secondary Card: Geofencing GIS Highlight -->
+                <div class="floating-gis-badge-card">
+                    <div class="gis-card-header">
+                        <i class="fa-solid fa-location-crosshairs" style="color: var(--gold);"></i> Peta GIS 5 Zona
+                    </div>
+                    <img src="assets/img/ss_gis_map.png" alt="Geofencing GIS Preview">
                 </div>
             </div>
         </section>
@@ -1442,7 +1518,7 @@
                 <div class="footer-inst-name">Sistem Informasi Pelaporan Sarana Prasarana &bull; UIN Siber Syekh Nurjati Cirebon</div>
             </div>
             <div class="footer-meta-pills">
-                <div class="footer-pill-item"><i class="fa-solid fa-mobile-screen"></i> PWA Mobile Web</div>
+                <div class="footer-pill-item"><i class="fa-solid fa-laptop"></i> Desktop & Mobile PWA</div>
                 <div class="footer-pill-item"><i class="fa-solid fa-network-wired"></i> Kampus Siber UINSSC</div>
                 <div class="footer-pill-item"><i class="fa-solid fa-calendar-check"></i> KP 2026</div>
             </div>
@@ -1460,7 +1536,7 @@
                 "3. Buka situs https://www.canva.com di browser Anda.\n" +
                 "4. Klik tombol 'Upload' / 'Unggah' atau 'Import file' di kanan atas Canva.\n" +
                 "5. Pilih file PDF yang baru saja Anda simpan.\n" +
-                "6. Canva akan secara otomatis mengonversi seluruh teks, mockup smartphone, diagram alur, badge, dan kotak warna menjadi elemen desain vektor yang 100% dapat diedit, diubah warna, diganti font, dan dipindahkan posisinya!"
+                "6. Canva akan secara otomatis mengonversi seluruh teks, mockup desktop/laptop, diagram alur, badge, dan kotak warna menjadi elemen desain vektor yang 100% dapat diedit, diubah warna, diganti font, dan dipindahkan posisinya!"
             );
         }
     </script>
