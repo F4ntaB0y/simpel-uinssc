@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,7 +12,8 @@
     <!-- Google Fonts & Font Awesome Icons -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Leaflet.js Interactive Map CSS & JS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
@@ -25,15 +27,12 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <!-- html2pdf.js Official PDF Exporter -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-    <!-- Three.js & GSAP for WebGL Campus Zoom-Blur Showcase -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 </head>
+
 <body class="has-bg-overlay">
 
-    <!-- Blurred Background Overlay & Interactive WebGL Campus Tour (UIN Siber Syekh Nurjati Cirebon) -->
+    <!-- Static Campus Building Background Overlay (Gedung Cyber UINSSC) -->
     <div class="login-bg-overlay">
-        <canvas id="canvas" class="login-webgl-canvas"></canvas>
         <div class="login-bg-image" style="background-image: url('../assets/img/gedungCyber.png');"></div>
         <div class="login-bg-tint"></div>
     </div>
@@ -44,7 +43,8 @@
             <div class="top-util-contacts">
                 <span><i class="fa-solid fa-envelope" style="color:#fde047;"></i> sarpras@uinssc.ac.id</span>
                 <span><i class="fa-solid fa-phone" style="color:#fde047;"></i> (0231) 481-264</span>
-                <span><i class="fa-solid fa-clock" style="color:#fde047;"></i> Jam Layanan: Senin - Jumat (07.30 - 16.00 WIB)</span>
+                <span><i class="fa-solid fa-clock" style="color:#fde047;"></i> Jam Layanan: Senin - Jumat (07.30 - 16.00
+                    WIB)</span>
             </div>
             <div class="top-util-badge">
                 <i class="fa-solid fa-building-columns"></i> Layanan Sarpras &amp; Fasilitas Terpadu UINSSC
@@ -66,13 +66,16 @@
             </a>
 
             <div class="nav-links">
-                <button type="button" class="nav-link-btn" onclick="openHelpModal()" title="Panduan Alur Pengaduan Sarpras">
-                    <i class="fa-solid fa-circle-question" style="color:var(--gold);"></i> <span class="nav-btn-label">Panduan</span>
+                <button type="button" class="nav-link-btn" onclick="openHelpModal()"
+                    title="Panduan Alur Pengaduan Sarpras">
+                    <i class="fa-solid fa-circle-question" style="color:var(--gold);"></i> <span
+                        class="nav-btn-label">Panduan</span>
                 </button>
                 <button type="button" class="nav-link-btn" onclick="toggleTheme()" title="Ubah Tema Mode">
                     <i class="fa-solid fa-moon" id="themeIcon"></i> <span class="nav-btn-label">Tema</span>
                 </button>
-                <button type="button" class="nav-link-btn nav-link-danger" onclick="handleLogout()" title="Keluar dari Sistem">
+                <button type="button" class="nav-link-btn nav-link-danger" onclick="handleLogout()"
+                    title="Keluar dari Sistem">
                     <i class="fa-solid fa-right-from-bracket"></i> <span class="nav-btn-label">Keluar</span>
                 </button>
             </div>
@@ -81,7 +84,7 @@
 
     <!-- Main Container -->
     <main class="container" style="padding-top: 24px; padding-bottom: 56px; flex: 1;">
-        
+
         <!-- Main Hero Banner Card -->
         <div class="user-banner-card" id="userHeroBanner">
             <div class="user-banner-bg-graphic" id="userHeroBannerGraphic">
@@ -93,12 +96,15 @@
                 </div>
                 <h1 class="user-banner-title" id="userHeroBannerTitle">Sistem Informasi Pelaporan Fasilitas Kampus</h1>
                 <p class="user-banner-desc" id="userHeroBannerDesc">
-                    Pencatatan Kerusakan Sarpras, Validasi Geofencing GIS Presisi 5 Kawasan, Pelacakan Status Tiket Real-time, &amp; Respon Cepat Tim Teknisi Pemeliharaan UINSSC.
+                    Pencatatan Kerusakan Sarpras, Validasi Geofencing GIS Presisi 5 Kawasan, Pelacakan Status Tiket
+                    Real-time, &amp; Respon Cepat Tim Teknisi Pemeliharaan UINSSC.
                 </p>
                 <div class="banner-feature-pills">
-                    <span class="banner-pill-item"><i class="fa-solid fa-location-crosshairs"></i> Geofencing 5 Kawasan Kampus</span>
+                    <span class="banner-pill-item"><i class="fa-solid fa-location-crosshairs"></i> Geofencing 5 Kawasan
+                        Kampus</span>
                     <span class="banner-pill-item"><i class="fa-solid fa-bolt"></i> Tindak Lanjut Berbasis SLA</span>
-                    <span class="banner-pill-item"><i class="fa-solid fa-qrcode"></i> Bukti Tiket PDF &amp; QR Resmi</span>
+                    <span class="banner-pill-item"><i class="fa-solid fa-qrcode"></i> Bukti Tiket PDF &amp; QR
+                        Resmi</span>
                 </div>
             </div>
         </div>
@@ -109,7 +115,8 @@
                 <i class="fa-solid fa-pen-to-square"></i> <span>Buat Laporan Kerusakan</span>
             </button>
             <button type="button" class="tab-btn" id="tabRiwayat" onclick="switchUserTab('riwayat')">
-                <i class="fa-solid fa-clock-rotate-left"></i> <span>Riwayat Laporan <span id="myReportsBadge" class="badge-pill-count">0</span></span>
+                <i class="fa-solid fa-clock-rotate-left"></i> <span>Riwayat Laporan <span id="myReportsBadge"
+                        class="badge-pill-count">0</span></span>
             </button>
             <button type="button" class="tab-btn" id="tabLacak" onclick="switchUserTab('lacak')">
                 <i class="fa-solid fa-magnifying-glass-location"></i> <span>Lacak Status Tiket</span>
@@ -120,10 +127,13 @@
         <div id="sectionForm" class="glass-card form-card">
             <div class="form-card-header">
                 <div>
-                    <h2 style="font-size: 20px; font-weight: 800; display:flex; align-items:center; gap:10px; margin:0;">
-                        <i class="fa-solid fa-clipboard-list" style="color:var(--gold);"></i> Formulir Pengaduan Fasilitas
+                    <h2
+                        style="font-size: 20px; font-weight: 800; display:flex; align-items:center; gap:10px; margin:0;">
+                        <i class="fa-solid fa-clipboard-list" style="color:var(--gold);"></i> Formulir Pengaduan
+                        Fasilitas
                     </h2>
-                    <p style="color:var(--text-muted); font-size:13px; margin-top:4px; margin-bottom:0;">Ikuti 3 bagian terstruktur di bawah agar teknisi sarpras dapat menindaklanjuti di titik ruangan yang tepat.</p>
+                    <p style="color:var(--text-muted); font-size:13px; margin-top:4px; margin-bottom:0;">Ikuti 3 bagian
+                        terstruktur di bawah agar teknisi sarpras dapat menindaklanjuti di titik ruangan yang tepat.</p>
                 </div>
                 <div class="form-steps-indicator">
                     <span class="step-indicator-pill"><span class="num">1</span> Identitas</span>
@@ -133,7 +143,7 @@
             </div>
 
             <form id="publicReportForm" onsubmit="handlePublicFormSubmit(event)">
-                
+
                 <!-- PANEL LANGKAH 1: IDENTITAS PELAPOR -->
                 <div class="form-step-panel">
                     <div class="form-grid">
@@ -153,14 +163,16 @@
                                 <div class="sso-identity-col">
                                     <div class="sso-avatar-wrap">
                                         <img id="ssoUserPhotoImg" src="../assets/img/avatar_dummy.svg" alt="Avatar"
-                                             onerror="this.onerror=null; this.src='../assets/img/avatar_dummy.svg';">
-                                        <span class="sso-status-dot" title="Status Akun Aktif &amp; Terverifikasi"></span>
+                                            onerror="this.onerror=null; this.src='../assets/img/avatar_dummy.svg';">
+                                        <span class="sso-status-dot"
+                                            title="Status Akun Aktif &amp; Terverifikasi"></span>
                                     </div>
 
                                     <div class="sso-identity-meta">
                                         <div class="sso-badges-desktop">
                                             <span class="sso-pill-badge">
-                                                <i class="fa-solid fa-circle-check"></i> Terverifikasi Portal Kampus UINSSC
+                                                <i class="fa-solid fa-circle-check"></i> Terverifikasi Portal Kampus
+                                                UINSSC
                                             </span>
                                             <span id="ssoUserRoleBadgeDesktop" class="sso-role-tag">
                                                 Mahasiswa Aktif
@@ -169,7 +181,8 @@
                                         <h3 id="ssoUserNameDetail">Ahmad Rizki Pratama</h3>
                                         <div class="sso-id-subrow">
                                             <span id="ssoNimDetail" class="sso-nim-badge">
-                                                <i class="fa-solid fa-id-badge" style="color:var(--gold);"></i> NIM: <strong id="ssoNimText">220101892</strong>
+                                                <i class="fa-solid fa-id-badge" style="color:var(--gold);"></i> NIM:
+                                                <strong id="ssoNimText">220101892</strong>
                                             </span>
                                             <span id="ssoUserRoleBadge" class="sso-role-tag sso-role-mobile">
                                                 Mahasiswa Aktif
@@ -219,7 +232,8 @@
 
                         <div class="form-group" id="fieldNamaGroup">
                             <div class="form-label-row">
-                                <label for="namaPelapor" style="margin:0;">Nama Lengkap <span class="req">*</span></label>
+                                <label for="namaPelapor" style="margin:0;">Nama Lengkap <span
+                                        class="req">*</span></label>
                                 <span id="badgeNamaSso" class="sso-pill-badge" style="display:none;">
                                     <i class="fa-solid fa-circle-check"></i> Otomatis dari Portal
                                 </span>
@@ -232,14 +246,16 @@
 
                         <div class="form-group" id="fieldNimGroup">
                             <div class="form-label-row">
-                                <label for="nimNip" style="margin:0;">NIM / NIP / ID Staf <span class="req">*</span></label>
+                                <label for="nimNip" style="margin:0;">NIM / NIP / ID Staf <span
+                                        class="req">*</span></label>
                                 <span id="badgeNimSso" class="sso-pill-badge" style="display:none;">
                                     <i class="fa-solid fa-lock"></i> Terkunci Resmi (SSO)
                                 </span>
                             </div>
                             <div class="input-wrapper">
                                 <i class="fa-solid fa-id-badge"></i>
-                                <input type="text" id="nimNip" placeholder="Contoh: 220101892 (NIM) atau 1985... (NIP)" required>
+                                <input type="text" id="nimNip" placeholder="Contoh: 220101892 (NIM) atau 1985... (NIP)"
+                                    required>
                             </div>
                         </div>
 
@@ -258,7 +274,8 @@
 
                         <div class="form-group">
                             <div class="form-label-row">
-                                <label for="kontakPelapor" style="margin:0;">No. WhatsApp / HP Aktif <span class="req">*</span></label>
+                                <label for="kontakPelapor" style="margin:0;">No. WhatsApp / HP Aktif <span
+                                        class="req">*</span></label>
                                 <span id="badgeKontakSso" class="sso-pill-badge" style="display:none;">
                                     <i class="fa-solid fa-circle-check"></i> Dari Profil Kampus
                                 </span>
@@ -285,11 +302,16 @@
                                 <i class="fa-solid fa-building"></i>
                                 <select id="gedung" required onchange="handleGedungSelectChange()">
                                     <option value="" selected disabled>-- Pilih Kawasan Kampus --</option>
-                                    <option value="Kawasan Kampus Utama" data-zone="kampus_utama">Kawasan Kampus Utama</option>
-                                    <option value="Kawasan Gedung Cyber" data-zone="gedung_cyber">Kawasan Gedung Cyber</option>
-                                    <option value="Kawasan Lab Saladara" data-zone="area_saladara">Kawasan Lab Saladara</option>
-                                    <option value="Kawasan Kampus Sebrang" data-zone="gedung_seberang">Kawasan Kampus Sebrang</option>
-                                    <option value="Kawasan Pascasarjana & Mahad" data-zone="pascasarjana_mahad">Kawasan Pascasarjana &amp; Mahad</option>
+                                    <option value="Kawasan Kampus Utama" data-zone="kampus_utama">Kawasan Kampus Utama
+                                    </option>
+                                    <option value="Kawasan Gedung Cyber" data-zone="gedung_cyber">Kawasan Gedung Cyber
+                                    </option>
+                                    <option value="Kawasan Lab Saladara" data-zone="area_saladara">Kawasan Lab Saladara
+                                    </option>
+                                    <option value="Kawasan Kampus Sebrang" data-zone="gedung_seberang">Kawasan Kampus
+                                        Sebrang</option>
+                                    <option value="Kawasan Pascasarjana & Mahad" data-zone="pascasarjana_mahad">Kawasan
+                                        Pascasarjana &amp; Mahad</option>
                                 </select>
                             </div>
                         </div>
@@ -298,7 +320,9 @@
                             <label for="ruangan">Nama Gedung / Ruangan Spesifik <span class="req">*</span></label>
                             <div class="input-wrapper">
                                 <i class="fa-solid fa-door-open"></i>
-                                <input type="text" id="ruangan" placeholder="Contoh: Gedung FITK Lt. 2 / Ruang Cyber 204" required onkeyup="checkDuplicateWarning()">
+                                <input type="text" id="ruangan"
+                                    placeholder="Contoh: Gedung FITK Lt. 2 / Ruang Cyber 204" required
+                                    onkeyup="checkDuplicateWarning()">
                             </div>
                         </div>
 
@@ -307,19 +331,25 @@
                             <div class="map-frame-card">
                                 <div class="map-frame-toolbar">
                                     <div>
-                                        <span style="font-size:13px; font-weight:800; color:var(--text-main); display:flex; align-items:center; gap:6px;">
-                                            <i class="fa-solid fa-crosshairs" style="color:var(--gold);"></i> Penentu Koordinat Presisi Peta Kampus <span class="req">*</span>
+                                        <span
+                                            style="font-size:13px; font-weight:800; color:var(--text-main); display:flex; align-items:center; gap:6px;">
+                                            <i class="fa-solid fa-crosshairs" style="color:var(--gold);"></i> Penentu
+                                            Koordinat Presisi Peta Kampus <span class="req">*</span>
                                         </span>
-                                        <small style="color:var(--text-muted); font-size:11.5px; display:block;">Klik pada peta atau geser pin ke titik gedung yang mengalami kerusakan.</small>
+                                        <small style="color:var(--text-muted); font-size:11.5px; display:block;">Klik
+                                            pada peta atau geser pin ke titik gedung yang mengalami kerusakan.</small>
                                     </div>
                                     <div class="map-toolbar-actions">
-                                        <button type="button" id="toggleMaskBtn" class="chip-btn map-toolbar-btn" onclick="toggleCampusMask()">
+                                        <button type="button" id="toggleMaskBtn" class="chip-btn map-toolbar-btn"
+                                            onclick="toggleCampusMask()">
                                             <i class="fa-solid fa-eye-slash"></i> Masking
                                         </button>
-                                        <button type="button" id="btnFocusCampus" class="chip-btn map-toolbar-btn btn-campus" onclick="focusMapToCampus()">
+                                        <button type="button" id="btnFocusCampus"
+                                            class="chip-btn map-toolbar-btn btn-campus" onclick="focusMapToCampus()">
                                             <i class="fa-solid fa-building-flag"></i> Area Kampus
                                         </button>
-                                        <button type="button" id="btnGpsLocation" class="chip-btn map-toolbar-btn btn-gps" onclick="getCurrentGPSLocation()">
+                                        <button type="button" id="btnGpsLocation"
+                                            class="chip-btn map-toolbar-btn btn-gps" onclick="getCurrentGPSLocation()">
                                             <i class="fa-solid fa-location-crosshairs"></i> GPS Saya
                                         </button>
                                     </div>
@@ -330,33 +360,41 @@
                                 <div id="mapCoordFooter" class="map-coord-footer">
                                     <div class="input-wrapper">
                                         <i class="fa-solid fa-location-dot"></i>
-                                        <input type="text" id="latInput" placeholder="Latitude (otomatis dari peta)" value="" readonly>
+                                        <input type="text" id="latInput" placeholder="Latitude (otomatis dari peta)"
+                                            value="" readonly>
                                     </div>
                                     <div class="input-wrapper">
                                         <i class="fa-solid fa-compass"></i>
-                                        <input type="text" id="lngInput" placeholder="Longitude (otomatis dari peta)" value="" readonly>
+                                        <input type="text" id="lngInput" placeholder="Longitude (otomatis dari peta)"
+                                            value="" readonly>
                                     </div>
                                     <div id="coordWarningMsg" class="coord-warning-msg" style="display:none;">
                                         <i class="fa-solid fa-triangle-exclamation"></i>
-                                        <span>Posisi di luar kawasan kampus UINSSC. Silakan tentukan titik di dalam area kampus.</span>
+                                        <span>Posisi di luar kawasan kampus UINSSC. Silakan tentukan titik di dalam area
+                                            kampus.</span>
                                     </div>
                                 </div>
                             </div>
 
                             <!-- Developer Polygon Tool (Hidden) -->
-                            <div class="hidden" style="margin-top: 14px; border: 1px dashed var(--gold); padding: 14px; border-radius: 12px;">
-                                <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+                            <div class="hidden"
+                                style="margin-top: 14px; border: 1px dashed var(--gold); padding: 14px; border-radius: 12px;">
+                                <div
+                                    style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
                                     <span style="font-size:13px; font-weight:700; color:var(--gold);">
                                         <i class="fa-solid fa-draw-polygon"></i> Alat Pembuat Polygon Area Kampus
                                     </span>
-                                    <button type="button" class="chip-btn" id="btnToggleDrawMode" onclick="togglePolygonDrawMode()">
+                                    <button type="button" class="chip-btn" id="btnToggleDrawMode"
+                                        onclick="togglePolygonDrawMode()">
                                         <i class="fa-solid fa-pen-ruler"></i> Aktifkan Mode Gambar Polygon
                                     </button>
                                 </div>
                                 <div id="drawModeTools" class="hidden" style="margin-top: 12px;">
                                     <div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:10px;">
-                                        <button type="button" class="btn btn-secondary" onclick="clearDrawnPolygon()">Bersihkan Titik</button>
-                                        <button type="button" class="btn btn-primary" onclick="copyPolygonCode()">Salin Kode Array</button>
+                                        <button type="button" class="btn btn-secondary"
+                                            onclick="clearDrawnPolygon()">Bersihkan Titik</button>
+                                        <button type="button" class="btn btn-primary" onclick="copyPolygonCode()">Salin
+                                            Kode Array</button>
                                     </div>
                                     <textarea id="polygonOutputCode" rows="4" readonly></textarea>
                                 </div>
@@ -391,11 +429,16 @@
                             </div>
 
                             <!-- Dynamic Input for Kategori Lainnya -->
-                            <div class="form-group hidden" id="kategoriLainnyaWrapper" style="margin-top: 10px; background: rgba(0,0,0,0.12); padding: 12px; border-radius: 10px; border: 1px dashed var(--border-color);">
-                                <label for="kategoriLainnyaInput" style="color:var(--gold); font-weight:700;"><i class="fa-solid fa-pen-to-square"></i> Nama / Jenis Fasilitas Lainnya <span class="req">*</span></label>
+                            <div class="form-group hidden" id="kategoriLainnyaWrapper"
+                                style="margin-top: 10px; background: rgba(0,0,0,0.12); padding: 12px; border-radius: 10px; border: 1px dashed var(--border-color);">
+                                <label for="kategoriLainnyaInput" style="color:var(--gold); font-weight:700;"><i
+                                        class="fa-solid fa-pen-to-square"></i> Nama / Jenis Fasilitas Lainnya <span
+                                        class="req">*</span></label>
                                 <div class="input-wrapper" style="margin-top:4px;">
                                     <i class="fa-solid fa-pen-clip"></i>
-                                    <input type="text" id="kategoriLainnyaInput" placeholder="Contoh: Lift, Kipas Dinding, Papan Tulis, Kunci Loker..." onkeyup="checkDuplicateWarning()">
+                                    <input type="text" id="kategoriLainnyaInput"
+                                        placeholder="Contoh: Lift, Kipas Dinding, Papan Tulis, Kunci Loker..."
+                                        onkeyup="checkDuplicateWarning()">
                                 </div>
                             </div>
                         </div>
@@ -417,35 +460,53 @@
                         <!-- Smart Duplicate Early Warning Box -->
                         <div id="duplicateWarningBox" class="alert-duplicate-warning hidden full-width">
                             <div style="display:flex; gap:12px; align-items:flex-start;">
-                                <i class="fa-solid fa-triangle-exclamation" style="font-size:22px; color:#f59e0b; margin-top:2px;"></i>
+                                <i class="fa-solid fa-triangle-exclamation"
+                                    style="font-size:22px; color:#f59e0b; margin-top:2px;"></i>
                                 <div style="flex:1;">
-                                    <strong style="color:#f59e0b; font-size:14px;"><i class="fa-solid fa-bell"></i> Perhatian: Terdeteksi Laporan Serupa di Ruangan Ini!</strong>
-                                    <p id="duplicateWarningText" style="font-size:13px; margin-top:4px; color:var(--text-main); line-height:1.5;"></p>
-                                    <span style="font-size:12px; color:var(--text-muted); display:block; margin-top:4px;">
-                                        <i class="fa-solid fa-circle-info"></i> Tim Sarpras sudah menerima laporan di lokasi tersebut. Jika kendala Anda sama, Anda tidak perlu mengirim duplikat.
+                                    <strong style="color:#f59e0b; font-size:14px;"><i class="fa-solid fa-bell"></i>
+                                        Perhatian: Terdeteksi Laporan Serupa di Ruangan Ini!</strong>
+                                    <p id="duplicateWarningText"
+                                        style="font-size:13px; margin-top:4px; color:var(--text-main); line-height:1.5;">
+                                    </p>
+                                    <span
+                                        style="font-size:12px; color:var(--text-muted); display:block; margin-top:4px;">
+                                        <i class="fa-solid fa-circle-info"></i> Tim Sarpras sudah menerima laporan di
+                                        lokasi tersebut. Jika kendala Anda sama, Anda tidak perlu mengirim duplikat.
                                     </span>
                                 </div>
                             </div>
                         </div>
 
                         <div class="form-group full-width">
-                            <label for="deskripsi">Deskripsi Kronologi / Detail Kerusakan <span class="req">*</span></label>
-                            <textarea id="deskripsi" rows="4" placeholder="Jelaskan kondisi fasilitas rusak secara spesifik (contoh: AC unit sebelah kanan meneteskan air deras di atas meja praktikum nomor 14)..." required></textarea>
+                            <label for="deskripsi">Deskripsi Kronologi / Detail Kerusakan <span
+                                    class="req">*</span></label>
+                            <textarea id="deskripsi" rows="4"
+                                placeholder="Jelaskan kondisi fasilitas rusak secara spesifik (contoh: AC unit sebelah kanan meneteskan air deras di atas meja praktikum nomor 14)..."
+                                required></textarea>
                         </div>
 
                         <div class="form-group full-width">
-                            <label>Unggah Foto Bukti Kondisi Fisik <span class="req">*</span> <small style="color:var(--gold); font-weight:700;">(Wajib Dilampirkan)</small></label>
-                            <div class="upload-dropzone" id="uploadDropzoneBox" onclick="document.getElementById('fileInput').click()">
-                                <input type="file" id="fileInput" accept="image/*" onchange="handleFileChange(event)" hidden>
+                            <label>Unggah Foto Bukti Kondisi Fisik <span class="req">*</span> <small
+                                    style="color:var(--gold); font-weight:700;">(Wajib Dilampirkan)</small></label>
+                            <div class="upload-dropzone" id="uploadDropzoneBox"
+                                onclick="document.getElementById('fileInput').click()">
+                                <input type="file" id="fileInput" accept="image/*" onchange="handleFileChange(event)"
+                                    hidden>
                                 <div id="dropzoneText">
                                     <i class="fa-solid fa-cloud-arrow-up"></i>
-                                    <p style="font-size:14px; color:var(--text-main); margin-bottom:4px;"><strong>Klik di sini untuk memilih foto bukti kerusakan <span class="req">*</span></strong></p>
-                                    <span style="font-size:12px; color:var(--text-muted);">Mendukung tangkapan kamera langsung atau galeri (JPG / PNG • Maks 5MB)</span>
+                                    <p style="font-size:14px; color:var(--text-main); margin-bottom:4px;"><strong>Klik
+                                            di sini untuk memilih foto bukti kerusakan <span
+                                                class="req">*</span></strong></p>
+                                    <span style="font-size:12px; color:var(--text-muted);">Mendukung tangkapan kamera
+                                        langsung atau galeri (JPG / PNG • Maks 5MB)</span>
                                 </div>
                                 <div id="previewBox" class="hidden">
-                                    <img id="imgPreview" src="" alt="Preview Foto" style="max-height:180px; border-radius:10px; margin-bottom:10px; border:1px solid var(--border-color); box-shadow:var(--shadow-sm);">
+                                    <img id="imgPreview" src="" alt="Preview Foto"
+                                        style="max-height:180px; border-radius:10px; margin-bottom:10px; border:1px solid var(--border-color); box-shadow:var(--shadow-sm);">
                                     <br>
-                                    <button type="button" class="btn btn-secondary" style="padding:6px 14px; font-size:12px; min-height:36px;" onclick="removeFoto(event)">
+                                    <button type="button" class="btn btn-secondary"
+                                        style="padding:6px 14px; font-size:12px; min-height:36px;"
+                                        onclick="removeFoto(event)">
                                         <i class="fa-solid fa-rotate"></i> Ganti / Hapus Foto
                                     </button>
                                 </div>
@@ -456,11 +517,13 @@
 
                 <!-- Action Buttons Footer -->
                 <div class="form-footer-actions">
-                    <button type="reset" id="btnResetForm" class="btn btn-secondary btn-form-reset" onclick="removeFoto(); handleKategoriChange(); resetReportLocationMarker();">
+                    <button type="reset" id="btnResetForm" class="btn btn-secondary btn-form-reset"
+                        onclick="removeFoto(); handleKategoriChange(); resetReportLocationMarker();">
                         <i class="fa-solid fa-eraser"></i> Bersihkan Formulir
                     </button>
                     <div class="form-footer-primary-actions">
-                        <button type="button" id="btnReviewReport" class="btn btn-secondary btn-form-review" onclick="openReviewBeforeSubmit()">
+                        <button type="button" id="btnReviewReport" class="btn btn-secondary btn-form-review"
+                            onclick="openReviewBeforeSubmit()">
                             <i class="fa-solid fa-eye"></i> Pratinjau
                         </button>
                         <button type="submit" id="btnSubmitReport" class="btn btn-primary btn-form-submit">
@@ -473,26 +536,35 @@
 
         <!-- TAB 2: RIWAYAT LAPORAN SAYA -->
         <div id="sectionRiwayat" class="glass-card hidden" style="padding: 32px; width: 100%;">
-            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:22px; border-bottom:1px solid var(--border-color); padding-bottom:16px;">
+            <div
+                style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:22px; border-bottom:1px solid var(--border-color); padding-bottom:16px;">
                 <div>
                     <h2 style="font-size:20px; font-weight:800; display:flex; align-items:center; gap:10px; margin:0;">
-                        <i class="fa-solid fa-clock-rotate-left" style="color:var(--gold);"></i> Riwayat &amp; Tinjau Laporan Saya
+                        <i class="fa-solid fa-clock-rotate-left" style="color:var(--gold);"></i> Riwayat &amp; Tinjau
+                        Laporan Saya
                     </h2>
-                    <p style="color:var(--text-muted); font-size:13.5px; margin-top:4px; margin-bottom:0;">Daftar pengaduan yang telah Anda ajukan beserta status penanganan dan unduhan PDF tiket resmi.</p>
+                    <p style="color:var(--text-muted); font-size:13.5px; margin-top:4px; margin-bottom:0;">Daftar
+                        pengaduan yang telah Anda ajukan beserta status penanganan dan unduhan PDF tiket resmi.</p>
                 </div>
-                <button type="button" class="btn btn-secondary" onclick="renderMyReportsHistory()" style="min-height:38px; padding:0 14px; font-size:12.5px;">
+                <button type="button" class="btn btn-secondary" onclick="renderMyReportsHistory()"
+                    style="min-height:38px; padding:0 14px; font-size:12.5px;">
                     <i class="fa-solid fa-arrows-rotate"></i> Segarkan Riwayat
                 </button>
             </div>
 
             <!-- Filter / Lookup Bar by NIM -->
-            <div class="form-step-panel" style="padding:14px 18px; margin-bottom:22px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
+            <div class="form-step-panel"
+                style="padding:14px 18px; margin-bottom:22px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
                 <span style="font-size:13px; color:var(--text-main); display:flex; align-items:center; gap:8px;">
-                    <i class="fa-solid fa-id-card-clip" style="color:var(--gold);"></i> Menampilkan tiket yang tercatat pada sesi &amp; perangkat Anda.
+                    <i class="fa-solid fa-id-card-clip" style="color:var(--gold);"></i> Menampilkan tiket yang tercatat
+                    pada sesi &amp; perangkat Anda.
                 </span>
                 <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
-                    <input type="text" id="filterMyReportNIM" placeholder="Cari riwayat via NIM / NIP..." style="width:220px; min-height:38px; padding:7px 14px; font-size:12.5px; border-radius:99px;" onkeyup="if(event.key==='Enter') searchMyReportsByNIM()">
-                    <button type="button" class="chip-btn" onclick="searchMyReportsByNIM()" style="background:var(--primary); color:#fff; border-color:var(--gold); min-height:38px; padding:0 16px;">
+                    <input type="text" id="filterMyReportNIM" placeholder="Cari riwayat via NIM / NIP..."
+                        style="width:220px; min-height:38px; padding:7px 14px; font-size:12.5px; border-radius:99px;"
+                        onkeyup="if(event.key==='Enter') searchMyReportsByNIM()">
+                    <button type="button" class="chip-btn" onclick="searchMyReportsByNIM()"
+                        style="background:var(--primary); color:#fff; border-color:var(--gold); min-height:38px; padding:0 16px;">
                         <i class="fa-solid fa-magnifying-glass"></i> Tarik Data
                     </button>
                 </div>
@@ -506,28 +578,36 @@
         <!-- TAB 3: LACAK TIKET -->
         <div id="sectionLacak" class="glass-card tracker-box hidden" style="padding: 36px 32px; width: 100%;">
             <div style="text-align:center; margin-bottom:22px;">
-                <div style="width:52px; height:52px; border-radius:14px; background:var(--gold-light); border:1px solid var(--gold); color:var(--gold); font-size:22px; display:inline-flex; align-items:center; justify-content:center; margin-bottom:12px;">
+                <div
+                    style="width:52px; height:52px; border-radius:14px; background:var(--gold-light); border:1px solid var(--gold); color:var(--gold); font-size:22px; display:inline-flex; align-items:center; justify-content:center; margin-bottom:12px;">
                     <i class="fa-solid fa-magnifying-glass-location"></i>
                 </div>
                 <h2 style="font-size:22px; font-weight:800; margin:0;">Lacak Status Penanganan Tiket</h2>
-                <p style="color:var(--text-muted); font-size:13.5px; margin-top:6px;">Masukkan Nomor Tiket Resmi atau NIM / NIP pelapor untuk melihat progres real-time.</p>
+                <p style="color:var(--text-muted); font-size:13.5px; margin-top:6px;">Masukkan Nomor Tiket Resmi atau
+                    NIM / NIP pelapor untuk melihat progres real-time.</p>
             </div>
 
             <div class="lacak-search-hero">
                 <div style="display:flex; gap:10px; flex-wrap:wrap;">
                     <div class="input-wrapper" style="flex:1; min-width:220px;">
                         <i class="fa-solid fa-ticket"></i>
-                        <input type="text" id="ticketSearchInput" placeholder="Ketik Kode Tiket (misal: TRK-2026-001) atau NIM..." onkeyup="if(event.key==='Enter') doSearchTicket()">
+                        <input type="text" id="ticketSearchInput"
+                            placeholder="Ketik Kode Tiket (misal: TRK-2026-001) atau NIM..."
+                            onkeyup="if(event.key==='Enter') doSearchTicket()">
                     </div>
                     <button type="button" class="btn btn-primary" onclick="doSearchTicket()" style="padding:0 24px;">
                         <i class="fa-solid fa-search"></i> Lacak Sekarang
                     </button>
                 </div>
-                <div style="margin-top:12px; display:flex; align-items:center; gap:8px; flex-wrap:wrap; font-size:11.5px; color:var(--text-muted);">
+                <div
+                    style="margin-top:12px; display:flex; align-items:center; gap:8px; flex-wrap:wrap; font-size:11.5px; color:var(--text-muted);">
                     <span>Contoh cepat:</span>
-                    <button type="button" class="chip-btn" style="padding:3px 10px; font-size:11px;" onclick="document.getElementById('ticketSearchInput').value='TRK-2026-001'; doSearchTicket();">TRK-2026-001</button>
-                    <button type="button" class="chip-btn" style="padding:3px 10px; font-size:11px;" onclick="document.getElementById('ticketSearchInput').value='TRK-2026-002'; doSearchTicket();">TRK-2026-002</button>
-                    <button type="button" class="chip-btn" style="padding:3px 10px; font-size:11px;" onclick="document.getElementById('ticketSearchInput').value='TRK-2026-003'; doSearchTicket();">TRK-2026-003</button>
+                    <button type="button" class="chip-btn" style="padding:3px 10px; font-size:11px;"
+                        onclick="document.getElementById('ticketSearchInput').value='TRK-2026-001'; doSearchTicket();">TRK-2026-001</button>
+                    <button type="button" class="chip-btn" style="padding:3px 10px; font-size:11px;"
+                        onclick="document.getElementById('ticketSearchInput').value='TRK-2026-002'; doSearchTicket();">TRK-2026-002</button>
+                    <button type="button" class="chip-btn" style="padding:3px 10px; font-size:11px;"
+                        onclick="document.getElementById('ticketSearchInput').value='TRK-2026-003'; doSearchTicket();">TRK-2026-003</button>
                 </div>
             </div>
 
@@ -539,30 +619,41 @@
     <!-- Institutional Footer -->
     <footer class="app-footer">
         <div class="container">
-            &copy; 2026 <strong>UIN Siber Syekh Nurjati Cirebon (UINSSC)</strong> &bull; Sistem Informasi Manajemen Pengaduan &amp; Layanan Sarpras.
+            &copy; 2026 <strong>UIN Siber Syekh Nurjati Cirebon (UINSSC)</strong> &bull; Sistem Informasi Manajemen
+            Pengaduan &amp; Layanan Sarpras.
         </div>
     </footer>
 
     <!-- Modal Ticket Success -->
     <div id="successModal" class="modal-overlay hidden">
         <div class="modal-content">
-            <div style="font-size:56px; color:#22c55e; margin-bottom:10px;"><i class="fa-solid fa-circle-check"></i></div>
+            <div style="font-size:56px; color:#22c55e; margin-bottom:10px;"><i class="fa-solid fa-circle-check"></i>
+            </div>
             <h2 style="font-weight:800; font-size:22px;">Laporan Berhasil Terkirim!</h2>
-            <p style="color:var(--text-muted); font-size:14px; margin-top:6px;">Simpan Kode Tiket di bawah untuk melacak progres perbaikan:</p>
+            <p style="color:var(--text-muted); font-size:14px; margin-top:6px;">Simpan Kode Tiket di bawah untuk melacak
+                progres perbaikan:</p>
 
-            <div style="background:var(--primary-light); border:1px dashed var(--gold); padding:16px; border-radius:12px; margin:20px 0;">
+            <div
+                style="background:var(--primary-light); border:1px dashed var(--gold); padding:16px; border-radius:12px; margin:20px 0;">
                 <span style="font-size:12px; color:var(--text-muted); display:block;">Kode Tiket Laporan Anda:</span>
-                <strong id="createdTicketDisplay" style="font-size:26px; color:var(--gold); font-family:monospace;">TRK-2026-000</strong>
+                <strong id="createdTicketDisplay"
+                    style="font-size:26px; color:var(--gold); font-family:monospace;">TRK-2026-000</strong>
                 <div id="ticketQrContainer" style="display:flex; justify-content:center; margin-top:12px;">
-                    <div id="ticketQrBox" style="background:#ffffff; padding:8px; border-radius:10px; display:inline-block; box-shadow:0 2px 10px rgba(0,0,0,0.15);"></div>
+                    <div id="ticketQrBox"
+                        style="background:#ffffff; padding:8px; border-radius:10px; display:inline-block; box-shadow:0 2px 10px rgba(0,0,0,0.15);">
+                    </div>
                 </div>
-                <small style="font-size:11px; color:var(--text-muted); display:block; margin-top:6px;"><i class="fa-solid fa-qrcode"></i> Scan QR Code ini untuk pelacakan cepat via HP teknisi</small>
+                <small style="font-size:11px; color:var(--text-muted); display:block; margin-top:6px;"><i
+                        class="fa-solid fa-qrcode"></i> Scan QR Code ini untuk pelacakan cepat via HP teknisi</small>
             </div>
 
             <div style="display:flex; justify-content:center; gap:10px; flex-wrap:wrap;">
-                <button type="button" class="btn btn-secondary" onclick="copyCreatedCode()"><i class="fa-solid fa-copy"></i> Salin Kode</button>
-                <button type="button" class="btn btn-primary" onclick="downloadOfficialTicketPDF(lastTicketCode)"><i class="fa-solid fa-file-pdf"></i> Unduh PDF Resmi</button>
-                <button type="button" class="btn btn-secondary" onclick="closeSuccessModal()"><i class="fa-solid fa-arrow-right"></i> Lacak Status</button>
+                <button type="button" class="btn btn-secondary" onclick="copyCreatedCode()"><i
+                        class="fa-solid fa-copy"></i> Salin Kode</button>
+                <button type="button" class="btn btn-primary" onclick="downloadOfficialTicketPDF(lastTicketCode)"><i
+                        class="fa-solid fa-file-pdf"></i> Unduh PDF Resmi</button>
+                <button type="button" class="btn btn-secondary" onclick="closeSuccessModal()"><i
+                        class="fa-solid fa-arrow-right"></i> Lacak Status</button>
             </div>
         </div>
     </div>
@@ -574,20 +665,25 @@
                 <h3 style="font-size:18px; font-weight:800; display:flex; align-items:center; gap:8px; margin:0;">
                     <i class="fa-solid fa-clipboard-check" style="color:var(--gold);"></i> Tinjau Formulir Laporan
                 </h3>
-                <button type="button" onclick="closeReviewModal()" style="border:none; background:transparent; font-size:18px; cursor:pointer; color:var(--text-muted);"><i class="fa-solid fa-xmark"></i></button>
+                <button type="button" onclick="closeReviewModal()"
+                    style="border:none; background:transparent; font-size:18px; cursor:pointer; color:var(--text-muted);"><i
+                        class="fa-solid fa-xmark"></i></button>
             </div>
 
             <p style="font-size:13px; color:var(--text-muted); margin-bottom:16px;">
                 Mohon periksa kembali data pengaduan Anda di bawah ini sebelum dikirim ke sistem Sarpras Kampus.
             </p>
 
-            <div id="reviewModalContent" style="background:var(--bg-input); border:1px solid var(--border-color); border-radius:12px; padding:18px; font-size:13px; line-height:1.7;">
+            <div id="reviewModalContent"
+                style="background:var(--bg-input); border:1px solid var(--border-color); border-radius:12px; padding:18px; font-size:13px; line-height:1.7;">
                 <!-- Diisi secara dinamis oleh JS -->
             </div>
 
             <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:20px; flex-wrap:wrap;">
-                <button type="button" class="btn btn-secondary" onclick="closeReviewModal()"><i class="fa-solid fa-pen"></i> Edit Kembali</button>
-                <button type="button" id="btnConfirmSubmit" class="btn btn-primary" onclick="confirmSubmitReport()"><i class="fa-solid fa-check-double"></i> Ya, Konfirmasi &amp; Kirim</button>
+                <button type="button" class="btn btn-secondary" onclick="closeReviewModal()"><i
+                        class="fa-solid fa-pen"></i> Edit Kembali</button>
+                <button type="button" id="btnConfirmSubmit" class="btn btn-primary" onclick="confirmSubmitReport()"><i
+                        class="fa-solid fa-check-double"></i> Ya, Konfirmasi &amp; Kirim</button>
             </div>
         </div>
     </div>
@@ -597,18 +693,24 @@
         <div class="modal-content" style="max-width:680px; text-align:left;">
             <div class="modal-header">
                 <div>
-                    <span id="detailModalTicketCode" style="font-family:monospace; font-weight:800; color:var(--gold); font-size:16px;">TRK-2026-000</span>
-                    <h3 id="detailModalTitle" style="font-size:18px; font-weight:800; margin-top:2px;">Rincian Pengaduan Fasilitas</h3>
+                    <span id="detailModalTicketCode"
+                        style="font-family:monospace; font-weight:800; color:var(--gold); font-size:16px;">TRK-2026-000</span>
+                    <h3 id="detailModalTitle" style="font-size:18px; font-weight:800; margin-top:2px;">Rincian Pengaduan
+                        Fasilitas</h3>
                 </div>
-                <button type="button" onclick="closeDetailReviewModal()" style="border:none; background:transparent; font-size:18px; cursor:pointer; color:var(--text-muted);"><i class="fa-solid fa-xmark"></i></button>
+                <button type="button" onclick="closeDetailReviewModal()"
+                    style="border:none; background:transparent; font-size:18px; cursor:pointer; color:var(--text-muted);"><i
+                        class="fa-solid fa-xmark"></i></button>
             </div>
 
             <div id="detailModalBody" style="max-height:60vh; overflow-y:auto; padding-right:6px;">
                 <!-- Diisi secara dinamis oleh JS -->
             </div>
 
-            <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:20px; border-top:1px dashed var(--border-color); padding-top:16px; flex-wrap:wrap;">
-                <button type="button" id="detailModalPrintBtn" class="btn btn-secondary"><i class="fa-solid fa-print"></i> Cetak Bukti PDF</button>
+            <div
+                style="display:flex; justify-content:flex-end; gap:10px; margin-top:20px; border-top:1px dashed var(--border-color); padding-top:16px; flex-wrap:wrap;">
+                <button type="button" id="detailModalPrintBtn" class="btn btn-secondary"><i
+                        class="fa-solid fa-print"></i> Cetak Bukti PDF</button>
                 <button type="button" class="btn btn-primary" onclick="closeDetailReviewModal()">Tutup</button>
             </div>
         </div>
@@ -617,12 +719,16 @@
     <!-- MODAL PANDUAN TIMELINE PENGADUAN & ALUR SISTEM -->
     <div id="helpModal" class="modal-overlay hidden" onclick="closeHelpModalOnBackdrop(event)">
         <div class="modal-card modal-timeline-card">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; border-bottom: 1px solid var(--border-color); padding-bottom: 12px;">
-                <h3 style="font-size: 18px; font-weight: 800; color: var(--text-main); margin:0; display:flex; align-items:center; gap:8px;">
-                    <i class="fa-solid fa-timeline" style="color: var(--gold);"></i> Panduan Alur Pelaporan &amp; Peran Sistem
+            <div
+                style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; border-bottom: 1px solid var(--border-color); padding-bottom: 12px;">
+                <h3
+                    style="font-size: 18px; font-weight: 800; color: var(--text-main); margin:0; display:flex; align-items:center; gap:8px;">
+                    <i class="fa-solid fa-timeline" style="color: var(--gold);"></i> Panduan Alur Pelaporan &amp; Peran
+                    Sistem
                 </h3>
                 <button type="button" onclick="closeHelpModal()"
-                    style="background: none; border: none; font-size: 20px; color: var(--text-muted); cursor: pointer;" title="Tutup Modal Panduan">
+                    style="background: none; border: none; font-size: 20px; color: var(--text-muted); cursor: pointer;"
+                    title="Tutup Modal Panduan">
                     <i class="fa-solid fa-xmark"></i>
                 </button>
             </div>
@@ -646,17 +752,33 @@
                                 <div class="accordion" id="alwaysOpen-1">
                                     <div class="accordion-item">
                                         <p class="accordion-header" style="margin:0;">
-                                            <button class="accordion-button fw-bold justify-content-center" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                                <i class="fa-solid fa-lightbulb fa-lg me-2" style="color: var(--gold);"></i>1. Identifikasi &amp; Lapor (User / Civitas)
+                                            <button class="accordion-button fw-bold justify-content-center"
+                                                type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne"
+                                                aria-expanded="true" aria-controls="collapseOne">
+                                                <i class="fa-solid fa-lightbulb fa-lg me-2"
+                                                    style="color: var(--gold);"></i>1. Identifikasi &amp; Lapor (User /
+                                                Civitas)
                                             </button>
                                         </p>
                                         <div id="collapseOne" class="accordion-collapse collapse show">
                                             <div class="accordion-body">
-                                                <p class="fw-light p-2" style="margin-bottom: 8px;">Civitas akademika (Mahasiswa, Dosen, Tendik) yang mendeteksi kendala atau kerusakan sarpras kampus dapat langsung membuat laporan melalui portal pelapor. Sistem menyediakan form terstruktur dengan fitur unggah foto bukti kerusakan, deskripsi permasalahan, dan deteksi koordinat GPS otomatis via Peta Geofencing 5 Kawasan Kampus UINSSC.</p>
-                                                <div style="margin: 4px 8px 10px; display: flex; gap: 6px; flex-wrap: wrap;">
-                                                    <span style="font-size: 11px; padding: 3px 8px; border-radius: 6px; background: rgba(197, 146, 53, 0.15); color: var(--gold); font-weight: 600;"><i class="fa-solid fa-camera"></i> Foto Bukti</span>
-                                                    <span style="font-size: 11px; padding: 3px 8px; border-radius: 6px; background: rgba(197, 146, 53, 0.15); color: var(--gold); font-weight: 600;"><i class="fa-solid fa-location-dot"></i> Geofencing GIS</span>
-                                                    <span style="font-size: 11px; padding: 3px 8px; border-radius: 6px; background: rgba(197, 146, 53, 0.15); color: var(--gold); font-weight: 600;"><i class="fa-solid fa-ticket"></i> Kode TRK &amp; QR</span>
+                                                <p class="fw-light p-2" style="margin-bottom: 8px;">Civitas akademika
+                                                    (Mahasiswa, Dosen, Tendik) yang mendeteksi kendala atau kerusakan
+                                                    sarpras kampus dapat langsung membuat laporan melalui portal
+                                                    pelapor. Sistem menyediakan form terstruktur dengan fitur unggah
+                                                    foto bukti kerusakan, deskripsi permasalahan, dan deteksi koordinat
+                                                    GPS otomatis via Peta Geofencing 5 Kawasan Kampus UINSSC.</p>
+                                                <div
+                                                    style="margin: 4px 8px 10px; display: flex; gap: 6px; flex-wrap: wrap;">
+                                                    <span
+                                                        style="font-size: 11px; padding: 3px 8px; border-radius: 6px; background: rgba(197, 146, 53, 0.15); color: var(--gold); font-weight: 600;"><i
+                                                            class="fa-solid fa-camera"></i> Foto Bukti</span>
+                                                    <span
+                                                        style="font-size: 11px; padding: 3px 8px; border-radius: 6px; background: rgba(197, 146, 53, 0.15); color: var(--gold); font-weight: 600;"><i
+                                                            class="fa-solid fa-location-dot"></i> Geofencing GIS</span>
+                                                    <span
+                                                        style="font-size: 11px; padding: 3px 8px; border-radius: 6px; background: rgba(197, 146, 53, 0.15); color: var(--gold); font-weight: 600;"><i
+                                                            class="fa-solid fa-ticket"></i> Kode TRK &amp; QR</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -664,7 +786,8 @@
                                 </div>
                                 <div class="card-footer">
                                     <div class="icons d-flex justify-content-center m-3">
-                                        <a class="icon-link" title="Panduan Pelapor" aria-label="More Info" href="javascript:void(0)">
+                                        <a class="icon-link" title="Panduan Pelapor" aria-label="More Info"
+                                            href="javascript:void(0)">
                                             <i class="fa-solid fa-info fa-md"></i>
                                         </a>
                                     </div>
@@ -681,17 +804,33 @@
                                 <div class="accordion" id="alwaysOpen-2">
                                     <div class="accordion-item">
                                         <p class="accordion-header" style="margin:0;">
-                                            <button class="accordion-button fw-bold justify-content-center" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-                                                <i class="fa-solid fa-signs-post fa-lg me-2" style="color: #2dd4bf;"></i>2. Verifikasi &amp; Disposisi (Admin Sarpras)
+                                            <button class="accordion-button fw-bold justify-content-center"
+                                                type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo"
+                                                aria-expanded="true" aria-controls="collapseTwo">
+                                                <i class="fa-solid fa-signs-post fa-lg me-2"
+                                                    style="color: #2dd4bf;"></i>2. Verifikasi &amp; Disposisi (Admin
+                                                Sarpras)
                                             </button>
                                         </p>
                                         <div id="collapseTwo" class="accordion-collapse collapse show">
                                             <div class="accordion-body">
-                                                <p class="fw-light p-2" style="margin-bottom: 8px;">Admin Sarpras memvalidasi tiket masuk melalui Dasbor Manajemen. Sistem memeriksa deteksi duplikasi pintar (smart anti-spam) agar tidak terjadi pengaduan ganda, menetapkan tingkat prioritas serta target SLA (Service Level Agreement), lalu mendisposisikan tugas ke teknisi spesialis terkait dengan notifikasi instan.</p>
-                                                <div style="margin: 4px 8px 10px; display: flex; gap: 6px; flex-wrap: wrap;">
-                                                    <span style="font-size: 11px; padding: 3px 8px; border-radius: 6px; background: rgba(45, 212, 191, 0.15); color: #2dd4bf; font-weight: 600;"><i class="fa-solid fa-shield-virus"></i> Smart Anti-Spam</span>
-                                                    <span style="font-size: 11px; padding: 3px 8px; border-radius: 6px; background: rgba(45, 212, 191, 0.15); color: #2dd4bf; font-weight: 600;"><i class="fa-solid fa-stopwatch"></i> Target SLA Waktu</span>
-                                                    <span style="font-size: 11px; padding: 3px 8px; border-radius: 6px; background: rgba(45, 212, 191, 0.15); color: #2dd4bf; font-weight: 600;"><i class="fa-brands fa-whatsapp"></i> Disposisi Teknisi</span>
+                                                <p class="fw-light p-2" style="margin-bottom: 8px;">Admin Sarpras
+                                                    memvalidasi tiket masuk melalui Dasbor Manajemen. Sistem memeriksa
+                                                    deteksi duplikasi pintar (smart anti-spam) agar tidak terjadi
+                                                    pengaduan ganda, menetapkan tingkat prioritas serta target SLA
+                                                    (Service Level Agreement), lalu mendisposisikan tugas ke teknisi
+                                                    spesialis terkait dengan notifikasi instan.</p>
+                                                <div
+                                                    style="margin: 4px 8px 10px; display: flex; gap: 6px; flex-wrap: wrap;">
+                                                    <span
+                                                        style="font-size: 11px; padding: 3px 8px; border-radius: 6px; background: rgba(45, 212, 191, 0.15); color: #2dd4bf; font-weight: 600;"><i
+                                                            class="fa-solid fa-shield-virus"></i> Smart Anti-Spam</span>
+                                                    <span
+                                                        style="font-size: 11px; padding: 3px 8px; border-radius: 6px; background: rgba(45, 212, 191, 0.15); color: #2dd4bf; font-weight: 600;"><i
+                                                            class="fa-solid fa-stopwatch"></i> Target SLA Waktu</span>
+                                                    <span
+                                                        style="font-size: 11px; padding: 3px 8px; border-radius: 6px; background: rgba(45, 212, 191, 0.15); color: #2dd4bf; font-weight: 600;"><i
+                                                            class="fa-brands fa-whatsapp"></i> Disposisi Teknisi</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -699,7 +838,8 @@
                                 </div>
                                 <div class="card-footer">
                                     <div class="icons d-flex justify-content-center m-3">
-                                        <a class="icon-link" title="Panduan Admin" aria-label="More Info" href="javascript:void(0)">
+                                        <a class="icon-link" title="Panduan Admin" aria-label="More Info"
+                                            href="javascript:void(0)">
                                             <i class="fa-solid fa-info fa-md"></i>
                                         </a>
                                     </div>
@@ -716,17 +856,35 @@
                                 <div class="accordion" id="alwaysOpen-3">
                                     <div class="accordion-item">
                                         <p class="accordion-header" style="margin:0;">
-                                            <button class="accordion-button fw-bold justify-content-center" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
-                                                <i class="fa-solid fa-screwdriver-wrench fa-lg me-2" style="color: #facc15;"></i>3. Eksekusi Perbaikan (Teknisi Lapangan)
+                                            <button class="accordion-button fw-bold justify-content-center"
+                                                type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree"
+                                                aria-expanded="true" aria-controls="collapseThree">
+                                                <i class="fa-solid fa-screwdriver-wrench fa-lg me-2"
+                                                    style="color: #facc15;"></i>3. Eksekusi Perbaikan (Teknisi Lapangan)
                                             </button>
                                         </p>
                                         <div id="collapseThree" class="accordion-collapse collapse show">
                                             <div class="accordion-body">
-                                                <p class="fw-light p-2" style="margin-bottom: 8px;">Teknisi lapangan menuju titik gedung, lantai, dan ruangan sesuai rincian disposisi dan koordinat GPS. Teknisi memperbarui status tiket menjadi "Sedang Diproses", melakukan perbaikan fisik sarana prasarana, serta mengunggah foto bukti hasil reparasi sebelum batas waktu SLA tercapai.</p>
-                                                <div style="margin: 4px 8px 10px; display: flex; gap: 6px; flex-wrap: wrap;">
-                                                    <span style="font-size: 11px; padding: 3px 8px; border-radius: 6px; background: rgba(250, 204, 21, 0.15); color: #facc15; font-weight: 600;"><i class="fa-solid fa-person-digging"></i> Respon Lapangan</span>
-                                                    <span style="font-size: 11px; padding: 3px 8px; border-radius: 6px; background: rgba(250, 204, 21, 0.15); color: #facc15; font-weight: 600;"><i class="fa-solid fa-cloud-arrow-up"></i> Bukti Hasil Reparasi</span>
-                                                    <span style="font-size: 11px; padding: 3px 8px; border-radius: 6px; background: rgba(250, 204, 21, 0.15); color: #facc15; font-weight: 600;"><i class="fa-solid fa-clock-rotate-left"></i> On-Time SLA</span>
+                                                <p class="fw-light p-2" style="margin-bottom: 8px;">Teknisi lapangan
+                                                    menuju titik gedung, lantai, dan ruangan sesuai rincian disposisi
+                                                    dan koordinat GPS. Teknisi memperbarui status tiket menjadi "Sedang
+                                                    Diproses", melakukan perbaikan fisik sarana prasarana, serta
+                                                    mengunggah foto bukti hasil reparasi sebelum batas waktu SLA
+                                                    tercapai.</p>
+                                                <div
+                                                    style="margin: 4px 8px 10px; display: flex; gap: 6px; flex-wrap: wrap;">
+                                                    <span
+                                                        style="font-size: 11px; padding: 3px 8px; border-radius: 6px; background: rgba(250, 204, 21, 0.15); color: #facc15; font-weight: 600;"><i
+                                                            class="fa-solid fa-person-digging"></i> Respon
+                                                        Lapangan</span>
+                                                    <span
+                                                        style="font-size: 11px; padding: 3px 8px; border-radius: 6px; background: rgba(250, 204, 21, 0.15); color: #facc15; font-weight: 600;"><i
+                                                            class="fa-solid fa-cloud-arrow-up"></i> Bukti Hasil
+                                                        Reparasi</span>
+                                                    <span
+                                                        style="font-size: 11px; padding: 3px 8px; border-radius: 6px; background: rgba(250, 204, 21, 0.15); color: #facc15; font-weight: 600;"><i
+                                                            class="fa-solid fa-clock-rotate-left"></i> On-Time
+                                                        SLA</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -734,7 +892,8 @@
                                 </div>
                                 <div class="card-footer">
                                     <div class="icons d-flex justify-content-center m-3">
-                                        <a class="icon-link" title="Panduan Teknisi" aria-label="More Info" href="javascript:void(0)">
+                                        <a class="icon-link" title="Panduan Teknisi" aria-label="More Info"
+                                            href="javascript:void(0)">
                                             <i class="fa-solid fa-info fa-md"></i>
                                         </a>
                                     </div>
@@ -751,17 +910,34 @@
                                 <div class="accordion" id="alwaysOpen-4">
                                     <div class="accordion-item">
                                         <p class="accordion-header" style="margin:0;">
-                                            <button class="accordion-button fw-bold justify-content-center" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="true" aria-controls="collapseFour">
-                                                <i class="fa-solid fa-shield-halved fa-lg me-2" style="color: #10b981;"></i>4. Selesai, Verifikasi &amp; Audit (Super Admin)
+                                            <button class="accordion-button fw-bold justify-content-center"
+                                                type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour"
+                                                aria-expanded="true" aria-controls="collapseFour">
+                                                <i class="fa-solid fa-shield-halved fa-lg me-2"
+                                                    style="color: #10b981;"></i>4. Selesai, Verifikasi &amp; Audit
+                                                (Super Admin)
                                             </button>
                                         </p>
                                         <div id="collapseFour" class="accordion-collapse collapse show">
                                             <div class="accordion-body">
-                                                <p class="fw-light p-2" style="margin-bottom: 8px;">Tiket ditandai "Selesai" dan pelapor mendapatkan notifikasi hasil tindak lanjut serta dapat mencetak lembar bukti PDF ber-QR Code. Super Admin dan pimpinan kampus memantau KPI penyelesaian, kepatuhan SLA, analitik sebaran fasilitas, dan rekap audit trail secara transparan.</p>
-                                                <div style="margin: 4px 8px 10px; display: flex; gap: 6px; flex-wrap: wrap;">
-                                                    <span style="font-size: 11px; padding: 3px 8px; border-radius: 6px; background: rgba(16, 185, 129, 0.15); color: #10b981; font-weight: 600;"><i class="fa-solid fa-file-pdf"></i> Unduh Lembar Tiket</span>
-                                                    <span style="font-size: 11px; padding: 3px 8px; border-radius: 6px; background: rgba(16, 185, 129, 0.15); color: #10b981; font-weight: 600;"><i class="fa-solid fa-chart-line"></i> Analitik KPI Kampus</span>
-                                                    <span style="font-size: 11px; padding: 3px 8px; border-radius: 6px; background: rgba(16, 185, 129, 0.15); color: #10b981; font-weight: 600;"><i class="fa-solid fa-fingerprint"></i> Audit Trail Terpadu</span>
+                                                <p class="fw-light p-2" style="margin-bottom: 8px;">Tiket ditandai
+                                                    "Selesai" dan pelapor mendapatkan notifikasi hasil tindak lanjut
+                                                    serta dapat mencetak lembar bukti PDF ber-QR Code. Super Admin dan
+                                                    pimpinan kampus memantau KPI penyelesaian, kepatuhan SLA, analitik
+                                                    sebaran fasilitas, dan rekap audit trail secara transparan.</p>
+                                                <div
+                                                    style="margin: 4px 8px 10px; display: flex; gap: 6px; flex-wrap: wrap;">
+                                                    <span
+                                                        style="font-size: 11px; padding: 3px 8px; border-radius: 6px; background: rgba(16, 185, 129, 0.15); color: #10b981; font-weight: 600;"><i
+                                                            class="fa-solid fa-file-pdf"></i> Unduh Lembar Tiket</span>
+                                                    <span
+                                                        style="font-size: 11px; padding: 3px 8px; border-radius: 6px; background: rgba(16, 185, 129, 0.15); color: #10b981; font-weight: 600;"><i
+                                                            class="fa-solid fa-chart-line"></i> Analitik KPI
+                                                        Kampus</span>
+                                                    <span
+                                                        style="font-size: 11px; padding: 3px 8px; border-radius: 6px; background: rgba(16, 185, 129, 0.15); color: #10b981; font-weight: 600;"><i
+                                                            class="fa-solid fa-fingerprint"></i> Audit Trail
+                                                        Terpadu</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -769,7 +945,8 @@
                                 </div>
                                 <div class="card-footer">
                                     <div class="icons d-flex justify-content-center m-3">
-                                        <a class="icon-link d-flex align-items-center" title="Panduan Super Admin" aria-label="More Info" href="javascript:void(0)">
+                                        <a class="icon-link d-flex align-items-center" title="Panduan Super Admin"
+                                            aria-label="More Info" href="javascript:void(0)">
                                             <i class="fa-solid fa-info fa-md"></i>
                                         </a>
                                     </div>
@@ -781,26 +958,29 @@
             </div>
 
             <!-- Bantuan & Helpdesk Sarpras Reference -->
-            <div style="background: rgba(197, 146, 53, 0.08); border: 1px solid var(--border-color); border-radius: 12px; padding: 12px 16px; font-size: 12px; margin-top: 24px; margin-bottom: 20px;">
-                <strong style="color: var(--gold);"><i class="fa-solid fa-circle-question"></i> Bantuan &amp; Helpdesk Sarpras:</strong><br>
-                Jika ada kendala mendesak atau butuh konfirmasi darurat fasilitas kampus, hubungi Unit Layanan Terpadu Sarpras UINSSC via Email: <code>sarpras@uinssc.ac.id</code> atau Telepon: <code>(0231) 481-264</code> (Senin - Jumat 07.30 - 16.00 WIB).
+            <div
+                style="background: rgba(197, 146, 53, 0.08); border: 1px solid var(--border-color); border-radius: 12px; padding: 12px 16px; font-size: 12px; margin-top: 24px; margin-bottom: 20px;">
+                <strong style="color: var(--gold);"><i class="fa-solid fa-circle-question"></i> Bantuan &amp; Helpdesk
+                    Sarpras:</strong><br>
+                Jika ada kendala mendesak atau butuh konfirmasi darurat fasilitas kampus, hubungi Unit Layanan Terpadu
+                Sarpras UINSSC via Email: <code>sarpras@uinssc.ac.id</code> atau Telepon: <code>(0231) 481-264</code>
+                (Senin - Jumat 07.30 - 16.00 WIB).
             </div>
 
-            <button class="btn btn-primary" onclick="closeHelpModal()" style="width: 100%; justify-content: center; font-size:14px; min-height:46px;">Tutup Panduan</button>
+            <button class="btn btn-primary" onclick="closeHelpModal()"
+                style="width: 100%; justify-content: center; font-size:14px; min-height:46px;">Tutup Panduan</button>
         </div>
     </div>
 
     <!-- Toast Notifications -->
     <div id="toastBox" class="toast-box"></div>
 
-    <script src="../js/user.js?v=20261110_campustour"></script>
-    <script src="../js/site-builder.js?v=20261110_campustour"></script>
-    <!-- WebGL Zoom-Blur Campus Script -->
-    <script src="../js/webgl-tour.js?v=20261110_campustour"></script>
+    <script src="../js/user.js?v=20261110_staticbg"></script>
+    <script src="../js/site-builder.js?v=20261110_staticbg"></script>
     <script>
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('../sw.js?v=20261110_campustour')
+                navigator.serviceWorker.register('../sw.js?v=20261110_staticbg')
                     .then(reg => {
                         reg.update();
                         console.log('SIMPEL User PWA Registered & Checked for Updates', reg.scope);
@@ -810,4 +990,5 @@
         }
     </script>
 </body>
+
 </html>

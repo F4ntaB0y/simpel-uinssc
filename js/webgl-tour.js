@@ -303,15 +303,15 @@
 
       // Click Navigation: Atas = Previous, Bawah = Next (hanya jika klik di latar canvas)
       document.addEventListener('click', e => {
-        if (e.target.closest('input, button, a, select, textarea, label, .login-glass-card, .login-hero-side, .modal-backdrop, .swal2-container, .webgl-campus-hud, .form-card, .user-banner-card, .table-card, .modal-content, .card, .sso-profile-card, #sectionRiwayat, #sectionLacak, #map, .leaflet-container, .navbar, .top-util-bar, .app-footer, .tab-switcher, .form-step-panel')) {
-          return;
-        }
-        if (e.clientY < three.size.height / 2) {
-          navPrevious(images);
-        } else {
-          navNext(images);
-        }
-      });
+          if (e.target.closest('input, button, a, select, textarea, label, .login-glass-card, .login-hero-side, .modal-backdrop, .swal2-container, .webgl-campus-hud, .form-card, .user-banner-card, .table-card, .modal-content, .card, .sso-profile-card, #sectionRiwayat, #sectionLacak, #map, .leaflet-container, .navbar, .top-util-bar, .app-footer, .tab-switcher, .form-step-panel')) {
+            return;
+          }
+          if (e.clientY < three.size.height / 2) {
+            navPrevious(images);
+          } else {
+            navNext(images);
+          }
+        });
 
       // Keyboard Arrow Navigation
       document.addEventListener('keydown', e => {
