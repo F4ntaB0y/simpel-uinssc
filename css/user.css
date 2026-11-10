@@ -990,6 +990,10 @@ body {
     gap: 4px;
 }
 
+.sso-dot-sep {
+    display: none !important;
+}
+
 .sso-info-sub {
     display: inline-flex;
     align-items: center;

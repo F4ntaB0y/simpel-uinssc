@@ -805,7 +805,6 @@ function prefillPelaporDataFromSession() {
                 const emailText = sess.email ? escapeHtml(sess.email) : (sess.username ? (sess.username + '@uinssc.ac.id') : 'ahmad.rizki@uinssc.ac.id');
                 ssoEmailFakDetail.innerHTML = 
                     '<div class="sso-info-sub"><i class="fa-solid fa-building-columns" style="color:var(--gold); margin-right:6px;"></i> <span>' + fakText + '</span></div>' +
-                    '<span class="sso-dot-sep">•</span>' +
                     '<div class="sso-info-sub"><i class="fa-solid fa-envelope" style="color:#38bdf8; margin-right:6px;"></i> <span>' + emailText + '</span></div>';
             }
         }
