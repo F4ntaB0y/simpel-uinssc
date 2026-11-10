@@ -16,7 +16,7 @@
     <!-- Leaflet.js Interactive Map CSS & JS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <link rel="stylesheet" href="../css/user.css?v=20261110_idcardv2">
+    <link rel="stylesheet" href="../css/user.css?v=20261110_navwidth">
     <!-- SweetAlert2 Latest CDN -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <!-- DOMPurify Security Sanitizer -->
@@ -76,7 +76,7 @@
     </header>
 
     <!-- Main Container -->
-    <main class="container" style="padding-top: 24px; padding-bottom: 56px; flex: 1; width: 100%; max-width: 100%; box-sizing: border-box; overflow-x: clip;">
+    <main class="container" style="padding-top: 24px; padding-bottom: 56px; flex: 1;">
         
         <!-- Main Hero Banner Card -->
         <div class="user-banner-card" id="userHeroBanner">
@@ -789,12 +789,12 @@
     <!-- Toast Notifications -->
     <div id="toastBox" class="toast-box"></div>
 
-    <script src="../js/user.js?v=20261110_idcardv2"></script>
-    <script src="../js/site-builder.js?v=20261110_idcardv2"></script>
+    <script src="../js/user.js?v=20261110_navwidth"></script>
+    <script src="../js/site-builder.js?v=20261110_navwidth"></script>
     <script>
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('../sw.js?v=20261110_idcardv2')
+                navigator.serviceWorker.register('../sw.js?v=20261110_navwidth')
                     .then(reg => {
                         reg.update();
                         console.log('SIMPEL User PWA Registered & Checked for Updates', reg.scope);

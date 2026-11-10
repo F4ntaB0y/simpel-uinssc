@@ -728,7 +728,14 @@
 
         // 1. Top Utility Bar & Container Width
         applyTopUtilBar(document.querySelector('.top-util-bar'), cfg.showTopBar, cfg.topBar);
-        mainContainer.classList.toggle('container-wide', cfg.containerWidth === 'wide');
+        const isWide = (cfg.containerWidth === 'wide');
+        mainContainer.classList.toggle('container-wide', isWide);
+        const navContainer = document.querySelector('.navbar .container');
+        if (navContainer) navContainer.classList.toggle('container-wide', isWide);
+        const topUtilContainer = document.querySelector('.top-util-bar .container');
+        if (topUtilContainer) topUtilContainer.classList.toggle('container-wide', isWide);
+        const footerContainer = document.querySelector('.app-footer .container');
+        if (footerContainer) footerContainer.classList.toggle('container-wide', isWide);
 
         // 2. Ensure userWorkspaceWrapper wraps tab-switcher + sections so pageOrder can reorder Banner, Custom Sections & Workspace
         let workspaceWrap = document.getElementById('userWorkspaceWrapper');
