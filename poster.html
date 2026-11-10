@@ -737,25 +737,40 @@
             <div class="grid-row-top">
 
                 <!-- Deskripsi Proyek -->
-                <div class="section-card primary-accent">
-                    <h3 class="section-title">
-                        <i class="fa-solid fa-circle-info"></i> Deskripsi & Tujuan Proyek
-                    </h3>
-                    <p class="desc-text">
-                        <strong>SIMPEL UINSSC</strong> adalah portal terpadu berbasis *Progressive Web Application* (PWA) untuk digitalisasi pelaporan kerusakan fasilitas fisik kampus secara akuntabel, meniadakan laporan fiktif di luar kampus, dan mencegah tiket ganda.
-                    </p>
-                    <div class="desc-pills">
-                        <div class="desc-pill-item">
-                            <i class="fa-solid fa-map-location-dot"></i>
-                            <span><strong>Geofencing GIS:</strong> Validasi 5 zona spasial presisi via formula Haversine.</span>
+                <div class="section-card primary-accent" style="display: flex; flex-direction: column; justify-content: space-between;">
+                    <div>
+                        <h3 class="section-title">
+                            <i class="fa-solid fa-circle-info"></i> Deskripsi & Tujuan Proyek
+                        </h3>
+                        <p class="desc-text">
+                            <strong>SIMPEL UINSSC</strong> adalah portal terpadu berbasis *Progressive Web Application* (PWA) untuk digitalisasi pelaporan kerusakan fasilitas fisik kampus secara akuntabel, meniadakan laporan fiktif di luar area kampus, dan mencegah penumpukan tiket ganda.
+                        </p>
+                        <div class="desc-pills">
+                            <div class="desc-pill-item">
+                                <i class="fa-solid fa-map-location-dot"></i>
+                                <span><strong>Geofencing GIS:</strong> Validasi 5 zona spasial presisi via formula Haversine.</span>
+                            </div>
+                            <div class="desc-pill-item">
+                                <i class="fa-solid fa-layer-group"></i>
+                                <span><strong>Smart Anti-Spam:</strong> Deteksi dini laporan kerusakan ganda di ruangan sama.</span>
+                            </div>
+                            <div class="desc-pill-item">
+                                <i class="fa-solid fa-stopwatch"></i>
+                                <span><strong>SLA Tracking:</strong> Manajemen waktu tanggap responsif terukur secara real-time.</span>
+                            </div>
                         </div>
-                        <div class="desc-pill-item">
-                            <i class="fa-solid fa-layer-group"></i>
-                            <span><strong>Smart Anti-Spam:</strong> Deteksi dini laporan kerusakan ganda di ruangan sama.</span>
+                    </div>
+
+                    <!-- Inovasi & Keunggulan Strategis -->
+                    <div style="margin-top: 6px; background: var(--slate-50); border: 1px solid var(--slate-200); border-radius: 5px; padding: 4px 7px;">
+                        <div style="font-size: 7.8px; font-weight: 800; color: var(--primary); margin-bottom: 2px;">
+                            <i class="fa-solid fa-star" style="color: var(--gold);"></i> Dampak Strategis Kampus Cyber:
                         </div>
-                        <div class="desc-pill-item">
-                            <i class="fa-solid fa-stopwatch"></i>
-                            <span><strong>SLA Tracking:</strong> Manajemen waktu tanggap responsif terukur secara real-time.</span>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 4px; font-size: 7.2px; color: var(--slate-600); line-height: 1.25;">
+                            <div>&bull; Efisiensi anggaran perawatan berkala</div>
+                            <div>&bull; Akurasi titik koordinat presisi</div>
+                            <div>&bull; Transparansi audit sarpras kampus</div>
+                            <div>&bull; Responsif mobile & desktop mode</div>
                         </div>
                     </div>
                 </div>
@@ -794,6 +809,43 @@
                             <div class="wf-node-title">5. Tuntas</div>
                             <div class="wf-node-sub">Bukti QR Code PDF</div>
                         </div>
+                    </div>
+
+                    <!-- Detail Mekanisme Alur Kerja & Otomasi Sistem -->
+                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px; margin-top: 6px;">
+                        <div style="background: #ffffff; border: 1px solid var(--slate-200); border-radius: 5px; padding: 4px 6px;">
+                            <div style="font-size: 7.8px; font-weight: 800; color: var(--primary); display: flex; align-items: center; gap: 4px; margin-bottom: 2px;">
+                                <i class="fa-solid fa-map-pin" style="color: var(--gold);"></i> Validasi Spasial GIS
+                            </div>
+                            <div style="font-size: 7.2px; color: var(--slate-600); line-height: 1.25;">
+                                Koordinat GPS pelapor diverifikasi otomatis terhadap 5 zona kawasan. Bila di luar radius, titik diarahkan ke pusat kampus utama.
+                            </div>
+                        </div>
+                        <div style="background: #ffffff; border: 1px solid var(--slate-200); border-radius: 5px; padding: 4px 6px;">
+                            <div style="font-size: 7.8px; font-weight: 800; color: var(--primary); display: flex; align-items: center; gap: 4px; margin-bottom: 2px;">
+                                <i class="fa-solid fa-layer-group" style="color: var(--gold);"></i> Filter Anti-Spam & Kuota
+                            </div>
+                            <div style="font-size: 7.2px; color: var(--slate-600); line-height: 1.25;">
+                                Mencegah duplikasi laporan serupa di ruangan yang sama serta membatasi maksimal 3 tiket aktif per akun civitas akademika.
+                            </div>
+                        </div>
+                        <div style="background: #ffffff; border: 1px solid var(--slate-200); border-radius: 5px; padding: 4px 6px;">
+                            <div style="font-size: 7.8px; font-weight: 800; color: var(--primary); display: flex; align-items: center; gap: 4px; margin-bottom: 2px;">
+                                <i class="fa-solid fa-qrcode" style="color: var(--gold);"></i> Bukti PDF & QR Code
+                            </div>
+                            <div style="font-size: 7.2px; color: var(--slate-600); line-height: 1.25;">
+                                Penerbitan nomor tiket unik TRK resmi, pelacakan real-time tahapan SLA, dan cetak dokumen bukti tanda terima 1 lembar A4.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Baris Pembagian Peran Aktor (Role Matrix) -->
+                    <div style="margin-top: 5px; background: var(--slate-50); border: 1px solid var(--slate-200); border-radius: 5px; padding: 4px 8px; display: flex; justify-content: space-between; align-items: center; font-size: 7.4px;">
+                        <div><strong style="color: var(--primary);"><i class="fa-solid fa-user-graduate"></i> Pelapor:</strong> Input Laporan &bull; Unggah Foto &bull; Pantau Progres</div>
+                        <div style="color: var(--slate-400);">&bull;</div>
+                        <div><strong style="color: var(--primary);"><i class="fa-solid fa-user-tie"></i> Admin Sarpras:</strong> Verifikasi Tiket &bull; Atur Batas SLA &bull; Disposisi</div>
+                        <div style="color: var(--slate-400);">&bull;</div>
+                        <div><strong style="color: var(--primary);"><i class="fa-solid fa-screwdriver-wrench"></i> Teknisi:</strong> Pengerjaan Lapangan &bull; Tuntas</div>
                     </div>
                 </div>
 
