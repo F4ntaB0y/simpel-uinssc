@@ -16,7 +16,7 @@
     <!-- Leaflet.js Interactive Map CSS & JS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <link rel="stylesheet" href="../css/user.css?v=20261110_stepscolumn">
+    <link rel="stylesheet" href="../css/user.css?v=20261110_v69">
     <!-- SweetAlert2 Latest CDN -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <!-- DOMPurify Security Sanitizer -->
@@ -775,13 +775,16 @@
     <!-- Toast Notifications -->
     <div id="toastBox" class="toast-box"></div>
 
-    <script src="../js/user.js?v=20261110_btnclean"></script>
-    <script src="../js/site-builder.js?v=20261107_ui4"></script>
+    <script src="../js/user.js?v=20261110_v69"></script>
+    <script src="../js/site-builder.js?v=20261110_v69"></script>
     <script>
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('../sw.js')
-                    .then(reg => console.log('SIMPEL User PWA Registered', reg.scope))
+                navigator.serviceWorker.register('../sw.js?v=20261110_v69')
+                    .then(reg => {
+                        reg.update();
+                        console.log('SIMPEL User PWA Registered & Checked for Updates', reg.scope);
+                    })
                     .catch(err => console.debug('SIMPEL PWA Registration Notice:', err));
             });
         }

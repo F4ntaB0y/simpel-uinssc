@@ -4,7 +4,7 @@
  * UIN Siber Syekh Nurjati Cirebon
  */
 
-const CACHE_NAME = 'simpel-uinssc-v6.8';
+const CACHE_NAME = 'simpel-uinssc-v6.9';
 const STATIC_ASSETS = [
     './',
     './index.html',
@@ -38,7 +38,7 @@ self.addEventListener('install', (event) => {
     self.skipWaiting();
 });
 
-// Activate Event: Clear Old Caches
+// Activate Event: Clear Old Caches Immediately
 self.addEventListener('activate', (event) => {
     event.waitUntil(
         caches.keys().then((keys) => {
@@ -54,7 +54,7 @@ self.addEventListener('activate', (event) => {
     self.clients.claim();
 });
 
-// Fetch Event: Stale-While-Revalidate Strategy for Assets, Network-First for API
+// Fetch Event: Network-First for HTML Navigation (Always Fresh!), Cache-First for Static Assets
 self.addEventListener('fetch', (event) => {
     const request = event.request;
     const url = new URL(request.url);
@@ -64,6 +64,24 @@ self.addEventListener('fetch', (event) => {
         return;
     }
 
+    // 1. Dokumen HTML (index.html, user.html, admin.html): Network-First
+    // Memastikan perbaikan UI langsung tampil tanpa tertahan cache lama!
+    if (request.mode === 'navigate' || request.destination === 'document' || (request.headers.get('accept') && request.headers.get('accept').includes('text/html'))) {
+        event.respondWith(
+            fetch(request)
+                .then((networkResponse) => {
+                    if (networkResponse && networkResponse.status === 200) {
+                        const responseToCache = networkResponse.clone();
+                        caches.open(CACHE_NAME).then((cache) => cache.put(request, responseToCache));
+                    }
+                    return networkResponse;
+                })
+                .catch(() => caches.match(request))
+        );
+        return;
+    }
+
+    // 2. Aset Statis (CSS, JS, Gambar): Stale-While-Revalidate
     event.respondWith(
         caches.match(request).then((cachedResponse) => {
             const fetchPromise = fetch(request).then((networkResponse) => {

@@ -1126,19 +1126,17 @@ textarea {
 
 .map-toolbar-actions {
     display: flex;
-    flex-direction: column;
     gap: 8px;
-    width: 190px;
-    flex-shrink: 0;
+    align-items: center;
+    flex-wrap: wrap;
 }
 
 .map-toolbar-btn {
-    width: 100% !important;
     display: inline-flex !important;
     align-items: center !important;
     justify-content: center !important;
     gap: 8px !important;
-    padding: 8px 14px !important;
+    padding: 8px 16px !important;
     font-size: 12px !important;
     font-weight: 700 !important;
     border-radius: 9px !important;
