@@ -9,14 +9,14 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700;800&display=swap" rel="stylesheet">
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
         :root {
             --primary: #005a36;
-            --primary-dark: #003820;
+            --primary-dark: #00361f;
             --primary-light: #e8f5ee;
             --emerald-600: #059669;
             --gold: #d4a343;
@@ -121,7 +121,7 @@
         }
 
         /* ==========================================================================
-           POSTER ARTBOARD - TEPAT 1 HALAMAN A4 FULL (210mm x 297mm)
+           POSTER ARTBOARD - TEPAT 1 HALAMAN A4 FULL PADAT (210mm x 297mm)
            ========================================================================== */
         .poster-artboard {
             width: 210mm;
@@ -138,26 +138,26 @@
             border-radius: 4px;
         }
 
-        /* 1. Top Header Banner */
+        /* 1. Header Banner */
         .poster-header {
-            background: linear-gradient(135deg, #003820 0%, #005a36 65%, #024124 100%);
+            background: linear-gradient(135deg, #00361f 0%, #005a36 65%, #024124 100%);
             color: #ffffff;
-            padding: 14px 20px 12px;
+            padding: 16px 20px 14px;
             position: relative;
-            border-bottom: 3.5px solid var(--gold);
+            border-bottom: 4px solid var(--gold);
             flex-shrink: 0;
         }
 
         .header-grid {
             display: grid;
-            grid-template-columns: 56px 1fr auto;
-            gap: 14px;
+            grid-template-columns: 62px 1fr auto;
+            gap: 16px;
             align-items: center;
         }
 
         .header-logo-box {
-            width: 56px;
-            height: 56px;
+            width: 62px;
+            height: 62px;
             background: #ffffff;
             border-radius: 12px;
             padding: 5px;
@@ -165,7 +165,7 @@
             align-items: center;
             justify-content: center;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
-            border: 1.5px solid var(--gold);
+            border: 2px solid var(--gold);
         }
 
         .header-logo-box img {
@@ -175,26 +175,26 @@
         }
 
         .header-text h4 {
-            font-size: 9.5px;
+            font-size: 10px;
             font-weight: 800;
             letter-spacing: 1.2px;
             color: var(--gold);
             text-transform: uppercase;
-            margin-bottom: 1px;
+            margin-bottom: 2px;
         }
 
         .header-text h1 {
             font-family: 'Space Grotesk', sans-serif;
-            font-size: 18.5px;
+            font-size: 20px;
             font-weight: 800;
             line-height: 1.2;
             letter-spacing: -0.3px;
             color: #ffffff;
-            margin-bottom: 2px;
+            margin-bottom: 3px;
         }
 
         .header-text p {
-            font-size: 9.8px;
+            font-size: 10.5px;
             color: #d1fae5;
             font-weight: 500;
         }
@@ -204,31 +204,31 @@
             backdrop-filter: blur(8px);
             border: 1px solid rgba(212, 163, 67, 0.5);
             border-radius: 10px;
-            padding: 6px 12px;
+            padding: 7px 14px;
             text-align: right;
         }
 
         .meta-inst {
-            font-size: 10.5px;
+            font-size: 11px;
             font-weight: 800;
             color: #ffffff;
         }
 
         .meta-sub {
-            font-size: 8.5px;
+            font-size: 9px;
             color: var(--gold);
             font-weight: 700;
-            margin-top: 1px;
+            margin-top: 2px;
         }
 
-        /* 2. Main Content Body (Compact Proportional Grid) */
+        /* 2. Main Content Body (Padat & Proporsional Memenuhi Ruang A4) */
         .poster-body {
             flex: 1 1 auto;
-            padding: 10px 16px;
+            padding: 12px 18px 10px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            gap: 8px;
+            gap: 10px;
             background: #ffffff;
             overflow: hidden;
         }
@@ -236,74 +236,74 @@
         .section-card {
             background: #ffffff;
             border: 1px solid var(--slate-200);
-            border-radius: 8px;
-            padding: 8px 10px;
+            border-radius: 9px;
+            padding: 9px 12px;
             box-shadow: 0 1px 4px rgba(0, 0, 0, 0.03);
             position: relative;
         }
 
         .section-card.primary-accent {
-            border-left: 3.5px solid var(--primary);
+            border-left: 4px solid var(--primary);
         }
 
         .section-card.gold-accent {
-            border-left: 3.5px solid var(--gold);
+            border-left: 4px solid var(--gold);
         }
 
         .section-title {
             display: flex;
             align-items: center;
             gap: 6px;
-            font-size: 11px;
+            font-size: 11.5px;
             font-weight: 800;
             color: var(--primary-dark);
-            margin-bottom: 6px;
+            margin-bottom: 7px;
             text-transform: uppercase;
             letter-spacing: 0.4px;
-            border-bottom: 1px solid var(--slate-100);
+            border-bottom: 1.5px solid var(--slate-100);
             padding-bottom: 4px;
         }
 
         .section-title i {
             color: var(--gold);
-            font-size: 11px;
+            font-size: 12px;
         }
 
-        /* Top Row: Deskripsi Proyek + Alur Sistem */
+        /* Baris 1: Deskripsi Proyek + Alur Kerja Sistem */
         .top-row-grid {
             display: grid;
             grid-template-columns: 1.05fr 1.55fr;
-            gap: 8px;
+            gap: 10px;
         }
 
         .desc-text {
-            font-size: 9.2px;
+            font-size: 9.6px;
             color: var(--slate-700);
-            line-height: 1.45;
-            margin-bottom: 6px;
+            line-height: 1.48;
+            margin-bottom: 7px;
         }
 
         .desc-pills {
             display: flex;
             flex-direction: column;
-            gap: 4px;
+            gap: 5px;
         }
 
         .desc-pill-item {
             display: flex;
             align-items: center;
             gap: 6px;
-            font-size: 8.8px;
+            font-size: 9.2px;
             color: var(--slate-800);
             background: var(--slate-50);
             border: 1px solid var(--slate-200);
-            padding: 3px 6px;
-            border-radius: 5px;
+            padding: 4px 7px;
+            border-radius: 6px;
         }
 
         .desc-pill-item i {
             color: var(--primary);
-            font-size: 9.5px;
+            font-size: 10.5px;
             flex-shrink: 0;
         }
 
@@ -311,19 +311,19 @@
         .system-workflow-grid {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
-            gap: 5px;
+            gap: 6px;
             align-items: center;
             background: var(--slate-50);
             border: 1px solid var(--slate-200);
-            border-radius: 7px;
-            padding: 6px 5px;
+            border-radius: 8px;
+            padding: 8px 6px;
         }
 
         .wf-node {
             background: #ffffff;
-            border: 1.2px solid var(--primary);
-            border-radius: 6px;
-            padding: 5px 3px;
+            border: 1.4px solid var(--primary);
+            border-radius: 7px;
+            padding: 6px 4px;
             text-align: center;
             box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
         }
@@ -339,9 +339,9 @@
         }
 
         .wf-node-icon {
-            font-size: 11px;
+            font-size: 13px;
             color: var(--primary);
-            margin-bottom: 2px;
+            margin-bottom: 3px;
         }
 
         .wf-node.active-gold .wf-node-icon {
@@ -353,7 +353,7 @@
         }
 
         .wf-node-title {
-            font-size: 8.8px;
+            font-size: 9.2px;
             font-weight: 800;
             color: var(--slate-900);
             margin-bottom: 1px;
@@ -361,23 +361,23 @@
         }
 
         .wf-node-sub {
-            font-size: 7.2px;
+            font-size: 7.6px;
             color: var(--slate-600);
-            line-height: 1.2;
+            line-height: 1.25;
         }
 
-        /* Middle Row: Buku Panduan Penggunaan Sistem (4 Steps) */
+        /* Baris 2: Buku Panduan Penggunaan Sistem (4 Steps) */
         .guide-steps-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 7px;
+            gap: 8px;
         }
 
         .guide-step-box {
             background: var(--slate-50);
             border: 1px solid var(--slate-200);
-            border-radius: 7px;
-            padding: 7px 7px;
+            border-radius: 8px;
+            padding: 8px 9px;
             display: flex;
             flex-direction: column;
             gap: 4px;
@@ -390,12 +390,12 @@
         }
 
         .step-badge {
-            width: 19px;
-            height: 19px;
-            border-radius: 5px;
+            width: 21px;
+            height: 21px;
+            border-radius: 6px;
             background: var(--primary);
             color: #ffffff;
-            font-size: 9.5px;
+            font-size: 10.5px;
             font-weight: 800;
             display: flex;
             align-items: center;
@@ -404,38 +404,68 @@
         }
 
         .step-title {
-            font-size: 9.8px;
+            font-size: 10.2px;
             font-weight: 800;
             color: var(--slate-900);
             line-height: 1.2;
         }
 
         .step-desc {
-            font-size: 8.2px;
+            font-size: 8.6px;
             color: var(--slate-600);
-            line-height: 1.35;
+            line-height: 1.38;
         }
 
-        /* Bottom Row: Showcase Screenshot Aplikasi */
+        /* Baris 3: Galeri Screenshot Aplikasi (DIPERBESAR & TAMPIL GAGAH) */
+        .screenshot-section-card {
+            background: #ffffff;
+            border: 1px solid var(--slate-200);
+            border-radius: 10px;
+            padding: 10px 12px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+            border-left: 4px solid var(--gold);
+        }
+
         .showcase-gallery-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 7px;
+            gap: 9px;
         }
 
         .screenshot-card {
             background: #ffffff;
-            border: 1px solid var(--slate-200);
-            border-radius: 7px;
+            border: 1.2px solid var(--slate-200);
+            border-radius: 8px;
             overflow: hidden;
             display: flex;
             flex-direction: column;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.06);
         }
 
+        /* Mockup Bar Browser Minimalis di atas SS */
+        .mockup-top-bar {
+            height: 12px;
+            background: #0f172a;
+            display: flex;
+            align-items: center;
+            padding: 0 6px;
+            gap: 3px;
+        }
+
+        .mockup-dot {
+            width: 4.5px;
+            height: 4.5px;
+            border-radius: 50%;
+        }
+
+        .dot-red { background: #ef4444; }
+        .dot-yellow { background: #eab308; }
+        .dot-green { background: #22c55e; }
+
+        /* Area Gambar Screenshot Diperbesar Signifikan */
         .screenshot-media {
             width: 100%;
-            height: 70px;
+            height: 120px;
             background: #0f172a;
             position: relative;
             overflow: hidden;
@@ -452,23 +482,23 @@
         }
 
         .screenshot-caption {
-            padding: 5px 6px 6px;
+            padding: 6px 7px 7px;
             background: #ffffff;
             border-top: 1px solid var(--slate-100);
         }
 
         .screenshot-tag {
-            font-size: 7.2px;
+            font-size: 7.5px;
             font-weight: 800;
             color: var(--primary);
             text-transform: uppercase;
-            letter-spacing: 0.4px;
+            letter-spacing: 0.5px;
             display: block;
-            margin-bottom: 1px;
+            margin-bottom: 2px;
         }
 
         .screenshot-title {
-            font-size: 9px;
+            font-size: 9.6px;
             font-weight: 800;
             color: var(--slate-900);
             margin-bottom: 2px;
@@ -479,51 +509,51 @@
         }
 
         .screenshot-detail {
-            font-size: 7.6px;
+            font-size: 8px;
             color: var(--slate-600);
-            line-height: 1.3;
+            line-height: 1.32;
         }
 
-        /* Technical Details Bar */
+        /* Baris 4: Technical Details Bar */
         .tech-details-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 6px;
+            gap: 8px;
         }
 
         .tech-pill {
             background: var(--slate-50);
             border: 1px solid var(--slate-200);
-            border-radius: 6px;
-            padding: 5px 7px;
+            border-radius: 7px;
+            padding: 7px 9px;
         }
 
         .tech-pill h5 {
-            font-size: 9px;
+            font-size: 9.4px;
             font-weight: 800;
             color: var(--primary);
-            margin-bottom: 1px;
+            margin-bottom: 2px;
             display: flex;
             align-items: center;
-            gap: 4px;
+            gap: 5px;
         }
 
         .tech-pill p {
-            font-size: 7.8px;
+            font-size: 8.2px;
             color: var(--slate-600);
-            line-height: 1.3;
+            line-height: 1.35;
         }
 
         /* 3. Footer Bar */
         .poster-footer {
             background: var(--slate-900);
             color: #ffffff;
-            padding: 8px 20px;
+            padding: 10px 20px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            font-size: 9px;
-            border-top: 2.5px solid var(--gold);
+            font-size: 9.5px;
+            border-top: 3px solid var(--gold);
             flex-shrink: 0;
         }
 
@@ -536,12 +566,12 @@
         .footer-tag {
             color: var(--gold);
             font-weight: 800;
-            letter-spacing: 0.4px;
+            letter-spacing: 0.5px;
         }
 
         .footer-right {
             color: #94a3b8;
-            font-size: 8.5px;
+            font-size: 9px;
         }
 
         /* ==========================================================================
@@ -588,8 +618,8 @@
     <!-- Control Toolbar (Hanya Tampil di Layar Browser) -->
     <div class="control-toolbar">
         <div class="toolbar-info">
-            <h2>Poster SIMPEL UINSSC (1 Halaman A4 Presisi)</h2>
-            <p>Format 210mm x 297mm pas 1 lembar A4. Siap disimpan sebagai PDF & diimpor ke <strong>Canva.com</strong>.</p>
+            <h2>Poster SIMPEL UINSSC (1 Halaman A4 Padat & Presisi)</h2>
+            <p>Format 210mm x 297mm pas 1 lembar A4. Gambar SS diperbesar maksimal dan siap diimpor ke <strong>Canva.com</strong>.</p>
         </div>
         <div class="toolbar-actions">
             <button class="btn-action btn-print" onclick="window.print()">
@@ -622,7 +652,7 @@
             </div>
         </header>
 
-        <!-- 2. Main Body Content (Proporsional Pas di Kertas A4) -->
+        <!-- 2. Main Body Content (Padat Memenuhi Kertas A4 Tanpa Ruang Kosong) -->
         <div class="poster-body">
 
             <!-- Baris 1: Deskripsi Proyek + Alur Kerja Sistem -->
@@ -657,7 +687,7 @@
                     <h3 class="section-title">
                         <i class="fa-solid fa-diagram-project"></i> Diagram Alur Sistem (System Workflow)
                     </h3>
-                    <p style="font-size: 8.5px; color: var(--slate-600); margin-bottom: 5px;">
+                    <p style="font-size: 8.8px; color: var(--slate-600); margin-bottom: 6px;">
                         Integrasi 5 tahapan dari pelaporan civitas akademika hingga perbaikan tuntas oleh teknisi:
                     </p>
                     <div class="system-workflow-grid">
@@ -739,15 +769,20 @@
                 </div>
             </div>
 
-            <!-- Baris 3: Galeri Tangkapan Layar (SS) Aplikasi Asli -->
-            <div class="section-card gold-accent">
+            <!-- Baris 3: Galeri Tangkapan Layar (SS) Aplikasi Asli (DIPERBESAR & TAMPIL GAGAH) -->
+            <div class="screenshot-section-card">
                 <h3 class="section-title">
-                    <i class="fa-solid fa-display"></i> Tangkapan Layar Aplikasi (Screenshot Showcase)
+                    <i class="fa-solid fa-display"></i> Tangkapan Layar Aplikasi (Screenshot Showcase Interaktif)
                 </h3>
                 <div class="showcase-gallery-grid">
 
                     <!-- SS 1: Login -->
                     <div class="screenshot-card">
+                        <div class="mockup-top-bar">
+                            <span class="mockup-dot dot-red"></span>
+                            <span class="mockup-dot dot-yellow"></span>
+                            <span class="mockup-dot dot-green"></span>
+                        </div>
                         <div class="screenshot-media">
                             <img src="assets/img/ss_login.jpg" alt="SS Portal Masuk Sistem">
                         </div>
@@ -760,6 +795,11 @@
 
                     <!-- SS 2: GIS Geofencing -->
                     <div class="screenshot-card">
+                        <div class="mockup-top-bar">
+                            <span class="mockup-dot dot-red"></span>
+                            <span class="mockup-dot dot-yellow"></span>
+                            <span class="mockup-dot dot-green"></span>
+                        </div>
                         <div class="screenshot-media">
                             <img src="assets/img/ss_gis_map.png" alt="SS Validasi Geofencing GIS">
                         </div>
@@ -772,6 +812,11 @@
 
                     <!-- SS 3: Riwayat Laporan -->
                     <div class="screenshot-card">
+                        <div class="mockup-top-bar">
+                            <span class="mockup-dot dot-red"></span>
+                            <span class="mockup-dot dot-yellow"></span>
+                            <span class="mockup-dot dot-green"></span>
+                        </div>
                         <div class="screenshot-media">
                             <img src="assets/img/ss_dashboard.jpg" alt="SS Riwayat Pengaduan Saya">
                         </div>
@@ -784,6 +829,11 @@
 
                     <!-- SS 4: Bukti Tiket PDF -->
                     <div class="screenshot-card">
+                        <div class="mockup-top-bar">
+                            <span class="mockup-dot dot-red"></span>
+                            <span class="mockup-dot dot-yellow"></span>
+                            <span class="mockup-dot dot-green"></span>
+                        </div>
                         <div class="screenshot-media">
                             <img src="assets/img/ss_tiket_pdf.png" alt="SS Bukti Tiket PDF">
                         </div>
