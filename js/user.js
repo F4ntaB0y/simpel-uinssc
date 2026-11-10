@@ -531,7 +531,7 @@ function initUserCategories() {
     }
 
     // Selalu tambahkan opsi Kategori 'Lainnya' khusus di posisi paling bawah
-    optionsHtml += '<option value="Lainnya">📦 Lainnya (Di Luar Kategori di Atas)</option>';
+    optionsHtml += '<option value="Lainnya">Lainnya (Di Luar Kategori di Atas)</option>';
 
     select.innerHTML = optionsHtml;
     if (currentVal) select.value = currentVal;
@@ -856,7 +856,7 @@ function handleLogout() {
         });
         return;
     }
-    showToast('🔑 Anda telah berhasil keluar dari sistem. Mengalihkan ke pintu login...', 'info');
+    showToast('Anda telah berhasil keluar dari sistem. Mengalihkan ke halaman login...', 'info');
     localStorage.removeItem('SIMPEL_AUTH_SESSION');
     setTimeout(() => {
         window.location.href = '../index.html';
@@ -1156,7 +1156,7 @@ function focusMapToCampus(event) {
     }
 
     updateCoordinatesDisplay(mainCenter.lat, mainCenter.lng, false);
-    showToast('📍 Koordinat ditempatkan di tengah Kawasan Kampus Utama', 'success');
+    showToast('Koordinat ditempatkan di tengah Kawasan Kampus Utama', 'success');
 }
 
 let campusMaskPolygon = null;
@@ -1350,12 +1350,12 @@ function applyGeofenceState(inside, lat, lng, isGps = false) {
 
         if (latInp) {
             latInp.value = '';
-            latInp.placeholder = '⚠️ Di luar kawasan kampus';
+            latInp.placeholder = 'Di luar kawasan kampus';
             latInp.classList.add('input-error-geofence');
         }
         if (lngInp) {
             lngInp.value = '';
-            lngInp.placeholder = '⚠️ Titik koordinat ditolak';
+            lngInp.placeholder = 'Titik koordinat ditolak';
             lngInp.classList.add('input-error-geofence');
         }
 
@@ -1598,7 +1598,7 @@ function handleFileChange(event) {
     if (!file) return;
 
     if (file.size > 5 * 1024 * 1024) {
-        showToast('⚠️ Ukuran foto melebihi batas 5MB!', 'error');
+        showToast('Ukuran foto melebihi batas 5MB!', 'error');
         event.target.value = '';
         return;
     }
@@ -1632,7 +1632,7 @@ function openReviewBeforeSubmit() {
     }
 
     if (!selectedImage) {
-        showToast('⚠️ Foto bukti fisik kerusakan wajib diunggah!', 'error');
+        showToast('Foto bukti fisik kerusakan wajib diunggah!', 'error');
         const dropzone = document.getElementById('uploadDropzoneBox');
         if (dropzone) {
             dropzone.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -1649,7 +1649,7 @@ function openReviewBeforeSubmit() {
     const latCheck = document.getElementById('latInput').value || currentLat;
     const lngCheck = document.getElementById('lngInput').value || currentLng;
     if (!latCheck || !lngCheck || !isInsideCampus(latCheck, lngCheck)) {
-        showToast('⚠️ Posisi di luar kawasan kampus UINSSC! Tentukan lokasi di dalam area kampus.', 'error');
+        showToast('Posisi di luar kawasan kampus UINSSC! Tentukan lokasi di dalam area kampus.', 'error');
         const coordFooter = document.getElementById('mapCoordFooter');
         if (coordFooter) {
             coordFooter.classList.add('coord-footer-error');
@@ -1723,7 +1723,7 @@ async function handlePublicFormSubmit(event) {
 
     // 1. Wajib Gambar Check
     if (!selectedImage) {
-        showToast('⚠️ Foto bukti fisik kerusakan wajib diunggah!', 'error');
+        showToast('Foto bukti fisik kerusakan wajib diunggah!', 'error');
         const dropzone = document.getElementById('uploadDropzoneBox');
         if (dropzone) {
             dropzone.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -1741,7 +1741,7 @@ async function handlePublicFormSubmit(event) {
     const submitLat = document.getElementById('latInput').value || currentLat;
     const submitLng = document.getElementById('lngInput').value || currentLng;
     if (!submitLat || !submitLng || !isInsideCampus(submitLat, submitLng)) {
-        showToast('⚠️ Gagal mengirim! Posisi Anda terdeteksi di luar kawasan kampus UINSSC. Pengaduan sarpras tidak dapat diinput.', 'error');
+        showToast('Gagal mengirim! Posisi Anda terdeteksi di luar kawasan kampus UINSSC. Pengaduan sarpras tidak dapat diinput.', 'error');
         const coordFooter = document.getElementById('mapCoordFooter');
         if (coordFooter) {
             coordFooter.classList.add('coord-footer-error');
@@ -1773,7 +1773,7 @@ async function handlePublicFormSubmit(event) {
     const nowMs = Date.now();
     if (nowMs - lastSubmitTime < SUBMIT_COOLDOWN_MS) {
         const remaining = Math.ceil((SUBMIT_COOLDOWN_MS - (nowMs - lastSubmitTime)) / 1000);
-        showToast(`⏳ Harap tunggu ${remaining} detik sebelum mengirim laporan baru (Perlindungan Anti-Spam).`, 'error');
+        showToast(`Harap tunggu ${remaining} detik sebelum mengirim laporan baru (Perlindungan Anti-Spam).`, 'error');
         return;
     }
 
@@ -1786,7 +1786,7 @@ async function handlePublicFormSubmit(event) {
         (r.status === 'Diajukan' || r.status === 'Diproses')
     );
     if (sameActiveReport) {
-        showToast(`⚠️ Anda sudah memiliki laporan aktif (#${sameActiveReport.id}) untuk masalah ini. Cek tab 'Riwayat Laporan'.`, 'error');
+        showToast(`Anda sudah memiliki laporan aktif (#${sameActiveReport.id}) untuk masalah ini. Cek tab 'Riwayat Laporan'.`, 'error');
         return;
     }
 
@@ -1877,7 +1877,7 @@ function renderTicketQRCode(ticketId) {
 function copyCreatedCode() {
     if (!lastTicketCode) return;
     navigator.clipboard.writeText(lastTicketCode).then(() => {
-        showToast(`📋 Kode tiket ${lastTicketCode} berhasil disalin!`, 'success');
+        showToast(`Kode tiket ${lastTicketCode} berhasil disalin!`, 'success');
     }).catch(() => {
         showToast(`Kode tiket: ${lastTicketCode}`, 'info');
     });
@@ -1909,7 +1909,7 @@ function downloadOfficialTicketPDF(ticketId) {
         return;
     }
 
-    showToast('📄 Sedang mengonversi tiket ke dokumen PDF resmi...', 'info');
+    showToast('Sedang mengonversi tiket ke dokumen PDF resmi...', 'info');
 
     const pdfContainer = document.createElement('div');
     pdfContainer.id = 'tempPdfDownloadBox';
@@ -1995,7 +1995,7 @@ function downloadOfficialTicketPDF(ticketId) {
 
     html2pdf().set(opt).from(pdfContainer).save().then(() => {
         pdfContainer.remove();
-        showToast('✅ Berkas PDF resmi tiket berhasil diunduh!', 'success');
+        showToast('Berkas PDF resmi tiket berhasil diunduh!', 'success');
     }).catch(err => {
         console.error('PDF error', err);
         pdfContainer.remove();

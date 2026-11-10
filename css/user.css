@@ -3614,9 +3614,7 @@ textarea.login-input {
     max-width: 320px !important;
     width: auto !important;
     min-height: auto !important;
-    display: flex !important;
-    align-items: center !important;
-    gap: 8px !important;
+    overflow: hidden !important;
     border: 1px solid rgba(212, 163, 67, 0.28) !important;
     background: rgba(11, 34, 25, 0.94) !important;
     backdrop-filter: blur(16px) !important;
@@ -3656,18 +3654,13 @@ textarea.login-input {
 }
 
 .swal2-popup.swal2-toast .swal2-icon {
-    width: 20px !important;
-    height: 20px !important;
-    min-width: 20px !important;
-    margin: 0 !important;
-    border-width: 2px !important;
-    display: inline-flex !important;
-    align-items: center !important;
-    justify-content: center !important;
+    font-size: 10px !important;
+    margin: 0 10px 0 0 !important;
 }
 
-.swal2-popup.swal2-toast .swal2-icon .swal2-icon-content {
-    font-size: 12px !important;
+.swal2-popup.swal2-toast .swal2-icon [class^=swal2-success-circular-line],
+.swal2-popup.swal2-toast .swal2-icon .swal2-success-fix {
+    display: none !important;
 }
 
 .swal2-popup.swal2-toast .swal2-timer-progress-bar {
@@ -3685,10 +3678,9 @@ textarea.login-input {
     }
 
     .swal2-popup.swal2-toast {
-        max-width: 270px !important;
-        padding: 6px 11px !important;
+        max-width: 280px !important;
+        padding: 6px 12px !important;
         border-radius: 10px !important;
-        gap: 6px !important;
     }
 
     .swal2-popup.swal2-toast .swal2-title {
@@ -3697,14 +3689,8 @@ textarea.login-input {
     }
 
     .swal2-popup.swal2-toast .swal2-icon {
-        width: 17px !important;
-        height: 17px !important;
-        min-width: 17px !important;
-        border-width: 1.5px !important;
-    }
-
-    .swal2-popup.swal2-toast .swal2-icon .swal2-icon-content {
-        font-size: 11px !important;
+        font-size: 9px !important;
+        margin: 0 8px 0 0 !important;
     }
 }
 
@@ -3719,10 +3705,9 @@ textarea.login-input {
     }
 
     .swal2-popup.swal2-toast {
-        max-width: 260px !important;
+        max-width: 270px !important;
         padding: 6px 10px !important;
         border-radius: 10px !important;
-        gap: 6px !important;
         box-shadow: 0 6px 18px rgba(0, 0, 0, 0.45) !important;
     }
 
@@ -3736,14 +3721,8 @@ textarea.login-input {
     }
 
     .swal2-popup.swal2-toast .swal2-icon {
-        width: 16px !important;
-        height: 16px !important;
-        min-width: 16px !important;
-        border-width: 1.5px !important;
-    }
-
-    .swal2-popup.swal2-toast .swal2-icon .swal2-icon-content {
-        font-size: 10px !important;
+        font-size: 8.5px !important;
+        margin: 0 6px 0 0 !important;
     }
 }
 

@@ -649,7 +649,7 @@ function warnSuperAdminOnly(actionName) {
         });
         return;
     }
-    showToast(`⛔ Akses Terbatas: Tindakan ${actionName} hanya dapat dilakukan oleh akun Super Admin!`, 'error');
+    showToast(`Akses Terbatas: Tindakan ${actionName} hanya dapat dilakukan oleh akun Super Admin!`, 'error');
 }
 
 function initTheme() {
@@ -698,7 +698,7 @@ function handleLogout() {
         });
         return;
     }
-    showToast('🔑 Anda telah berhasil keluar dari Dashboard Admin. Mengalihkan...', 'info');
+    showToast('Anda telah berhasil keluar dari Dashboard Admin. Mengalihkan...', 'info');
     localStorage.removeItem('SIMPEL_AUTH_SESSION');
     setTimeout(() => {
         window.location.href = '../index.html';
@@ -1578,7 +1578,7 @@ function syncDuplicateUpdates(mainId) {
     saveReports();
     renderAdminTable();
     openAdminModal(mainId); // refresh modal info
-    showToast(`✅ Berhasil menyelaraskan status & teknisi ke ${duplicates.length} laporan serupa!`, 'success');
+    showToast(`Berhasil menyelaraskan status & teknisi ke ${duplicates.length} laporan serupa!`, 'success');
 }
 
 function renderAdminTable() {
@@ -1976,7 +1976,7 @@ function focusAdminMapToCampus() {
         polygonGroup.addLayer(L.polygon(z.polygon));
     });
     adminOverviewMapInstance.fitBounds(polygonGroup.getBounds(), { padding: [30, 30] });
-    showToast('📍 Kamera Peta Admin terfokus kembali ke area Kampus UINSSC', 'info');
+    showToast('Kamera Peta Admin terfokus kembali ke area Kampus UINSSC', 'info');
 }
 
 let adminOverviewMaskPolygon = null;
@@ -4793,7 +4793,7 @@ function focusGisMapToCampus() {
     });
     if (polygonGroup.getLayers().length > 0) {
         gisSurveillanceMapInstance.fitBounds(polygonGroup.getBounds(), { padding: [35, 35] });
-        showToast('📍 Kamera Radar Spasial GIS difokuskan ke area Kampus UINSSC', 'info');
+        showToast('Kamera Radar Spasial GIS difokuskan ke area Kampus UINSSC', 'info');
     }
 }
 
