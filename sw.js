@@ -4,7 +4,7 @@
  * UIN Siber Syekh Nurjati Cirebon
  */
 
-const CACHE_NAME = 'simpel-uinssc-v7.4';
+const CACHE_NAME = 'simpel-uinssc-v7.5';
 const STATIC_ASSETS = [
     './',
     './index.html',

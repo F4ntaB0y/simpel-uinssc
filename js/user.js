@@ -1112,28 +1112,40 @@ function handleGedungSelectChange() {
 
 function focusMapToCampus() {
     if (!mapPickerInstance || CAMPUS_ZONES.length === 0) return;
-    const polygonGroup = L.featureGroup();
-    CAMPUS_ZONES.forEach(z => {
-        const poly = L.polygon(z.polygon);
-        polygonGroup.addLayer(poly);
+
+    // Ambil Kawasan Kampus Utama secara presisi
+    const mainCampusZone = CAMPUS_ZONES.find(z => z.id === 'kampus_utama') || CAMPUS_ZONES[0];
+    const mainPoly = L.polygon(mainCampusZone.polygon);
+    const mainBounds = mainPoly.getBounds();
+    const mainCenter = mainBounds.getCenter();
+
+    // Kamera terbang & zoom pas ke Kawasan Kampus Utama
+    mapPickerInstance.flyToBounds(mainBounds, {
+        padding: [35, 35],
+        duration: 1.2,
+        maxZoom: 18
     });
-    const combinedBounds = polygonGroup.getBounds();
-    const centerAll = combinedBounds.getCenter();
-    mapPickerInstance.fitBounds(combinedBounds, { padding: [30, 30] });
 
     if (!mapMarkerInstance) {
-        mapMarkerInstance = L.marker([centerAll.lat, centerAll.lng], { draggable: true }).addTo(mapPickerInstance);
+        mapMarkerInstance = L.marker([mainCenter.lat, mainCenter.lng], { draggable: true }).addTo(mapPickerInstance);
         mapMarkerInstance.on('dragend', function () {
             const pos = mapMarkerInstance.getLatLng();
             updateCoordinatesDisplay(pos.lat, pos.lng, false);
         });
     } else {
-        mapMarkerInstance.setLatLng([centerAll.lat, centerAll.lng]);
+        mapMarkerInstance.setLatLng([mainCenter.lat, mainCenter.lng]);
     }
-    mapMarkerInstance.bindPopup('<b>Area Kampus UINSSC</b><br>Silakan geser pin ke gedung / lokasi spesifik.').openPopup();
+    mapMarkerInstance.bindPopup('<b>Area Kampus Utama UINSSC</b><br>Silakan geser pin ke gedung / ruangan spesifik yang rusak.').openPopup();
 
-    updateCoordinatesDisplay(centerAll.lat, centerAll.lng, false);
-    showToast('📍 Kamera terfokus kembali ke area Kampus UINSSC', 'info');
+    // Reset tombol GPS jika sebelumnya berwarna merah karena out-of-bounds
+    const btnGps = document.getElementById('btnGpsLocation');
+    if (btnGps) {
+        btnGps.classList.remove('btn-gps-error');
+        btnGps.innerHTML = '<i class="fa-solid fa-location-crosshairs"></i> GPS Saya';
+    }
+
+    updateCoordinatesDisplay(mainCenter.lat, mainCenter.lng, false);
+    showToast('📍 Koordinat ditempatkan di tengah Kawasan Kampus Utama', 'success');
 }
 
 let campusMaskPolygon = null;
