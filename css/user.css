@@ -1380,6 +1380,58 @@ textarea {
     color: #005a36;
 }
 
+/* ==========================================================================
+   FORM FOOTER ACTIONS (CLEAN DESKTOP & MOBILE COLUMN STACK)
+   ========================================================================== */
+.form-footer-actions {
+    margin-top: 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 14px;
+    border-top: 1px solid var(--border-color);
+    padding-top: 20px;
+    flex-wrap: wrap;
+}
+
+.form-footer-primary-actions {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.btn-form-review {
+    border-color: var(--gold) !important;
+    color: var(--gold) !important;
+    background: rgba(212, 163, 67, 0.08) !important;
+    padding: 10px 20px !important;
+}
+
+[data-theme="light"] .btn-form-review {
+    background: #fefce8 !important;
+    border-color: #ca8a04 !important;
+    color: #854d0e !important;
+}
+
+.btn-form-review:hover {
+    background: rgba(212, 163, 67, 0.18) !important;
+    border-color: #fde047 !important;
+}
+
+.btn-form-submit {
+    padding-left: 28px !important;
+    padding-right: 28px !important;
+}
+
+.btn-form-reset {
+    opacity: 0.88;
+}
+
+.btn-form-reset:hover {
+    opacity: 1;
+}
+
 .chip-btn {
     background: rgba(212, 163, 67, 0.08);
     border: 1px solid var(--border-color);
@@ -3064,6 +3116,67 @@ textarea.login-input {
         grid-template-columns: 1fr !important;
         gap: 8px !important;
         padding: 10px 12px !important;
+    }
+
+    /* Form Footer Action Buttons Mobile: Clean, Full-Width, Single Neat Column */
+    .form-footer-actions {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: stretch !important;
+        gap: 10px !important;
+        margin-top: 20px !important;
+        padding-top: 16px !important;
+        width: 100% !important;
+    }
+
+    .form-footer-primary-actions {
+        display: contents !important;
+    }
+
+    .form-footer-actions .btn-form-submit {
+        order: 1 !important;
+        width: 100% !important;
+        min-height: 48px !important;
+        font-size: 14px !important;
+        font-weight: 800 !important;
+        justify-content: center !important;
+        display: flex !important;
+        align-items: center !important;
+        gap: 8px !important;
+        border-radius: 12px !important;
+        box-sizing: border-box !important;
+        text-align: center !important;
+    }
+
+    .form-footer-actions .btn-form-review {
+        order: 2 !important;
+        width: 100% !important;
+        min-height: 46px !important;
+        font-size: 13.5px !important;
+        font-weight: 700 !important;
+        justify-content: center !important;
+        display: flex !important;
+        align-items: center !important;
+        gap: 8px !important;
+        border-radius: 12px !important;
+        box-sizing: border-box !important;
+        text-align: center !important;
+    }
+
+    .form-footer-actions .btn-form-reset {
+        order: 3 !important;
+        width: 100% !important;
+        min-height: 44px !important;
+        font-size: 13px !important;
+        font-weight: 600 !important;
+        justify-content: center !important;
+        display: flex !important;
+        align-items: center !important;
+        gap: 8px !important;
+        border-radius: 12px !important;
+        box-sizing: border-box !important;
+        text-align: center !important;
+        opacity: 0.85 !important;
     }
 
     /* Mencegah auto-zoom browser iOS/Android dan memastikan target sentuh ramah jari (min 48px) */

@@ -16,7 +16,7 @@
     <!-- Leaflet.js Interactive Map CSS & JS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <link rel="stylesheet" href="../css/user.css?v=20261110_mapclean">
+    <link rel="stylesheet" href="../css/user.css?v=20261110_btnclean">
     <!-- SweetAlert2 Latest CDN -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <!-- DOMPurify Security Sanitizer -->
@@ -437,16 +437,16 @@
                 </div>
 
                 <!-- Action Buttons Footer -->
-                <div style="margin-top:24px; display:flex; justify-content:space-between; align-items:center; gap:12px; border-top:1px solid var(--border-color); padding-top:20px; flex-wrap:wrap;">
-                    <button type="reset" class="btn btn-secondary" onclick="removeFoto(); handleKategoriChange(); resetReportLocationMarker();">
+                <div class="form-footer-actions">
+                    <button type="reset" id="btnResetForm" class="btn btn-secondary btn-form-reset" onclick="removeFoto(); handleKategoriChange(); resetReportLocationMarker();">
                         <i class="fa-solid fa-eraser"></i> Bersihkan Formulir
                     </button>
-                    <div style="display:flex; gap:10px; flex-wrap:wrap;">
-                        <button type="button" id="btnReviewReport" class="btn btn-secondary" onclick="openReviewBeforeSubmit()" style="border-color:var(--gold); color:var(--gold);">
-                            <i class="fa-solid fa-eye"></i> Pratinjau Laporan
+                    <div class="form-footer-primary-actions">
+                        <button type="button" id="btnReviewReport" class="btn btn-secondary btn-form-review" onclick="openReviewBeforeSubmit()">
+                            <i class="fa-solid fa-eye"></i> Pratinjau
                         </button>
-                        <button type="submit" id="btnSubmitReport" class="btn btn-primary" style="padding-left:26px; padding-right:26px;">
-                            <i class="fa-solid fa-paper-plane"></i> Kirim Laporan Sekarang
+                        <button type="submit" id="btnSubmitReport" class="btn btn-primary btn-form-submit">
+                            <i class="fa-solid fa-paper-plane"></i> Kirim Laporan
                         </button>
                     </div>
                 </div>
@@ -775,7 +775,7 @@
     <!-- Toast Notifications -->
     <div id="toastBox" class="toast-box"></div>
 
-    <script src="../js/user.js?v=20261110_mapclean"></script>
+    <script src="../js/user.js?v=20261110_btnclean"></script>
     <script src="../js/site-builder.js?v=20261107_ui4"></script>
     <script>
         if ('serviceWorker' in navigator) {
