@@ -30,7 +30,8 @@
   }
 
   // Dynamic base path resolver: works in root ('/') and subfolders ('/pages/')
-  const isSubdir = window.location.pathname.replace(/\\/g, '/').includes('/pages/');
+  const currentPath = window.location.pathname.replace(/\\/g, '/');
+  const isSubdir = currentPath.includes('/pages/') || currentPath.includes('pages/') || currentPath.endsWith('user.html') || currentPath.endsWith('admin.html');
   const basePath = isSubdir ? '../' : '';
 
   // UIN Siber Syekh Nurjati Cirebon Campus Photos
@@ -302,7 +303,7 @@
 
       // Click Navigation: Atas = Previous, Bawah = Next (hanya jika klik di latar canvas)
       document.addEventListener('click', e => {
-        if (e.target.closest('input, button, a, select, textarea, label, .login-glass-card, .login-hero-side, .modal-backdrop, .swal2-container, .webgl-campus-hud, .form-card, .user-banner-card, .table-card, .modal-content, .card, .sso-profile-card, #sectionRiwayat, #sectionLacak, #map, .leaflet-container')) {
+        if (e.target.closest('input, button, a, select, textarea, label, .login-glass-card, .login-hero-side, .modal-backdrop, .swal2-container, .webgl-campus-hud, .form-card, .user-banner-card, .table-card, .modal-content, .card, .sso-profile-card, #sectionRiwayat, #sectionLacak, #map, .leaflet-container, .navbar, .top-util-bar, .app-footer, .tab-switcher, .form-step-panel')) {
           return;
         }
         if (e.clientY < three.size.height / 2) {

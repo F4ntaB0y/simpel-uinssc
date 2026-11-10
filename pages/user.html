@@ -25,11 +25,15 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <!-- html2pdf.js Official PDF Exporter -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <!-- Three.js & GSAP for WebGL Campus Zoom-Blur Showcase -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 </head>
 <body class="has-bg-overlay">
 
-    <!-- Static Blurred Campus Background Overlay (Gedung Cyber UINSSC) -->
+    <!-- Blurred Background Overlay & Interactive WebGL Campus Tour (UIN Siber Syekh Nurjati Cirebon) -->
     <div class="login-bg-overlay">
+        <canvas id="canvas" class="login-webgl-canvas"></canvas>
         <div class="login-bg-image" style="background-image: url('../assets/img/gedungCyber.png');"></div>
         <div class="login-bg-tint"></div>
     </div>
@@ -789,12 +793,14 @@
     <!-- Toast Notifications -->
     <div id="toastBox" class="toast-box"></div>
 
-    <script src="../js/user.js?v=20261110_campuscenter"></script>
-    <script src="../js/site-builder.js?v=20261110_campuscenter"></script>
+    <script src="../js/user.js?v=20261110_campustour"></script>
+    <script src="../js/site-builder.js?v=20261110_campustour"></script>
+    <!-- WebGL Zoom-Blur Campus Script -->
+    <script src="../js/webgl-tour.js?v=20261110_campustour"></script>
     <script>
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('../sw.js?v=20261110_campuscenter')
+                navigator.serviceWorker.register('../sw.js?v=20261110_campustour')
                     .then(reg => {
                         reg.update();
                         console.log('SIMPEL User PWA Registered & Checked for Updates', reg.scope);

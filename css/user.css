@@ -2139,23 +2139,23 @@ body.webgl-active .login-bg-tint {
     background-size: cover;
     background-position: center center;
     background-repeat: no-repeat;
-    filter: blur(14px) brightness(0.38);
+    filter: blur(8px) brightness(0.6);
     transform: scale(1.05);
     transition: filter 0.4s ease;
 }
 
 [data-theme="light"] .login-bg-image {
-    filter: blur(16px) brightness(0.92) saturate(1.05);
+    filter: blur(8px) brightness(0.96) saturate(1.1);
 }
 
 .login-bg-tint {
     position: absolute;
     inset: 0;
-    background: radial-gradient(circle at 65% 35%, rgba(0, 90, 54, 0.42) 0%, rgba(4, 18, 12, 0.9) 100%);
+    background: radial-gradient(circle at 65% 35%, rgba(0, 90, 54, 0.32) 0%, rgba(4, 18, 12, 0.78) 100%);
 }
 
 [data-theme="light"] .login-bg-tint {
-    background: radial-gradient(circle at 65% 35%, rgba(255, 255, 255, 0.78) 0%, rgba(235, 246, 239, 0.94) 100%);
+    background: radial-gradient(circle at 65% 35%, rgba(255, 255, 255, 0.65) 0%, rgba(235, 246, 239, 0.85) 100%);
 }
 
 /* Full-Width Institutional Header Text ("text full") */
