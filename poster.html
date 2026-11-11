@@ -1091,17 +1091,24 @@
         .val-gold-dark     { background: #b45309; }
         .val-deep-forest   { background: #01361f; }
 
-        /* 4. BOTTOM FOOTER BAR */
+        /* 4. BOTTOM FOOTER BAR WITH INTEGRATED QR CODE SLOT */
         .poster-bottom-footer {
             background: #012415;
             color: #ffffff;
-            padding: 5px 18px;
+            padding: 3px 16px 3px 18px;
             display: flex;
             align-items: center;
             justify-content: space-between;
             border-top: 2px solid var(--gold);
             flex-shrink: 0;
-            height: 36px;
+            height: 42px;
+            box-sizing: border-box;
+        }
+
+        .footer-left-block {
+            display: flex;
+            align-items: center;
+            gap: 14px;
         }
 
         .footer-tagline-text {
@@ -1110,7 +1117,7 @@
         }
 
         .footer-tagline-bold {
-            font-size: 9px;
+            font-size: 8.8px;
             font-weight: 900;
             color: #fef08a;
             letter-spacing: 0.4px;
@@ -1122,7 +1129,7 @@
         }
 
         .footer-inst-name {
-            font-size: 7.4px;
+            font-size: 7.2px;
             color: #a7f3d0;
             font-weight: 500;
         }
@@ -1130,15 +1137,15 @@
         .footer-meta-pills {
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 5px;
         }
 
         .footer-pill-item {
             background: #004d2e;
             border: 1px solid var(--gold);
-            padding: 2.5px 8px;
+            padding: 2px 7px;
             border-radius: 4px;
-            font-size: 7.2px;
+            font-size: 6.8px;
             font-weight: 700;
             color: #ffffff;
             display: flex;
@@ -1148,6 +1155,67 @@
 
         .footer-pill-item i {
             color: var(--gold-bright);
+        }
+
+        /* Dedicated Official QR Code Slot */
+        .footer-qr-slot {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            background: #00361f;
+            border: 1px solid var(--gold);
+            padding: 2.5px 8px 2.5px 3.5px;
+            border-radius: 5px;
+            flex-shrink: 0;
+        }
+
+        .qr-code-img-frame {
+            width: 34px;
+            height: 34px;
+            background: #ffffff;
+            border-radius: 3px;
+            padding: 1.5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-sizing: border-box;
+            flex-shrink: 0;
+        }
+
+        .qr-code-img-frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            display: block;
+        }
+
+        .qr-slot-text {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.15;
+        }
+
+        .qr-badge-title {
+            font-size: 7.4px;
+            font-weight: 900;
+            color: #fef08a;
+            display: flex;
+            align-items: center;
+            gap: 3px;
+            letter-spacing: 0.3px;
+        }
+
+        .qr-sub-url {
+            font-size: 6.5px;
+            font-family: monospace;
+            color: #86efac;
+            font-weight: 700;
+        }
+
+        .qr-action-note {
+            font-size: 5.8px;
+            color: #cbd5e1;
+            font-style: italic;
         }
 
         /* ==========================================================================
@@ -1766,16 +1834,30 @@
 
         </div>
 
-        <!-- 4. BOTTOM FOOTER BAR -->
+        <!-- 4. BOTTOM FOOTER BAR WITH INTEGRATED QR CODE SLOT -->
         <footer class="poster-bottom-footer">
-            <div class="footer-tagline-text">
-                <div class="footer-tagline-bold">SIMPEL SARPRAS <span>&mdash; Fasilitas Terjaga, Kampus Berkualitas</span></div>
-                <div class="footer-inst-name">Sistem Informasi Pelaporan Sarana Prasarana &bull; UIN Siber Syekh Nurjati Cirebon</div>
+            <div class="footer-left-block">
+                <div class="footer-tagline-text">
+                    <div class="footer-tagline-bold">SIMPEL SARPRAS <span>&mdash; Fasilitas Terjaga, Kampus Berkualitas</span></div>
+                    <div class="footer-inst-name">Sistem Informasi Pelaporan Sarana Prasarana &bull; UIN Siber Syekh Nurjati Cirebon</div>
+                </div>
+                <div class="footer-meta-pills">
+                    <div class="footer-pill-item"><i class="fa-solid fa-laptop"></i> Desktop & Mobile PWA</div>
+                    <div class="footer-pill-item"><i class="fa-solid fa-network-wired"></i> Kampus Siber UINSSC</div>
+                    <div class="footer-pill-item"><i class="fa-solid fa-calendar-check"></i> AICIS 2026</div>
+                </div>
             </div>
-            <div class="footer-meta-pills">
-                <div class="footer-pill-item"><i class="fa-solid fa-laptop"></i> Desktop & Mobile PWA</div>
-                <div class="footer-pill-item"><i class="fa-solid fa-network-wired"></i> Kampus Siber UINSSC</div>
-                <div class="footer-pill-item"><i class="fa-solid fa-calendar-check"></i> AICIS 2026</div>
+
+            <!-- Dedicated Official QR Code Slot for Live Demo / Portal Access -->
+            <div class="footer-qr-slot">
+                <div class="qr-code-img-frame">
+                    <img src="assets/img/qr_code_simpel.png" alt="Scan QR Code SIMPEL">
+                </div>
+                <div class="qr-slot-text">
+                    <span class="qr-badge-title"><i class="fa-solid fa-qrcode"></i> SCAN ME</span>
+                    <span class="qr-sub-url">simpel.uinssc.ac.id</span>
+                    <span class="qr-action-note">Live Demo Web PWA</span>
+                </div>
             </div>
         </footer>
 
