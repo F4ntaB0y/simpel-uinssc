@@ -510,10 +510,12 @@
             flex: 1 1 auto;
             padding: 6px 14px 5px;
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
             gap: 7px;
             background: transparent;
             box-sizing: border-box;
+            width: 100%;
+            max-width: 100%;
         }
 
         .poster-col {
@@ -521,6 +523,8 @@
             flex-direction: column;
             gap: 6.5px;
             height: 100%;
+            min-width: 0;
+            overflow: hidden;
         }
 
         /* Generic Card Styling - Padat, Kokoh & Proporsional Merata */
@@ -533,6 +537,9 @@
             flex-direction: column;
             flex: 1 1 0;
             min-height: 0;
+            min-width: 0;
+            box-sizing: border-box;
+            overflow: hidden;
         }
 
         .card-header-bar {
@@ -930,22 +937,26 @@
         /* 5 Tahap SLA Pipeline Stepper (Padat, Terisi Penuh & Proporsional) */
         .sla-pipeline-grid {
             display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 4px;
+            grid-template-columns: repeat(5, minmax(0, 1fr));
+            gap: 3px;
             flex: 1;
             min-height: 0;
-            margin-bottom: 3.5px;
+            min-width: 0;
+            margin-bottom: 2.5px;
         }
 
         .sla-step-item {
             background: #f8fafc;
             border: 1px solid #e2e8f0;
             border-top: 3px solid #059669;
-            border-radius: 5px;
-            padding: 4px 4px 3px;
+            border-radius: 4px;
+            padding: 3px 2.5px 2px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
+            min-width: 0;
+            overflow: hidden;
+            box-sizing: border-box;
         }
 
         .sla-step-item.sla-step-highlight {
@@ -958,17 +969,18 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 1.5px;
+            margin-bottom: 1px;
+            min-width: 0;
         }
 
         .sla-step-badge {
-            width: 16px;
-            height: 16px;
+            width: 14px;
+            height: 14px;
             border-radius: 50%;
             background: #005a36;
             color: #ffffff;
             font-family: 'Space Grotesk', sans-serif;
-            font-size: 7.8px;
+            font-size: 7.2px;
             font-weight: 900;
             display: flex;
             align-items: center;
@@ -986,13 +998,13 @@
         }
 
         .sla-time-pill {
-            font-size: 6px;
+            font-size: 5.4px;
             font-weight: 800;
             background: #ecfdf5;
             color: #047857;
             border: 1px solid #a7f3d0;
-            padding: 1px 3.5px;
-            border-radius: 3px;
+            padding: 0.8px 2.5px;
+            border-radius: 2.5px;
             line-height: 1;
             white-space: nowrap;
         }
@@ -1012,12 +1024,13 @@
         .sla-step-title-wrap {
             display: flex;
             align-items: center;
-            gap: 3px;
+            gap: 2.5px;
             margin-bottom: 1px;
+            min-width: 0;
         }
 
         .sla-step-icon {
-            font-size: 7.2px;
+            font-size: 6.8px;
             color: #005a36;
             flex-shrink: 0;
         }
@@ -1031,36 +1044,43 @@
         }
 
         .sla-step-title {
-            font-size: 8px;
+            font-size: 7.6px;
             font-weight: 900;
             color: #0f172a;
             line-height: 1.15;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .sla-step-desc {
-            font-size: 6.2px;
+            font-size: 5.6px;
             color: #475569;
-            line-height: 1.18;
-            margin-bottom: 2px;
+            line-height: 1.15;
+            margin-bottom: 1.5px;
+            word-break: break-word;
         }
 
         .sla-meta-stack {
             display: flex;
             flex-direction: column;
-            gap: 1.5px;
-            margin-bottom: 2px;
+            gap: 1.2px;
+            margin-bottom: 1.5px;
+            min-width: 0;
         }
 
         .sla-meta-pill {
             background: #ffffff;
             border: 1px solid #e2e8f0;
-            border-radius: 3px;
-            padding: 1px 3px;
+            border-radius: 2.5px;
+            padding: 0.8px 2px;
             display: flex;
             align-items: center;
-            gap: 2.5px;
-            font-size: 5.8px;
+            gap: 2px;
+            font-size: 5.3px;
             line-height: 1;
+            min-width: 0;
+            box-sizing: border-box;
         }
 
         .sla-meta-pill.pill-gold-bg {
@@ -1077,7 +1097,8 @@
             font-weight: 800;
             color: #0f172a;
             text-transform: uppercase;
-            font-size: 5.4px;
+            font-size: 4.8px;
+            flex-shrink: 0;
         }
 
         .sla-meta-val {
@@ -1086,26 +1107,28 @@
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
+            font-size: 5.2px;
         }
 
         .sla-progress-wrap {
             display: flex;
             flex-direction: column;
-            gap: 1.2px;
+            gap: 1px;
+            min-width: 0;
         }
 
         .sla-progress-bar {
             width: 100%;
-            height: 2.5px;
+            height: 2px;
             background: #e2e8f0;
-            border-radius: 2px;
+            border-radius: 1.5px;
             overflow: hidden;
         }
 
         .sla-progress-fill {
             height: 100%;
             background: #005a36;
-            border-radius: 2px;
+            border-radius: 1.5px;
         }
 
         .sla-progress-fill.fill-20 { width: 20%; }
@@ -1115,7 +1138,7 @@
         .sla-progress-fill.fill-100 { width: 100%; background: #047857; }
 
         .sla-progress-num {
-            font-size: 5.5px;
+            font-size: 5.2px;
             font-weight: 700;
             color: var(--slate-500);
             text-align: right;
@@ -1130,24 +1153,33 @@
             background: #f0fdf4;
             border: 1px solid #bbf7d0;
             border-radius: 4px;
-            padding: 2.5px 6px;
+            padding: 2px 4.5px;
             display: flex;
             align-items: center;
             justify-content: space-between;
             flex-shrink: 0;
+            gap: 3px;
+            min-width: 0;
+            overflow: hidden;
+            box-sizing: border-box;
         }
 
         .sla-guarantee-left {
             display: flex;
             align-items: center;
-            gap: 4px;
-            font-size: 6.6px;
+            gap: 3px;
+            font-size: 6px;
             color: #065f46;
+            min-width: 0;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
         }
 
         .sla-guarantee-left i {
-            font-size: 7.5px;
+            font-size: 6.8px;
             color: #047857;
+            flex-shrink: 0;
         }
 
         .sla-guarantee-left strong {
@@ -1158,31 +1190,34 @@
         .sla-guarantee-badges {
             display: flex;
             align-items: center;
-            gap: 4px;
+            gap: 2.5px;
+            flex-shrink: 0;
         }
 
         .sla-badge-sub {
             background: #ffffff;
             border: 1px solid #a7f3d0;
             color: #047857;
-            font-size: 5.8px;
+            font-size: 5.2px;
             font-weight: 700;
-            padding: 1px 4.5px;
-            border-radius: 3px;
+            padding: 0.8px 3px;
+            border-radius: 2px;
             display: flex;
             align-items: center;
-            gap: 2.5px;
+            gap: 2px;
             line-height: 1;
+            white-space: nowrap;
         }
 
         /* Teknologi & Nilai Lebih Split 50/50 Seimbang & Harmonis */
         .tech-clean-split {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 5.5px;
+            grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+            gap: 5px;
             align-items: stretch;
             flex: 1;
             min-height: 0;
+            min-width: 0;
         }
 
         .tech-col-half,
@@ -1191,15 +1226,18 @@
             flex-direction: column;
             justify-content: space-between;
             min-height: 0;
+            min-width: 0;
+            overflow: hidden;
         }
 
         .tech-2x2-box {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
             grid-template-rows: 1fr 1fr;
             gap: 3px;
             flex: 1;
             min-height: 0;
+            min-width: 0;
         }
 
         .tech-badge-card {
@@ -1210,6 +1248,8 @@
             display: flex;
             flex-direction: column;
             justify-content: center;
+            min-width: 0;
+            overflow: hidden;
         }
 
         .tech-badge-title {
@@ -1220,12 +1260,16 @@
             align-items: center;
             gap: 3.5px;
             margin-bottom: 1px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .tech-badge-detail {
             font-size: 6.4px;
             color: var(--slate-600);
             line-height: 1.16;
+            word-break: break-word;
         }
 
         /* Brand Banner Strip Atas */
@@ -1239,6 +1283,8 @@
             gap: 5.5px;
             margin-bottom: 3px;
             flex-shrink: 0;
+            min-width: 0;
+            overflow: hidden;
         }
 
         .brand-mini-emblem {
@@ -1254,6 +1300,8 @@
             display: flex;
             flex-direction: column;
             line-height: 1.1;
+            min-width: 0;
+            overflow: hidden;
         }
 
         .brand-banner-name {
@@ -1261,22 +1309,29 @@
             font-weight: 900;
             color: #005a36;
             letter-spacing: 0.3px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .brand-banner-desc {
             font-size: 6px;
             color: #92400e;
             font-weight: 600;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         /* 4 Value Benefit Cards (Clean Academic Style) */
         .val-clean-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
             grid-template-rows: 1fr 1fr;
             gap: 3px;
             flex: 1;
             min-height: 0;
+            min-width: 0;
         }
 
         .val-clean-card {
@@ -1287,6 +1342,8 @@
             display: flex;
             flex-direction: column;
             justify-content: center;
+            min-width: 0;
+            overflow: hidden;
         }
 
         .val-border-green   { border-left: 3px solid #005a36; }
@@ -1299,10 +1356,12 @@
             align-items: center;
             gap: 3.5px;
             margin-bottom: 1px;
+            min-width: 0;
         }
 
         .val-card-head i {
             font-size: 7.2px;
+            flex-shrink: 0;
         }
 
         .val-ico-green   { color: #005a36; }
@@ -1314,12 +1373,16 @@
             font-size: 7.5px;
             font-weight: 800;
             color: #0f172a;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .val-card-desc {
             font-size: 6.3px;
             color: var(--slate-600);
             line-height: 1.16;
+            word-break: break-word;
         }
 
         /* 4. BOTTOM FOOTER BAR WITH INTEGRATED QR CODE SLOT */
@@ -1466,9 +1529,11 @@
                 padding: 0 !important;
                 margin: 0 !important;
                 width: 210mm !important;
+                max-width: 210mm !important;
                 height: 297mm !important;
                 max-height: 297mm !important;
                 overflow: hidden !important;
+                box-sizing: border-box !important;
             }
 
             .control-toolbar {
@@ -1477,6 +1542,7 @@
 
             .poster-artboard {
                 width: 210mm !important;
+                max-width: 210mm !important;
                 height: 297mm !important;
                 max-height: 297mm !important;
                 box-shadow: none !important;
@@ -1487,6 +1553,8 @@
                 page-break-before: avoid !important;
                 margin: 0 !important;
                 background: #f8fafc !important;
+                box-sizing: border-box !important;
+                overflow: hidden !important;
             }
 
             .poster-dual-columns {
@@ -2049,12 +2117,12 @@
                     <div class="sla-guarantee-strip">
                         <div class="sla-guarantee-left">
                             <i class="fa-solid fa-shield-halved"></i>
-                            <span><strong>Komitmen Mutu SLA:</strong> Standar Maks. 48 Jam &bull; Zero-Pending Ticket</span>
+                            <span><strong>Komitmen SLA:</strong> Maks. 48 Jam &bull; Zero-Pending</span>
                         </div>
                         <div class="sla-guarantee-badges">
-                            <span class="sla-badge-sub"><i class="fa-solid fa-satellite-dish"></i> GPS Terverifikasi</span>
-                            <span class="sla-badge-sub"><i class="fa-solid fa-stopwatch"></i> Tracking Real-Time 24/7</span>
-                            <span class="sla-badge-sub"><i class="fa-solid fa-file-pdf"></i> Arsip Sah Ber-QR</span>
+                            <span class="sla-badge-sub"><i class="fa-solid fa-satellite-dish"></i> GPS 5 Zona</span>
+                            <span class="sla-badge-sub"><i class="fa-solid fa-stopwatch"></i> Tracking 24/7</span>
+                            <span class="sla-badge-sub"><i class="fa-solid fa-file-pdf"></i> Arsip QR</span>
                         </div>
                     </div>
                 </div>
