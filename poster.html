@@ -23,6 +23,7 @@
             --emerald-500: #10b981;
             --gold: #d4a343;
             --gold-bright: #f59e0b;
+            --gold-dark: #92400e;
             --gold-light: #fef7ea;
             --slate-900: #0f172a;
             --slate-800: #1e293b;
@@ -34,8 +35,6 @@
             --slate-100: #f1f5f9;
             --slate-50: #f8fafc;
             --white: #ffffff;
-            --danger: #dc2626;
-            --blue-600: #2563eb;
         }
 
         * {
@@ -115,7 +114,7 @@
 
         .btn-canva-guide {
             background: var(--gold-light);
-            color: #92400e;
+            color: var(--gold-dark);
             border: 1px solid rgba(212, 163, 67, 0.4);
         }
 
@@ -150,7 +149,7 @@
             justify-content: space-between;
             border-bottom: 2px solid #e2e8f0;
             flex-shrink: 0;
-            height: 48px;
+            height: 46px;
         }
 
         .header-brand-left {
@@ -210,7 +209,7 @@
         }
 
         .aicis-logo-img {
-            height: 38px;
+            height: 36px;
             width: auto;
             object-fit: contain;
         }
@@ -222,7 +221,7 @@
             padding: 10px 18px 9px;
             position: relative;
             flex-shrink: 0;
-            height: 204px;
+            height: 202px;
             border-bottom: 3px solid var(--gold);
             overflow: hidden;
         }
@@ -541,10 +540,10 @@
             overflow: hidden;
         }
 
-        /* SECTION ROW 1: 3 CARDS (Permasalahan / Solusi / Fasilitas Utama dengan Foto Kampus) */
+        /* SECTION ROW 1: 3 CARDS (SEMUA MEMILIKI BANNER FOTO KAMPUS RESMI) */
         .grid-three-cards {
             display: grid;
-            grid-template-columns: 1fr 1fr 1.05fr;
+            grid-template-columns: 1fr 1fr 1fr;
             gap: 7px;
             flex: 1 1 auto;
         }
@@ -553,110 +552,29 @@
             background: #ffffff;
             border: 1.5px solid #e2e8f0;
             border-radius: 7px;
-            padding: 7px 9px;
+            padding: 6px 8px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
         }
 
-        .pillar-header {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            margin-bottom: 5px;
-            padding-bottom: 4px;
-            border-bottom: 1.5px solid #f1f5f9;
-        }
-
-        .pillar-icon-box {
-            width: 22px;
-            height: 22px;
-            border-radius: 5px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 11px;
-            flex-shrink: 0;
-        }
-
-        .icon-red { background: #fee2e2; color: #dc2626; }
-        .icon-green { background: #dcfce7; color: #15803d; }
-        .icon-blue { background: #dbeafe; color: #1d4ed8; }
-
-        .pillar-tag {
-            font-size: 7px;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            color: var(--slate-400);
-            display: block;
-            line-height: 1;
-        }
-
-        .pillar-title {
-            font-size: 10.5px;
-            font-weight: 900;
-            color: #0f172a;
-            line-height: 1.1;
-        }
-
-        .pillar-list {
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-            flex: 1;
-        }
-
-        .pillar-item-box {
-            background: #f8fafc;
-            border: 1px solid #f1f5f9;
-            border-radius: 5px;
-            padding: 4px 6px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            flex: 1;
-        }
-
-        .pillar-item-box i {
-            font-size: 8.5px;
-            margin-top: 1px;
-            flex-shrink: 0;
-        }
-
-        .pillar-item-text {
-            font-size: 7.8px;
-            color: var(--slate-700);
-            line-height: 1.35;
-        }
-
-        .pillar-item-text strong {
-            color: #0f172a;
-            font-weight: 800;
-        }
-
-        .bullet-red { color: #ef4444; }
-        .bullet-green { color: #10b981; }
-        .bullet-blue { color: #3b82f6; }
-
-        /* Card 3 Inset Image Banner: Kampus Siber UINSSC */
-        .facility-photo-mini-strip {
-            height: 36px;
+        .pillar-card-photo-strip {
+            height: 35px;
             border-radius: 5px;
             overflow: hidden;
             position: relative;
-            margin-bottom: 4px;
+            margin-bottom: 5px;
             border: 1px solid #cbd5e1;
         }
 
-        .facility-photo-mini-strip img {
+        .pillar-card-photo-strip img {
             width: 100%;
             height: 100%;
             object-fit: cover;
             display: block;
         }
 
-        .facility-photo-overlay-tag {
+        .pillar-photo-overlay-tag {
             position: absolute;
             bottom: 3px;
             left: 5px;
@@ -671,6 +589,87 @@
             gap: 4px;
             border: 1px solid rgba(212, 163, 67, 0.4);
         }
+
+        .pillar-header {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 4px;
+            padding-bottom: 3px;
+            border-bottom: 1.5px solid #f1f5f9;
+        }
+
+        .pillar-icon-box {
+            width: 20px;
+            height: 20px;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            flex-shrink: 0;
+        }
+
+        /* PALET WARNA HIJAU & EMAS INSTITUSIONAL (TANPA PINK) */
+        .icon-amber-tone { background: #fef3c7; color: #b45309; }
+        .icon-green-tone { background: #dcfce7; color: #15803d; }
+        .icon-emerald-tone { background: #ecfdf5; color: #047857; }
+
+        .pillar-tag {
+            font-size: 6.8px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--slate-400);
+            display: block;
+            line-height: 1;
+        }
+
+        .pillar-title {
+            font-size: 10.2px;
+            font-weight: 900;
+            color: #0f172a;
+            line-height: 1.1;
+        }
+
+        .pillar-list {
+            display: flex;
+            flex-direction: column;
+            gap: 3.5px;
+            flex: 1;
+        }
+
+        .pillar-item-box {
+            background: #f8fafc;
+            border: 1px solid #f1f5f9;
+            border-radius: 5px;
+            padding: 3.5px 6px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex: 1;
+        }
+
+        .pillar-item-box i {
+            font-size: 8px;
+            margin-top: 1px;
+            flex-shrink: 0;
+        }
+
+        .pillar-item-text {
+            font-size: 7.6px;
+            color: var(--slate-700);
+            line-height: 1.32;
+        }
+
+        .pillar-item-text strong {
+            color: #0f172a;
+            font-weight: 800;
+        }
+
+        .bullet-amber { color: #b45309; }
+        .bullet-green { color: #15803d; }
+        .bullet-emerald { color: #047857; }
 
         /* SECTION ROW 2: CARA KERJA (ALUR PENGGUNAAN APLIKASI - 8 STEP TIMELINE) */
         .timeline-section-card {
@@ -975,9 +974,6 @@
             flex-shrink: 0;
         }
 
-        .icon-emerald-mini { background: #dcfce7; color: #047857; }
-        .icon-amber-mini { background: #fef3c7; color: #b45309; }
-
         .feat-mini-text h5 {
             font-size: 8.2px;
             font-weight: 900;
@@ -1051,10 +1047,10 @@
             text-align: center;
         }
 
-        /* SECTION ROW 5: SASARAN / TEKNOLOGI / KEUNGGULAN (3 KOLOM BAWAH PADAT) */
+        /* SECTION ROW 5: SASARAN / TEKNOLOGI / NILAI LEBIH (KAYA GAMBAR & EMBLEM RESMI) */
         .bottom-three-grid {
             display: grid;
-            grid-template-columns: 0.95fr 1.05fr 1fr;
+            grid-template-columns: 1fr 1fr 1.05fr;
             gap: 7px;
             flex: 1 1 auto;
         }
@@ -1098,7 +1094,7 @@
             line-height: 1.1;
         }
 
-        /* Sasaran 3 Rich Containers */
+        /* Col 1: Sasaran Pengguna (Civitas Akademika dengan Avatar Visual) */
         .sasaran-container-list {
             display: flex;
             flex-direction: column;
@@ -1110,7 +1106,7 @@
             background: #f8fafc;
             border: 1px solid #e2e8f0;
             border-radius: 5px;
-            padding: 5px 6px;
+            padding: 4.5px 6px;
             display: flex;
             align-items: center;
             gap: 6px;
@@ -1118,20 +1114,33 @@
         }
 
         .sasaran-badge-dot {
-            width: 18px;
-            height: 18px;
+            width: 20px;
+            height: 20px;
             border-radius: 4px;
-            background: #e2e8f0;
+            background: #dcfce7;
             color: var(--primary);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 9px;
+            font-size: 10px;
             flex-shrink: 0;
+            border: 1px solid #a7f3d0;
+        }
+
+        .sasaran-badge-dot.gold-badge {
+            background: #fef3c7;
+            color: #b45309;
+            border-color: #fde68a;
+        }
+
+        .sasaran-badge-dot.dark-badge {
+            background: #e8f5ee;
+            color: #01361f;
+            border-color: #cbd5e1;
         }
 
         .sasaran-item-text {
-            font-size: 7.6px;
+            font-size: 7.5px;
             color: var(--slate-700);
             line-height: 1.25;
         }
@@ -1141,7 +1150,7 @@
             font-weight: 800;
         }
 
-        /* Teknologi Grid 2x2 */
+        /* Col 2: Teknologi Grid 2x2 dengan Visual Tech Badges */
         .tech-grid-2x2 {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -1176,18 +1185,54 @@
             line-height: 1.2;
         }
 
-        /* Keunggulan 4 Full Colored Blocks */
+        /* Col 3: Keunggulan dengan Logo Brand 3D SIMPEL UINSSC */
+        .keunggulan-split-wrap {
+            display: grid;
+            grid-template-columns: 0.85fr 1.15fr;
+            gap: 6px;
+            align-items: stretch;
+            flex: 1;
+        }
+
+        .emblem-showcase-box {
+            background: #ffffff;
+            border: 1.5px solid var(--gold);
+            border-radius: 6px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 4px;
+            text-align: center;
+        }
+
+        .emblem-showcase-box img {
+            width: 100%;
+            max-height: 62px;
+            object-fit: contain;
+            display: block;
+            margin-bottom: 3px;
+        }
+
+        .emblem-caption {
+            font-size: 6.2px;
+            font-weight: 900;
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
         .keunggulan-4-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
             grid-template-rows: 1fr 1fr;
-            gap: 4px;
-            flex: 1;
+            gap: 3.5px;
         }
 
         .val-block {
             border-radius: 5px;
-            padding: 5px 6px;
+            padding: 4.5px 5.5px;
             color: #ffffff;
             display: flex;
             flex-direction: column;
@@ -1195,24 +1240,25 @@
         }
 
         .val-block h6 {
-            font-size: 8.2px;
+            font-size: 7.8px;
             font-weight: 900;
-            margin-bottom: 1.5px;
+            margin-bottom: 1px;
             display: flex;
             align-items: center;
-            gap: 4px;
+            gap: 3px;
         }
 
         .val-block p {
-            font-size: 6.6px;
-            line-height: 1.25;
+            font-size: 6.4px;
+            line-height: 1.2;
             opacity: 0.95;
         }
 
-        .val-blue { background: #1d4ed8; }
-        .val-emerald { background: #047857; }
-        .val-amber { background: #b45309; }
-        .val-purple { background: #005a36; }
+        /* Palet Warna Hijau & Emas Institusional */
+        .val-primary-green { background: #005a36; }
+        .val-emerald-green { background: #047857; }
+        .val-gold-dark     { background: #b45309; }
+        .val-deep-forest   { background: #01361f; }
 
         /* 4. BOTTOM FOOTER BAR */
         .poster-bottom-footer {
@@ -1324,8 +1370,8 @@
     <!-- Control Toolbar (Layar Browser Saja) -->
     <div class="control-toolbar">
         <div class="toolbar-info">
-            <h2>Poster SIMPEL UINSSC (Edisi Lengkap AICIS 2026 & Dual-Device Showcase)</h2>
-            <p>Logo resmi AICIS+ 2026 & UINSSC, Watermark Gedung Cyber seamless tanpa potongan, Showcase Laptop + Smartphone, pratinjau Tiket PDF & GIS.</p>
+            <h2>Poster SIMPEL UINSSC (Edisi Visual Kaya Gambar, Seragam Hijau-Emas & AICIS 2026)</h2>
+            <p>3 Foto Banner Kampus di Baris 1, Emblem 3D Brand di Nilai Lebih, Avatar di Sasaran, Logo AICIS+ Transparan, Tanpa Warna Pink.</p>
         </div>
         <div class="toolbar-actions">
             <button class="btn-action btn-print" onclick="window.print()">
@@ -1446,12 +1492,18 @@
         <!-- 3. MAIN BODY CONTENT (PADAT & KAYA GAMBAR SHOWCASE) -->
         <div class="poster-content-body">
 
-            <!-- ROW 1: 3 CARDS (Permasalahan / Solusi / Fasilitas Kampus dengan Foto Inset) -->
+            <!-- ROW 1: 3 CARDS (SEMUA MEMILIKI BANNER FOTO KAMPUS RESMI UINSSC) -->
             <div class="grid-three-cards">
-                <!-- Card 1: Permasalahan -->
+                <!-- Card 1: Permasalahan (Foto Kampus Fasya) -->
                 <div class="pillar-card">
+                    <div class="pillar-card-photo-strip">
+                        <img src="assets/img/uinssc_fasya.jpg" alt="Kawasan Akademik Kampus">
+                        <div class="pillar-photo-overlay-tag">
+                            <i class="fa-solid fa-building-user"></i> Kawasan Akademik Kampus
+                        </div>
+                    </div>
                     <div class="pillar-header">
-                        <div class="pillar-icon-box icon-red"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                        <div class="pillar-icon-box icon-amber-tone"><i class="fa-solid fa-triangle-exclamation"></i></div>
                         <div>
                             <span class="pillar-tag">Latar Belakang</span>
                             <div class="pillar-title">Permasalahan</div>
@@ -1459,28 +1511,34 @@
                     </div>
                     <div class="pillar-list">
                         <div class="pillar-item-box">
-                            <i class="fa-solid fa-xmark bullet-red"></i>
+                            <i class="fa-solid fa-xmark bullet-amber"></i>
                             <div class="pillar-item-text"><strong>Prosedur Manual:</strong> Laporan via chat WA & lisan sering tercecer tanpa rekam jejak resmi.</div>
                         </div>
                         <div class="pillar-item-box">
-                            <i class="fa-solid fa-xmark bullet-red"></i>
+                            <i class="fa-solid fa-xmark bullet-amber"></i>
                             <div class="pillar-item-text"><strong>Lokasi Bias:</strong> Keluhan diajukan dari luar kawasan kampus tanpa bukti koordinat fisik yang sah.</div>
                         </div>
                         <div class="pillar-item-box">
-                            <i class="fa-solid fa-xmark bullet-red"></i>
+                            <i class="fa-solid fa-xmark bullet-amber"></i>
                             <div class="pillar-item-text"><strong>Status Tidak Terbuka:</strong> Pelapor tidak mengetahui proses verifikasi & teknisi penanggung jawab.</div>
                         </div>
                         <div class="pillar-item-box">
-                            <i class="fa-solid fa-xmark bullet-red"></i>
+                            <i class="fa-solid fa-xmark bullet-amber"></i>
                             <div class="pillar-item-text"><strong>Tiket Ganda Berulang:</strong> Satu kerusakan dilaporkan berkali-kali hingga membebani antrean teknisi.</div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Card 2: Fungsi & Solusi -->
+                <!-- Card 2: Fungsi & Solusi (Foto Kampus FDK) -->
                 <div class="pillar-card">
+                    <div class="pillar-card-photo-strip">
+                        <img src="assets/img/uinssc_fdk.jpg" alt="Digitalisasi Layanan Kampus">
+                        <div class="pillar-photo-overlay-tag">
+                            <i class="fa-solid fa-microchip"></i> Transformasi Layanan Siber
+                        </div>
+                    </div>
                     <div class="pillar-header">
-                        <div class="pillar-icon-box icon-green"><i class="fa-solid fa-bullseye"></i></div>
+                        <div class="pillar-icon-box icon-green-tone"><i class="fa-solid fa-bullseye"></i></div>
                         <div>
                             <span class="pillar-tag">Solusi Terpadu</span>
                             <div class="pillar-title">Fungsi & Solusi</div>
@@ -1506,29 +1564,36 @@
                     </div>
                 </div>
 
-                <!-- Card 3: Fasilitas Utama (Dengan Inset Foto Kampus Siber UINSSC) -->
+                <!-- Card 3: Fasilitas Utama (Foto Gedung Cyber Siber UINSSC) -->
                 <div class="pillar-card">
-                    <div class="facility-photo-mini-strip">
+                    <div class="pillar-card-photo-strip">
                         <img src="assets/img/uinssc_siber.jpg" alt="Kampus Siber UINSSC">
-                        <div class="facility-photo-overlay-tag">
-                            <i class="fa-solid fa-building-columns"></i> Sarana & Prasarana Kampus Siber
+                        <div class="pillar-photo-overlay-tag">
+                            <i class="fa-solid fa-building-columns"></i> Sarana & Prasarana Kampus
+                        </div>
+                    </div>
+                    <div class="pillar-header">
+                        <div class="pillar-icon-box icon-emerald-tone"><i class="fa-solid fa-toolbox"></i></div>
+                        <div>
+                            <span class="pillar-tag">Layanan Sarpras</span>
+                            <div class="pillar-title">Fasilitas Utama</div>
                         </div>
                     </div>
                     <div class="pillar-list">
                         <div class="pillar-item-box">
-                            <i class="fa-solid fa-bolt bullet-blue"></i>
+                            <i class="fa-solid fa-bolt bullet-emerald"></i>
                             <div class="pillar-item-text"><strong>Kelistrikan & Daya:</strong> Panel MCB gedung, stopkontak kelas & penerangan lab.</div>
                         </div>
                         <div class="pillar-item-box">
-                            <i class="fa-solid fa-snowflake bullet-blue"></i>
+                            <i class="fa-solid fa-snowflake bullet-emerald"></i>
                             <div class="pillar-item-text"><strong>HVAC & Pendingin:</strong> AC ruang kuliah, lab cyber & pendingin ruang server.</div>
                         </div>
                         <div class="pillar-item-box">
-                            <i class="fa-solid fa-video bullet-blue"></i>
+                            <i class="fa-solid fa-video bullet-emerald"></i>
                             <div class="pillar-item-text"><strong>Audio Visual:</strong> Proyektor multimedia, sound seminar & smart display.</div>
                         </div>
                         <div class="pillar-item-box">
-                            <i class="fa-solid fa-chair bullet-blue"></i>
+                            <i class="fa-solid fa-chair bullet-emerald"></i>
                             <div class="pillar-item-text"><strong>Sanitasi Gedung:</strong> Kran air bersih, toilet kampus, meja kursi & pintu.</div>
                         </div>
                     </div>
@@ -1653,28 +1718,28 @@
                     <div class="feature-card-content-wrap">
                         <div class="features-subgrid-four">
                             <div class="feat-item-mini">
-                                <div class="feat-mini-icon icon-emerald-mini"><i class="fa-solid fa-shield-halved"></i></div>
+                                <div class="feat-mini-icon icon-green-tone"><i class="fa-solid fa-shield-halved"></i></div>
                                 <div class="feat-mini-text">
                                     <h5>SSO & CAPTCHA</h5>
                                     <p>Autentikasi akun kampus resmi anti-bot</p>
                                 </div>
                             </div>
                             <div class="feat-item-mini">
-                                <div class="feat-mini-icon icon-emerald-mini"><i class="fa-solid fa-map-location-dot"></i></div>
+                                <div class="feat-mini-icon icon-green-tone"><i class="fa-solid fa-map-location-dot"></i></div>
                                 <div class="feat-mini-text">
                                     <h5>Geofencing 5 Zona</h5>
                                     <p>Validasi koordinat GPS kawasan kampus</p>
                                 </div>
                             </div>
                             <div class="feat-item-mini">
-                                <div class="feat-mini-icon icon-emerald-mini"><i class="fa-solid fa-filter-circle-xmark"></i></div>
+                                <div class="feat-mini-icon icon-green-tone"><i class="fa-solid fa-filter-circle-xmark"></i></div>
                                 <div class="feat-mini-text">
                                     <h5>Filter Anti-Spam</h5>
                                     <p>Cegah pelaporan tiket ganda sejenis</p>
                                 </div>
                             </div>
                             <div class="feat-item-mini">
-                                <div class="feat-mini-icon icon-emerald-mini"><i class="fa-solid fa-user-lock"></i></div>
+                                <div class="feat-mini-icon icon-green-tone"><i class="fa-solid fa-user-lock"></i></div>
                                 <div class="feat-mini-text">
                                     <h5>Kuota 3 Pengaduan</h5>
                                     <p>Antrean tertib sesuai kapasitas teknisi</p>
@@ -1708,28 +1773,28 @@
                     <div class="feature-card-content-wrap">
                         <div class="features-subgrid-four">
                             <div class="feat-item-mini">
-                                <div class="feat-mini-icon icon-amber-mini"><i class="fa-solid fa-chart-pie"></i></div>
+                                <div class="feat-mini-icon icon-amber-tone"><i class="fa-solid fa-chart-pie"></i></div>
                                 <div class="feat-mini-text">
                                     <h5>Dashboard Metrik</h5>
                                     <p>Monitoring beban tiket live & grafik aset</p>
                                 </div>
                             </div>
                             <div class="feat-item-mini">
-                                <div class="feat-mini-icon icon-amber-mini"><i class="fa-solid fa-stopwatch"></i></div>
+                                <div class="feat-mini-icon icon-amber-tone"><i class="fa-solid fa-stopwatch"></i></div>
                                 <div class="feat-mini-text">
                                     <h5>Manajemen SLA</h5>
                                     <p>Standar batas respon 2, 6, 24, 48 jam</p>
                                 </div>
                             </div>
                             <div class="feat-item-mini">
-                                <div class="feat-mini-icon icon-amber-mini"><i class="fa-solid fa-user-check"></i></div>
+                                <div class="feat-mini-icon icon-amber-tone"><i class="fa-solid fa-user-check"></i></div>
                                 <div class="feat-mini-text">
                                     <h5>Disposisi Cerdas</h5>
                                     <p>Tugaskan teknisi spesialis yang sesuai</p>
                                 </div>
                             </div>
                             <div class="feat-item-mini">
-                                <div class="feat-mini-icon icon-amber-mini"><i class="fa-solid fa-file-excel"></i></div>
+                                <div class="feat-mini-icon icon-amber-tone"><i class="fa-solid fa-file-excel"></i></div>
                                 <div class="feat-mini-text">
                                     <h5>Rekapitulasi Audit</h5>
                                     <p>Ekspor CSV & rekap pemeliharaan rutin</p>
@@ -1753,9 +1818,9 @@
                 </div>
             </div>
 
-            <!-- ROW 5: SASARAN / TEKNOLOGI / KEUNGGULAN (3 KOLOM BAWAH PADAT) -->
+            <!-- ROW 5: SASARAN / TEKNOLOGI / NILAI LEBIH (KAYA GAMBAR, LOGO & EMBLEM 3D) -->
             <div class="bottom-three-grid">
-                <!-- Sasaran -->
+                <!-- Col 1: Sasaran Pengguna dengan Avatar Visual -->
                 <div class="bottom-card-box">
                     <div class="bottom-card-header">
                         <i class="fa-solid fa-users bottom-card-icon"></i>
@@ -1770,17 +1835,17 @@
                             <div class="sasaran-item-text"><strong>Mahasiswa:</strong> Pelapor sarpras kelas, lab komputer, toilet & fasilitas umum.</div>
                         </div>
                         <div class="sasaran-row-item">
-                            <div class="sasaran-badge-dot"><i class="fa-solid fa-chalkboard-user"></i></div>
+                            <div class="sasaran-badge-dot gold-badge"><i class="fa-solid fa-chalkboard-user"></i></div>
                             <div class="sasaran-item-text"><strong>Dosen & Tendik:</strong> Pelapor sarpras ruang kantor, AC ruang kerja & ruang rapat.</div>
                         </div>
                         <div class="sasaran-row-item">
-                            <div class="sasaran-badge-dot"><i class="fa-solid fa-screwdriver-wrench"></i></div>
+                            <div class="sasaran-badge-dot dark-badge"><i class="fa-solid fa-screwdriver-wrench"></i></div>
                             <div class="sasaran-item-text"><strong>Tim Sarpras:</strong> Pengelola disposisi tugas teknisi, SLA & audit berkala.</div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Teknologi -->
+                <!-- Col 2: Teknologi dengan Tech Badges -->
                 <div class="bottom-card-box">
                     <div class="bottom-card-header">
                         <i class="fa-solid fa-code bottom-card-icon"></i>
@@ -1791,25 +1856,25 @@
                     </div>
                     <div class="tech-grid-2x2">
                         <div class="tech-badge-item">
-                            <div class="tech-badge-name"><i class="fa-brands fa-html5"></i> PWA Web App</div>
+                            <div class="tech-badge-name"><i class="fa-brands fa-html5" style="color: var(--primary);"></i> PWA Web App</div>
                             <div class="tech-badge-sub">Offline Cache & Service Worker</div>
                         </div>
                         <div class="tech-badge-item">
-                            <div class="tech-badge-name"><i class="fa-solid fa-map"></i> Leaflet.js</div>
+                            <div class="tech-badge-name"><i class="fa-solid fa-map-location-dot" style="color: var(--emerald-600);"></i> Leaflet.js</div>
                             <div class="tech-badge-sub">GIS & Formula Haversine</div>
                         </div>
                         <div class="tech-badge-item">
-                            <div class="tech-badge-name"><i class="fa-solid fa-cubes"></i> Three.js</div>
+                            <div class="tech-badge-name"><i class="fa-solid fa-cubes" style="color: var(--gold-dark);"></i> Three.js</div>
                             <div class="tech-badge-sub">WebGL 3D Campus Cyber</div>
                         </div>
                         <div class="tech-badge-item">
-                            <div class="tech-badge-name"><i class="fa-solid fa-shield-halved"></i> Security</div>
+                            <div class="tech-badge-name"><i class="fa-solid fa-shield-halved" style="color: var(--primary-dark);"></i> Keamanan</div>
                             <div class="tech-badge-sub">DOMPurify & Anti-Bot CAPTCHA</div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Keunggulan 4 Blocks -->
+                <!-- Col 3: Nilai Lebih dengan Emblem 3D SIMPEL UINSSC & 4 Blok Hijau-Emas -->
                 <div class="bottom-card-box">
                     <div class="bottom-card-header">
                         <i class="fa-solid fa-award bottom-card-icon"></i>
@@ -1818,22 +1883,30 @@
                             <div class="bottom-card-title">Keunggulan</div>
                         </div>
                     </div>
-                    <div class="keunggulan-4-grid">
-                        <div class="val-block val-blue">
-                            <h6><i class="fa-solid fa-location-crosshairs"></i> Presisi GIS</h6>
-                            <p>Bebas laporan palsu luar kampus</p>
+                    <div class="keunggulan-split-wrap">
+                        <!-- Emblem 3D Brand Logo SIMPEL UINSSC -->
+                        <div class="emblem-showcase-box">
+                            <img src="assets/img/preview_modern_elegant_1.jpg" alt="Logo Brand SIMPEL UINSSC">
+                            <span class="emblem-caption">Brand Resmi SIMPEL</span>
                         </div>
-                        <div class="val-block val-emerald">
-                            <h6><i class="fa-solid fa-eye"></i> Transparan</h6>
-                            <p>Pantau 5 status perbaikan live</p>
-                        </div>
-                        <div class="val-block val-amber">
-                            <h6><i class="fa-solid fa-stopwatch"></i> SLA Terukur</h6>
-                            <p>Batas respon & tindakan pasti</p>
-                        </div>
-                        <div class="val-block val-purple">
-                            <h6><i class="fa-solid fa-file-shield"></i> Terarsip</h6>
-                            <p>Bukti PDF resmi ber-QR Code</p>
+                        <!-- 4 Value Blocks Serba Hijau & Emas Institusional -->
+                        <div class="keunggulan-4-grid">
+                            <div class="val-block val-primary-green">
+                                <h6><i class="fa-solid fa-location-crosshairs"></i> Presisi GIS</h6>
+                                <p>100% tervalidasi</p>
+                            </div>
+                            <div class="val-block val-emerald-green">
+                                <h6><i class="fa-solid fa-eye"></i> Transparan</h6>
+                                <p>Pantau 5 status live</p>
+                            </div>
+                            <div class="val-block val-gold-dark">
+                                <h6><i class="fa-solid fa-stopwatch"></i> SLA Terukur</h6>
+                                <p>Batas respon pasti</p>
+                            </div>
+                            <div class="val-block val-deep-forest">
+                                <h6><i class="fa-solid fa-file-shield"></i> Terarsip</h6>
+                                <p>PDF QR Code sah</p>
+                            </div>
                         </div>
                     </div>
                 </div>
