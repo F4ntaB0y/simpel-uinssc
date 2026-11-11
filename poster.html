@@ -703,73 +703,119 @@
         .bullet-green   { color: #15803d; }
         .bullet-emerald { color: #047857; }
 
-        /* Stepper 8-Grid (Cara Kerja Alur 4x2 - Mengisi Penuh) */
+        /* Stepper 8-Grid (Cara Kerja Alur 4x2 - Tampilan Rapi, Proporsional & Presisi) */
         .stepper-4x2-grid {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
+            grid-template-columns: repeat(4, minmax(0, 1fr));
             grid-template-rows: 1fr 1fr;
             gap: 3.5px;
             flex: 1;
             min-height: 0;
+            min-width: 0;
         }
 
         .step-mini-node {
             background: #f8fafc;
             border: 1px solid #e2e8f0;
+            border-top: 2.5px solid #059669;
             border-radius: 5px;
-            padding: 4px 4px;
+            padding: 3.5px 5px 3px;
             display: flex;
-            align-items: center;
-            gap: 4.5px;
+            flex-direction: column;
+            justify-content: space-between;
+            min-width: 0;
+            overflow: hidden;
+            box-sizing: border-box;
         }
 
-        .step-circle-badge {
-            width: 20px;
-            height: 20px;
+        .step-mini-node.node-gold {
+            border-top-color: #d4a343;
+            background: #fefce8;
+        }
+
+        .step-mini-node.node-amber {
+            border-top-color: #d97706;
+            background: #fffbeb;
+        }
+
+        .step-mini-node.node-emerald {
+            border-top-color: #047857;
+            background: #f0fdf4;
+        }
+
+        .step-card-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.5px;
+            min-width: 0;
+        }
+
+        .step-num-pill {
+            width: 14px;
+            height: 14px;
             border-radius: 50%;
             background: #005a36;
             color: #ffffff;
-            font-size: 8px;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 7.2px;
+            font-weight: 900;
             display: flex;
             align-items: center;
             justify-content: center;
+            line-height: 1;
             flex-shrink: 0;
-            position: relative;
-            font-weight: 900;
         }
 
-        .step-num-sup {
-            position: absolute;
-            top: -2.5px;
-            right: -2.5px;
-            width: 9.5px;
-            height: 9.5px;
-            background: var(--gold-bright);
-            color: #000;
-            border-radius: 50%;
-            font-size: 5.8px;
-            font-weight: 900;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        .step-num-pill.pill-gold {
+            background: #d4a343;
+            color: #012415;
         }
 
-        .step-text-wrap {
-            display: flex;
-            flex-direction: column;
-            line-height: 1.15;
+        .step-num-pill.pill-amber {
+            background: #d97706;
+        }
+
+        .step-num-pill.pill-emerald {
+            background: #047857;
+        }
+
+        .step-card-ico {
+            font-size: 8.5px;
+            color: #005a36;
+            flex-shrink: 0;
+        }
+
+        .step-card-ico.ico-gold {
+            color: #b45309;
+        }
+
+        .step-card-ico.ico-amber {
+            color: #d97706;
+        }
+
+        .step-card-ico.ico-emerald {
+            color: #047857;
         }
 
         .step-title-text {
             font-size: 7.8px;
             font-weight: 900;
             color: #0f172a;
+            line-height: 1.15;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin-bottom: 1px;
         }
 
         .step-desc-text {
-            font-size: 6.5px;
+            font-size: 6.2px;
             color: var(--slate-500);
             line-height: 1.15;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         /* Fitur Split Wrap (List + Visual Showcase) */
@@ -1562,6 +1608,7 @@
             }
 
             .academic-card,
+            .step-mini-node,
             .sla-step-item,
             .val-clean-card,
             .tech-badge-card {
@@ -1757,60 +1804,68 @@
                     </div>
                     <div class="stepper-4x2-grid">
                         <div class="step-mini-node">
-                            <div class="step-circle-badge"><i class="fa-solid fa-globe"></i><span class="step-num-sup">1</span></div>
-                            <div class="step-text-wrap">
-                                <div class="step-title-text">Buka Web PWA</div>
-                                <div class="step-desc-text">Akses simpel.uinssc.ac.id</div>
+                            <div class="step-card-head">
+                                <span class="step-num-pill">01</span>
+                                <i class="fa-solid fa-globe step-card-ico"></i>
                             </div>
+                            <div class="step-title-text">Buka Web PWA</div>
+                            <div class="step-desc-text">Akses portal kampus</div>
                         </div>
                         <div class="step-mini-node">
-                            <div class="step-circle-badge"><i class="fa-solid fa-right-to-bracket"></i><span class="step-num-sup">2</span></div>
-                            <div class="step-text-wrap">
-                                <div class="step-title-text">Login SSO</div>
-                                <div class="step-desc-text">Akun kampus + CAPTCHA</div>
+                            <div class="step-card-head">
+                                <span class="step-num-pill">02</span>
+                                <i class="fa-solid fa-right-to-bracket step-card-ico"></i>
                             </div>
+                            <div class="step-title-text">Login SSO</div>
+                            <div class="step-desc-text">Akun resmi &amp; anti-bot</div>
                         </div>
                         <div class="step-mini-node">
-                            <div class="step-circle-badge"><i class="fa-solid fa-list-check"></i><span class="step-num-sup">3</span></div>
-                            <div class="step-text-wrap">
-                                <div class="step-title-text">Pilih Aset</div>
-                                <div class="step-desc-text">Kategori sarpras &amp; ruang</div>
+                            <div class="step-card-head">
+                                <span class="step-num-pill">03</span>
+                                <i class="fa-solid fa-list-check step-card-ico"></i>
                             </div>
+                            <div class="step-title-text">Pilih Aset</div>
+                            <div class="step-desc-text">Kategori sarpras &amp; ruang</div>
                         </div>
                         <div class="step-mini-node">
-                            <div class="step-circle-badge"><i class="fa-solid fa-map-pin"></i><span class="step-num-sup">4</span></div>
-                            <div class="step-text-wrap">
-                                <div class="step-title-text">Validasi GIS</div>
-                                <div class="step-desc-text">Cek GPS radius 5 zona</div>
+                            <div class="step-card-head">
+                                <span class="step-num-pill">04</span>
+                                <i class="fa-solid fa-location-crosshairs step-card-ico"></i>
                             </div>
+                            <div class="step-title-text">Validasi GIS</div>
+                            <div class="step-desc-text">Kunci radius 5 kawasan</div>
                         </div>
                         <div class="step-mini-node">
-                            <div class="step-circle-badge"><i class="fa-solid fa-camera"></i><span class="step-num-sup">5</span></div>
-                            <div class="step-text-wrap">
-                                <div class="step-title-text">Unggah Foto</div>
-                                <div class="step-desc-text">Bukti fisik kompresi WebP</div>
+                            <div class="step-card-head">
+                                <span class="step-num-pill">05</span>
+                                <i class="fa-solid fa-camera step-card-ico"></i>
                             </div>
+                            <div class="step-title-text">Unggah Bukti</div>
+                            <div class="step-desc-text">Foto kompresi WebP</div>
                         </div>
-                        <div class="step-mini-node">
-                            <div class="step-circle-badge"><i class="fa-solid fa-qrcode"></i><span class="step-num-sup">6</span></div>
-                            <div class="step-text-wrap">
-                                <div class="step-title-text">Tiket TRK</div>
-                                <div class="step-desc-text">Cetak PDF ber-QR Code</div>
+                        <div class="step-mini-node node-gold">
+                            <div class="step-card-head">
+                                <span class="step-num-pill pill-gold">06</span>
+                                <i class="fa-solid fa-qrcode step-card-ico ico-gold"></i>
                             </div>
+                            <div class="step-title-text">Terbit Tiket</div>
+                            <div class="step-desc-text">Salinan sah PDF QR</div>
                         </div>
-                        <div class="step-mini-node">
-                            <div class="step-circle-badge"><i class="fa-solid fa-screwdriver-wrench"></i><span class="step-num-sup">7</span></div>
-                            <div class="step-text-wrap">
-                                <div class="step-title-text">Teknisi Cek</div>
-                                <div class="step-desc-text">Eksekusi sesuai SLA</div>
+                        <div class="step-mini-node node-amber">
+                            <div class="step-card-head">
+                                <span class="step-num-pill pill-amber">07</span>
+                                <i class="fa-solid fa-screwdriver-wrench step-card-ico ico-amber"></i>
                             </div>
+                            <div class="step-title-text">Teknisi Cek</div>
+                            <div class="step-desc-text">Eksekusi sesuai SLA</div>
                         </div>
-                        <div class="step-mini-node">
-                            <div class="step-circle-badge"><i class="fa-solid fa-circle-check"></i><span class="step-num-sup">8</span></div>
-                            <div class="step-text-wrap">
-                                <div class="step-title-text">Selesai</div>
-                                <div class="step-desc-text">Verifikasi tuntas pelapor</div>
+                        <div class="step-mini-node node-emerald">
+                            <div class="step-card-head">
+                                <span class="step-num-pill pill-emerald">08</span>
+                                <i class="fa-solid fa-circle-check step-card-ico ico-emerald"></i>
                             </div>
+                            <div class="step-title-text">Selesai Sah</div>
+                            <div class="step-desc-text">Tuntas &amp; rating sivitas</div>
                         </div>
                     </div>
                 </div>
