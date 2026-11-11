@@ -927,13 +927,14 @@
             font-weight: 800;
         }
 
-        /* 5 Tahap SLA Pipeline Stepper (Desain Elegan, Terang, Modern & Mudah Diedit) */
+        /* 5 Tahap SLA Pipeline Stepper (Padat, Terisi Penuh & Proporsional) */
         .sla-pipeline-grid {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
             gap: 4px;
             flex: 1;
             min-height: 0;
+            margin-bottom: 3.5px;
         }
 
         .sla-step-item {
@@ -944,8 +945,7 @@
             padding: 4px 4px 3px;
             display: flex;
             flex-direction: column;
-            justify-content: flex-start;
-            gap: 2.5px;
+            justify-content: space-between;
         }
 
         .sla-step-item.sla-step-highlight {
@@ -958,7 +958,7 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 1px;
+            margin-bottom: 1.5px;
         }
 
         .sla-step-badge {
@@ -1009,17 +1009,170 @@
             border-color: #86efac;
         }
 
+        .sla-step-title-wrap {
+            display: flex;
+            align-items: center;
+            gap: 3px;
+            margin-bottom: 1px;
+        }
+
+        .sla-step-icon {
+            font-size: 7.2px;
+            color: #005a36;
+            flex-shrink: 0;
+        }
+
+        .sla-step-icon.icon-gold {
+            color: #d97706;
+        }
+
+        .sla-step-icon.icon-green {
+            color: #047857;
+        }
+
         .sla-step-title {
-            font-size: 8.2px;
+            font-size: 8px;
             font-weight: 900;
             color: #0f172a;
             line-height: 1.15;
         }
 
         .sla-step-desc {
-            font-size: 6.4px;
+            font-size: 6.2px;
             color: #475569;
-            line-height: 1.22;
+            line-height: 1.18;
+            margin-bottom: 2px;
+        }
+
+        .sla-meta-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5px;
+            margin-bottom: 2px;
+        }
+
+        .sla-meta-pill {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 3px;
+            padding: 1px 3px;
+            display: flex;
+            align-items: center;
+            gap: 2.5px;
+            font-size: 5.8px;
+            line-height: 1;
+        }
+
+        .sla-meta-pill.pill-gold-bg {
+            background: #fef9c3;
+            border-color: #fde68a;
+        }
+
+        .sla-meta-pill.pill-green-bg {
+            background: #f0fdf4;
+            border-color: #bbf7d0;
+        }
+
+        .sla-meta-label {
+            font-weight: 800;
+            color: #0f172a;
+            text-transform: uppercase;
+            font-size: 5.4px;
+        }
+
+        .sla-meta-val {
+            color: var(--slate-600);
+            font-weight: 600;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .sla-progress-wrap {
+            display: flex;
+            flex-direction: column;
+            gap: 1.2px;
+        }
+
+        .sla-progress-bar {
+            width: 100%;
+            height: 2.5px;
+            background: #e2e8f0;
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .sla-progress-fill {
+            height: 100%;
+            background: #005a36;
+            border-radius: 2px;
+        }
+
+        .sla-progress-fill.fill-20 { width: 20%; }
+        .sla-progress-fill.fill-40 { width: 40%; }
+        .sla-progress-fill.fill-60 { width: 60%; background: #d97706; }
+        .sla-progress-fill.fill-80 { width: 80%; }
+        .sla-progress-fill.fill-100 { width: 100%; background: #047857; }
+
+        .sla-progress-num {
+            font-size: 5.5px;
+            font-weight: 700;
+            color: var(--slate-500);
+            text-align: right;
+            line-height: 1;
+        }
+
+        .sla-progress-num.text-amber { color: #b45309; }
+        .sla-progress-num.text-green { color: #15803d; }
+
+        /* SLA Service Level Commitment Banner */
+        .sla-guarantee-strip {
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            border-radius: 4px;
+            padding: 2.5px 6px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-shrink: 0;
+        }
+
+        .sla-guarantee-left {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 6.6px;
+            color: #065f46;
+        }
+
+        .sla-guarantee-left i {
+            font-size: 7.5px;
+            color: #047857;
+        }
+
+        .sla-guarantee-left strong {
+            font-weight: 900;
+            color: #005a36;
+        }
+
+        .sla-guarantee-badges {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .sla-badge-sub {
+            background: #ffffff;
+            border: 1px solid #a7f3d0;
+            color: #047857;
+            font-size: 5.8px;
+            font-weight: 700;
+            padding: 1px 4.5px;
+            border-radius: 3px;
+            display: flex;
+            align-items: center;
+            gap: 2.5px;
+            line-height: 1;
         }
 
         /* Teknologi & Nilai Lebih Split 50/50 Seimbang & Harmonis */
@@ -1740,52 +1893,168 @@
                         <div class="card-header-left">
                             <div class="card-icon-box icon-amber-tone"><i class="fa-solid fa-bolt"></i></div>
                             <div>
-                                <span class="card-tag-small">Target Pelayanan</span>
-                                <div class="card-title-main">5 Tahap Perkembangan Tiket &amp; Standar SLA</div>
+                                <span class="card-tag-small">Standar Operasional Prosedur (SOP)</span>
+                                <div class="card-title-main">5 Tahap Perkembangan Tiket &amp; Standar SLA Terukur</div>
                             </div>
                         </div>
-                        <span class="card-pill-tag tag-gold-sub">Disposisi &amp; Waktu Terukur</span>
+                        <span class="card-pill-tag tag-gold-sub">Disposisi Cerdas &amp; Waktu Terstandar</span>
                     </div>
                     <div class="sla-pipeline-grid">
+                        <!-- 01 Diajukan -->
                         <div class="sla-step-item">
                             <div class="sla-step-top">
                                 <span class="sla-step-badge">01</span>
                                 <span class="sla-time-pill">&lt; 2 Jam</span>
                             </div>
-                            <div class="sla-step-title">Diajukan</div>
-                            <div class="sla-step-desc">Validasi otomatis GPS geofence &amp; anti-duplikasi aset.</div>
+                            <div class="sla-step-title-wrap">
+                                <i class="fa-solid fa-paper-plane sla-step-icon"></i>
+                                <span class="sla-step-title">Diajukan</span>
+                            </div>
+                            <div class="sla-step-desc">
+                                Sivitas lapor via PWA. Validasi otomatis radius GPS 5 kawasan &amp; filter anti-duplikasi ruangan.
+                            </div>
+                            <div class="sla-meta-stack">
+                                <div class="sla-meta-pill">
+                                    <span class="sla-meta-label">PIC:</span>
+                                    <span class="sla-meta-val">Sistem PWA &amp; GIS</span>
+                                </div>
+                                <div class="sla-meta-pill">
+                                    <span class="sla-meta-label">Output:</span>
+                                    <span class="sla-meta-val">Tiket TRK &amp; Geotag</span>
+                                </div>
+                            </div>
+                            <div class="sla-progress-wrap">
+                                <div class="sla-progress-bar"><div class="sla-progress-fill fill-20"></div></div>
+                                <span class="sla-progress-num">Tahap 1 (20%)</span>
+                            </div>
                         </div>
+
+                        <!-- 02 Diverifikasi -->
                         <div class="sla-step-item">
                             <div class="sla-step-top">
                                 <span class="sla-step-badge">02</span>
                                 <span class="sla-time-pill">&lt; 4 Jam</span>
                             </div>
-                            <div class="sla-step-title">Diverifikasi</div>
-                            <div class="sla-step-desc">Admin periksa foto fisik &amp; tentukan tingkat keparahan.</div>
+                            <div class="sla-step-title-wrap">
+                                <i class="fa-solid fa-clipboard-check sla-step-icon"></i>
+                                <span class="sla-step-title">Diverifikasi</span>
+                            </div>
+                            <div class="sla-step-desc">
+                                Admin memeriksa keabsahan foto fisik kerusakan, validitas lokasi aset &amp; skala prioritas penanganan.
+                            </div>
+                            <div class="sla-meta-stack">
+                                <div class="sla-meta-pill">
+                                    <span class="sla-meta-label">PIC:</span>
+                                    <span class="sla-meta-val">Admin Sarpras</span>
+                                </div>
+                                <div class="sla-meta-pill">
+                                    <span class="sla-meta-label">Output:</span>
+                                    <span class="sla-meta-val">Status Valid &amp; Urgensi</span>
+                                </div>
+                            </div>
+                            <div class="sla-progress-wrap">
+                                <div class="sla-progress-bar"><div class="sla-progress-fill fill-40"></div></div>
+                                <span class="sla-progress-num">Tahap 2 (40%)</span>
+                            </div>
                         </div>
+
+                        <!-- 03 Disposisi -->
                         <div class="sla-step-item sla-step-highlight">
                             <div class="sla-step-top">
                                 <span class="sla-step-badge badge-gold">03</span>
                                 <span class="sla-time-pill pill-gold">&lt; 6 Jam</span>
                             </div>
-                            <div class="sla-step-title">Disposisi</div>
-                            <div class="sla-step-desc">Penetapan teknisi spesialis (HVAC/Listrik/Sanitasi).</div>
+                            <div class="sla-step-title-wrap">
+                                <i class="fa-solid fa-user-gear sla-step-icon icon-gold"></i>
+                                <span class="sla-step-title">Disposisi</span>
+                            </div>
+                            <div class="sla-step-desc">
+                                Penetapan teknisi spesialis (HVAC, Listrik, Sanitasi, IT, Sipil) &amp; penerbitan surat tugas digital.
+                            </div>
+                            <div class="sla-meta-stack">
+                                <div class="sla-meta-pill pill-gold-bg">
+                                    <span class="sla-meta-label">PIC:</span>
+                                    <span class="sla-meta-val">Kasubbag Sarpras</span>
+                                </div>
+                                <div class="sla-meta-pill pill-gold-bg">
+                                    <span class="sla-meta-label">Output:</span>
+                                    <span class="sla-meta-val">E-SPK Teknisi</span>
+                                </div>
+                            </div>
+                            <div class="sla-progress-wrap">
+                                <div class="sla-progress-bar"><div class="sla-progress-fill fill-60"></div></div>
+                                <span class="sla-progress-num text-amber">Tahap 3 (60%)</span>
+                            </div>
                         </div>
+
+                        <!-- 04 Pengerjaan -->
                         <div class="sla-step-item">
                             <div class="sla-step-top">
                                 <span class="sla-step-badge">04</span>
                                 <span class="sla-time-pill">12-48 Jam</span>
                             </div>
-                            <div class="sla-step-title">Pengerjaan</div>
-                            <div class="sla-step-desc">Eksekusi perbaikan lapangan &amp; live timeline pelapor.</div>
+                            <div class="sla-step-title-wrap">
+                                <i class="fa-solid fa-screwdriver-wrench sla-step-icon"></i>
+                                <span class="sla-step-title">Pengerjaan</span>
+                            </div>
+                            <div class="sla-step-desc">
+                                Eksekusi perbaikan lapangan oleh teknisi, pencatatan log suku cadang &amp; update timeline pelapor live.
+                            </div>
+                            <div class="sla-meta-stack">
+                                <div class="sla-meta-pill">
+                                    <span class="sla-meta-label">PIC:</span>
+                                    <span class="sla-meta-val">Teknisi Lapangan</span>
+                                </div>
+                                <div class="sla-meta-pill">
+                                    <span class="sla-meta-label">Output:</span>
+                                    <span class="sla-meta-val">Log Suku Cadang</span>
+                                </div>
+                            </div>
+                            <div class="sla-progress-wrap">
+                                <div class="sla-progress-bar"><div class="sla-progress-fill fill-80"></div></div>
+                                <span class="sla-progress-num">Tahap 4 (80%)</span>
+                            </div>
                         </div>
+
+                        <!-- 05 Selesai -->
                         <div class="sla-step-item">
                             <div class="sla-step-top">
                                 <span class="sla-step-badge badge-green">05</span>
                                 <span class="sla-time-pill pill-green">Tuntas</span>
                             </div>
-                            <div class="sla-step-title">Selesai</div>
-                            <div class="sla-step-desc">Perbaikan tuntas terverifikasi &amp; tiket ditutup resmi.</div>
+                            <div class="sla-step-title-wrap">
+                                <i class="fa-solid fa-circle-check sla-step-icon icon-green"></i>
+                                <span class="sla-step-title">Selesai</span>
+                            </div>
+                            <div class="sla-step-desc">
+                                Hasil perbaikan tuntas terverifikasi, unggah bukti selesai, tiket resmi ditutup &amp; sivitas beri rating.
+                            </div>
+                            <div class="sla-meta-stack">
+                                <div class="sla-meta-pill pill-green-bg">
+                                    <span class="sla-meta-label">PIC:</span>
+                                    <span class="sla-meta-val">Pelapor &amp; Admin</span>
+                                </div>
+                                <div class="sla-meta-pill pill-green-bg">
+                                    <span class="sla-meta-label">Output:</span>
+                                    <span class="sla-meta-val">Tiket Sah &amp; Rating</span>
+                                </div>
+                            </div>
+                            <div class="sla-progress-wrap">
+                                <div class="sla-progress-bar"><div class="sla-progress-fill fill-100"></div></div>
+                                <span class="sla-progress-num text-green">Tahap 5 (100%)</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- SLA Service Level Commitment Banner -->
+                    <div class="sla-guarantee-strip">
+                        <div class="sla-guarantee-left">
+                            <i class="fa-solid fa-shield-halved"></i>
+                            <span><strong>Komitmen Mutu SLA:</strong> Standar Maks. 48 Jam &bull; Zero-Pending Ticket</span>
+                        </div>
+                        <div class="sla-guarantee-badges">
+                            <span class="sla-badge-sub"><i class="fa-solid fa-satellite-dish"></i> GPS Terverifikasi</span>
+                            <span class="sla-badge-sub"><i class="fa-solid fa-stopwatch"></i> Tracking Real-Time 24/7</span>
+                            <span class="sla-badge-sub"><i class="fa-solid fa-file-pdf"></i> Arsip Sah Ber-QR</span>
                         </div>
                     </div>
                 </div>
