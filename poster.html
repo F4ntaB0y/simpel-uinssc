@@ -748,13 +748,13 @@
             line-height: 1.2;
         }
 
-        /* SECTION ROW 3: DARK BANNER (5 TAHAP SIKLUS PENANGANAN TIKET & STANDAR SLA) */
+        /* SECTION ROW 3: STANDAR SLA (5 TAHAP KARTU MANDIRI TERPISAH TANPA BACKGROUND BESAR MENYATU) */
         .sla-banner-box {
-            background: #01311b;
-            border-radius: 7px;
-            padding: 7px 10px;
-            color: #ffffff;
-            border: 1.5px solid var(--gold);
+            background: transparent;
+            border-radius: 0;
+            padding: 0;
+            color: var(--slate-900);
+            border: none;
             flex: 0 0 auto;
         }
 
@@ -762,7 +762,9 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 5px;
+            margin-bottom: 4px;
+            padding-bottom: 2px;
+            border-bottom: 1.5px solid #e2e8f0;
         }
 
         .sla-header-left {
@@ -785,20 +787,21 @@
         }
 
         .sla-header-title {
-            font-size: 9.8px;
+            font-size: 9.6px;
             font-weight: 900;
             letter-spacing: 0.4px;
             text-transform: uppercase;
+            color: #0f172a;
         }
 
         .sla-header-right {
             font-size: 7.4px;
-            color: #fef08a;
+            color: #047857;
             font-weight: 800;
-            background: #004d2e;
+            background: #ecfdf5;
             padding: 2px 8px;
             border-radius: 4px;
-            border: 1px solid var(--gold);
+            border: 1px solid #a7f3d0;
         }
 
         .sla-5-stages-grid {
@@ -808,9 +811,9 @@
         }
 
         .sla-stage-item {
-            background: #014324;
+            background: #01361f;
             border: 1.5px solid #059669;
-            border-radius: 5px;
+            border-radius: 6px;
             padding: 5px 6px;
             display: flex;
             flex-direction: column;
@@ -1339,19 +1342,26 @@
             /* Isolasi tiap baris & kartu agar di Canva setiap elemen dapat diklik dan diedit sendiri tanpa menyatu */
             .grid-three-cards,
             .timeline-section-card,
-            .sla-banner-box,
             .features-split-grid,
             .bottom-three-grid {
                 page-break-inside: avoid !important;
                 isolation: isolate !important;
             }
 
+            .sla-banner-box {
+                background: transparent !important;
+                border: none !important;
+                padding: 0 !important;
+                box-shadow: none !important;
+            }
+
             .pillar-card,
             .timeline-section-card,
-            .sla-banner-box,
+            .sla-stage-item,
             .features-block-card,
             .bottom-card-box {
                 isolation: isolate !important;
+                page-break-inside: avoid !important;
             }
 
             @page {
