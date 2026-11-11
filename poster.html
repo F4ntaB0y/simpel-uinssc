@@ -4,30 +4,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Poster Ilmiah - SIMPEL UINSSC (Sistem Informasi Pelaporan Sarpras)</title>
-    <!-- Google Fonts & Font Awesome Icons -->
+    <title>Poster Ilmiah SIMPEL UINSSC - Sistem Informasi Pelaporan Sarpras Kampus</title>
+    <link rel="icon" type="image/png" href="assets/img/favicon.png">
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@600;700;800;900&display=swap" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
-        /* ==========================================================================
-           RESET & CORE VARIABLES - IDENTITAS HIJAU & EMAS INSTITUSIONAL UINSSC
-           Kebal 100% terhadap Canva CMYK Color Inversion (Bebas Pink & Bebas Kotak Hitam)
-           ========================================================================== */
         :root {
             --primary: #005a36;
-            --primary-dark: #01361f;
+            --primary-dark: #00361f;
             --primary-deep: #012415;
-            --primary-light: #047857;
+            --primary-light: #e8f5ee;
             --emerald-600: #059669;
-            --emerald-50: #ecfdf5;
-            --emerald-100: #d1fae5;
+            --emerald-500: #10b981;
             --gold: #d4a343;
-            --gold-dark: #b45309;
-            --gold-light: #fef08a;
-            --gold-pale: #fffbeb;
+            --gold-bright: #f59e0b;
+            --gold-dark: #92400e;
+            --gold-light: #fef7ea;
             --slate-900: #0f172a;
             --slate-800: #1e293b;
             --slate-700: #334155;
@@ -37,6 +34,7 @@
             --slate-200: #e2e8f0;
             --slate-100: #f1f5f9;
             --slate-50: #f8fafc;
+            --white: #ffffff;
         }
 
         * {
@@ -46,25 +44,26 @@
         }
 
         body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            background: #cbd5e1;
-            color: #0f172a;
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #94a3b8;
+            color: var(--slate-900);
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 16px 0;
-            margin: 0;
-            -webkit-font-smoothing: antialiased;
+            min-height: 100vh;
+            padding: 14px 6px 30px;
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
         }
 
-        /* CONTROL TOOLBAR (Hanya di layar browser) */
+        /* Screen Control Toolbar */
         .control-toolbar {
             width: 210mm;
             background: #ffffff;
-            border-radius: 8px;
-            padding: 8px 16px;
+            border-radius: 10px;
+            padding: 10px 16px;
             border: 1px solid #cbd5e1;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -72,14 +71,14 @@
         }
 
         .toolbar-info h2 {
-            font-size: 13.5px;
+            font-size: 14px;
             font-weight: 800;
             color: var(--primary);
             margin-bottom: 2px;
         }
 
         .toolbar-info p {
-            font-size: 11px;
+            font-size: 11.5px;
             color: var(--slate-600);
         }
 
@@ -93,9 +92,9 @@
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            padding: 7px 12px;
-            border-radius: 5px;
-            font-size: 11.5px;
+            padding: 8px 14px;
+            border-radius: 6px;
+            font-size: 12px;
             font-weight: 700;
             font-family: inherit;
             cursor: pointer;
@@ -114,20 +113,24 @@
         }
 
         .btn-canva-guide {
-            background: var(--gold-pale);
+            background: var(--gold-light);
             color: var(--gold-dark);
-            border: 1px solid #d4a343;
+            border: 1px solid rgba(212, 163, 67, 0.4);
+        }
+
+        .btn-canva-guide:hover {
+            background: #faecd5;
         }
 
         /* ==========================================================================
            POSTER ARTBOARD - TEPAT 1 HALAMAN A4 FULL PADAT (210mm x 297mm)
-           TATA LETAK ILMIAH KOMPREHENSIF: PANDUAN PENGGUNAAN & KELEBIHAN APLIKASI
+           Mengikuti Format Resmi Kampus UIN Siber Syekh Nurjati Cirebon & AICIS 2026
            ========================================================================== */
         .poster-artboard {
             width: 210mm;
             height: 297mm;
             max-height: 297mm;
-            background: #ffffff;
+            background: #f8fafc;
             display: flex;
             flex-direction: column;
             position: relative;
@@ -135,30 +138,29 @@
             box-sizing: border-box;
             border-radius: 2px;
             border: 1px solid #cbd5e1;
-            box-shadow: 0 4px 16px rgba(0,0,0,0.12);
         }
 
         /* 1. TOP INSTITUTION HEADER */
         .top-inst-header {
-            height: 38px;
             background: #ffffff;
-            border-bottom: 2px solid #005a36;
-            padding: 3px 14px;
+            padding: 6px 18px;
             display: flex;
             align-items: center;
             justify-content: space-between;
+            border-bottom: 2px solid #e2e8f0;
             flex-shrink: 0;
+            height: 46px;
         }
 
         .header-brand-left {
             display: flex;
             align-items: center;
-            gap: 9px;
+            gap: 10px;
         }
 
         .inst-logo-img {
-            height: 29px;
-            width: auto;
+            width: 36px;
+            height: 36px;
             object-fit: contain;
         }
 
@@ -168,92 +170,93 @@
         }
 
         .inst-title-main {
-            font-size: 9.5px;
+            font-size: 10.5px;
             font-weight: 900;
-            color: var(--primary);
-            letter-spacing: 0.3px;
-            line-height: 1.15;
+            color: #0b1526;
+            letter-spacing: 0.4px;
+            text-transform: uppercase;
         }
 
         .inst-title-sub {
-            font-size: 7.2px;
-            font-weight: 700;
-            color: var(--slate-600);
-            line-height: 1.2;
+            font-size: 8.2px;
+            font-weight: 600;
+            color: var(--slate-500);
         }
 
         .header-brand-right {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 12px;
+            text-align: right;
         }
 
-        .header-tag-badge {
-            background: #ecfdf5;
-            color: var(--primary);
-            border: 1px solid #a7f3d0;
-            padding: 2.5px 7px;
-            border-radius: 4px;
-            font-size: 7.2px;
+        .tag-digital-block {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .tag-digital-title {
+            font-size: 9.5px;
             font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 0.4px;
+            color: var(--primary);
+            letter-spacing: 0.5px;
         }
 
-        .conf-logo-img {
-            height: 26px;
+        .tag-digital-sub {
+            font-size: 7.5px;
+            color: var(--slate-400);
+            font-style: italic;
+        }
+
+        .aicis-logo-img {
+            height: 36px;
             width: auto;
             object-fit: contain;
         }
 
-        /* 2. HERO BANNER */
+        /* 2. HERO BANNER WITH PRE-BAKED OPAQUE CAMPUS BACKGROUND (100% BEBAS PINK DI CANVA) */
         .hero-banner-section {
-            height: 154px;
-            background-color: #01361f;
-            background-image: url('assets/img/hero_campus_bg.jpg');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            border-bottom: 2.5px solid var(--gold);
-            padding: 8px 14px 6px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 12px;
-            flex-shrink: 0;
+            background: #01361f url('assets/img/hero_campus_bg.jpg') center/cover no-repeat;
+            color: #ffffff;
+            padding: 10px 18px 9px;
             position: relative;
+            flex-shrink: 0;
+            height: 202px;
+            border-bottom: 3px solid var(--gold);
+            overflow: hidden;
         }
 
-        .hero-left-content {
-            flex: 1 1 58%;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
+        .hero-banner-inner {
+            position: relative;
             z-index: 2;
+            display: grid;
+            grid-template-columns: 1.15fr 0.95fr;
+            gap: 12px;
+            align-items: center;
+            height: 100%;
         }
 
-        .hero-pill-category {
+        .hero-badge-pill {
             display: inline-flex;
             align-items: center;
-            gap: 5px;
+            gap: 6px;
             background: #004d2e;
-            border: 1px solid #10b981;
-            color: #fef08a;
-            font-size: 7.2px;
+            border: 1.5px solid var(--gold);
+            padding: 3px 9px;
+            border-radius: 9999px;
+            font-size: 7.6px;
             font-weight: 800;
-            padding: 2px 7px;
-            border-radius: 4px;
-            margin-bottom: 3px;
-            width: fit-content;
-            text-transform: uppercase;
-            letter-spacing: 0.4px;
+            color: #fef08a;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
         }
 
         .hero-main-title {
             font-family: 'Space Grotesk', sans-serif;
-            font-size: 21px;
+            font-size: 26px;
             font-weight: 900;
             line-height: 1.05;
+            letter-spacing: -0.5px;
             color: #ffffff;
             margin-bottom: 2px;
         }
@@ -262,559 +265,213 @@
             color: #facc15;
         }
 
-        .hero-subtitle {
-            font-size: 8.8px;
+        .hero-app-name {
+            font-size: 9.8px;
             font-weight: 700;
-            color: #d1fae5;
-            margin-bottom: 3px;
-        }
-
-        .hero-desc-lead {
-            font-size: 7.2px;
-            color: #e2e8f0;
-            line-height: 1.25;
+            color: #a7f3d0;
             margin-bottom: 5px;
-            max-width: 98%;
+            line-height: 1.25;
         }
 
-        .hero-stats-row {
+        .hero-tagline-box {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: #d4a343;
+            color: #012415;
+            font-size: 8px;
+            font-weight: 900;
+            padding: 3px 9px;
+            border-radius: 4px;
+            margin-bottom: 6px;
+            letter-spacing: 0.4px;
+            text-transform: uppercase;
+        }
+
+        .hero-desc-para {
+            font-size: 8.2px;
+            color: #d1fae5;
+            line-height: 1.38;
+            margin-bottom: 8px;
+        }
+
+        /* 4 Key Stat Metric Pills on Hero (Solid Opaque - Bebas Pink) */
+        .hero-stat-pills {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
             gap: 5px;
         }
 
-        .stat-mini-pill {
-            background: #012415;
-            border: 1px solid #059669;
-            border-radius: 4px;
-            padding: 2.5px 4px;
+        .hero-pill-box {
+            background: #004d2e;
+            border: 1.5px solid #059669;
+            border-radius: 5px;
+            padding: 4px 5px;
             text-align: center;
         }
 
-        .stat-pill-num {
+        .hero-pill-num {
             font-family: 'Space Grotesk', sans-serif;
-            font-size: 11px;
+            font-size: 13.5px;
             font-weight: 900;
             color: #fef08a;
             line-height: 1;
         }
 
-        .stat-pill-lbl {
-            font-size: 6px;
-            font-weight: 800;
-            color: #ffffff;
-            text-transform: uppercase;
-            margin-top: 1px;
+        .hero-pill-label {
+            font-size: 7px;
+            color: #d1fae5;
+            font-weight: 700;
+            margin-top: 1.5px;
         }
 
-        /* Hero Right: Dual-Device Mockup */
-        .hero-right-mockups {
-            flex: 0 0 42%;
-            display: flex;
-            align-items: center;
-            justify-content: flex-end;
-            position: relative;
-            height: 138px;
-        }
-
-        .laptop-frame {
-            width: 190px;
-            height: 120px;
-            background: #1e293b;
-            border-radius: 6px 6px 2px 2px;
-            border: 2px solid #475569;
+        /* Right Side: Dual-Device Showcase (Desktop Laptop + Mobile Smartphone) */
+        .hero-desktop-showcase {
             display: flex;
             flex-direction: column;
-            overflow: hidden;
-            position: relative;
-            z-index: 1;
+            align-items: center;
+            justify-content: center;
         }
 
-        .laptop-screen-header {
+        .devices-dual-row {
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            gap: 7px;
+            width: 100%;
+        }
+
+        /* Laptop Mockup Frame */
+        .laptop-device-unit {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex: 1;
+            max-width: 182px;
+        }
+
+        .desktop-device-frame {
+            width: 100%;
+            background: #1e293b;
+            border-radius: 5px 5px 0 0;
+            border: 1.5px solid var(--gold);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .desktop-browser-bar {
             height: 12px;
-            background: #0f172a;
+            background: #1e293b;
             display: flex;
             align-items: center;
             padding: 0 5px;
             gap: 3px;
+            border-bottom: 1px solid #334155;
         }
 
-        .dot-control {
-            width: 4px;
-            height: 4px;
+        .browser-dots {
+            display: flex;
+            gap: 2.5px;
+        }
+
+        .b-dot {
+            width: 3.5px;
+            height: 3.5px;
             border-radius: 50%;
         }
-        .dot-red { background: #ef4444; }
-        .dot-yellow { background: #eab308; }
-        .dot-green { background: #22c55e; }
+
+        .b-red { background: #ef4444; }
+        .b-yellow { background: #eab308; }
+        .b-green { background: #22c55e; }
 
         .browser-url-pill {
-            margin-left: 6px;
-            background: #1e293b;
-            color: #cbd5e1;
             font-size: 5.5px;
-            padding: 1px 6px;
-            border-radius: 2px;
-        }
-
-        .laptop-display-body {
-            flex: 1;
-            background: #012415;
-            overflow: hidden;
-        }
-
-        .laptop-display-body img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: block;
-        }
-
-        .laptop-base-stand {
-            position: absolute;
-            bottom: 3px;
-            right: 22px;
-            width: 220px;
-            height: 4px;
-            background: #64748b;
-            border-radius: 0 0 4px 4px;
-            z-index: 1;
-        }
-
-        .phone-mockup-frame {
-            position: absolute;
-            right: -2px;
-            bottom: 5px;
-            width: 58px;
-            height: 114px;
+            color: #cbd5e1;
             background: #0f172a;
-            border-radius: 9px;
-            border: 2px solid #94a3b8;
-            overflow: hidden;
-            z-index: 3;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .phone-notch-bar {
-            height: 6px;
-            background: #000000;
+            padding: 1px 5px;
+            border-radius: 2px;
+            margin-left: 3px;
+            font-family: monospace;
             display: flex;
             align-items: center;
-            justify-content: center;
+            gap: 2.5px;
         }
 
-        .notch-speaker {
-            width: 14px;
-            height: 2px;
-            background: #334155;
-            border-radius: 2px;
+        .browser-url-pill i {
+            color: #10b981;
+            font-size: 4.5px;
         }
 
-        .phone-display-body {
-            flex: 1;
-            background: #ffffff;
+        .desktop-screen-viewport {
+            width: 100%;
+            height: 108px;
+            background: #0f172a;
             overflow: hidden;
         }
 
-        .phone-display-body img {
+        .desktop-screen-viewport img {
             width: 100%;
             height: 100%;
             object-fit: cover;
             display: block;
         }
 
-        .mockup-bottom-tag {
-            position: absolute;
-            bottom: -2px;
-            left: 2px;
-            background: #d4a343;
-            color: #012415;
-            font-size: 6px;
-            font-weight: 900;
-            padding: 1.5px 5px;
-            border-radius: 3px;
-            z-index: 4;
-            display: flex;
-            align-items: center;
-            gap: 3px;
+        .laptop-bottom-base {
+            width: 196px;
+            height: 5px;
+            background: #64748b;
+            border-radius: 0 0 6px 6px;
+            border-top: 1px solid #94a3b8;
         }
 
-        /* ==========================================================================
-           3. MAIN BODY CONTAINER - ALUR LOGIS & PADAT
-           ========================================================================== */
-        .poster-content-body {
-            flex: 1 1 auto;
-            padding: 5px 12px 4px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            gap: 4px;
-            background: #f8fafc;
-            overflow: hidden;
-        }
-
-        /* Generic Card Box */
-        .academic-card-box {
-            background: #ffffff;
-            border: 1px solid #cbd5e1;
-            border-radius: 6px;
-            padding: 5px 8px;
-            display: flex;
-            flex-direction: column;
-            position: relative;
-        }
-
-        .card-heading-bar {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 3.5px;
-            padding-bottom: 2.5px;
-            border-bottom: 1px solid #e2e8f0;
-        }
-
-        .card-heading-title {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            font-size: 8.8px;
-            font-weight: 900;
-            color: #0f172a;
-            text-transform: uppercase;
-            letter-spacing: 0.3px;
-        }
-
-        .card-heading-title i {
-            color: var(--primary);
-            font-size: 9.5px;
-        }
-
-        .card-pill-tag {
-            font-size: 6.2px;
-            font-weight: 800;
-            padding: 1px 5px;
-            border-radius: 3px;
-            text-transform: uppercase;
-        }
-        .tag-green { background: #dcfce7; color: #166534; border: 1px solid #86efac; }
-        .tag-amber { background: #fef3c7; color: #92400e; border: 1px solid #fde68a; }
-        .tag-dark  { background: #01361f; color: #fef08a; }
-
-        /* --------------------------------------------------------------------------
-           SECTION 1: URGENSI MASALAH, SOLUSI & RUANG LINGKUP LAYANAN (3 KOLOM)
-           -------------------------------------------------------------------------- */
-        .sec1-three-columns {
-            display: grid;
-            grid-template-columns: 1.05fr 1.05fr 0.9fr;
-            gap: 5px;
-            flex: 0 0 auto;
-        }
-
-        .bullet-list-tight {
-            display: flex;
-            flex-direction: column;
-            gap: 2.5px;
-            flex: 1;
-        }
-
-        .bullet-item-row {
-            background: #f8fafc;
-            border: 1px solid #f1f5f9;
-            border-radius: 4px;
-            padding: 2.5px 5px;
-            display: flex;
-            align-items: flex-start;
-            gap: 4px;
-        }
-
-        .bullet-item-row i {
-            font-size: 7px;
-            margin-top: 1.5px;
-            flex-shrink: 0;
-        }
-        .b-red   { color: #dc2626; }
-        .b-green { color: #059669; }
-
-        .b-text {
-            font-size: 6.9px;
-            color: var(--slate-700);
-            line-height: 1.25;
-        }
-        .b-text strong {
-            color: #0f172a;
-            font-weight: 800;
-        }
-
-        .scope-mini-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 2.5px;
-            flex: 1;
-        }
-
-        .scope-item-badge {
-            background: #f8fafc;
-            border: 1px solid #e2e8f0;
-            border-radius: 4px;
-            padding: 2.5px 5px;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            font-size: 6.8px;
-            color: var(--slate-700);
-            line-height: 1.2;
-        }
-
-        .scope-icon-box {
-            width: 16px;
-            height: 16px;
-            border-radius: 3px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 7.5px;
-            flex-shrink: 0;
-        }
-        .sc-yellow { background: #fef3c7; color: #b45309; }
-        .sc-blue   { background: #e0f2fe; color: #0284c7; }
-        .sc-purple { background: #f3e8ff; color: #7e22ce; }
-        .sc-green  { background: #dcfce7; color: #15803d; }
-
-        /* --------------------------------------------------------------------------
-           SECTION 2: PANDUAN PENGGUNAAN APLIKASI (ALUR 8 LANGKAH SIVITAS)
-           Permintaan Khusus User: "tambahkan materi mulai dari panduan penggunaan"
-           -------------------------------------------------------------------------- */
-        .sec2-guide-wrap {
-            flex: 0 0 auto;
-        }
-
-        .guide-8-steps-grid {
-            display: grid;
-            grid-template-columns: repeat(8, 1fr);
-            gap: 3.5px;
-            margin-top: 2px;
-        }
-
-        .guide-step-card {
-            background: #ffffff;
-            border: 1px solid #cbd5e1;
-            border-radius: 5px;
-            padding: 4px 3px;
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            position: relative;
-        }
-
-        .guide-step-card.highlight-step {
-            background: #ecfdf5;
-            border-color: #059669;
-        }
-
-        .step-circle-badge {
-            width: 17px;
-            height: 17px;
-            border-radius: 50%;
-            background: #005a36;
-            color: #ffffff;
-            font-size: 7.5px;
-            font-weight: 900;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 2.5px;
-            font-family: 'Space Grotesk', sans-serif;
-            border: 1px solid #d4a343;
-        }
-
-        .step-icon-lead {
-            font-size: 9px;
-            color: #047857;
-            margin-bottom: 2px;
-        }
-
-        .step-name-title {
-            font-size: 7px;
-            font-weight: 800;
-            color: #0f172a;
-            line-height: 1.15;
-            margin-bottom: 1.5px;
-        }
-
-        .step-desc-sub {
-            font-size: 5.8px;
-            color: var(--slate-600);
-            line-height: 1.2;
-        }
-
-        /* --------------------------------------------------------------------------
-           SECTION 3: STANDAR RESPON SLA (5 TAHAPAN SIKLUS PENANGANAN)
-           -------------------------------------------------------------------------- */
-        .sec3-sla-wrap {
-            flex: 0 0 auto;
-        }
-
-        .sla-5-nodes-grid {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 4px;
-            margin-top: 2px;
-        }
-
-        .sla-node-box {
-            background: #01361f;
-            border: 1.5px solid #059669;
-            border-radius: 5px;
-            padding: 4px 5px;
-            color: #ffffff;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-
-        .sla-node-box.sla-active {
-            background: #78350f;
-            border-color: #f59e0b;
-        }
-
-        .sla-top-line {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 1.5px;
-        }
-
-        .sla-idx {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 10px;
-            font-weight: 900;
-            color: #fef08a;
-        }
-
-        .sla-time-pill {
-            font-size: 5.8px;
-            font-weight: 800;
-            background: #004d2e;
-            color: #ffffff;
-            padding: 1px 4px;
-            border-radius: 2px;
-            border: 1px solid #10b981;
-        }
-
-        .sla-stage-title {
-            font-size: 7.8px;
-            font-weight: 900;
-            color: #ffffff;
-            line-height: 1.15;
-            margin-bottom: 1px;
-        }
-
-        .sla-stage-desc {
-            font-size: 6.2px;
-            color: #d1fae5;
-            line-height: 1.2;
-        }
-
-        /* --------------------------------------------------------------------------
-           SECTION 4: PRATINJAU FITUR SISTEM & SHOWCASE BUKTI RIIL
-           Showcase 1: Dokumen Tiket PDF Ber-QR Code (Pelapor)
-           Showcase 2: Peta Geofencing GIS 5 Kawasan (Admin)
-           -------------------------------------------------------------------------- */
-        .sec4-features-showcase {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 5px;
-            flex: 0 0 auto;
-        }
-
-        .feature-split-panel {
-            display: grid;
-            grid-template-columns: 1.2fr 0.8fr;
-            gap: 5px;
-            align-items: stretch;
-            flex: 1;
-        }
-
-        .feat-pill-stack {
-            display: flex;
-            flex-direction: column;
-            gap: 2.5px;
-            justify-content: space-between;
-        }
-
-        .feat-item-chip {
-            background: #f8fafc;
-            border: 1px solid #e2e8f0;
-            border-radius: 4px;
-            padding: 2.5px 5px;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        .feat-chip-icon {
-            width: 18px;
-            height: 18px;
-            border-radius: 3px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 8.5px;
-            flex-shrink: 0;
-        }
-        .f-icon-green { background: #dcfce7; color: #15803d; }
-        .f-icon-gold  { background: #fef3c7; color: #b45309; }
-
-        .feat-chip-content h6 {
-            font-size: 7.8px;
-            font-weight: 900;
-            color: #0f172a;
-            line-height: 1.15;
-            margin-bottom: 0.5px;
-        }
-
-        .feat-chip-content p {
-            font-size: 6.2px;
-            color: var(--slate-600);
-            line-height: 1.2;
-        }
-
-        /* Real Visual Preview Card */
-        .showcase-thumb-box {
-            background: #ffffff;
-            border: 1.5px solid #cbd5e1;
-            border-radius: 5px;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-
-        .thumb-top-header {
+        .laptop-notch-cut {
+            width: 26px;
+            height: 2px;
             background: #1e293b;
-            color: #ffffff;
-            padding: 2px 5px;
-            font-size: 5.8px;
-            font-weight: 800;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
+            margin: 0 auto;
+            border-radius: 0 0 2px 2px;
         }
-        .thumb-top-header span { color: #fef08a; }
 
-        .thumb-img-wrapper {
-            flex: 1;
-            min-height: 94px;
-            background: #ffffff;
+        /* Smartphone Mobile Mockup */
+        .phone-device-unit {
+            width: 58px;
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .phone-device-frame {
+            width: 100%;
+            height: 119px;
+            background: #0f172a;
+            border: 2px solid var(--gold);
+            border-radius: 8px;
             overflow: hidden;
             display: flex;
+            flex-direction: column;
             align-items: center;
-            justify-content: center;
+            position: relative;
         }
 
-        .thumb-img-wrapper img {
+        .phone-speaker-notch {
+            width: 18px;
+            height: 3px;
+            background: #334155;
+            border-radius: 0 0 3px 3px;
+            margin-top: 2px;
+            z-index: 2;
+        }
+
+        .phone-screen-viewport {
+            width: 100%;
+            flex: 1;
+            background: #ffffff;
+            overflow: hidden;
+        }
+
+        .phone-screen-viewport img {
             width: 100%;
             height: 100%;
             object-fit: cover;
@@ -822,219 +479,819 @@
             display: block;
         }
 
-        .thumb-img-wrapper.img-center img {
+        .phone-home-indicator {
+            width: 20px;
+            height: 2px;
+            background: #cbd5e1;
+            border-radius: 1px;
+            margin: 2px 0;
+            z-index: 2;
+        }
+
+        /* Companion GIS Tag beneath Devices (Solid - Bebas Pink) */
+        .hero-laptop-tag {
+            margin-top: 5px;
+            background: #004d2e;
+            border: 1.5px solid var(--gold);
+            padding: 3px 10px;
+            border-radius: 4px;
+            font-size: 7.2px;
+            font-weight: 800;
+            color: #fef08a;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        /* 3. MAIN BODY CONTAINER (Penuh, Rapat, Kaya Gambar & Padat Informasi) */
+        .poster-content-body {
+            flex: 1 1 auto;
+            padding: 7px 16px 5px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 6px;
+            background: transparent;
+            overflow: hidden;
+        }
+
+        /* SECTION ROW 1: 3 CARDS (SEMUA MEMILIKI BANNER FOTO KAMPUS RESMI) */
+        .grid-three-cards {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 7px;
+            flex: 1 1 auto;
+        }
+
+        .pillar-card {
+            background: #ffffff;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 7px;
+            padding: 6px 8px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .pillar-card-photo-strip {
+            height: 35px;
+            border-radius: 5px;
+            overflow: hidden;
+            position: relative;
+            margin-bottom: 5px;
+            border: 1px solid #cbd5e1;
+        }
+
+        .pillar-card-photo-strip img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .pillar-photo-overlay-tag {
+            position: absolute;
+            bottom: 3px;
+            left: 5px;
+            background: #012415;
+            color: #fef08a;
+            font-size: 6.8px;
+            font-weight: 800;
+            padding: 1.5px 6px;
+            border-radius: 3px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            border: 1px solid #d4a343;
+        }
+
+        .pillar-header {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 4px;
+            padding-bottom: 3px;
+            border-bottom: 1.5px solid #f1f5f9;
+        }
+
+        .pillar-icon-box {
+            width: 20px;
+            height: 20px;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            flex-shrink: 0;
+        }
+
+        /* PALET WARNA HIJAU & EMAS INSTITUSIONAL (TANPA PINK) */
+        .icon-amber-tone { background: #fef3c7; color: #b45309; }
+        .icon-green-tone { background: #dcfce7; color: #15803d; }
+        .icon-emerald-tone { background: #ecfdf5; color: #047857; }
+
+        .pillar-tag {
+            font-size: 6.8px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--slate-400);
+            display: block;
+            line-height: 1;
+        }
+
+        .pillar-title {
+            font-size: 10.2px;
+            font-weight: 900;
+            color: #0f172a;
+            line-height: 1.1;
+        }
+
+        .pillar-list {
+            display: flex;
+            flex-direction: column;
+            gap: 3.5px;
+            flex: 1;
+        }
+
+        .pillar-item-box {
+            background: #f8fafc;
+            border: 1px solid #f1f5f9;
+            border-radius: 5px;
+            padding: 3.5px 6px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex: 1;
+        }
+
+        .pillar-item-box i {
+            font-size: 8px;
+            margin-top: 1px;
+            flex-shrink: 0;
+        }
+
+        .pillar-item-text {
+            font-size: 7.6px;
+            color: var(--slate-700);
+            line-height: 1.32;
+        }
+
+        .pillar-item-text strong {
+            color: #0f172a;
+            font-weight: 800;
+        }
+
+        .bullet-amber { color: #b45309; }
+        .bullet-green { color: #15803d; }
+        .bullet-emerald { color: #047857; }
+
+        /* SECTION ROW 2: CARA KERJA (ALUR PENGGUNAAN APLIKASI - 8 STEP TIMELINE) */
+        .timeline-section-card {
+            background: #ffffff;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 7px;
+            padding: 6px 10px 5px;
+            flex: 0 0 auto;
+        }
+
+        .timeline-card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 5px;
+            padding-bottom: 3px;
+            border-bottom: 1.5px solid #f1f5f9;
+        }
+
+        .timeline-badge-title {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 9.6px;
+            font-weight: 900;
+            color: #0f172a;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+        }
+
+        .timeline-badge-title i {
+            color: var(--gold);
+        }
+
+        .timeline-sub-tag {
+            font-size: 7.5px;
+            background: #ecfdf5;
+            color: #047857;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-weight: 800;
+            border: 1px solid #a7f3d0;
+        }
+
+        .stepper-8-grid {
+            display: grid;
+            grid-template-columns: repeat(8, 1fr);
+            gap: 4px;
+            position: relative;
+        }
+
+        .step-col-node {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            position: relative;
+        }
+
+        .step-circle-icon {
+            width: 27px;
+            height: 27px;
+            border-radius: 50%;
+            background: #ffffff;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            position: relative;
+            margin-bottom: 3px;
+        }
+
+        .step-number-tag {
+            position: absolute;
+            top: -3px;
+            right: -3px;
+            width: 11px;
+            height: 11px;
+            background: var(--gold-bright);
+            color: #000000;
+            border-radius: 50%;
+            font-size: 6.8px;
+            font-weight: 900;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .step-node-name {
+            font-size: 8.2px;
+            font-weight: 900;
+            color: #0f172a;
+            line-height: 1.15;
+            margin-bottom: 1px;
+        }
+
+        .step-node-detail {
+            font-size: 6.8px;
+            color: var(--slate-500);
+            line-height: 1.2;
+        }
+
+        /* SECTION ROW 3: DARK BANNER (5 TAHAP SIKLUS PENANGANAN TIKET & STANDAR SLA) */
+        .sla-banner-box {
+            background: #01311b;
+            border-radius: 7px;
+            padding: 7px 10px;
+            color: #ffffff;
+            border: 1.5px solid var(--gold);
+            flex: 0 0 auto;
+        }
+
+        .sla-banner-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 5px;
+        }
+
+        .sla-header-left {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .sla-icon-tag {
+            background: var(--gold-bright);
+            color: #000;
+            width: 17px;
+            height: 17px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 9.5px;
+            font-weight: 900;
+        }
+
+        .sla-header-title {
+            font-size: 9.8px;
+            font-weight: 900;
+            letter-spacing: 0.4px;
+            text-transform: uppercase;
+        }
+
+        .sla-header-right {
+            font-size: 7.4px;
+            color: #fef08a;
+            font-weight: 800;
+            background: #004d2e;
+            padding: 2px 8px;
+            border-radius: 4px;
+            border: 1px solid var(--gold);
+        }
+
+        .sla-5-stages-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 5px;
+        }
+
+        .sla-stage-item {
+            background: #014324;
+            border: 1.5px solid #059669;
+            border-radius: 5px;
+            padding: 5px 6px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .sla-stage-item.stage-highlight {
+            background: #78350f;
+            border-color: #f59e0b;
+        }
+
+        .sla-stage-header-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 2px;
+        }
+
+        .sla-stage-num {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 11px;
+            font-weight: 900;
+            color: #fef08a;
+            line-height: 1;
+        }
+
+        .sla-badge-time {
+            font-size: 6.2px;
+            font-weight: 800;
+            background: #004d2e;
+            color: #ffffff;
+            padding: 1.5px 5px;
+            border-radius: 3px;
+            border: 1px solid #10b981;
+        }
+
+        .sla-stage-title {
+            font-size: 8.5px;
+            font-weight: 800;
+            color: #ffffff;
+            line-height: 1.15;
+            margin-bottom: 2px;
+        }
+
+        .sla-stage-desc {
+            font-size: 6.8px;
+            color: #d1fae5;
+            line-height: 1.25;
+        }
+
+        /* SECTION ROW 4: FITUR DENGAN UI SCREENSHOT SHOWCASE */
+        .features-split-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 7px;
+            flex: 1 1 auto;
+        }
+
+        .features-block-card {
+            background: #ffffff;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 7px;
+            padding: 6px 9px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .features-block-card.card-pelapor {
+            border-top: 3.5px solid var(--primary);
+        }
+
+        .features-block-card.card-admin {
+            border-top: 3.5px solid var(--gold);
+        }
+
+        .features-block-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 5px;
+            padding-bottom: 3px;
+            border-bottom: 1.5px solid #f1f5f9;
+        }
+
+        .features-title-label {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 9.4px;
+            font-weight: 900;
+            color: #0f172a;
+            text-transform: uppercase;
+        }
+
+        .features-user-target {
+            font-size: 7.2px;
+            color: var(--slate-500);
+            font-style: italic;
+        }
+
+        /* Feature Card Body: Split Features Grid + Visual UI Preview */
+        .feature-card-content-wrap {
+            display: grid;
+            grid-template-columns: 1.35fr 0.85fr;
+            gap: 7px;
+            align-items: stretch;
+            flex: 1;
+        }
+
+        .features-subgrid-four {
+            display: grid;
+            grid-template-columns: 1fr;
+            grid-template-rows: repeat(4, 1fr);
+            gap: 4px;
+        }
+
+        .feat-item-mini {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 5px;
+            padding: 4px 6px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .feat-mini-icon {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 9.5px;
+            flex-shrink: 0;
+        }
+
+        .feat-mini-text h5 {
+            font-size: 8.2px;
+            font-weight: 900;
+            color: #0f172a;
+            line-height: 1.15;
+            margin-bottom: 1px;
+        }
+
+        .feat-mini-text p {
+            font-size: 6.9px;
+            color: var(--slate-600);
+            line-height: 1.25;
+        }
+
+        /* Visual Showcase Thumbnail Box */
+        .feature-ui-preview-box {
+            background: #f1f5f9;
+            border: 1.5px solid #cbd5e1;
+            border-radius: 6px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .ui-preview-top-bar {
+            background: #1e293b;
+            color: #ffffff;
+            padding: 2.5px 6px;
+            font-size: 6.5px;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .ui-preview-top-bar span {
+            color: #fef08a;
+        }
+
+        .ui-preview-img-container {
+            width: 100%;
+            height: 86px;
+            background: #ffffff;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .ui-preview-img-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: top center;
+            display: block;
+        }
+
+        .ui-preview-img-container.img-cover img {
+            object-fit: cover;
             object-position: center;
         }
 
-        .thumb-footer-tag {
-            background: #f1f5f9;
-            padding: 2px 4px;
-            font-size: 6.2px;
+        .ui-preview-bottom-caption {
+            background: #ffffff;
+            padding: 3px 5px;
+            font-size: 6.5px;
             font-weight: 700;
             color: var(--slate-700);
             border-top: 1px solid #e2e8f0;
             text-align: center;
         }
 
-        /* --------------------------------------------------------------------------
-           SECTION 5: KELEBIHAN APLIKASI (NILAI LEBIH & KEUNGGULAN UTAMA)
-           Permintaan Khusus User: "kelebihan aplikasi"
-           -------------------------------------------------------------------------- */
-        .sec5-advantages-wrap {
-            flex: 0 0 auto;
-        }
-
-        .advantages-4-grid {
+        /* SECTION ROW 5: SASARAN / TEKNOLOGI / NILAI LEBIH (KAYA GAMBAR & EMBLEM RESMI) */
+        .bottom-three-grid {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 4px;
-            margin-top: 2px;
+            grid-template-columns: 1fr 1fr 1.05fr;
+            gap: 7px;
+            flex: 1 1 auto;
         }
 
-        .advantage-card-item {
+        .bottom-card-box {
             background: #ffffff;
-            border: 1.5px solid #cbd5e1;
-            border-radius: 5px;
-            padding: 4px 6px;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 7px;
+            padding: 6px 8px;
             display: flex;
             flex-direction: column;
-            border-top: 3px solid var(--primary);
+            justify-content: space-between;
         }
 
-        .advantage-card-item.adv-gold {
-            border-top-color: var(--gold-dark);
-        }
-
-        .adv-top-title {
+        .bottom-card-header {
             display: flex;
             align-items: center;
-            gap: 4px;
-            font-size: 7.5px;
+            gap: 6px;
+            margin-bottom: 4px;
+            padding-bottom: 3px;
+            border-bottom: 1.5px solid #f1f5f9;
+        }
+
+        .bottom-card-icon {
+            font-size: 10px;
+            color: var(--primary);
+        }
+
+        .bottom-card-tag {
+            font-size: 6.8px;
+            font-weight: 800;
+            text-transform: uppercase;
+            color: var(--slate-400);
+            display: block;
+        }
+
+        .bottom-card-title {
+            font-size: 9.4px;
             font-weight: 900;
             color: #0f172a;
-            margin-bottom: 1.5px;
+            line-height: 1.1;
         }
 
-        .adv-top-title i {
-            color: var(--primary);
-            font-size: 8px;
-        }
-        .adv-gold .adv-top-title i {
-            color: var(--gold-dark);
-        }
-
-        .adv-desc-text {
-            font-size: 6.3px;
-            color: var(--slate-600);
-            line-height: 1.25;
-        }
-
-        /* --------------------------------------------------------------------------
-           SECTION 6: SASARAN PENGGUNA, TEKNOLOGI & EMBLEM IDENTITAS
-           -------------------------------------------------------------------------- */
-        .sec6-bottom-three {
-            display: grid;
-            grid-template-columns: 1fr 1fr 0.85fr;
-            gap: 5px;
-            flex: 0 0 auto;
-        }
-
-        .user-target-stack {
+        /* Col 1: Sasaran Pengguna (Civitas Akademika dengan Avatar Visual) */
+        .sasaran-container-list {
             display: flex;
             flex-direction: column;
-            gap: 2.5px;
+            gap: 4px;
             flex: 1;
         }
 
-        .target-item-row {
+        .sasaran-row-item {
             background: #f8fafc;
             border: 1px solid #e2e8f0;
-            border-radius: 4px;
-            padding: 2.5px 5px;
+            border-radius: 5px;
+            padding: 4.5px 6px;
             display: flex;
             align-items: center;
-            gap: 5px;
-            font-size: 6.8px;
-            color: var(--slate-700);
-            line-height: 1.2;
+            gap: 6px;
+            flex: 1;
         }
 
-        .target-dot-icon {
-            width: 17px;
-            height: 17px;
-            border-radius: 3px;
+        .sasaran-badge-dot {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
             background: #dcfce7;
             color: var(--primary);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 8px;
+            font-size: 10px;
             flex-shrink: 0;
             border: 1px solid #a7f3d0;
         }
 
-        .tech-4-grid {
+        .sasaran-badge-dot.gold-badge {
+            background: #fef3c7;
+            color: #b45309;
+            border-color: #fde68a;
+        }
+
+        .sasaran-badge-dot.dark-badge {
+            background: #e8f5ee;
+            color: #01361f;
+            border-color: #cbd5e1;
+        }
+
+        .sasaran-item-text {
+            font-size: 7.5px;
+            color: var(--slate-700);
+            line-height: 1.25;
+        }
+
+        .sasaran-item-text strong {
+            color: #0f172a;
+            font-weight: 800;
+        }
+
+        /* Col 2: Teknologi Grid 2x2 dengan Visual Tech Badges */
+        .tech-grid-2x2 {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 3px;
+            grid-template-rows: 1fr 1fr;
+            gap: 4px;
             flex: 1;
         }
 
-        .tech-chip-box {
+        .tech-badge-item {
             background: #f8fafc;
             border: 1px solid #e2e8f0;
-            border-radius: 4px;
-            padding: 3px 5px;
+            border-radius: 5px;
+            padding: 5px 6px;
             display: flex;
             flex-direction: column;
             justify-content: center;
         }
 
-        .tech-chip-name {
-            font-size: 7.2px;
+        .tech-badge-name {
+            font-size: 8px;
             font-weight: 900;
             color: var(--primary);
             display: flex;
             align-items: center;
-            gap: 3.5px;
-            margin-bottom: 0.5px;
+            gap: 4px;
+            margin-bottom: 1.5px;
         }
 
-        .tech-chip-sub {
-            font-size: 5.8px;
-            color: var(--slate-600);
-            line-height: 1.15;
-        }
-
-        .brand-emblem-wrap {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            flex: 1;
-            background: #ffffff;
-            border: 1.5px solid var(--gold);
-            border-radius: 5px;
-            padding: 3px 6px;
-        }
-
-        .brand-emblem-img {
-            width: 38px;
-            height: 38px;
-            object-fit: contain;
-            flex-shrink: 0;
-        }
-
-        .brand-emblem-text h6 {
-            font-size: 7.6px;
-            font-weight: 900;
-            color: var(--primary);
-            line-height: 1.15;
-            margin-bottom: 1px;
-        }
-
-        .brand-emblem-text p {
-            font-size: 6px;
+        .tech-badge-sub {
+            font-size: 6.8px;
             color: var(--slate-600);
             line-height: 1.2;
         }
 
-        /* 7. FOOTER BAR */
+        /* Col 3: Keunggulan dengan Logo Brand 3D SIMPEL UINSSC */
+        .keunggulan-split-wrap {
+            display: grid;
+            grid-template-columns: 0.85fr 1.15fr;
+            gap: 6px;
+            align-items: stretch;
+            flex: 1;
+        }
+
+        .emblem-showcase-box {
+            background: #ffffff;
+            border: 1.5px solid var(--gold);
+            border-radius: 6px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 4px;
+            text-align: center;
+        }
+
+        .emblem-showcase-box img {
+            width: 100%;
+            max-height: 62px;
+            object-fit: contain;
+            display: block;
+            margin-bottom: 3px;
+        }
+
+        .emblem-caption {
+            font-size: 6.2px;
+            font-weight: 900;
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .keunggulan-4-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: 1fr 1fr;
+            gap: 3.5px;
+        }
+
+        .val-block {
+            border-radius: 5px;
+            padding: 4.5px 5.5px;
+            color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .val-block h6 {
+            font-size: 7.8px;
+            font-weight: 900;
+            margin-bottom: 1px;
+            display: flex;
+            align-items: center;
+            gap: 3px;
+        }
+
+        .val-block p {
+            font-size: 6.4px;
+            line-height: 1.2;
+            opacity: 0.95;
+        }
+
+        /* Palet Warna Hijau & Emas Institusional */
+        .val-primary-green { background: #005a36; }
+        .val-emerald-green { background: #047857; }
+        .val-gold-dark     { background: #b45309; }
+        .val-deep-forest   { background: #01361f; }
+
+        /* 4. BOTTOM FOOTER BAR */
         .poster-bottom-footer {
-            height: 25px;
             background: #012415;
-            border-top: 2px solid var(--gold);
-            padding: 0 14px;
+            color: #ffffff;
+            padding: 6px 18px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            color: #ffffff;
-            font-size: 6.8px;
-            font-weight: 700;
+            font-size: 8px;
+            border-top: 2px solid var(--gold);
             flex-shrink: 0;
+            height: 38px;
         }
 
-        .footer-left-info {
+        .footer-tagline-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .footer-tagline-bold {
+            font-size: 9.4px;
+            font-weight: 900;
+            color: #ffffff;
+        }
+
+        .footer-tagline-bold span {
+            color: var(--gold-bright);
+        }
+
+        .footer-inst-name {
+            font-size: 7.5px;
+            color: #cbd5e1;
+        }
+
+        .footer-meta-pills {
             display: flex;
             align-items: center;
             gap: 6px;
         }
 
-        .footer-left-info span {
-            color: #fef08a;
-        }
-
-        .footer-right-tags {
-            display: flex;
+        .footer-pill-item {
+            display: inline-flex;
             align-items: center;
-            gap: 10px;
-            font-size: 6.5px;
+            gap: 4px;
+            font-size: 7.5px;
+            font-weight: 800;
             color: #d1fae5;
+            background: #004d2e;
+            padding: 2.5px 7px;
+            border-radius: 4px;
+            border: 1px solid #059669;
         }
 
-        .footer-right-tags span {
-            display: flex;
-            align-items: center;
-            gap: 3px;
+        .footer-pill-item i {
+            color: var(--gold-bright);
+            font-size: 7.5px;
         }
 
         /* ==========================================================================
@@ -1086,18 +1343,18 @@
 
 <body>
 
-    <!-- Control Toolbar (Hanya Tampil di Layar Browser) -->
+    <!-- Control Toolbar (Layar Browser Saja) -->
     <div class="control-toolbar">
         <div class="toolbar-info">
-            <h2>Poster Ilmiah SIMPEL UINSSC (Edisi Lengkap Panduan & Kelebihan Aplikasi)</h2>
-            <p>Memuat Panduan Penggunaan 8 Langkah, Kelebihan Aplikasi, Standar Respon SLA, Showcase Dokumen PDF & GIS Spasial.</p>
+            <h2>Poster SIMPEL UINSSC (Edisi Visual Kaya Gambar, Seragam Hijau-Emas & AICIS 2026)</h2>
+            <p>3 Foto Banner Kampus di Baris 1, Emblem 3D Brand di Nilai Lebih, Avatar di Sasaran, Logo AICIS+ Transparan, Tanpa Warna Pink.</p>
         </div>
         <div class="toolbar-actions">
             <button class="btn-action btn-print" onclick="window.print()">
-                <i class="fa-solid fa-file-pdf"></i> Cetak / Simpan PDF (1 Halaman)
+                <i class="fa-solid fa-file-pdf"></i> Simpan / Cetak PDF (1 Lembar)
             </button>
             <button class="btn-action btn-canva-guide" onclick="showCanvaInstructions()">
-                <i class="fa-solid fa-circle-info"></i> Panduan Ekspor Canva
+                <i class="fa-solid fa-circle-info"></i> Panduan Edit Canva
             </button>
         </div>
     </div>
@@ -1111,518 +1368,517 @@
                 <img src="assets/img/logo.png" alt="Logo UINSSC" class="inst-logo-img">
                 <div class="brand-text-block">
                     <span class="inst-title-main">SARPRAS UIN SIBER SYEKH NURJATI CIREBON</span>
-                    <span class="inst-title-sub">Pusat Pengelolaan Sarana, Prasarana & Fasilitas Kampus Cyber</span>
+                    <span class="inst-title-sub">Pusat Pengelolaan Sarana, Prasarana & Kampus Cyber</span>
                 </div>
             </div>
             <div class="header-brand-right">
-                <span class="header-tag-badge"><i class="fa-solid fa-laptop-code"></i> Inovasi Digital</span>
-                <img src="assets/img/logo_aicis.png" alt="Logo AICIS+ 2026" class="conf-logo-img">
+                <div class="tag-digital-block">
+                    <span class="tag-digital-title">INOVASI DIGITAL</span>
+                    <span class="tag-digital-sub">Islam, Science, and Society</span>
+                </div>
+                <img src="assets/img/logo_aicis.png" alt="Logo AICIS+ 2026" class="aicis-logo-img">
             </div>
         </header>
 
-        <!-- 2. HERO BANNER (Dual-Device Mockup & Pre-baked Opaque Campus Background) -->
+        <!-- 2. HERO BANNER WITH PRE-BAKED OPAQUE CAMPUS BACKGROUND + DUAL DEVICE SHOWCASE -->
         <section class="hero-banner-section">
-            <div class="hero-left-content">
-                <div class="hero-pill-category">
-                    <i class="fa-solid fa-satellite-dish"></i> Platform Digital Pelaporan Sarpras Kampus
-                </div>
-                <h1 class="hero-main-title">
-                    SIMPEL <span>SARPRAS</span>
-                </h1>
-                <div class="hero-subtitle">
-                    Sistem Informasi Pelaporan & Pemeliharaan Fasilitas Kampus Berbasis GIS
-                </div>
-                <p class="hero-desc-lead">
-                    Inovasi layanan sarana prasarana terpadu sivitas akademika UINSSC berbasis web PWA. Dilengkapi Geofencing GIS 5 zona, filter anti-spam ruangan, alur kerja SLA 5 tahap terukur, serta penerbitan bukti tiket resmi ber-QR Code.
-                </p>
-                <div class="hero-stats-row">
-                    <div class="stat-mini-pill">
-                        <div class="stat-pill-num">5</div>
-                        <div class="stat-pill-lbl">Zona GIS</div>
+            <div class="hero-banner-inner">
+                <div class="hero-text-col">
+                    <div class="hero-badge-pill">
+                        <i class="fa-solid fa-laptop-code"></i> APLIKASI WEB PWA & DESKTOP DASHBOARD
                     </div>
-                    <div class="stat-mini-pill">
-                        <div class="stat-pill-num">3</div>
-                        <div class="stat-pill-lbl">Batas Kuota</div>
+                    <h1 class="hero-main-title">SIMPEL <span>SARPRAS</span></h1>
+                    <div class="hero-app-name">Sistem Informasi Pelaporan & Pemeliharaan Fasilitas Digital</div>
+                    <div class="hero-tagline-box">
+                        <i class="fa-solid fa-shield-halved"></i> FASILITAS TERJAGA, KAMPUS BERMUTU
                     </div>
-                    <div class="stat-mini-pill">
-                        <div class="stat-pill-num">100%</div>
-                        <div class="stat-pill-lbl">Valid Spasial</div>
-                    </div>
-                    <div class="stat-mini-pill">
-                        <div class="stat-pill-num">PDF</div>
-                        <div class="stat-pill-lbl">QR Otomatis</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Dual-Device Mockup (Laptop Dashboard + Mobile Phone) -->
-            <div class="hero-right-mockups">
-                <div class="laptop-frame">
-                    <div class="laptop-screen-header">
-                        <div class="dot-control dot-red"></div>
-                        <div class="dot-control dot-yellow"></div>
-                        <div class="dot-control dot-green"></div>
-                        <span class="browser-url-pill">simpel.uinssc.ac.id/dashboard</span>
-                    </div>
-                    <div class="laptop-display-body">
-                        <img src="assets/img/ss_dashboard.jpg" alt="Dashboard SIMPEL UINSSC">
-                    </div>
-                </div>
-                <div class="laptop-base-stand"></div>
-
-                <div class="phone-mockup-frame">
-                    <div class="phone-notch-bar">
-                        <div class="notch-speaker"></div>
-                    </div>
-                    <div class="phone-display-body">
-                        <img src="assets/img/ss_login.jpg" alt="Mobile Web PWA SIMPEL">
+                    <p class="hero-desc-para">
+                        SIMPEL Sarpras adalah platform digital terpadu sivitas akademika untuk melaporkan kerusakan sarana prasarana secara presisi — mulai dari verifikasi Geofencing GIS 5 zona, filter anti-spam tiket ganda, pemantauan 5 tahap SLA, hingga cetak bukti tiket resmi ber-QR Code.
+                    </p>
+                    <div class="hero-stat-pills">
+                        <div class="hero-pill-box">
+                            <div class="hero-pill-num">5</div>
+                            <div class="hero-pill-label">Zona GIS</div>
+                        </div>
+                        <div class="hero-pill-box">
+                            <div class="hero-pill-num">3</div>
+                            <div class="hero-pill-label">Kuota Tiket</div>
+                        </div>
+                        <div class="hero-pill-box">
+                            <div class="hero-pill-num">100%</div>
+                            <div class="hero-pill-label">Valid Spasial</div>
+                        </div>
+                        <div class="hero-pill-box">
+                            <div class="hero-pill-num">PDF</div>
+                            <div class="hero-pill-label">QR Otomatis</div>
+                        </div>
                     </div>
                 </div>
 
-                <div class="mockup-bottom-tag">
-                    <i class="fa-solid fa-map-location-dot"></i> PWA Multi-Device & Geofencing
+                <!-- Right: Dual-Device Showcase (Desktop Laptop + Smartphone Mockup) -->
+                <div class="hero-desktop-showcase">
+                    <div class="devices-dual-row">
+                        <!-- Desktop Laptop Mockup -->
+                        <div class="laptop-device-unit">
+                            <div class="desktop-device-frame">
+                                <div class="desktop-browser-bar">
+                                    <div class="browser-dots">
+                                        <span class="b-dot b-red"></span>
+                                        <span class="b-dot b-yellow"></span>
+                                        <span class="b-dot b-green"></span>
+                                    </div>
+                                    <div class="browser-url-pill">
+                                        <i class="fa-solid fa-lock"></i> simpel.uinssc.ac.id
+                                    </div>
+                                </div>
+                                <div class="desktop-screen-viewport">
+                                    <img src="assets/img/ss_dashboard.jpg" alt="Screen Dashboard Desktop View">
+                                </div>
+                            </div>
+                            <div class="laptop-bottom-base">
+                                <div class="laptop-notch-cut"></div>
+                            </div>
+                        </div>
+
+                        <!-- Smartphone Mobile Mockup -->
+                        <div class="phone-device-unit">
+                            <div class="phone-device-frame">
+                                <div class="phone-speaker-notch"></div>
+                                <div class="phone-screen-viewport">
+                                    <img src="assets/img/ss_login.jpg" alt="Portal Mobile Login">
+                                </div>
+                                <div class="phone-home-indicator"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Companion GIS Badge -->
+                    <div class="hero-laptop-tag">
+                        <i class="fa-solid fa-location-crosshairs" style="color: var(--gold-bright);"></i>
+                        <span>Peta GIS 5 Zona Terintegrasi &bull; Multi-Device Web &amp; Mobile</span>
+                    </div>
                 </div>
             </div>
         </section>
 
-        <!-- 3. MAIN BODY CONTENT (ALUR LOGIS, PADAT & TERSTRUKTUR RAPI) -->
+        <!-- 3. MAIN BODY CONTENT (PADAT & KAYA GAMBAR SHOWCASE) -->
         <div class="poster-content-body">
 
-            <!-- ====================================================================
-                 SECTION 1: URGENSI MASALAH, SOLUSI & RUANG LINGKUP LAYANAN (3 KOLOM)
-                 ==================================================================== -->
-            <div class="sec1-three-columns">
-                <!-- Col 1: Permasalahan -->
-                <div class="academic-card-box">
-                    <div class="card-heading-bar">
-                        <div class="card-heading-title">
-                            <i class="fa-solid fa-triangle-exclamation" style="color: #b45309;"></i>
-                            Kendala Sebelumnya
-                        </div>
-                        <span class="card-pill-tag tag-amber">Latar Belakang</span>
-                    </div>
-                    <div class="bullet-list-tight">
-                        <div class="bullet-item-row">
-                            <i class="fa-solid fa-xmark b-red"></i>
-                            <div class="b-text"><strong>Laporan Manual:</strong> Aduan via WhatsApp sering tercecer tanpa nomor registrasi tiket sah.</div>
-                        </div>
-                        <div class="bullet-item-row">
-                            <i class="fa-solid fa-xmark b-red"></i>
-                            <div class="b-text"><strong>Lokasi Bias:</strong> Pengaduan dari luar kampus tanpa koordinat GPS fisik fasilitas.</div>
-                        </div>
-                        <div class="bullet-item-row">
-                            <i class="fa-solid fa-xmark b-red"></i>
-                            <div class="b-text"><strong>Status Gelap:</strong> Pelapor tidak mengetahui progres dan teknisi penanggung jawab.</div>
+            <!-- ROW 1: 3 CARDS (SEMUA MEMILIKI BANNER FOTO KAMPUS RESMI UINSSC) -->
+            <div class="grid-three-cards">
+                <!-- Card 1: Permasalahan (Foto Kampus Fasya) -->
+                <div class="pillar-card">
+                    <div class="pillar-card-photo-strip">
+                        <img src="assets/img/uinssc_fasya.jpg" alt="Kawasan Akademik Kampus">
+                        <div class="pillar-photo-overlay-tag">
+                            <i class="fa-solid fa-building-user"></i> Kawasan Akademik Kampus
                         </div>
                     </div>
-                </div>
-
-                <!-- Col 2: Solusi Sistem -->
-                <div class="academic-card-box">
-                    <div class="card-heading-bar">
-                        <div class="card-heading-title">
-                            <i class="fa-solid fa-circle-check" style="color: var(--primary);"></i>
-                            Solusi SIMPEL
+                    <div class="pillar-header">
+                        <div class="pillar-icon-box icon-amber-tone"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                        <div>
+                            <span class="pillar-tag">Latar Belakang</span>
+                            <div class="pillar-title">Permasalahan</div>
                         </div>
-                        <span class="card-pill-tag tag-green">Inovasi Terpadu</span>
                     </div>
-                    <div class="bullet-list-tight">
-                        <div class="bullet-item-row">
-                            <i class="fa-solid fa-check b-green"></i>
-                            <div class="b-text"><strong>Digital 24/7:</strong> Lapor kapan saja via PWA kampus dengan alur antrean terpusat.</div>
+                    <div class="pillar-list">
+                        <div class="pillar-item-box">
+                            <i class="fa-solid fa-xmark bullet-amber"></i>
+                            <div class="pillar-item-text"><strong>Prosedur Manual:</strong> Laporan via chat WA & lisan sering tercecer tanpa rekam jejak resmi.</div>
                         </div>
-                        <div class="bullet-item-row">
-                            <i class="fa-solid fa-check b-green"></i>
-                            <div class="b-text"><strong>Geofence GIS:</strong> Koordinat GPS tervalidasi radius 5 zona fisik kampus nyata.</div>
+                        <div class="pillar-item-box">
+                            <i class="fa-solid fa-xmark bullet-amber"></i>
+                            <div class="pillar-item-text"><strong>Lokasi Bias:</strong> Keluhan diajukan dari luar kawasan kampus tanpa bukti koordinat fisik yang sah.</div>
                         </div>
-                        <div class="bullet-item-row">
-                            <i class="fa-solid fa-check b-green"></i>
-                            <div class="b-text"><strong>Live Tracking & SLA:</strong> Pantau 5 tahapan kerja teknisi berbatas waktu pasti.</div>
+                        <div class="pillar-item-box">
+                            <i class="fa-solid fa-xmark bullet-amber"></i>
+                            <div class="pillar-item-text"><strong>Status Tidak Terbuka:</strong> Pelapor tidak mengetahui proses verifikasi & teknisi penanggung jawab.</div>
+                        </div>
+                        <div class="pillar-item-box">
+                            <i class="fa-solid fa-xmark bullet-amber"></i>
+                            <div class="pillar-item-text"><strong>Tiket Ganda Berulang:</strong> Satu kerusakan dilaporkan berkali-kali hingga membebani antrean teknisi.</div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Col 3: Kategori Layanan Sarpras -->
-                <div class="academic-card-box">
-                    <div class="card-heading-bar">
-                        <div class="card-heading-title">
-                            <i class="fa-solid fa-list-check" style="color: var(--primary);"></i>
-                            Layanan Sarpras
+                <!-- Card 2: Fungsi & Solusi (Foto Kampus FDK) -->
+                <div class="pillar-card">
+                    <div class="pillar-card-photo-strip">
+                        <img src="assets/img/uinssc_fdk.jpg" alt="Digitalisasi Layanan Kampus">
+                        <div class="pillar-photo-overlay-tag">
+                            <i class="fa-solid fa-microchip"></i> Transformasi Layanan Siber
                         </div>
-                        <span class="card-pill-tag tag-dark">4 Kategori</span>
                     </div>
-                    <div class="scope-mini-grid">
-                        <div class="scope-item-badge">
-                            <div class="scope-icon-box sc-yellow"><i class="fa-solid fa-bolt"></i></div>
-                            <div><strong>Kelistrikan:</strong> Panel MCB, stopkontak, penerangan</div>
+                    <div class="pillar-header">
+                        <div class="pillar-icon-box icon-green-tone"><i class="fa-solid fa-bullseye"></i></div>
+                        <div>
+                            <span class="pillar-tag">Solusi Terpadu</span>
+                            <div class="pillar-title">Fungsi & Solusi</div>
                         </div>
-                        <div class="scope-item-badge">
-                            <div class="scope-icon-box sc-blue"><i class="fa-solid fa-snowflake"></i></div>
-                            <div><strong>HVAC:</strong> AC kelas, server, exhaust fan</div>
+                    </div>
+                    <div class="pillar-list">
+                        <div class="pillar-item-box">
+                            <i class="fa-solid fa-check bullet-green"></i>
+                            <div class="pillar-item-text"><strong>Digitalisasi 24/7:</strong> Pelaporan keluhan sarpras fleksibel kapan saja lewat aplikasi web PWA.</div>
                         </div>
-                        <div class="scope-item-badge">
-                            <div class="scope-icon-box sc-purple"><i class="fa-solid fa-tv"></i></div>
-                            <div><strong>Audio Visual:</strong> Proyektor & smart TV lab</div>
+                        <div class="pillar-item-box">
+                            <i class="fa-solid fa-check bullet-green"></i>
+                            <div class="pillar-item-text"><strong>Geofencing GIS 5 Zona:</strong> Memastikan pelapor berada di dalam kawasan fisik kampus secara akurat.</div>
                         </div>
-                        <div class="scope-item-badge">
-                            <div class="scope-icon-box sc-green"><i class="fa-solid fa-faucet-drip"></i></div>
-                            <div><strong>Sanitasi & Fisik:</strong> Pintu, kursi & kran air</div>
+                        <div class="pillar-item-box">
+                            <i class="fa-solid fa-check bullet-green"></i>
+                            <div class="pillar-item-text"><strong>Standarisasi SLA:</strong> Pelacakan 5 tahap perbaikan secara transparan dengan batas waktu pasti.</div>
+                        </div>
+                        <div class="pillar-item-box">
+                            <i class="fa-solid fa-check bullet-green"></i>
+                            <div class="pillar-item-text"><strong>Arsip Tiket PDF:</strong> Penerbitan bukti pengaduan resmi 1 lembar A4 dilengkapi kode QR verifikasi.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 3: Fasilitas Utama (Foto Gedung Cyber Siber UINSSC) -->
+                <div class="pillar-card">
+                    <div class="pillar-card-photo-strip">
+                        <img src="assets/img/uinssc_siber.jpg" alt="Kampus Siber UINSSC">
+                        <div class="pillar-photo-overlay-tag">
+                            <i class="fa-solid fa-building-columns"></i> Sarana & Prasarana Kampus
+                        </div>
+                    </div>
+                    <div class="pillar-header">
+                        <div class="pillar-icon-box icon-emerald-tone"><i class="fa-solid fa-toolbox"></i></div>
+                        <div>
+                            <span class="pillar-tag">Layanan Sarpras</span>
+                            <div class="pillar-title">Fasilitas Utama</div>
+                        </div>
+                    </div>
+                    <div class="pillar-list">
+                        <div class="pillar-item-box">
+                            <i class="fa-solid fa-bolt bullet-emerald"></i>
+                            <div class="pillar-item-text"><strong>Kelistrikan & Daya:</strong> Panel MCB gedung, stopkontak kelas & penerangan lab.</div>
+                        </div>
+                        <div class="pillar-item-box">
+                            <i class="fa-solid fa-snowflake bullet-emerald"></i>
+                            <div class="pillar-item-text"><strong>HVAC & Pendingin:</strong> AC ruang kuliah, lab cyber & pendingin ruang server.</div>
+                        </div>
+                        <div class="pillar-item-box">
+                            <i class="fa-solid fa-video bullet-emerald"></i>
+                            <div class="pillar-item-text"><strong>Audio Visual:</strong> Proyektor multimedia, sound seminar & smart display.</div>
+                        </div>
+                        <div class="pillar-item-box">
+                            <i class="fa-solid fa-chair bullet-emerald"></i>
+                            <div class="pillar-item-text"><strong>Sanitasi Gedung:</strong> Kran air bersih, toilet kampus, meja kursi & pintu.</div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- ====================================================================
-                 SECTION 2: PANDUAN PENGGUNAAN APLIKASI (ALUR 8 LANGKAH SIVITAS)
-                 Permintaan Spesifik User: "tambahkan materi mulai dari panduan penggunaan"
-                 ==================================================================== -->
-            <div class="academic-card-box sec2-guide-wrap">
-                <div class="card-heading-bar">
-                    <div class="card-heading-title">
-                        <i class="fa-solid fa-route" style="color: var(--primary);"></i>
-                        Panduan Penggunaan Aplikasi (Alur Pengaduan Sivitas Akademika)
+            <!-- ROW 2: CARA KERJA (ALUR PENGGUNAAN APLIKASI - 8 STEP TIMELINE) -->
+            <div class="timeline-section-card">
+                <div class="timeline-card-header">
+                    <div class="timeline-badge-title">
+                        <i class="fa-solid fa-route"></i> Alur Penggunaan Aplikasi (Cara Kerja)
                     </div>
-                    <span class="card-pill-tag tag-green">Panduan Langkah Demi Langkah</span>
+                    <span class="timeline-sub-tag">8 Langkah Mudah Terintegrasi</span>
                 </div>
-                <div class="guide-8-steps-grid">
-                    <div class="guide-step-card">
-                        <div class="step-circle-badge">1</div>
-                        <i class="fa-solid fa-globe step-icon-lead"></i>
-                        <div class="step-name-title">Akses PWA</div>
-                        <div class="step-desc-sub">Buka via browser tanpa perlu instalasi</div>
+                <div class="stepper-8-grid">
+                    <div class="step-col-node">
+                        <div class="step-circle-icon"><i class="fa-solid fa-globe"></i><span class="step-number-tag">1</span></div>
+                        <div class="step-node-name">Buka Web</div>
+                        <div class="step-node-detail">Akses portal resmi</div>
                     </div>
-                    <div class="guide-step-card">
-                        <div class="step-circle-badge">2</div>
-                        <i class="fa-solid fa-user-lock step-icon-lead"></i>
-                        <div class="step-name-title">Login SSO</div>
-                        <div class="step-desc-sub">Masuk dengan NIM/NIP & verifikasi bot</div>
+                    <div class="step-col-node">
+                        <div class="step-circle-icon"><i class="fa-solid fa-right-to-bracket"></i><span class="step-number-tag">2</span></div>
+                        <div class="step-node-name">Login SSO</div>
+                        <div class="step-node-detail">NIM/NIP + CAPTCHA</div>
                     </div>
-                    <div class="guide-step-card highlight-step">
-                        <div class="step-circle-badge">3</div>
-                        <i class="fa-solid fa-location-crosshairs step-icon-lead"></i>
-                        <div class="step-name-title">Validasi GPS</div>
-                        <div class="step-desc-sub">Deteksi radius 5 zona kampus fisik</div>
+                    <div class="step-col-node">
+                        <div class="step-circle-icon"><i class="fa-solid fa-list-check"></i><span class="step-number-tag">3</span></div>
+                        <div class="step-node-name">Pilih Aset</div>
+                        <div class="step-node-detail">Kategori & ruangan</div>
                     </div>
-                    <div class="guide-step-card">
-                        <div class="step-circle-badge">4</div>
-                        <i class="fa-solid fa-camera step-icon-lead"></i>
-                        <div class="step-name-title">Isi Aduan</div>
-                        <div class="step-desc-sub">Pilih kategori & lampirkan foto riil</div>
+                    <div class="step-col-node">
+                        <div class="step-circle-icon"><i class="fa-solid fa-map-pin"></i><span class="step-number-tag">4</span></div>
+                        <div class="step-node-name">Cek GIS</div>
+                        <div class="step-node-detail">Validasi 5 zona GPS</div>
                     </div>
-                    <div class="guide-step-card highlight-step">
-                        <div class="step-circle-badge">5</div>
-                        <i class="fa-solid fa-qrcode step-icon-lead"></i>
-                        <div class="step-name-title">E-Tiket Sah</div>
-                        <div class="step-desc-sub">Terbit kode tiket unik & QR Code resmi</div>
+                    <div class="step-col-node">
+                        <div class="step-circle-icon"><i class="fa-solid fa-camera"></i><span class="step-number-tag">5</span></div>
+                        <div class="step-node-name">Unggah Foto</div>
+                        <div class="step-node-detail">Bukti fisik kerusakan</div>
                     </div>
-                    <div class="guide-step-card">
-                        <div class="step-circle-badge">6</div>
-                        <i class="fa-solid fa-user-gear step-icon-lead"></i>
-                        <div class="step-name-title">Disposisi</div>
-                        <div class="step-desc-sub">Admin tugaskan teknisi bidang terkait</div>
+                    <div class="step-col-node">
+                        <div class="step-circle-icon"><i class="fa-solid fa-qrcode"></i><span class="step-number-tag">6</span></div>
+                        <div class="step-node-name">Tiket TRK</div>
+                        <div class="step-node-detail">QR Code & PDF siap</div>
                     </div>
-                    <div class="guide-step-card highlight-step">
-                        <div class="step-circle-badge">7</div>
-                        <i class="fa-solid fa-stopwatch step-icon-lead"></i>
-                        <div class="step-name-title">Pantau SLA</div>
-                        <div class="step-desc-sub">Lacak tahapan & target jam perbaikan</div>
+                    <div class="step-col-node">
+                        <div class="step-circle-icon"><i class="fa-solid fa-screwdriver-wrench"></i><span class="step-number-tag">7</span></div>
+                        <div class="step-node-name">Teknisi Cek</div>
+                        <div class="step-node-detail">Perbaikan via SLA</div>
                     </div>
-                    <div class="guide-step-card">
-                        <div class="step-circle-badge">8</div>
-                        <i class="fa-solid fa-file-circle-check step-icon-lead"></i>
-                        <div class="step-name-title">Tiket Tuntas</div>
-                        <div class="step-desc-sub">Pekerjaan selesai & cetak arsip PDF</div>
+                    <div class="step-col-node">
+                        <div class="step-circle-icon"><i class="fa-solid fa-circle-check"></i><span class="step-number-tag">8</span></div>
+                        <div class="step-node-name">Selesai</div>
+                        <div class="step-node-detail">Tuntas terverifikasi</div>
                     </div>
                 </div>
             </div>
 
-            <!-- ====================================================================
-                 SECTION 3: STANDAR RESPON SLA (5 TAHAPAN SIKLUS PENANGANAN FASILITAS)
-                 ==================================================================== -->
-            <div class="academic-card-box sec3-sla-wrap">
-                <div class="card-heading-bar">
-                    <div class="card-heading-title">
-                        <i class="fa-solid fa-clock-rotate-left" style="color: var(--primary);"></i>
-                        Standar Respon SLA (5 Tahapan Siklus Penanganan Fasilitas)
+            <!-- ROW 3: DARK BANNER (5 TAHAP SIKLUS PENANGANAN TIKET & STANDAR SLA) -->
+            <div class="sla-banner-box">
+                <div class="sla-banner-header">
+                    <div class="sla-header-left">
+                        <div class="sla-icon-tag"><i class="fa-solid fa-bolt"></i></div>
+                        <div class="sla-header-title">5 Tahap Perkembangan Tiket & Standar SLA</div>
                     </div>
-                    <span class="card-pill-tag tag-dark">Target Waktu Terukur</span>
+                    <div class="sla-header-right">Disposisi & Target Waktu Dikelola Admin Sarpras</div>
                 </div>
-                <div class="sla-5-nodes-grid">
-                    <div class="sla-node-box">
-                        <div class="sla-top-line">
-                            <span class="sla-idx">01</span>
-                            <span class="sla-time-pill">&lt; 2 Jam</span>
+                <div class="sla-5-stages-grid">
+                    <div class="sla-stage-item">
+                        <div class="sla-stage-header-row">
+                            <span class="sla-stage-num">01</span>
+                            <span class="sla-badge-time">SLA: &lt; 2 Jam</span>
                         </div>
                         <div class="sla-stage-title">Diajukan</div>
-                        <div class="sla-stage-desc">Verifikasi koordinat GPS kawasan & anti-spam ruangan.</div>
+                        <div class="sla-stage-desc">Laporan masuk tervalidasi GPS kampus & bebas duplikasi ruangan.</div>
                     </div>
-                    <div class="sla-node-box">
-                        <div class="sla-top-line">
-                            <span class="sla-idx">02</span>
-                            <span class="sla-time-pill">&lt; 4 Jam</span>
+                    <div class="sla-stage-item">
+                        <div class="sla-stage-header-row">
+                            <span class="sla-stage-num">02</span>
+                            <span class="sla-badge-time">SLA: &lt; 4 Jam</span>
                         </div>
-                        <div class="sla-stage-title">Verifikasi</div>
-                        <div class="sla-stage-desc">Admin sarpras cek foto & klasifikasi tingkat urgensi.</div>
+                        <div class="sla-stage-title">Diverifikasi</div>
+                        <div class="sla-stage-desc">Admin mengecek foto fisik & mengklasifikasi tingkat keparahan aset.</div>
                     </div>
-                    <div class="sla-node-box sla-active">
-                        <div class="sla-top-line">
-                            <span class="sla-idx">03</span>
-                            <span class="sla-time-pill">&lt; 6 Jam</span>
+                    <div class="sla-stage-item stage-highlight">
+                        <div class="sla-stage-header-row">
+                            <span class="sla-stage-num">03</span>
+                            <span class="sla-badge-time">SLA: &lt; 6 Jam</span>
                         </div>
-                        <div class="sla-stage-title">Disposisi</div>
-                        <div class="sla-stage-desc">Penugasan teknisi spesialis (HVAC, Listrik, Sarpras).</div>
+                        <div class="sla-stage-title">Disposisi Teknisi</div>
+                        <div class="sla-stage-desc">Penetapan target pengerjaan & penugasan teknisi spesialis (HVAC/Listrik).</div>
                     </div>
-                    <div class="sla-node-box">
-                        <div class="sla-top-line">
-                            <span class="sla-idx">04</span>
-                            <span class="sla-time-pill">12-48 Jam</span>
+                    <div class="sla-stage-item">
+                        <div class="sla-stage-header-row">
+                            <span class="sla-stage-num">04</span>
+                            <span class="sla-badge-time">SLA: 12-48 Jam</span>
                         </div>
                         <div class="sla-stage-title">Pengerjaan</div>
-                        <div class="sla-stage-desc">Eksekusi fisik; pelapor pantau status penanganan live.</div>
+                        <div class="sla-stage-desc">Teknisi eksekusi lapangan; pelapor dapat memantau status secara live.</div>
                     </div>
-                    <div class="sla-node-box">
-                        <div class="sla-top-line">
-                            <span class="sla-idx">05</span>
-                            <span class="sla-time-pill">100% Tuntas</span>
+                    <div class="sla-stage-item">
+                        <div class="sla-stage-header-row">
+                            <span class="sla-stage-num">05</span>
+                            <span class="sla-badge-time">SLA: Tuntas 100%</span>
                         </div>
-                        <div class="sla-stage-title">Selesai</div>
-                        <div class="sla-stage-desc">Foto akhir diunggah, tiket ditutup & diarsip resmi.</div>
+                        <div class="sla-stage-title">Selesai Tuntas</div>
+                        <div class="sla-stage-desc">Kerusakan diperbaiki, bukti foto diunggah & tiket resmi ditutup.</div>
                     </div>
                 </div>
             </div>
 
-            <!-- ====================================================================
-                 SECTION 4: PRATINJAU FITUR SISTEM & SHOWCASE BUKTI RIIL
-                 ==================================================================== -->
-            <div class="sec4-features-showcase">
-                <!-- Panel Kiri: Fitur Sivitas + Pratinjau Dokumen PDF Sah -->
-                <div class="academic-card-box">
-                    <div class="card-heading-bar">
-                        <div class="card-heading-title">
-                            <i class="fa-solid fa-user-graduate" style="color: var(--primary);"></i>
-                            Portal Sivitas Pelapor
+            <!-- ROW 4: FITUR DENGAN UI SCREENSHOT SHOWCASE INTERAKTIF -->
+            <div class="features-split-grid">
+                <!-- Fitur Pelapor + Preview Bukti Tiket PDF & QR -->
+                <div class="features-block-card card-pelapor">
+                    <div class="features-block-header">
+                        <div class="features-title-label">
+                            <i class="fa-solid fa-user-graduate" style="color: var(--primary);"></i> Fitur Sivitas Pelapor
                         </div>
-                        <span class="card-pill-tag tag-green">Mahasiswa & Dosen</span>
+                        <span class="features-user-target">Mahasiswa, Dosen & Tendik</span>
                     </div>
-                    <div class="feature-split-panel">
-                        <div class="feat-pill-stack">
-                            <div class="feat-item-chip">
-                                <div class="feat-chip-icon f-icon-green"><i class="fa-solid fa-shield-halved"></i></div>
-                                <div class="feat-chip-content">
-                                    <h6>SSO & CAPTCHA</h6>
+                    <div class="feature-card-content-wrap">
+                        <div class="features-subgrid-four">
+                            <div class="feat-item-mini">
+                                <div class="feat-mini-icon icon-green-tone"><i class="fa-solid fa-shield-halved"></i></div>
+                                <div class="feat-mini-text">
+                                    <h5>SSO & CAPTCHA</h5>
                                     <p>Autentikasi akun kampus resmi anti-bot</p>
                                 </div>
                             </div>
-                            <div class="feat-item-chip">
-                                <div class="feat-chip-icon f-icon-green"><i class="fa-solid fa-map-pin"></i></div>
-                                <div class="feat-chip-content">
-                                    <h6>Geofencing 5 Zona</h6>
-                                    <p>Validasi lokasi GPS radius kawasan kampus</p>
+                            <div class="feat-item-mini">
+                                <div class="feat-mini-icon icon-green-tone"><i class="fa-solid fa-map-location-dot"></i></div>
+                                <div class="feat-mini-text">
+                                    <h5>Geofencing 5 Zona</h5>
+                                    <p>Validasi koordinat GPS kawasan kampus</p>
                                 </div>
                             </div>
-                            <div class="feat-item-chip">
-                                <div class="feat-chip-icon f-icon-green"><i class="fa-solid fa-filter-circle-xmark"></i></div>
-                                <div class="feat-chip-content">
-                                    <h6>Smart Anti-Spam</h6>
+                            <div class="feat-item-mini">
+                                <div class="feat-mini-icon icon-green-tone"><i class="fa-solid fa-filter-circle-xmark"></i></div>
+                                <div class="feat-mini-text">
+                                    <h5>Filter Anti-Spam</h5>
                                     <p>Cegah pelaporan tiket ganda sejenis</p>
                                 </div>
                             </div>
-                            <div class="feat-item-chip">
-                                <div class="feat-chip-icon f-icon-green"><i class="fa-solid fa-ticket"></i></div>
-                                <div class="feat-chip-content">
-                                    <h6>Batas Kuota 3 Tiket</h6>
+                            <div class="feat-item-mini">
+                                <div class="feat-mini-icon icon-green-tone"><i class="fa-solid fa-user-lock"></i></div>
+                                <div class="feat-mini-text">
+                                    <h5>Kuota 3 Pengaduan</h5>
                                     <p>Antrean tertib sesuai kapasitas teknisi</p>
                                 </div>
                             </div>
                         </div>
-                        <!-- Pratinjau Bukti Tiket PDF Resmi -->
-                        <div class="showcase-thumb-box">
-                            <div class="thumb-top-header">
-                                <span><i class="fa-solid fa-file-pdf"></i> DOKUMEN TIKET</span>
+                        <!-- UI Preview Box 1: Bukti Tiket PDF Resmi -->
+                        <div class="feature-ui-preview-box">
+                            <div class="ui-preview-top-bar">
+                                <span><i class="fa-solid fa-file-pdf"></i> DOKUMEN RESMI</span>
                                 <span>A4 &bull; QR CODE</span>
                             </div>
-                            <div class="thumb-img-wrapper">
-                                <img src="assets/img/ss_tiket_pdf.png" alt="Pratinjau Tiket PDF Resmi SIMPEL">
+                            <div class="ui-preview-img-container">
+                                <img src="assets/img/ss_tiket_pdf.png" alt="Bukti Tiket PDF Resmi">
                             </div>
-                            <div class="thumb-footer-tag">
-                                Bukti Fisik Sah Ber-QR Code
+                            <div class="ui-preview-bottom-caption">
+                                Salinan Tiket Sah 1 Lembar Cetak
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Panel Kanan: Fitur Admin Sarpras + Pratinjau Peta Spasial GIS -->
-                <div class="academic-card-box">
-                    <div class="card-heading-bar">
-                        <div class="card-heading-title">
-                            <i class="fa-solid fa-user-gear" style="color: var(--gold-dark);"></i>
-                            Portal Admin & Tim Sarpras
+                <!-- Fitur Admin & Teknisi + Preview Peta Spasial Geofencing GIS -->
+                <div class="features-block-card card-admin">
+                    <div class="features-block-header">
+                        <div class="features-title-label">
+                            <i class="fa-solid fa-user-gear" style="color: var(--gold-bright);"></i> Fitur Admin & Teknisi
                         </div>
-                        <span class="card-pill-tag tag-amber">Pengelola & Teknisi</span>
+                        <span class="features-user-target">Pengelola Sarpras & Tim Teknisi</span>
                     </div>
-                    <div class="feature-split-panel">
-                        <div class="feat-pill-stack">
-                            <div class="feat-item-chip">
-                                <div class="feat-chip-icon f-icon-gold"><i class="fa-solid fa-chart-pie"></i></div>
-                                <div class="feat-chip-content">
-                                    <h6>Dashboard Metrik</h6>
-                                    <p>Monitoring antrean live & status perbaikan</p>
+                    <div class="feature-card-content-wrap">
+                        <div class="features-subgrid-four">
+                            <div class="feat-item-mini">
+                                <div class="feat-mini-icon icon-amber-tone"><i class="fa-solid fa-chart-pie"></i></div>
+                                <div class="feat-mini-text">
+                                    <h5>Dashboard Metrik</h5>
+                                    <p>Monitoring beban tiket live & grafik aset</p>
                                 </div>
                             </div>
-                            <div class="feat-item-chip">
-                                <div class="feat-chip-icon f-icon-gold"><i class="fa-solid fa-stopwatch"></i></div>
-                                <div class="feat-chip-content">
-                                    <h6>Manajemen SLA</h6>
-                                    <p>Standar respon terukur 2, 6, 24, 48 jam</p>
+                            <div class="feat-item-mini">
+                                <div class="feat-mini-icon icon-amber-tone"><i class="fa-solid fa-stopwatch"></i></div>
+                                <div class="feat-mini-text">
+                                    <h5>Manajemen SLA</h5>
+                                    <p>Standar batas respon 2, 6, 24, 48 jam</p>
                                 </div>
                             </div>
-                            <div class="feat-item-chip">
-                                <div class="feat-chip-icon f-icon-gold"><i class="fa-solid fa-user-check"></i></div>
-                                <div class="feat-chip-content">
-                                    <h6>Disposisi Cerdas</h6>
-                                    <p>Penugasan teknisi sesuai spesialisasi</p>
+                            <div class="feat-item-mini">
+                                <div class="feat-mini-icon icon-amber-tone"><i class="fa-solid fa-user-check"></i></div>
+                                <div class="feat-mini-text">
+                                    <h5>Disposisi Cerdas</h5>
+                                    <p>Tugaskan teknisi spesialis yang sesuai</p>
                                 </div>
                             </div>
-                            <div class="feat-item-chip">
-                                <div class="feat-chip-icon f-icon-gold"><i class="fa-solid fa-file-excel"></i></div>
-                                <div class="feat-chip-content">
-                                    <h6>Rekapitulasi Audit</h6>
-                                    <p>Ekspor laporan CSV & histori aset rutin</p>
+                            <div class="feat-item-mini">
+                                <div class="feat-mini-icon icon-amber-tone"><i class="fa-solid fa-file-excel"></i></div>
+                                <div class="feat-mini-text">
+                                    <h5>Rekapitulasi Audit</h5>
+                                    <p>Ekspor CSV & rekap pemeliharaan rutin</p>
                                 </div>
                             </div>
                         </div>
-                        <!-- Pratinjau Peta Geofencing GIS 5 Zona -->
-                        <div class="showcase-thumb-box">
-                            <div class="thumb-top-header">
-                                <span><i class="fa-solid fa-map-location-dot"></i> PETA GIS</span>
+                        <!-- UI Preview Box 2: Geofencing GIS Map -->
+                        <div class="feature-ui-preview-box">
+                            <div class="ui-preview-top-bar">
+                                <span><i class="fa-solid fa-map-location-dot"></i> PETA GIS SPASIAL</span>
                                 <span>5 KAWASAN</span>
                             </div>
-                            <div class="thumb-img-wrapper img-center">
-                                <img src="assets/img/ss_gis_map.png" alt="Peta Geofencing GIS 5 Zona">
+                            <div class="ui-preview-img-container img-cover">
+                                <img src="assets/img/ss_gis_map.png" alt="Geofencing GIS 5 Zona">
                             </div>
-                            <div class="thumb-footer-tag">
-                                Deteksi Spasial Radius Kampus
+                            <div class="ui-preview-bottom-caption">
+                                Deteksi Radius Geofence Kampus
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- ====================================================================
-                 SECTION 5: KELEBIHAN APLIKASI (NILAI LEBIH & KEUNGGULAN UTAMA)
-                 Permintaan Spesifik User: "kelebihan aplikasi"
-                 ==================================================================== -->
-            <div class="academic-card-box sec5-advantages-wrap">
-                <div class="card-heading-bar">
-                    <div class="card-heading-title">
-                        <i class="fa-solid fa-award" style="color: var(--primary);"></i>
-                        Kelebihan & Keunggulan Aplikasi SIMPEL SARPRAS
-                    </div>
-                    <span class="card-pill-tag tag-green">Nilai Tambah Sistem</span>
-                </div>
-                <div class="advantages-4-grid">
-                    <div class="advantage-card-item">
-                        <div class="adv-top-title">
-                            <i class="fa-solid fa-location-crosshairs"></i>
-                            Presisi Geofencing GIS
-                        </div>
-                        <div class="adv-desc-text">
-                            Kalkulasi formula Haversine memastikan aduan hanya dapat dikirim dari 5 zona fisik kampus, mengeliminasi laporan palsu.
+            <!-- ROW 5: SASARAN / TEKNOLOGI / NILAI LEBIH (KAYA GAMBAR, LOGO & EMBLEM 3D) -->
+            <div class="bottom-three-grid">
+                <!-- Col 1: Sasaran Pengguna dengan Avatar Visual -->
+                <div class="bottom-card-box">
+                    <div class="bottom-card-header">
+                        <i class="fa-solid fa-users bottom-card-icon"></i>
+                        <div>
+                            <span class="bottom-card-tag">Sasaran</span>
+                            <div class="bottom-card-title">Pengguna Sistem</div>
                         </div>
                     </div>
-                    <div class="advantage-card-item">
-                        <div class="adv-top-title">
-                            <i class="fa-solid fa-shield-virus"></i>
-                            Smart Anti-Spam Ruangan
+                    <div class="sasaran-container-list">
+                        <div class="sasaran-row-item">
+                            <div class="sasaran-badge-dot"><i class="fa-solid fa-graduation-cap"></i></div>
+                            <div class="sasaran-item-text"><strong>Mahasiswa:</strong> Pelapor sarpras kelas, lab komputer, toilet & fasilitas umum.</div>
                         </div>
-                        <div class="adv-desc-text">
-                            Algoritma deteksi otomatis mengunci ruangan yang telah dilaporkan dalam 24 jam untuk mencegah beban tiket ganda sejenis.
+                        <div class="sasaran-row-item">
+                            <div class="sasaran-badge-dot gold-badge"><i class="fa-solid fa-chalkboard-user"></i></div>
+                            <div class="sasaran-item-text"><strong>Dosen & Tendik:</strong> Pelapor sarpras ruang kantor, AC ruang kerja & ruang rapat.</div>
                         </div>
-                    </div>
-                    <div class="advantage-card-item adv-gold">
-                        <div class="adv-top-title">
-                            <i class="fa-solid fa-hourglass-start"></i>
-                            Jaminan SLA Waktu Nyata
-                        </div>
-                        <div class="adv-desc-text">
-                            Target respon awal &lt; 2 jam dan batas tuntas maksimal 48 jam terpantau transparan antara pelapor dan pimpinan sarpras.
-                        </div>
-                    </div>
-                    <div class="advantage-card-item adv-gold">
-                        <div class="adv-top-title">
-                            <i class="fa-solid fa-qrcode"></i>
-                            Legalitas E-Tiket Ber-QR
-                        </div>
-                        <div class="adv-desc-text">
-                            Penerbitan bukti lapor fisik berformat A4 standar ISO dengan QR Code unik untuk validasi autentikasi saat audit pemeliharaan.
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- ====================================================================
-                 SECTION 6: SASARAN PENGGUNA, TEKNOLOGI & IDENTITAS BRAND
-                 ==================================================================== -->
-            <div class="sec6-bottom-three">
-                <!-- Col 1: Sasaran Pengguna -->
-                <div class="academic-card-box">
-                    <div class="card-heading-bar">
-                        <div class="card-heading-title">
-                            <i class="fa-solid fa-users" style="color: var(--primary);"></i>
-                            Sasaran Pengguna
-                        </div>
-                    </div>
-                    <div class="user-target-stack">
-                        <div class="target-item-row">
-                            <div class="target-dot-icon"><i class="fa-solid fa-graduation-cap"></i></div>
-                            <div><strong>Mahasiswa:</strong> Pelapor sarpras kelas, lab komputer, toilet & umum.</div>
-                        </div>
-                        <div class="target-item-row">
-                            <div class="target-dot-icon" style="background:#fef3c7; color:#b45309;"><i class="fa-solid fa-chalkboard-user"></i></div>
-                            <div><strong>Dosen & Tendik:</strong> Pelapor sarpras kantor, AC ruang rapat & auditorium.</div>
-                        </div>
-                        <div class="target-item-row">
-                            <div class="target-dot-icon" style="background:#e8f5ee; color:#01361f;"><i class="fa-solid fa-screwdriver-wrench"></i></div>
-                            <div><strong>Tim Sarpras:</strong> Pengelola alur verifikasi, disposisi & audit berkala.</div>
+                        <div class="sasaran-row-item">
+                            <div class="sasaran-badge-dot dark-badge"><i class="fa-solid fa-screwdriver-wrench"></i></div>
+                            <div class="sasaran-item-text"><strong>Tim Sarpras:</strong> Pengelola disposisi tugas teknisi, SLA & audit berkala.</div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Col 2: Teknologi -->
-                <div class="academic-card-box">
-                    <div class="card-heading-bar">
-                        <div class="card-heading-title">
-                            <i class="fa-solid fa-code" style="color: var(--primary);"></i>
-                            Dibangun Dengan
+                <!-- Col 2: Teknologi dengan Tech Badges -->
+                <div class="bottom-card-box">
+                    <div class="bottom-card-header">
+                        <i class="fa-solid fa-code bottom-card-icon"></i>
+                        <div>
+                            <span class="bottom-card-tag">Teknologi</span>
+                            <div class="bottom-card-title">Dibangun Dengan</div>
                         </div>
                     </div>
-                    <div class="tech-4-grid">
-                        <div class="tech-chip-box">
-                            <div class="tech-chip-name"><i class="fa-brands fa-html5" style="color: var(--primary);"></i> PWA Web App</div>
-                            <div class="tech-chip-sub">Offline Cache & Service Worker</div>
+                    <div class="tech-grid-2x2">
+                        <div class="tech-badge-item">
+                            <div class="tech-badge-name"><i class="fa-brands fa-html5" style="color: var(--primary);"></i> PWA Web App</div>
+                            <div class="tech-badge-sub">Offline Cache & Service Worker</div>
                         </div>
-                        <div class="tech-chip-box">
-                            <div class="tech-chip-name"><i class="fa-solid fa-map-location-dot" style="color: var(--emerald-600);"></i> Leaflet.js</div>
-                            <div class="tech-chip-sub">GIS & Formula Haversine</div>
+                        <div class="tech-badge-item">
+                            <div class="tech-badge-name"><i class="fa-solid fa-map-location-dot" style="color: var(--emerald-600);"></i> Leaflet.js</div>
+                            <div class="tech-badge-sub">GIS & Formula Haversine</div>
                         </div>
-                        <div class="tech-chip-box">
-                            <div class="tech-chip-name"><i class="fa-solid fa-cubes" style="color: var(--gold-dark);"></i> Three.js</div>
-                            <div class="tech-chip-sub">WebGL 3D Campus Cyber</div>
+                        <div class="tech-badge-item">
+                            <div class="tech-badge-name"><i class="fa-solid fa-cubes" style="color: var(--gold-dark);"></i> Three.js</div>
+                            <div class="tech-badge-sub">WebGL 3D Campus Cyber</div>
                         </div>
-                        <div class="tech-chip-box">
-                            <div class="tech-chip-name"><i class="fa-solid fa-shield-halved" style="color: var(--primary-dark);"></i> Keamanan</div>
-                            <div class="tech-chip-sub">DOMPurify & Anti-Bot CAPTCHA</div>
+                        <div class="tech-badge-item">
+                            <div class="tech-badge-name"><i class="fa-solid fa-shield-halved" style="color: var(--primary-dark);"></i> Keamanan</div>
+                            <div class="tech-badge-sub">DOMPurify & Anti-Bot CAPTCHA</div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Col 3: Brand & Nilai Tambah -->
-                <div class="academic-card-box" style="padding: 4px 6px; justify-content: center;">
-                    <div class="brand-emblem-wrap">
-                        <img src="assets/img/preview_modern_elegant_1.jpg" alt="Logo Brand SIMPEL UINSSC" class="brand-emblem-img">
-                        <div class="brand-emblem-text">
-                            <h6>SIMPEL SARPRAS</h6>
-                            <p>Transformasi digital tata kelola sarana & prasarana menuju kampus siber unggul berstandar global.</p>
+                <!-- Col 3: Nilai Lebih dengan Emblem 3D SIMPEL UINSSC & 4 Blok Hijau-Emas -->
+                <div class="bottom-card-box">
+                    <div class="bottom-card-header">
+                        <i class="fa-solid fa-award bottom-card-icon"></i>
+                        <div>
+                            <span class="bottom-card-tag">Nilai Lebih</span>
+                            <div class="bottom-card-title">Keunggulan</div>
+                        </div>
+                    </div>
+                    <div class="keunggulan-split-wrap">
+                        <!-- Emblem 3D Brand Logo SIMPEL UINSSC -->
+                        <div class="emblem-showcase-box">
+                            <img src="assets/img/preview_modern_elegant_1.jpg" alt="Logo Brand SIMPEL UINSSC">
+                            <span class="emblem-caption">Brand Resmi SIMPEL</span>
+                        </div>
+                        <!-- 4 Value Blocks Serba Hijau & Emas Institusional -->
+                        <div class="keunggulan-4-grid">
+                            <div class="val-block val-primary-green">
+                                <h6><i class="fa-solid fa-location-crosshairs"></i> Presisi GIS</h6>
+                                <p>100% tervalidasi</p>
+                            </div>
+                            <div class="val-block val-emerald-green">
+                                <h6><i class="fa-solid fa-eye"></i> Transparan</h6>
+                                <p>Pantau 5 status live</p>
+                            </div>
+                            <div class="val-block val-gold-dark">
+                                <h6><i class="fa-solid fa-stopwatch"></i> SLA Terukur</h6>
+                                <p>Batas respon pasti</p>
+                            </div>
+                            <div class="val-block val-deep-forest">
+                                <h6><i class="fa-solid fa-file-shield"></i> Terarsip</h6>
+                                <p>PDF QR Code sah</p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1630,31 +1886,36 @@
 
         </div>
 
-        <!-- 4. BOTTOM INSTITUTION FOOTER -->
+        <!-- 4. BOTTOM FOOTER BAR -->
         <footer class="poster-bottom-footer">
-            <div class="footer-left-info">
-                <span>SIMPEL SARPRAS</span> &mdash; Fasilitas Terjaga, Mutu Kampus Berkelanjutan &bull; UIN Siber Syekh Nurjati Cirebon
+            <div class="footer-tagline-text">
+                <div class="footer-tagline-bold">SIMPEL SARPRAS <span>&mdash; Fasilitas Terjaga, Kampus Berkualitas</span></div>
+                <div class="footer-inst-name">Sistem Informasi Pelaporan Sarana Prasarana &bull; UIN Siber Syekh Nurjati Cirebon</div>
             </div>
-            <div class="footer-right-tags">
-                <span><i class="fa-solid fa-mobile-screen"></i> PWA Multi-Platform</span>
-                <span><i class="fa-solid fa-building-columns"></i> Kampus Siber UINSSC</span>
-                <span><i class="fa-solid fa-calendar-check"></i> AICIS 2026</span>
+            <div class="footer-meta-pills">
+                <div class="footer-pill-item"><i class="fa-solid fa-laptop"></i> Desktop & Mobile PWA</div>
+                <div class="footer-pill-item"><i class="fa-solid fa-network-wired"></i> Kampus Siber UINSSC</div>
+                <div class="footer-pill-item"><i class="fa-solid fa-calendar-check"></i> AICIS 2026</div>
             </div>
         </footer>
 
     </main>
 
+    <!-- Modal Panduan Canva (Layar Saja) -->
     <script>
         function showCanvaInstructions() {
             alert(
-                "Panduan Mengedit Poster di Canva:\n\n" +
-                "1. Klik tombol 'Cetak / Simpan PDF' di atas.\n" +
-                "2. Simpan file PDF (sudah disetel tepat 1 lembar A4).\n" +
-                "3. Buka Canva (canva.com) -> Klik 'Unggah' -> Pilih file PDF tersebut.\n" +
-                "4. Seluruh teks, warna hijau institusional, foto mockup laptop & phone, tiket PDF, dan peta GIS akan diimpor sebagai elemen vektor yang siap diedit dengan kualitas tajam 100%!"
+                "CARA EDIT POSTER DI CANVA:\n\n" +
+                "1. Klik tombol 'Simpan / Cetak PDF (1 Lembar)' di pojok atas.\n" +
+                "2. Pada jendela cetak peramban, pilih Destination: 'Save as PDF' (Simpan sebagai PDF) dan klik Save.\n" +
+                "3. Buka situs https://www.canva.com di browser Anda.\n" +
+                "4. Klik tombol 'Upload' / 'Unggah' atau 'Import file' di kanan atas Canva.\n" +
+                "5. Pilih file PDF yang baru saja Anda simpan.\n" +
+                "6. Canva akan secara otomatis mengonversi seluruh teks, mockup desktop/laptop, diagram alur, badge, dan kotak warna menjadi elemen desain vektor yang 100% dapat diedit, diubah warna, diganti font, dan dipindahkan posisinya!"
             );
         }
     </script>
+
 </body>
 
 </html>
