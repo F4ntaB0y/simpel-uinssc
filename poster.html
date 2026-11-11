@@ -125,7 +125,7 @@
 
         /* ==========================================================================
            POSTER ARTBOARD - TEPAT 1 HALAMAN A4 FULL PADAT (210mm x 297mm)
-           Mengikuti Format Resmi Kampus UIN Siber Syekh Nurjati Cirebon
+           Mengikuti Format Resmi Kampus UIN Siber Syekh Nurjati Cirebon & AICIS 2026
            ========================================================================== */
         .poster-artboard {
             width: 210mm;
@@ -144,13 +144,13 @@
         /* 1. TOP INSTITUTION HEADER */
         .top-inst-header {
             background: #ffffff;
-            padding: 8px 18px;
+            padding: 6px 18px;
             display: flex;
             align-items: center;
             justify-content: space-between;
             border-bottom: 2px solid #e2e8f0;
             flex-shrink: 0;
-            height: 42px;
+            height: 48px;
         }
 
         .header-brand-left {
@@ -160,8 +160,8 @@
         }
 
         .inst-logo-img {
-            width: 30px;
-            height: 30px;
+            width: 36px;
+            height: 36px;
             object-fit: contain;
         }
 
@@ -171,7 +171,7 @@
         }
 
         .inst-title-main {
-            font-size: 10px;
+            font-size: 10.5px;
             font-weight: 900;
             color: #0b1526;
             letter-spacing: 0.4px;
@@ -179,7 +179,7 @@
         }
 
         .inst-title-sub {
-            font-size: 8px;
+            font-size: 8.2px;
             font-weight: 600;
             color: var(--slate-500);
         }
@@ -187,7 +187,7 @@
         .header-brand-right {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
             text-align: right;
         }
 
@@ -197,7 +197,7 @@
         }
 
         .tag-digital-title {
-            font-size: 9px;
+            font-size: 9.5px;
             font-weight: 800;
             color: var(--primary);
             letter-spacing: 0.5px;
@@ -209,42 +209,47 @@
             font-style: italic;
         }
 
-        .badge-aicis {
-            font-size: 8.5px;
-            font-weight: 900;
-            background: #ecfdf5;
-            color: #047857;
-            padding: 3.5px 8px;
-            border-radius: 4px;
-            border: 1.5px solid #a7f3d0;
-            letter-spacing: 0.5px;
+        .aicis-logo-img {
+            height: 38px;
+            width: auto;
+            object-fit: contain;
         }
 
-        /* 2. HERO BANNER WITH GRADIENT + GEDUNG CYBER WATERMARK */
+        /* 2. HERO BANNER WITH SEAMLESS FULL-WIDTH WATERMARK + DUAL DEVICE SHOWCASE */
         .hero-banner-section {
             background: #01361f;
             color: #ffffff;
-            padding: 11px 18px 10px;
+            padding: 10px 18px 9px;
             position: relative;
             flex-shrink: 0;
-            height: 206px;
+            height: 204px;
             border-bottom: 3px solid var(--gold);
             overflow: hidden;
         }
 
-        /* Campus Watermark Photo Background (Watermark Gedung Cyber) */
+        /* Seamless Full-Width Campus Watermark Photo */
         .hero-campus-watermark {
             position: absolute;
             top: 0;
-            right: 0;
-            width: 60%;
+            left: 0;
+            width: 100%;
             height: 100%;
             object-fit: cover;
-            object-position: right center;
+            object-position: center;
             opacity: 0.22;
             pointer-events: none;
+            z-index: 0;
+        }
+
+        .hero-bg-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, rgba(1, 36, 21, 0.94) 0%, rgba(1, 40, 24, 0.88) 50%, rgba(0, 77, 46, 0.82) 100%);
             z-index: 1;
-            mix-blend-mode: luminosity;
+            pointer-events: none;
         }
 
         .hero-banner-inner {
@@ -252,7 +257,7 @@
             z-index: 2;
             display: grid;
             grid-template-columns: 1.15fr 0.95fr;
-            gap: 14px;
+            gap: 12px;
             align-items: center;
             height: 100%;
         }
@@ -346,7 +351,7 @@
             margin-top: 1.5px;
         }
 
-        /* Right Side: Desktop / Laptop Device Showcase */
+        /* Right Side: Dual-Device Showcase (Desktop Laptop + Mobile Smartphone) */
         .hero-desktop-showcase {
             display: flex;
             flex-direction: column;
@@ -354,35 +359,51 @@
             justify-content: center;
         }
 
+        .devices-dual-row {
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            gap: 7px;
+            width: 100%;
+        }
+
+        /* Laptop Mockup Frame */
+        .laptop-device-unit {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex: 1;
+            max-width: 182px;
+        }
+
         .desktop-device-frame {
             width: 100%;
-            max-width: 246px;
             background: #1e293b;
-            border-radius: 6px 6px 0 0;
-            border: 2px solid var(--gold);
+            border-radius: 5px 5px 0 0;
+            border: 1.5px solid var(--gold);
             overflow: hidden;
             display: flex;
             flex-direction: column;
         }
 
         .desktop-browser-bar {
-            height: 14px;
+            height: 12px;
             background: #1e293b;
             display: flex;
             align-items: center;
-            padding: 0 7px;
-            gap: 4px;
+            padding: 0 5px;
+            gap: 3px;
             border-bottom: 1px solid #334155;
         }
 
         .browser-dots {
             display: flex;
-            gap: 3px;
+            gap: 2.5px;
         }
 
         .b-dot {
-            width: 4px;
-            height: 4px;
+            width: 3.5px;
+            height: 3.5px;
             border-radius: 50%;
         }
 
@@ -391,26 +412,26 @@
         .b-green { background: #22c55e; }
 
         .browser-url-pill {
-            font-size: 6.5px;
+            font-size: 5.5px;
             color: #cbd5e1;
             background: #0f172a;
-            padding: 1.5px 7px;
-            border-radius: 3px;
-            margin-left: 4px;
+            padding: 1px 5px;
+            border-radius: 2px;
+            margin-left: 3px;
             font-family: monospace;
             display: flex;
             align-items: center;
-            gap: 3px;
+            gap: 2.5px;
         }
 
         .browser-url-pill i {
             color: #10b981;
-            font-size: 5.5px;
+            font-size: 4.5px;
         }
 
         .desktop-screen-viewport {
             width: 100%;
-            height: 126px;
+            height: 108px;
             background: #0f172a;
             overflow: hidden;
         }
@@ -422,31 +443,85 @@
             display: block;
         }
 
-        /* Laptop Bottom Base */
         .laptop-bottom-base {
-            width: 262px;
-            height: 6px;
+            width: 196px;
+            height: 5px;
             background: #64748b;
-            border-radius: 0 0 8px 8px;
+            border-radius: 0 0 6px 6px;
             border-top: 1px solid #94a3b8;
         }
 
         .laptop-notch-cut {
-            width: 34px;
-            height: 2.5px;
+            width: 26px;
+            height: 2px;
             background: #1e293b;
             margin: 0 auto;
-            border-radius: 0 0 3px 3px;
+            border-radius: 0 0 2px 2px;
         }
 
-        /* Companion GIS Tag beneath Laptop */
+        /* Smartphone Mobile Mockup */
+        .phone-device-unit {
+            width: 58px;
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .phone-device-frame {
+            width: 100%;
+            height: 119px;
+            background: #0f172a;
+            border: 2px solid var(--gold);
+            border-radius: 8px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+        }
+
+        .phone-speaker-notch {
+            width: 18px;
+            height: 3px;
+            background: #334155;
+            border-radius: 0 0 3px 3px;
+            margin-top: 2px;
+            z-index: 2;
+        }
+
+        .phone-screen-viewport {
+            width: 100%;
+            flex: 1;
+            background: #ffffff;
+            overflow: hidden;
+        }
+
+        .phone-screen-viewport img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: top center;
+            display: block;
+        }
+
+        .phone-home-indicator {
+            width: 20px;
+            height: 2px;
+            background: #cbd5e1;
+            border-radius: 1px;
+            margin: 2px 0;
+            z-index: 2;
+        }
+
+        /* Companion GIS Tag beneath Devices */
         .hero-laptop-tag {
             margin-top: 5px;
             background: rgba(255, 255, 255, 0.14);
             border: 1px solid rgba(212, 163, 67, 0.6);
             padding: 3px 10px;
             border-radius: 4px;
-            font-size: 7.4px;
+            font-size: 7.2px;
             font-weight: 800;
             color: #fef08a;
             display: flex;
@@ -466,7 +541,7 @@
             overflow: hidden;
         }
 
-        /* SECTION ROW 1: 3 CARDS (Permasalahan / Fungsi & Solusi / Fasilitas Utama dengan Foto Kampus) */
+        /* SECTION ROW 1: 3 CARDS (Permasalahan / Solusi / Fasilitas Utama dengan Foto Kampus) */
         .grid-three-cards {
             display: grid;
             grid-template-columns: 1fr 1fr 1.05fr;
@@ -1249,8 +1324,8 @@
     <!-- Control Toolbar (Layar Browser Saja) -->
     <div class="control-toolbar">
         <div class="toolbar-info">
-            <h2>Poster SIMPEL UINSSC (Edisi Visual Kreatif & Background Kampus)</h2>
-            <p>Background gradasi foto Gedung Cyber, ukuran font lebih besar & jelas, UI showcase interaktif (GIS, PDF Tiket & Dashboard), 1 lembar A4 penuh.</p>
+            <h2>Poster SIMPEL UINSSC (Edisi Lengkap AICIS 2026 & Dual-Device Showcase)</h2>
+            <p>Logo resmi AICIS+ 2026 & UINSSC, Watermark Gedung Cyber seamless tanpa potongan, Showcase Laptop + Smartphone, pratinjau Tiket PDF & GIS.</p>
         </div>
         <div class="toolbar-actions">
             <button class="btn-action btn-print" onclick="window.print()">
@@ -1265,7 +1340,7 @@
     <!-- POSTER ARTBOARD - TEPAT 1 HALAMAN A4 FULL PADAT (210mm x 297mm) -->
     <main class="poster-artboard" id="posterCanvas">
 
-        <!-- 1. TOP INSTITUTION HEADER -->
+        <!-- 1. TOP INSTITUTION HEADER (Dua Logo Resmi: UINSSC & AICIS+ 2026) -->
         <header class="top-inst-header">
             <div class="header-brand-left">
                 <img src="assets/img/logo.png" alt="Logo UINSSC" class="inst-logo-img">
@@ -1277,16 +1352,17 @@
             <div class="header-brand-right">
                 <div class="tag-digital-block">
                     <span class="tag-digital-title">INOVASI DIGITAL</span>
-                    <span class="tag-digital-sub">Islam, Science, and Cyber University</span>
+                    <span class="tag-digital-sub">Islam, Science, and Society</span>
                 </div>
-                <div class="badge-aicis">CYBER</div>
+                <img src="assets/img/logo_aicis.png" alt="Logo AICIS+ 2026" class="aicis-logo-img">
             </div>
         </header>
 
-        <!-- 2. HERO BANNER WITH WATERMARK GEDUNG CYBER + DESKTOP MOCKUP -->
+        <!-- 2. HERO BANNER WITH SEAMLESS GEDUNG CYBER WATERMARK + DUAL DEVICE SHOWCASE -->
         <section class="hero-banner-section">
-            <!-- Background Watermark Photo of Gedung Cyber UINSSC -->
+            <!-- Full-Width Seamless Campus Background Photo -->
             <img src="assets/img/gedungCyber.png" alt="Gedung Cyber UINSSC" class="hero-campus-watermark">
+            <div class="hero-bg-overlay"></div>
 
             <div class="hero-banner-inner">
                 <div class="hero-text-col">
@@ -1321,32 +1397,47 @@
                     </div>
                 </div>
 
-                <!-- Right: Sleek Desktop / Laptop Device Showcase -->
+                <!-- Right: Dual-Device Showcase (Desktop Laptop + Smartphone Mockup) -->
                 <div class="hero-desktop-showcase">
-                    <!-- Laptop Screen Frame -->
-                    <div class="desktop-device-frame">
-                        <div class="desktop-browser-bar">
-                            <div class="browser-dots">
-                                <span class="b-dot b-red"></span>
-                                <span class="b-dot b-yellow"></span>
-                                <span class="b-dot b-green"></span>
+                    <div class="devices-dual-row">
+                        <!-- Desktop Laptop Mockup -->
+                        <div class="laptop-device-unit">
+                            <div class="desktop-device-frame">
+                                <div class="desktop-browser-bar">
+                                    <div class="browser-dots">
+                                        <span class="b-dot b-red"></span>
+                                        <span class="b-dot b-yellow"></span>
+                                        <span class="b-dot b-green"></span>
+                                    </div>
+                                    <div class="browser-url-pill">
+                                        <i class="fa-solid fa-lock"></i> simpel.uinssc.ac.id
+                                    </div>
+                                </div>
+                                <div class="desktop-screen-viewport">
+                                    <img src="assets/img/ss_dashboard.jpg" alt="Screen Dashboard Desktop View">
+                                </div>
                             </div>
-                            <div class="browser-url-pill">
-                                <i class="fa-solid fa-lock"></i> simpel.uinssc.ac.id/dashboard
+                            <div class="laptop-bottom-base">
+                                <div class="laptop-notch-cut"></div>
                             </div>
                         </div>
-                        <div class="desktop-screen-viewport">
-                            <img src="assets/img/ss_dashboard.jpg" alt="Screen Dashboard Desktop View">
+
+                        <!-- Smartphone Mobile Mockup -->
+                        <div class="phone-device-unit">
+                            <div class="phone-device-frame">
+                                <div class="phone-speaker-notch"></div>
+                                <div class="phone-screen-viewport">
+                                    <img src="assets/img/ss_login.jpg" alt="Portal Mobile Login">
+                                </div>
+                                <div class="phone-home-indicator"></div>
+                            </div>
                         </div>
                     </div>
-                    <!-- Laptop Bottom Base -->
-                    <div class="laptop-bottom-base">
-                        <div class="laptop-notch-cut"></div>
-                    </div>
+
                     <!-- Companion GIS Badge -->
                     <div class="hero-laptop-tag">
                         <i class="fa-solid fa-location-crosshairs" style="color: var(--gold-bright);"></i>
-                        <span>Peta GIS 5 Zona Terintegrasi &bull; Validasi Spasial Real-Time</span>
+                        <span>Peta GIS 5 Zona Terintegrasi &bull; Multi-Device Web &amp; Mobile</span>
                     </div>
                 </div>
             </div>
@@ -1759,7 +1850,7 @@
             <div class="footer-meta-pills">
                 <div class="footer-pill-item"><i class="fa-solid fa-laptop"></i> Desktop & Mobile PWA</div>
                 <div class="footer-pill-item"><i class="fa-solid fa-network-wired"></i> Kampus Siber UINSSC</div>
-                <div class="footer-pill-item"><i class="fa-solid fa-calendar-check"></i> KP 2026</div>
+                <div class="footer-pill-item"><i class="fa-solid fa-calendar-check"></i> AICIS 2026</div>
             </div>
         </footer>
 
