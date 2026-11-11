@@ -1406,6 +1406,12 @@ textarea {
     transform: translateY(-1px);
 }
 
+.upload-dropzone.dragover {
+    border-color: #059669 !important;
+    background: rgba(5, 150, 105, 0.12) !important;
+    transform: scale(1.01);
+}
+
 .upload-dropzone i {
     font-size: 38px;
     color: var(--gold);

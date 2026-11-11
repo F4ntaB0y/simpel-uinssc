@@ -1124,6 +1124,7 @@
                 loginTime: new Date().toISOString()
             };
             localStorage.setItem('SIMPEL_AUTH_SESSION', JSON.stringify(sessionData));
+            localStorage.setItem('SIMPEL_LAST_ACTIVITY_TIME', String(Date.now()));
 
             showLoginFeedback(`✅ Autentikasi Berhasil! Mengalihkan ke dashboard...`, '#22c55e');
             if (typeof Swal !== 'undefined') {

@@ -107,27 +107,141 @@ function renderAdminFotoPreview() {
     const previewContainer = document.getElementById('modalFotoPreview');
     if (!previewContainer) return;
     if (currentAdminFoto) {
-        previewContainer.innerHTML = `<img src="${currentAdminFoto}" alt="Foto Bukti" style="width:100%; height:100%; object-fit:cover; border-radius:6px; cursor:pointer;" onclick="window.open('${currentAdminFoto}')" title="Klik untuk lihat ukuran penuh">`;
+        previewContainer.innerHTML = `<img src="${currentAdminFoto}" alt="Foto Bukti" style="width:100%; height:100%; object-fit:cover; border-radius:6px; cursor:pointer;" onclick="openImagePreview('${currentAdminFoto}', 'Foto Bukti Perbaikan Sarpras')" title="Klik untuk lihat ukuran penuh">`;
     } else {
         previewContainer.innerHTML = `<span style="font-size:11px; color:var(--text-muted);">Belum ada foto</span>`;
     }
 }
 
 function handleAdminFotoUpload(event) {
-    const file = event.target.files[0];
+    const file = event.target.files && event.target.files[0];
     if (!file) return;
-    if (file.size > 5 * 1024 * 1024) {
-        showToast('Ukuran foto terlalu besar. Maksimal 5MB.', 'error');
+
+    const MAX_ADMIN_FILE_SIZE = 5 * 1024 * 1024; // 5 MB
+    if (file.size > MAX_ADMIN_FILE_SIZE) {
+        const sizeMb = (file.size / (1024 * 1024)).toFixed(2);
+        if (typeof Swal !== 'undefined') {
+            Swal.fire({
+                icon: 'error',
+                title: 'Ukuran Foto Terlalu Besar',
+                html: `
+                    <div style="font-size:13.5px; line-height:1.6; color:#475569; text-align:left;">
+                        <p style="margin-bottom:8px;">Foto bukti perbaikan yang dipilih berukuran <strong>${sizeMb} MB</strong>.</p>
+                        <p style="margin-bottom:8px;">Batas maksimal ukuran foto adalah <strong>5.00 MB</strong>.</p>
+                        <p style="margin:0; font-size:12px; color:#64748b;">Harap pilih foto bukti lain dengan ukuran di bawah 5 MB.</p>
+                    </div>
+                `,
+                confirmButtonColor: '#005a36'
+            });
+        } else {
+            showToast(`Ukuran foto (${sizeMb} MB) melebihi batas 5MB!`, 'error');
+        }
+        event.target.value = '';
         return;
     }
+
     const reader = new FileReader();
     reader.onload = function(e) {
-        currentAdminFoto = e.target.result;
-        renderAdminFotoPreview();
-        showToast('Foto bukti perbaikan berhasil diunggah!', 'success');
+        const rawData = e.target.result;
+        const img = new Image();
+        img.onload = function() {
+            try {
+                const maxDim = 1600;
+                let w = img.width;
+                let h = img.height;
+                if (w > maxDim || h > maxDim) {
+                    if (w > h) {
+                        h = Math.round((h * maxDim) / w);
+                        w = maxDim;
+                    } else {
+                        w = Math.round((w * maxDim) / h);
+                        h = maxDim;
+                    }
+                }
+                const canvas = document.createElement('canvas');
+                canvas.width = w;
+                canvas.height = h;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(img, 0, 0, w, h);
+                currentAdminFoto = canvas.toDataURL('image/jpeg', 0.85);
+            } catch (err) {
+                currentAdminFoto = rawData;
+            }
+            renderAdminFotoPreview();
+            showToast('Foto bukti perbaikan berhasil diunggah (Maksimal 5MB terverifikasi)!', 'success');
+        };
+        img.onerror = function() {
+            currentAdminFoto = rawData;
+            renderAdminFotoPreview();
+            showToast('Foto bukti perbaikan berhasil diunggah!', 'success');
+        };
+        img.src = rawData;
     };
     reader.readAsDataURL(file);
 }
+
+// Lightbox Pratinjau Foto Bukti untuk Dashboard Admin
+function openImagePreview(imgSrc, title = 'Foto Bukti Perbaikan Sarpras') {
+    if (!imgSrc) {
+        showToast('Tidak ada foto bukti yang dapat ditampilkan.', 'info');
+        return;
+    }
+
+    const modal = document.getElementById('imageLightboxModal');
+    const modalImg = document.getElementById('imageLightboxImg');
+    const modalTitle = document.getElementById('imageLightboxTitle');
+    const downloadBtn = document.getElementById('imageLightboxDownloadBtn');
+
+    if (modal && modalImg) {
+        modalImg.src = imgSrc;
+        if (modalTitle) modalTitle.innerText = title;
+        if (downloadBtn) {
+            downloadBtn.href = imgSrc;
+            downloadBtn.download = `BUKTI_SARPRAS_ADMIN_${Date.now()}.jpg`;
+        }
+        modal.classList.remove('hidden');
+        return;
+    }
+
+    // Fallback jendela aman tanpa navigasi langsung data: URI
+    const w = window.open('', '_blank');
+    if (w) {
+        w.document.open();
+        w.document.write(`
+            <!DOCTYPE html>
+            <html lang="id">
+            <head>
+                <meta charset="UTF-8">
+                <title>${escapeHtml(title)}</title>
+                <style>
+                    body { margin:0; padding:20px; background:#0b1320; color:#fff; display:flex; flex-direction:column; align-items:center; justify-content:center; min-height:100vh; font-family:sans-serif; }
+                    img { max-width:92vw; max-height:85vh; object-fit:contain; border-radius:8px; box-shadow:0 10px 40px rgba(0,0,0,0.6); }
+                    .bar { margin-bottom:14px; display:flex; gap:12px; }
+                    button, a { background:#005a36; color:#fff; border:none; padding:8px 16px; border-radius:6px; cursor:pointer; font-weight:bold; text-decoration:none; font-size:13px; }
+                </style>
+            </head>
+            <body>
+                <div class="bar">
+                    <a href="${imgSrc}" download="bukti_sarpras.jpg">Unduh Gambar</a>
+                    <button onclick="window.close()">Tutup Jendela</button>
+                </div>
+                <img src="${imgSrc}" alt="${escapeHtml(title)}">
+            </body>
+            </html>
+        `);
+        w.document.close();
+    }
+}
+window.openImagePreview = openImagePreview;
+
+function closeImageLightbox(event) {
+    if (event && event.target && event.target.id !== 'imageLightboxModal') {
+        return;
+    }
+    const modal = document.getElementById('imageLightboxModal');
+    if (modal) modal.classList.add('hidden');
+}
+window.closeImageLightbox = closeImageLightbox;
 
 function clearAdminFoto() {
     currentAdminFoto = '';
@@ -472,6 +586,87 @@ function saveCampusZones(zones) {
 
 let CAMPUS_ZONES = loadCampusZones();
 
+// ==========================================================================
+// MONITOR AKTIVITAS ADMIN & LOGOUT OTOMATIS 20 MENIT
+// ==========================================================================
+
+const INACTIVITY_TIMEOUT_MS = 20 * 60 * 1000; // 20 Menit = 1.200.000 ms
+const INACTIVITY_CHECK_INTERVAL_MS = 10 * 1000; // Evaluasi per 10 detik
+const ACTIVITY_STORAGE_KEY = 'SIMPEL_LAST_ACTIVITY_TIME';
+
+function updateLastActivityTimestamp() {
+    const now = Date.now();
+    const prev = parseInt(localStorage.getItem(ACTIVITY_STORAGE_KEY) || '0', 10);
+    if (now - prev > 5000) {
+        try {
+            localStorage.setItem(ACTIVITY_STORAGE_KEY, String(now));
+        } catch (e) {}
+    }
+}
+
+function initInactivityMonitor(redirectUrl = '../index.html') {
+    const sessionRaw = localStorage.getItem('SIMPEL_AUTH_SESSION');
+    if (!sessionRaw) return;
+
+    if (!localStorage.getItem(ACTIVITY_STORAGE_KEY)) {
+        localStorage.setItem(ACTIVITY_STORAGE_KEY, String(Date.now()));
+    }
+
+    const activityEvents = ['mousemove', 'mousedown', 'keydown', 'touchstart', 'scroll', 'click'];
+    activityEvents.forEach(evt => {
+        window.addEventListener(evt, updateLastActivityTimestamp, { passive: true });
+    });
+
+    let autoLogoutTriggered = false;
+
+    setInterval(() => {
+        if (autoLogoutTriggered) return;
+        const currentSession = localStorage.getItem('SIMPEL_AUTH_SESSION');
+        if (!currentSession) return;
+
+        const lastActivity = parseInt(localStorage.getItem(ACTIVITY_STORAGE_KEY) || '0', 10);
+        const now = Date.now();
+
+        if (lastActivity > 0 && (now - lastActivity >= INACTIVITY_TIMEOUT_MS)) {
+            autoLogoutTriggered = true;
+            triggerAutoLogout(redirectUrl);
+        }
+    }, INACTIVITY_CHECK_INTERVAL_MS);
+}
+
+function triggerAutoLogout(redirectUrl = '../index.html') {
+    try {
+        localStorage.removeItem('SIMPEL_AUTH_SESSION');
+        localStorage.removeItem(ACTIVITY_STORAGE_KEY);
+    } catch (e) {}
+
+    if (typeof Swal !== 'undefined') {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Sesi Berakhir Otomatis',
+            html: `
+                <div style="font-size:13.5px; line-height:1.6; color:#475569; text-align:center;">
+                    <p style="margin-bottom:8px;">Anda telah otomatis dikeluarkan dari Dashboard Admin karena <strong>tidak ada aktivitas selama lebih dari 20 menit</strong>.</p>
+                    <span style="font-size:12px; color:#64748b;">Kebijakan keamanan sistem informasi UINSSC diterapkan untuk menjaga integritas data fasilitas.</span>
+                </div>
+            `,
+            confirmButtonText: 'Masuk Kembali',
+            confirmButtonColor: '#005a36',
+            allowOutsideClick: false,
+            allowEscapeKey: false
+        }).then(() => {
+            window.location.href = redirectUrl;
+        });
+
+        setTimeout(() => {
+            window.location.href = redirectUrl;
+        }, 6000);
+    } else {
+        alert('Sesi Admin Anda berakhir karena tidak ada aktivitas selama lebih dari 20 menit. Mengalihkan ke halaman login...');
+        window.location.href = redirectUrl;
+    }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     checkAdminAuth();
     initTheme();
@@ -484,6 +679,7 @@ document.addEventListener('DOMContentLoaded', () => {
     renderAllAdminCharts();
     renderAdminTable();
     initAdminOverviewMap();
+    initInactivityMonitor('../index.html');
 
     // Buka otomatis Studio Tata Letak jika Super Admin datang dari tombol "Kelola Halaman Ini"
     try {
@@ -502,6 +698,13 @@ function checkAdminAuth() {
         window.location.href = '../index.html';
         return;
     }
+
+    const lastActivity = parseInt(localStorage.getItem(ACTIVITY_STORAGE_KEY) || '0', 10);
+    if (lastActivity > 0 && (Date.now() - lastActivity >= INACTIVITY_TIMEOUT_MS)) {
+        triggerAutoLogout('../index.html');
+        return;
+    }
+    updateLastActivityTimestamp();
     try {
         const sess = JSON.parse(sessionRaw);
         if (sess.role !== 'admin' && sess.role !== 'superadmin') {
@@ -684,6 +887,7 @@ function handleLogout() {
         }).then((result) => {
             if (result.isConfirmed) {
                 localStorage.removeItem('SIMPEL_AUTH_SESSION');
+                localStorage.removeItem(ACTIVITY_STORAGE_KEY);
                 Swal.fire({
                     icon: 'success',
                     title: 'Sampai Jumpa!',
@@ -700,6 +904,7 @@ function handleLogout() {
     }
     showToast('Anda telah berhasil keluar dari Dashboard Admin. Mengalihkan...', 'info');
     localStorage.removeItem('SIMPEL_AUTH_SESSION');
+    localStorage.removeItem(ACTIVITY_STORAGE_KEY);
     setTimeout(() => {
         window.location.href = '../index.html';
     }, 1200);
