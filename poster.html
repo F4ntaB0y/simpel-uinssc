@@ -35,9 +35,7 @@
             --slate-50: #f8fafc;
             --white: #ffffff;
             --danger: #dc2626;
-            --danger-light: #fef2f2;
             --blue-600: #2563eb;
-            --blue-50: #eff6ff;
         }
 
         * {
@@ -54,19 +52,19 @@
             flex-direction: column;
             align-items: center;
             min-height: 100vh;
-            padding: 18px 10px 40px;
+            padding: 14px 6px 30px;
             -webkit-print-color-adjust: exact !important;
             print-color-adjust: exact !important;
         }
 
-        /* Screen Control Toolbar (Hanya Tampil di Layar Browser) */
+        /* Screen Control Toolbar */
         .control-toolbar {
             width: 210mm;
             background: #ffffff;
-            border-radius: 12px;
-            padding: 12px 18px;
-            box-shadow: 0 8px 20px -4px rgba(0, 0, 0, 0.15);
-            margin-bottom: 14px;
+            border-radius: 10px;
+            padding: 10px 16px;
+            border: 1px solid #cbd5e1;
+            margin-bottom: 12px;
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -74,14 +72,14 @@
         }
 
         .toolbar-info h2 {
-            font-size: 14px;
+            font-size: 13.5px;
             font-weight: 800;
             color: var(--primary);
             margin-bottom: 2px;
         }
 
         .toolbar-info p {
-            font-size: 11.5px;
+            font-size: 11px;
             color: var(--slate-600);
         }
 
@@ -95,9 +93,9 @@
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            padding: 8px 14px;
-            border-radius: 8px;
-            font-size: 12px;
+            padding: 7px 13px;
+            border-radius: 6px;
+            font-size: 11.5px;
             font-weight: 700;
             font-family: inherit;
             cursor: pointer;
@@ -109,7 +107,6 @@
         .btn-print {
             background: var(--primary);
             color: #ffffff;
-            box-shadow: 0 3px 10px rgba(0, 90, 54, 0.25);
         }
 
         .btn-print:hover {
@@ -118,8 +115,8 @@
 
         .btn-canva-guide {
             background: var(--gold-light);
-            color: var(--gold);
-            border: 1px solid rgba(212, 163, 67, 0.35);
+            color: #92400e;
+            border: 1px solid rgba(212, 163, 67, 0.4);
         }
 
         .btn-canva-guide:hover {
@@ -135,31 +132,31 @@
             height: 297mm;
             max-height: 297mm;
             background: #f8fafc;
-            box-shadow: 0 20px 45px -10px rgba(0, 0, 0, 0.35);
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
             position: relative;
             overflow: hidden;
             box-sizing: border-box;
-            border-radius: 4px;
+            border-radius: 2px;
+            border: 1px solid #cbd5e1;
         }
 
         /* 1. TOP INSTITUTION HEADER */
         .top-inst-header {
             background: #ffffff;
-            padding: 7px 16px;
+            padding: 7px 18px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            border-bottom: 1px solid #e2e8f0;
+            border-bottom: 1.5px solid #e2e8f0;
             flex-shrink: 0;
+            height: 40px;
         }
 
         .header-brand-left {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 9px;
         }
 
         .inst-logo-img {
@@ -174,7 +171,7 @@
         }
 
         .inst-title-main {
-            font-size: 8.8px;
+            font-size: 9.5px;
             font-weight: 900;
             color: #0b1526;
             letter-spacing: 0.3px;
@@ -182,7 +179,7 @@
         }
 
         .inst-title-sub {
-            font-size: 7.2px;
+            font-size: 7.8px;
             font-weight: 600;
             color: var(--slate-500);
         }
@@ -200,40 +197,40 @@
         }
 
         .tag-digital-title {
-            font-size: 8.2px;
+            font-size: 8.8px;
             font-weight: 800;
             color: var(--primary);
             letter-spacing: 0.4px;
         }
 
         .tag-digital-sub {
-            font-size: 6.8px;
+            font-size: 7.2px;
             color: var(--slate-400);
             font-style: italic;
         }
 
         .badge-aicis {
-            font-size: 8px;
+            font-size: 8.2px;
             font-weight: 900;
-            background: #f1f5f9;
+            background: #ecfdf5;
             color: #047857;
-            padding: 3px 6px;
+            padding: 3px 7px;
             border-radius: 4px;
-            border: 1px solid #cbd5e1;
+            border: 1px solid #a7f3d0;
         }
 
         /* 2. HERO BANNER WITH LAPTOP / DESKTOP MOCKUP */
         .hero-banner-section {
-            background: linear-gradient(135deg, #012415 0%, #004d2e 55%, #013b22 100%);
+            background: #013b22;
             color: #ffffff;
-            padding: 10px 16px 8px;
+            padding: 10px 18px 9px;
             position: relative;
             display: grid;
-            grid-template-columns: 1.05fr 1.05fr;
-            gap: 12px;
+            grid-template-columns: 1.15fr 0.95fr;
+            gap: 14px;
             align-items: center;
             flex-shrink: 0;
-            overflow: hidden;
+            height: 198px;
             border-bottom: 2.5px solid var(--gold);
         }
 
@@ -242,24 +239,24 @@
             align-items: center;
             gap: 5px;
             background: rgba(255, 255, 255, 0.12);
-            border: 1px solid rgba(212, 163, 67, 0.5);
-            padding: 2px 7px;
+            border: 1px solid rgba(212, 163, 67, 0.6);
+            padding: 2.5px 8px;
             border-radius: 9999px;
-            font-size: 6.8px;
+            font-size: 7.2px;
             font-weight: 800;
             color: #fef08a;
             letter-spacing: 0.5px;
-            margin-bottom: 3px;
+            margin-bottom: 4px;
         }
 
         .hero-main-title {
             font-family: 'Space Grotesk', sans-serif;
-            font-size: 21px;
+            font-size: 24px;
             font-weight: 900;
-            line-height: 1.1;
+            line-height: 1.05;
             letter-spacing: -0.5px;
             color: #ffffff;
-            margin-bottom: 1px;
+            margin-bottom: 2px;
         }
 
         .hero-main-title span {
@@ -267,10 +264,10 @@
         }
 
         .hero-app-name {
-            font-size: 9.2px;
+            font-size: 9.4px;
             font-weight: 700;
             color: #a7f3d0;
-            margin-bottom: 4px;
+            margin-bottom: 5px;
             line-height: 1.25;
         }
 
@@ -280,95 +277,89 @@
             gap: 5px;
             background: #eab308;
             color: #0f172a;
-            font-size: 7.2px;
+            font-size: 7.6px;
             font-weight: 900;
-            padding: 2px 7px;
+            padding: 2.5px 8px;
             border-radius: 4px;
-            margin-bottom: 5px;
+            margin-bottom: 6px;
             letter-spacing: 0.3px;
             text-transform: uppercase;
         }
 
         .hero-desc-para {
-            font-size: 7.4px;
+            font-size: 7.8px;
             color: #d1fae5;
             line-height: 1.35;
-            margin-bottom: 6px;
+            margin-bottom: 8px;
         }
 
         /* 4 Key Stat Metric Pills on Hero */
         .hero-stat-pills {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 4px;
+            gap: 5px;
         }
 
         .hero-pill-box {
             background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.2);
             border-radius: 5px;
-            padding: 3px 4px;
+            padding: 4px 5px;
             text-align: center;
-            backdrop-filter: blur(4px);
         }
 
         .hero-pill-num {
             font-family: 'Space Grotesk', sans-serif;
-            font-size: 11px;
+            font-size: 12.5px;
             font-weight: 800;
             color: #fef08a;
             line-height: 1;
         }
 
         .hero-pill-label {
-            font-size: 6.2px;
+            font-size: 6.8px;
             color: #d1fae5;
             font-weight: 600;
-            margin-top: 1px;
+            margin-top: 1.5px;
         }
 
-        /* Right Side: Desktop / Laptop Device Mockup (Canva & Print Clean Vector Friendly) */
+        /* Right Side: Desktop / Laptop Device Showcase */
         .hero-desktop-showcase {
-            position: relative;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            height: 125px;
-            background: transparent;
         }
 
         .desktop-device-frame {
             width: 100%;
-            max-width: 212px;
-            background: transparent;
-            border-radius: 7px 7px 0 0;
-            border: 2px solid rgba(212, 163, 67, 0.7);
+            max-width: 240px;
+            background: #1e293b;
+            border-radius: 6px 6px 0 0;
+            border: 2px solid var(--gold);
             overflow: hidden;
             display: flex;
             flex-direction: column;
-            position: relative;
-            box-shadow: none;
         }
 
         .desktop-browser-bar {
-            height: 12px;
+            height: 14px;
             background: #1e293b;
             display: flex;
             align-items: center;
-            padding: 0 6px;
-            gap: 3px;
+            padding: 0 7px;
+            gap: 4px;
             border-bottom: 1px solid #334155;
         }
 
         .browser-dots {
             display: flex;
-            gap: 2.5px;
+            gap: 3px;
         }
 
         .b-dot {
-            width: 3.5px;
-            height: 3.5px;
+            width: 4px;
+            height: 4px;
             border-radius: 50%;
         }
 
@@ -377,10 +368,10 @@
         .b-green { background: #22c55e; }
 
         .browser-url-pill {
-            font-size: 5.5px;
-            color: #94a3b8;
+            font-size: 6.2px;
+            color: #cbd5e1;
             background: #0f172a;
-            padding: 1px 6px;
+            padding: 1.5px 7px;
             border-radius: 3px;
             margin-left: 4px;
             font-family: monospace;
@@ -391,14 +382,13 @@
 
         .browser-url-pill i {
             color: #10b981;
-            font-size: 4.5px;
+            font-size: 5px;
         }
 
         .desktop-screen-viewport {
             width: 100%;
-            height: 100px;
-            background: transparent;
-            position: relative;
+            height: 122px;
+            background: #0f172a;
             overflow: hidden;
         }
 
@@ -411,98 +401,83 @@
 
         /* Laptop Bottom Base */
         .laptop-bottom-base {
-            width: 226px;
-            height: 5px;
-            background: linear-gradient(180deg, #94a3b8 0%, #475569 100%);
-            border-radius: 0 0 7px 7px;
-            position: relative;
-            box-shadow: none;
+            width: 256px;
+            height: 6px;
+            background: #64748b;
+            border-radius: 0 0 8px 8px;
+            border-top: 1px solid #94a3b8;
         }
 
         .laptop-notch-cut {
-            width: 28px;
-            height: 2px;
+            width: 32px;
+            height: 2.5px;
             background: #1e293b;
             margin: 0 auto;
             border-radius: 0 0 3px 3px;
         }
 
-        /* Secondary Badge Card: Geofencing GIS Highlight (Bebas Black Box Canva) */
-        .floating-gis-badge-card {
-            position: absolute;
-            bottom: 4px;
-            right: 2px;
-            width: 84px;
-            background: #ffffff;
-            border-radius: 5px;
-            padding: 3px;
-            border: 2px solid var(--gold);
-            box-shadow: none;
-            z-index: 5;
-        }
-
-        .floating-gis-badge-card .gis-card-header {
+        /* Companion GIS Tag beneath Laptop */
+        .hero-laptop-tag {
+            margin-top: 5px;
+            background: rgba(255, 255, 255, 0.12);
+            border: 1px solid rgba(212, 163, 67, 0.5);
+            padding: 2.5px 9px;
+            border-radius: 4px;
+            font-size: 7px;
+            font-weight: 700;
+            color: #fef08a;
             display: flex;
             align-items: center;
-            gap: 3px;
-            font-size: 5.8px;
-            font-weight: 900;
-            color: var(--primary);
-            margin-bottom: 2px;
-            text-transform: uppercase;
+            gap: 5px;
         }
 
-        .floating-gis-badge-card img {
-            width: 100%;
-            height: 38px;
-            object-fit: cover;
-            border-radius: 3px;
-            display: block;
-        }
-
-        /* 3. MAIN BODY CONTAINER (Penuh, Rapat & Kaya Informasi) */
+        /* 3. MAIN BODY CONTAINER (Penuh, Rapat & Padat - Seluruh Slot A4 Terisi Sempurna) */
         .poster-content-body {
             flex: 1 1 auto;
-            padding: 6px 14px 4px;
+            padding: 8px 16px 6px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            gap: 5px;
+            gap: 6px;
             background: #f8fafc;
             overflow: hidden;
         }
 
-        /* SECTION ROW 1: 3 CARDS (Permasalahan / Fungsi & Tujuan / Kategori Pemeliharaan) */
+        /* SECTION ROW 1: 3 CARDS (Permasalahan / Fungsi & Solusi / Fasilitas Utama) */
         .grid-three-cards {
             display: grid;
             grid-template-columns: 1fr 1fr 1fr;
-            gap: 6px;
+            gap: 7px;
+            flex: 1 1 auto;
         }
 
         .pillar-card {
             background: #ffffff;
-            border: 1px solid #e2e8f0;
-            border-radius: 6px;
-            padding: 5px 7px;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
-            position: relative;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 7px;
+            padding: 7px 9px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
 
         .pillar-header {
             display: flex;
             align-items: center;
-            gap: 5px;
-            margin-bottom: 3px;
+            gap: 6px;
+            margin-bottom: 5px;
+            padding-bottom: 4px;
+            border-bottom: 1.5px solid #f1f5f9;
         }
 
         .pillar-icon-box {
-            width: 17px;
-            height: 17px;
-            border-radius: 4px;
+            width: 20px;
+            height: 20px;
+            border-radius: 5px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 8.5px;
+            font-size: 10px;
             flex-shrink: 0;
         }
 
@@ -511,7 +486,7 @@
         .icon-blue { background: #dbeafe; color: #1d4ed8; }
 
         .pillar-tag {
-            font-size: 6.2px;
+            font-size: 6.8px;
             font-weight: 800;
             text-transform: uppercase;
             letter-spacing: 0.5px;
@@ -521,7 +496,7 @@
         }
 
         .pillar-title {
-            font-size: 8.8px;
+            font-size: 9.8px;
             font-weight: 900;
             color: #0f172a;
             line-height: 1.1;
@@ -531,23 +506,36 @@
             list-style: none;
             display: flex;
             flex-direction: column;
-            gap: 2.5px;
-            margin-top: 3px;
-        }
-
-        .pillar-list li {
-            font-size: 7.1px;
-            color: var(--slate-600);
-            line-height: 1.3;
-            display: flex;
-            align-items: flex-start;
             gap: 4px;
+            flex: 1;
         }
 
-        .pillar-list li i {
-            font-size: 6.5px;
-            margin-top: 1.5px;
+        .pillar-item-box {
+            background: #f8fafc;
+            border: 1px solid #f1f5f9;
+            border-radius: 5px;
+            padding: 4px 6px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            flex: 1;
+        }
+
+        .pillar-item-box i {
+            font-size: 8px;
+            margin-top: 2px;
             flex-shrink: 0;
+        }
+
+        .pillar-item-text {
+            font-size: 7.4px;
+            color: var(--slate-700);
+            line-height: 1.35;
+        }
+
+        .pillar-item-text strong {
+            color: #0f172a;
+            font-weight: 800;
         }
 
         .bullet-red { color: #ef4444; }
@@ -557,24 +545,26 @@
         /* SECTION ROW 2: CARA KERJA (ALUR PENGGUNAAN APLIKASI - 8 STEP TIMELINE) */
         .timeline-section-card {
             background: #ffffff;
-            border: 1px solid #e2e8f0;
-            border-radius: 6px;
-            padding: 5px 8px 4px;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+            border: 1.5px solid #e2e8f0;
+            border-radius: 7px;
+            padding: 6px 10px 5px;
+            flex: 0 0 auto;
         }
 
         .timeline-card-header {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 4px;
+            margin-bottom: 5px;
+            padding-bottom: 3px;
+            border-bottom: 1.5px solid #f1f5f9;
         }
 
         .timeline-badge-title {
             display: flex;
             align-items: center;
-            gap: 4px;
-            font-size: 8.4px;
+            gap: 5px;
+            font-size: 9.2px;
             font-weight: 900;
             color: #0f172a;
             text-transform: uppercase;
@@ -586,19 +576,19 @@
         }
 
         .timeline-sub-tag {
-            font-size: 6.5px;
-            background: #f1f5f9;
-            color: var(--slate-600);
-            padding: 1px 5px;
-            border-radius: 3px;
-            font-weight: 700;
+            font-size: 7.2px;
+            background: #ecfdf5;
+            color: #047857;
+            padding: 2px 7px;
+            border-radius: 4px;
+            font-weight: 800;
+            border: 1px solid #a7f3d0;
         }
 
         .stepper-8-grid {
             display: grid;
             grid-template-columns: repeat(8, 1fr);
-            gap: 3px;
-            position: relative;
+            gap: 4px;
         }
 
         .step-col-node {
@@ -606,34 +596,34 @@
             flex-direction: column;
             align-items: center;
             text-align: center;
+            position: relative;
         }
 
         .step-circle-icon {
-            width: 20px;
-            height: 20px;
+            width: 27px;
+            height: 27px;
             border-radius: 50%;
             background: #ffffff;
-            border: 1.5px solid var(--primary);
+            border: 2px solid var(--primary);
             color: var(--primary);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 8.5px;
+            font-size: 10.5px;
             position: relative;
-            margin-bottom: 2px;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+            margin-bottom: 3px;
         }
 
         .step-number-tag {
             position: absolute;
-            top: -2px;
-            right: -2px;
-            width: 8px;
-            height: 8px;
+            top: -3px;
+            right: -3px;
+            width: 11px;
+            height: 11px;
             background: var(--gold-bright);
             color: #000000;
             border-radius: 50%;
-            font-size: 5.5px;
+            font-size: 6.5px;
             font-weight: 900;
             display: flex;
             align-items: center;
@@ -641,154 +631,178 @@
         }
 
         .step-node-name {
-            font-size: 7.2px;
-            font-weight: 800;
+            font-size: 8px;
+            font-weight: 900;
             color: #0f172a;
-            line-height: 1.1;
+            line-height: 1.15;
             margin-bottom: 1px;
         }
 
         .step-node-detail {
-            font-size: 6px;
+            font-size: 6.6px;
             color: var(--slate-500);
-            line-height: 1.15;
+            line-height: 1.2;
         }
 
         /* SECTION ROW 3: DARK BANNER (5 TAHAP SIKLUS PENANGANAN TIKET & STANDAR SLA) */
         .sla-banner-box {
-            background: linear-gradient(135deg, #022c19 0%, #004d2e 60%, #033c23 100%);
-            border-radius: 6px;
-            padding: 5px 8px;
+            background: #01311b;
+            border-radius: 7px;
+            padding: 7px 10px;
             color: #ffffff;
-            border: 1px solid rgba(212, 163, 67, 0.4);
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+            border: 1.5px solid rgba(212, 163, 67, 0.5);
+            flex: 0 0 auto;
         }
 
         .sla-banner-header {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 4px;
+            margin-bottom: 5px;
         }
 
         .sla-header-left {
             display: flex;
             align-items: center;
-            gap: 5px;
+            gap: 6px;
         }
 
         .sla-icon-tag {
             background: var(--gold-bright);
             color: #000;
-            width: 14px;
-            height: 14px;
+            width: 16px;
+            height: 16px;
             border-radius: 4px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 8px;
+            font-size: 9px;
             font-weight: 900;
         }
 
         .sla-header-title {
-            font-size: 8.5px;
+            font-size: 9.4px;
             font-weight: 900;
             letter-spacing: 0.3px;
             text-transform: uppercase;
         }
 
         .sla-header-right {
-            font-size: 6.5px;
+            font-size: 7.2px;
             color: #fef08a;
-            font-weight: 700;
-            background: rgba(255, 255, 255, 0.1);
-            padding: 1.5px 5px;
-            border-radius: 3px;
+            font-weight: 800;
+            background: rgba(255, 255, 255, 0.12);
+            padding: 2px 7px;
+            border-radius: 4px;
+            border: 1px solid rgba(254, 240, 138, 0.3);
         }
 
         .sla-5-stages-grid {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
-            gap: 4px;
+            gap: 5px;
         }
 
         .sla-stage-item {
             background: rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 4px;
-            padding: 3.5px 4px;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            border-radius: 5px;
+            padding: 5px 6px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
 
         .sla-stage-item.stage-highlight {
-            background: rgba(212, 163, 67, 0.2);
+            background: rgba(212, 163, 67, 0.22);
             border-color: var(--gold);
+        }
+
+        .sla-stage-header-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 2px;
         }
 
         .sla-stage-num {
             font-family: 'Space Grotesk', sans-serif;
-            font-size: 8.5px;
+            font-size: 10px;
             font-weight: 900;
             color: #fef08a;
             line-height: 1;
-            margin-bottom: 1px;
+        }
+
+        .sla-badge-time {
+            font-size: 6px;
+            font-weight: 800;
+            background: rgba(255, 255, 255, 0.2);
+            color: #ffffff;
+            padding: 1px 4px;
+            border-radius: 3px;
         }
 
         .sla-stage-title {
-            font-size: 7.2px;
+            font-size: 8px;
             font-weight: 800;
             color: #ffffff;
-            line-height: 1.1;
-            margin-bottom: 1px;
+            line-height: 1.15;
+            margin-bottom: 2px;
         }
 
         .sla-stage-desc {
-            font-size: 6px;
+            font-size: 6.5px;
             color: #d1fae5;
-            line-height: 1.2;
+            line-height: 1.25;
         }
 
-        /* SECTION ROW 4: FITUR PELAPOR VS FITUR ADMIN SARPRAS */
+        /* SECTION ROW 4: FITUR PELAPOR VS FITUR ADMIN SARPRAS (DENSE & RICH MINI CARDS) */
         .features-split-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 6px;
+            gap: 7px;
+            flex: 1 1 auto;
         }
 
         .features-block-card {
             background: #ffffff;
-            border: 1px solid #e2e8f0;
-            border-radius: 6px;
-            padding: 5px 7px;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+            border: 1.5px solid #e2e8f0;
+            border-radius: 7px;
+            padding: 6px 9px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
 
         .features-block-card.card-pelapor {
-            border-top: 2.5px solid var(--primary);
+            border-top: 3px solid var(--primary);
         }
 
         .features-block-card.card-admin {
-            border-top: 2.5px solid var(--gold);
+            border-top: 3px solid var(--gold);
         }
 
         .features-block-header {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 4px;
+            margin-bottom: 5px;
+            padding-bottom: 3px;
+            border-bottom: 1.5px solid #f1f5f9;
         }
 
         .features-title-label {
             display: flex;
             align-items: center;
-            gap: 4px;
-            font-size: 8.2px;
+            gap: 5px;
+            font-size: 9px;
             font-weight: 900;
             color: #0f172a;
             text-transform: uppercase;
         }
 
         .features-user-target {
-            font-size: 6.2px;
+            font-size: 7px;
             color: var(--slate-500);
             font-style: italic;
         }
@@ -796,73 +810,83 @@
         .features-subgrid-six {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 3.5px 5px;
+            grid-template-rows: repeat(3, 1fr);
+            gap: 5px 6px;
+            flex: 1;
         }
 
         .feat-item-mini {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 5px;
+            padding: 5px 7px;
             display: flex;
-            align-items: flex-start;
-            gap: 4px;
+            align-items: center;
+            gap: 6px;
         }
 
         .feat-mini-icon {
-            width: 14px;
-            height: 14px;
-            border-radius: 3px;
+            width: 19px;
+            height: 19px;
+            border-radius: 4px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 7px;
+            font-size: 9px;
             flex-shrink: 0;
-            margin-top: 1px;
         }
 
         .icon-emerald-mini { background: #dcfce7; color: #047857; }
         .icon-amber-mini { background: #fef3c7; color: #b45309; }
 
         .feat-mini-text h5 {
-            font-size: 7.2px;
-            font-weight: 800;
+            font-size: 8px;
+            font-weight: 900;
             color: #0f172a;
-            line-height: 1.1;
-            margin-bottom: 0.5px;
+            line-height: 1.15;
+            margin-bottom: 1px;
         }
 
         .feat-mini-text p {
-            font-size: 6px;
-            color: var(--slate-500);
-            line-height: 1.2;
+            font-size: 6.8px;
+            color: var(--slate-600);
+            line-height: 1.25;
         }
 
-        /* SECTION ROW 5: SASARAN / TEKNOLOGI / KEUNGGULAN (3 KOLOM BAWAH) */
+        /* SECTION ROW 5: SASARAN / TEKNOLOGI / KEUNGGULAN (3 KOLOM BAWAH PADAT) */
         .bottom-three-grid {
             display: grid;
-            grid-template-columns: 0.95fr 1fr 1.05fr;
-            gap: 6px;
+            grid-template-columns: 0.95fr 1.05fr 1fr;
+            gap: 7px;
+            flex: 1 1 auto;
         }
 
         .bottom-card-box {
             background: #ffffff;
-            border: 1px solid #e2e8f0;
-            border-radius: 6px;
-            padding: 5px 6px;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+            border: 1.5px solid #e2e8f0;
+            border-radius: 7px;
+            padding: 6px 8px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
 
         .bottom-card-header {
             display: flex;
             align-items: center;
-            gap: 4px;
+            gap: 5px;
             margin-bottom: 4px;
+            padding-bottom: 3px;
+            border-bottom: 1.5px solid #f1f5f9;
         }
 
         .bottom-card-icon {
-            font-size: 8px;
+            font-size: 9.5px;
             color: var(--primary);
         }
 
         .bottom-card-tag {
-            font-size: 6px;
+            font-size: 6.5px;
             font-weight: 800;
             text-transform: uppercase;
             color: var(--slate-400);
@@ -870,95 +894,121 @@
         }
 
         .bottom-card-title {
-            font-size: 8px;
+            font-size: 9px;
             font-weight: 900;
             color: #0f172a;
-            line-height: 1;
+            line-height: 1.1;
         }
 
-        /* Sasaran List */
+        /* Sasaran 3 Rich Containers */
+        .sasaran-container-list {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            flex: 1;
+        }
+
         .sasaran-row-item {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 5px;
+            padding: 5px 6px;
             display: flex;
             align-items: center;
-            gap: 4px;
-            font-size: 6.8px;
-            color: var(--slate-700);
-            padding: 2px 0;
-            border-bottom: 1px dashed #f1f5f9;
-        }
-
-        .sasaran-row-item:last-child {
-            border-bottom: none;
+            gap: 6px;
+            flex: 1;
         }
 
         .sasaran-badge-dot {
-            width: 12px;
-            height: 12px;
-            border-radius: 3px;
+            width: 17px;
+            height: 17px;
+            border-radius: 4px;
             background: #e2e8f0;
             color: var(--primary);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 6.5px;
+            font-size: 8.5px;
             flex-shrink: 0;
         }
 
-        /* Teknologi Grid */
+        .sasaran-item-text {
+            font-size: 7.3px;
+            color: var(--slate-700);
+            line-height: 1.25;
+        }
+
+        .sasaran-item-text strong {
+            color: #0f172a;
+            font-weight: 800;
+        }
+
+        /* Teknologi Grid 2x2 */
         .tech-grid-2x2 {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 3px;
+            grid-template-rows: 1fr 1fr;
+            gap: 4px;
+            flex: 1;
         }
 
         .tech-badge-item {
             background: #f8fafc;
             border: 1px solid #e2e8f0;
-            border-radius: 4px;
-            padding: 3px 4px;
+            border-radius: 5px;
+            padding: 5px 6px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
 
         .tech-badge-name {
-            font-size: 7px;
-            font-weight: 800;
+            font-size: 7.8px;
+            font-weight: 900;
             color: var(--primary);
             display: flex;
             align-items: center;
-            gap: 3px;
+            gap: 4px;
+            margin-bottom: 1.5px;
         }
 
         .tech-badge-sub {
-            font-size: 5.8px;
-            color: var(--slate-500);
-            line-height: 1.15;
+            font-size: 6.5px;
+            color: var(--slate-600);
+            line-height: 1.2;
         }
 
-        /* Keunggulan 4 Color Blocks */
+        /* Keunggulan 4 Full Colored Blocks */
         .keunggulan-4-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 3px;
+            grid-template-rows: 1fr 1fr;
+            gap: 4px;
+            flex: 1;
         }
 
         .val-block {
-            border-radius: 4px;
-            padding: 3px 5px;
+            border-radius: 5px;
+            padding: 5px 6px;
             color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
 
         .val-block h6 {
-            font-size: 7.2px;
+            font-size: 7.8px;
             font-weight: 900;
-            margin-bottom: 1px;
+            margin-bottom: 1.5px;
             display: flex;
             align-items: center;
-            gap: 3px;
+            gap: 4px;
         }
 
         .val-block p {
-            font-size: 5.8px;
-            line-height: 1.2;
-            opacity: 0.92;
+            font-size: 6.4px;
+            line-height: 1.25;
+            opacity: 0.95;
         }
 
         .val-blue { background: #1d4ed8; }
@@ -970,13 +1020,14 @@
         .poster-bottom-footer {
             background: #012415;
             color: #ffffff;
-            padding: 6px 16px;
+            padding: 6px 18px;
             display: flex;
             align-items: center;
             justify-content: space-between;
             font-size: 8px;
             border-top: 2px solid var(--gold);
             flex-shrink: 0;
+            height: 36px;
         }
 
         .footer-tagline-text {
@@ -985,7 +1036,7 @@
         }
 
         .footer-tagline-bold {
-            font-size: 8.5px;
+            font-size: 9px;
             font-weight: 900;
             color: #ffffff;
         }
@@ -995,8 +1046,8 @@
         }
 
         .footer-inst-name {
-            font-size: 6.8px;
-            color: #94a3b8;
+            font-size: 7.2px;
+            color: #cbd5e1;
         }
 
         .footer-meta-pills {
@@ -1009,18 +1060,18 @@
             display: inline-flex;
             align-items: center;
             gap: 4px;
-            font-size: 6.8px;
-            font-weight: 700;
+            font-size: 7.2px;
+            font-weight: 800;
             color: #d1fae5;
-            background: rgba(255, 255, 255, 0.08);
-            padding: 2px 6px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 2.5px 7px;
             border-radius: 4px;
-            border: 1px solid rgba(255, 255, 255, 0.12);
+            border: 1px solid rgba(255, 255, 255, 0.15);
         }
 
         .footer-pill-item i {
             color: var(--gold-bright);
-            font-size: 6.5px;
+            font-size: 7px;
         }
 
         /* ==========================================================================
@@ -1053,6 +1104,7 @@
                 height: 297mm !important;
                 max-height: 297mm !important;
                 box-shadow: none !important;
+                border: none !important;
                 border-radius: 0 !important;
                 page-break-inside: avoid !important;
                 page-break-after: avoid !important;
@@ -1066,37 +1118,7 @@
                 margin: 0;
             }
         }
-
-        /* Export Image Mode */
-        html.export-mode,
-        body.export-mode {
-            padding: 0 !important;
-            margin: 0 !important;
-            background: #ffffff !important;
-            overflow: hidden !important;
-        }
-
-        body.export-mode .control-toolbar {
-            display: none !important;
-        }
-
-        body.export-mode .poster-artboard {
-            width: 100vw !important;
-            height: 100vh !important;
-            max-height: 100vh !important;
-            box-shadow: none !important;
-            border-radius: 0 !important;
-            margin: 0 !important;
-        }
     </style>
-    <script>
-        if (window.location.search.indexOf('export') !== -1) {
-            document.documentElement.classList.add('export-mode');
-            window.addEventListener('DOMContentLoaded', function () {
-                document.body.classList.add('export-mode');
-            });
-        }
-    </script>
 </head>
 
 <body>
@@ -1104,20 +1126,20 @@
     <!-- Control Toolbar (Layar Browser Saja) -->
     <div class="control-toolbar">
         <div class="toolbar-info">
-            <h2>Poster SIMPEL UINSSC (Format Desktop Mockup & Full Kanvas A4)</h2>
-            <p>Mockup HP telah diganti Laptop/Desktop interaktif + Floating GIS Window. Seluruh kanvas A4 terisi padat, kaya informasi & siap cetak/Canva.</p>
+            <h2>Poster SIMPEL UINSSC (Format Penuh & Padat Tanpa Slot Kosong)</h2>
+            <p>Layout proporsional A4 1 halaman penuh: Mockup Desktop/Laptop, 8 Alur Penggunaan, 5 Tahap SLA, 12 Fitur Lengkap, Sasaran, Teknologi & Keunggulan.</p>
         </div>
         <div class="toolbar-actions">
             <button class="btn-action btn-print" onclick="window.print()">
                 <i class="fa-solid fa-file-pdf"></i> Simpan / Cetak PDF (1 Lembar)
             </button>
             <button class="btn-action btn-canva-guide" onclick="showCanvaInstructions()">
-                <i class="fa-solid fa-circle-info"></i> Cara Edit di Canva
+                <i class="fa-solid fa-circle-info"></i> Panduan Edit Canva
             </button>
         </div>
     </div>
 
-    <!-- POSTER ARTBOARD - TEPAT 1 HALAMAN A4 FULL (210mm x 297mm) -->
+    <!-- POSTER ARTBOARD - TEPAT 1 HALAMAN A4 FULL PADAT (210mm x 297mm) -->
     <main class="poster-artboard" id="posterCanvas">
 
         <!-- 1. TOP INSTITUTION HEADER -->
@@ -1138,7 +1160,7 @@
             </div>
         </header>
 
-        <!-- 2. HERO BANNER WITH LAPTOP / DESKTOP MOCKUP + FLOATING GIS WINDOW -->
+        <!-- 2. HERO BANNER WITH LAPTOP / DESKTOP MOCKUP -->
         <section class="hero-banner-section">
             <div class="hero-text-col">
                 <div class="hero-badge-pill">
@@ -1150,7 +1172,7 @@
                     <i class="fa-solid fa-shield-halved"></i> FASILITAS TERJAGA, KAMPUS BERMUTU
                 </div>
                 <p class="hero-desc-para">
-                    SIMPEL Sarpras adalah platform digital terpadu yang memudahkan sivitas akademika untuk melaporkan kerusakan sarana prasarana secara presisi — mulai dari verifikasi geofencing GIS 5 zona, filter anti-spam, pemantauan tahapan SLA, hingga penerbitan tiket resmi ber-QR Code.
+                    SIMPEL Sarpras adalah platform digital terpadu sivitas akademika untuk melaporkan kerusakan sarana prasarana secara presisi — mulai dari verifikasi Geofencing GIS 5 zona, filter anti-spam tiket ganda, pemantauan 5 tahap SLA, hingga cetak bukti tiket resmi ber-QR Code.
                 </p>
                 <div class="hero-stat-pills">
                     <div class="hero-pill-box">
@@ -1174,7 +1196,7 @@
 
             <!-- Right: Sleek Desktop / Laptop Device Showcase -->
             <div class="hero-desktop-showcase">
-                <!-- Laptop Screen -->
+                <!-- Laptop Screen Frame -->
                 <div class="desktop-device-frame">
                     <div class="desktop-browser-bar">
                         <div class="browser-dots">
@@ -1194,21 +1216,18 @@
                 <div class="laptop-bottom-base">
                     <div class="laptop-notch-cut"></div>
                 </div>
-
-                <!-- Floating Secondary Card: Geofencing GIS Highlight -->
-                <div class="floating-gis-badge-card">
-                    <div class="gis-card-header">
-                        <i class="fa-solid fa-location-crosshairs" style="color: var(--gold);"></i> Peta GIS 5 Zona
-                    </div>
-                    <img src="assets/img/ss_gis_map.png" alt="Geofencing GIS Preview">
+                <!-- Companion GIS Badge -->
+                <div class="hero-laptop-tag">
+                    <i class="fa-solid fa-location-crosshairs" style="color: var(--gold-bright);"></i>
+                    <span>Peta GIS 5 Zona Terintegrasi &bull; Validasi Spasial Real-Time</span>
                 </div>
             </div>
         </section>
 
-        <!-- 3. MAIN BODY CONTENT (PADAT & LENGKAP MENGISI KANVAS A4) -->
+        <!-- 3. MAIN BODY CONTENT (PADAT & LENGKAP MENGISI KANVAS A4 TANPA CELAH KOSONG) -->
         <div class="poster-content-body">
 
-            <!-- ROW 1: 3 CARDS (Permasalahan / Fungsi & Tujuan / Kategori Pemeliharaan) -->
+            <!-- ROW 1: 3 CARDS (Permasalahan / Fungsi & Solusi / Fasilitas Utama) -->
             <div class="grid-three-cards">
                 <!-- Card 1: Permasalahan -->
                 <div class="pillar-card">
@@ -1219,32 +1238,56 @@
                             <div class="pillar-title">Permasalahan</div>
                         </div>
                     </div>
-                    <ul class="pillar-list">
-                        <li><i class="fa-solid fa-xmark bullet-red"></i> Prosedur pelaporan manual lisan & via WA sering tercecer.</li>
-                        <li><i class="fa-solid fa-xmark bullet-red"></i> Laporan fiktif diajukan di luar wilayah kampus tanpa koordinat.</li>
-                        <li><i class="fa-solid fa-xmark bullet-red"></i> Pelapor tidak mengetahui status perbaikan & teknisi penanggung jawab.</li>
-                        <li><i class="fa-solid fa-xmark bullet-red"></i> Tiket ganda berulang membebani antrean tim teknisi sarpras.</li>
-                    </ul>
+                    <div class="pillar-list">
+                        <div class="pillar-item-box">
+                            <i class="fa-solid fa-xmark bullet-red"></i>
+                            <div class="pillar-item-text"><strong>Prosedur Manual:</strong> Laporan via chat WA & lisan sering tercecer tanpa rekam jejak resmi.</div>
+                        </div>
+                        <div class="pillar-item-box">
+                            <i class="fa-solid fa-xmark bullet-red"></i>
+                            <div class="pillar-item-text"><strong>Lokasi Bias:</strong> Keluhan diajukan dari luar kawasan kampus tanpa bukti koordinat fisik yang sah.</div>
+                        </div>
+                        <div class="pillar-item-box">
+                            <i class="fa-solid fa-xmark bullet-red"></i>
+                            <div class="pillar-item-text"><strong>Status Tidak Terbuka:</strong> Pelapor tidak mengetahui proses verifikasi & teknisi penanggung jawab.</div>
+                        </div>
+                        <div class="pillar-item-box">
+                            <i class="fa-solid fa-xmark bullet-red"></i>
+                            <div class="pillar-item-text"><strong>Tiket Ganda Berulang:</strong> Satu kerusakan dilaporkan berkali-kali hingga membebani antrean teknisi.</div>
+                        </div>
+                    </div>
                 </div>
 
-                <!-- Card 2: Fungsi & Tujuan -->
+                <!-- Card 2: Fungsi & Solusi -->
                 <div class="pillar-card">
                     <div class="pillar-header">
                         <div class="pillar-icon-box icon-green"><i class="fa-solid fa-bullseye"></i></div>
                         <div>
-                            <span class="pillar-tag">Solusi Sistem</span>
-                            <div class="pillar-title">Fungsi & Tujuan</div>
+                            <span class="pillar-tag">Solusi Terpadu</span>
+                            <div class="pillar-title">Fungsi & Solusi</div>
                         </div>
                     </div>
-                    <ul class="pillar-list">
-                        <li><i class="fa-solid fa-check bullet-green"></i> <strong>Digitalisasi Terpusat</strong> — pelaporan sarpras 24/7 kapan saja.</li>
-                        <li><i class="fa-solid fa-check bullet-green"></i> <strong>Validasi Geofencing GIS</strong> — presisi 5 zona kawasan kampus.</li>
-                        <li><i class="fa-solid fa-check bullet-green"></i> <strong>Transparansi SLA</strong> — status progres terpantau 5 tahap terukur.</li>
-                        <li><i class="fa-solid fa-check bullet-green"></i> <strong>Arsip Terpadu</strong> — bukti tiket resmi 1 lembar PDF ber-QR Code.</li>
-                    </ul>
+                    <div class="pillar-list">
+                        <div class="pillar-item-box">
+                            <i class="fa-solid fa-check bullet-green"></i>
+                            <div class="pillar-item-text"><strong>Digitalisasi 24/7:</strong> Pelaporan keluhan sarpras fleksibel kapan saja lewat aplikasi web PWA.</div>
+                        </div>
+                        <div class="pillar-item-box">
+                            <i class="fa-solid fa-check bullet-green"></i>
+                            <div class="pillar-item-text"><strong>Geofencing GIS 5 Zona:</strong> Memastikan pelapor berada di dalam kawasan fisik kampus secara akurat.</div>
+                        </div>
+                        <div class="pillar-item-box">
+                            <i class="fa-solid fa-check bullet-green"></i>
+                            <div class="pillar-item-text"><strong>Standarisasi SLA:</strong> Pelacakan 5 tahap perbaikan secara transparan dengan batas waktu pasti.</div>
+                        </div>
+                        <div class="pillar-item-box">
+                            <i class="fa-solid fa-check bullet-green"></i>
+                            <div class="pillar-item-text"><strong>Arsip Tiket PDF:</strong> Penerbitan bukti pengaduan resmi 1 lembar A4 dilengkapi kode QR verifikasi.</div>
+                        </div>
+                    </div>
                 </div>
 
-                <!-- Card 3: Kategori Pemeliharaan -->
+                <!-- Card 3: Fasilitas Utama -->
                 <div class="pillar-card">
                     <div class="pillar-header">
                         <div class="pillar-icon-box icon-blue"><i class="fa-solid fa-toolbox"></i></div>
@@ -1253,12 +1296,24 @@
                             <div class="pillar-title">Fasilitas Utama</div>
                         </div>
                     </div>
-                    <ul class="pillar-list">
-                        <li><i class="fa-solid fa-bolt bullet-blue"></i> <strong>Kelistrikan & Penerangan:</strong> Lampu lab, panel MCB & stopkontak.</li>
-                        <li><i class="fa-solid fa-snowflake bullet-blue"></i> <strong>HVAC & Pendingin:</strong> AC ruang kuliah, server & exhaust fan.</li>
-                        <li><i class="fa-solid fa-video bullet-blue"></i> <strong>Audio Visual:</strong> Proyektor multimedia, sound & smart display.</li>
-                        <li><i class="fa-solid fa-chair bullet-blue"></i> <strong>Sarpras Fisik & Air:</strong> Pintu, meja kursi, kran sanitasi kampus.</li>
-                    </ul>
+                    <div class="pillar-list">
+                        <div class="pillar-item-box">
+                            <i class="fa-solid fa-bolt bullet-blue"></i>
+                            <div class="pillar-item-text"><strong>Kelistrikan & Daya:</strong> Panel MCB gedung, instalasi stopkontak, saklar & penerangan lab.</div>
+                        </div>
+                        <div class="pillar-item-box">
+                            <i class="fa-solid fa-snowflake bullet-blue"></i>
+                            <div class="pillar-item-text"><strong>HVAC & Pendingin:</strong> AC ruang kuliah, sirkulasi udara lab cyber & pendingin ruang server.</div>
+                        </div>
+                        <div class="pillar-item-box">
+                            <i class="fa-solid fa-video bullet-blue"></i>
+                            <div class="pillar-item-text"><strong>Audio Visual Multimedia:</strong> Proyektor kelas, sound system seminar & layar interaktif.</div>
+                        </div>
+                        <div class="pillar-item-box">
+                            <i class="fa-solid fa-chair bullet-blue"></i>
+                            <div class="pillar-item-text"><strong>Sanitasi & Sarpras Gedung:</strong> Kran air bersih, toilet kampus, meja kursi kuliah & pintu kelas.</div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -1321,38 +1376,53 @@
                         <div class="sla-icon-tag"><i class="fa-solid fa-bolt"></i></div>
                         <div class="sla-header-title">5 Tahap Perkembangan Tiket & Standar SLA</div>
                     </div>
-                    <div class="sla-header-right">Disposisi & SLA Dikelola Admin Sarpras</div>
+                    <div class="sla-header-right">Disposisi & Target Waktu Dikelola Admin Sarpras</div>
                 </div>
                 <div class="sla-5-stages-grid">
                     <div class="sla-stage-item">
-                        <div class="sla-stage-num">01</div>
+                        <div class="sla-stage-header-row">
+                            <span class="sla-stage-num">01</span>
+                            <span class="sla-badge-time">SLA: &lt; 2 Jam</span>
+                        </div>
                         <div class="sla-stage-title">Diajukan</div>
-                        <div class="sla-stage-desc">Laporan masuk dari sivitas, tervalidasi GPS & bebas duplikasi ruangan.</div>
+                        <div class="sla-stage-desc">Laporan masuk tervalidasi GPS kampus & bebas duplikasi ruangan.</div>
                     </div>
                     <div class="sla-stage-item">
-                        <div class="sla-stage-num">02</div>
+                        <div class="sla-stage-header-row">
+                            <span class="sla-stage-num">02</span>
+                            <span class="sla-badge-time">SLA: &lt; 4 Jam</span>
+                        </div>
                         <div class="sla-stage-title">Diverifikasi</div>
-                        <div class="sla-stage-desc">Admin Sarpras mengecek foto & mengklasifikasi tingkat urgensi kerusakan.</div>
+                        <div class="sla-stage-desc">Admin mengecek foto fisik & mengklasifikasi tingkat keparahan aset.</div>
                     </div>
                     <div class="sla-stage-item stage-highlight">
-                        <div class="sla-stage-num">03</div>
+                        <div class="sla-stage-header-row">
+                            <span class="sla-stage-num">03</span>
+                            <span class="sla-badge-time">SLA: &lt; 6 Jam</span>
+                        </div>
                         <div class="sla-stage-title">Disposisi Teknisi</div>
-                        <div class="sla-stage-desc">Penetapan batas SLA & penugasan teknisi spesialis (HVAC/Elektrikal).</div>
+                        <div class="sla-stage-desc">Penetapan target pengerjaan & penugasan teknisi spesialis (HVAC/Listrik).</div>
                     </div>
                     <div class="sla-stage-item">
-                        <div class="sla-stage-num">04</div>
+                        <div class="sla-stage-header-row">
+                            <span class="sla-stage-num">04</span>
+                            <span class="sla-badge-time">SLA: 12-48 Jam</span>
+                        </div>
                         <div class="sla-stage-title">Pengerjaan</div>
-                        <div class="sla-stage-desc">Teknisi melakukan perbaikan lapangan; pelapor memantau status live.</div>
+                        <div class="sla-stage-desc">Teknisi eksekusi lapangan; pelapor dapat memantau status secara live.</div>
                     </div>
                     <div class="sla-stage-item">
-                        <div class="sla-stage-num">05</div>
+                        <div class="sla-stage-header-row">
+                            <span class="sla-stage-num">05</span>
+                            <span class="sla-badge-time">SLA: Tuntas 100%</span>
+                        </div>
                         <div class="sla-stage-title">Selesai Tuntas</div>
-                        <div class="sla-stage-desc">Kerusakan teratasi tuntas, dokumentasi perbaikan diarsipkan otomatis.</div>
+                        <div class="sla-stage-desc">Kerusakan diperbaiki, bukti foto diunggah & tiket resmi ditutup.</div>
                     </div>
                 </div>
             </div>
 
-            <!-- ROW 4: FITUR PELAPOR VS FITUR ADMIN SARPRAS -->
+            <!-- ROW 4: FITUR PELAPOR VS FITUR ADMIN SARPRAS (DENSE & RICH MINI CARDS) -->
             <div class="features-split-grid">
                 <!-- Fitur Pelapor -->
                 <div class="features-block-card card-pelapor">
@@ -1381,28 +1451,28 @@
                             <div class="feat-mini-icon icon-emerald-mini"><i class="fa-solid fa-filter-circle-xmark"></i></div>
                             <div class="feat-mini-text">
                                 <h5>Filter Anti-Spam</h5>
-                                <p>Cegah duplikasi tiket sejenis</p>
+                                <p>Cegah pelaporan tiket ganda sejenis</p>
                             </div>
                         </div>
                         <div class="feat-item-mini">
                             <div class="feat-mini-icon icon-emerald-mini"><i class="fa-solid fa-gauge-high"></i></div>
                             <div class="feat-mini-text">
                                 <h5>Tracking Real-Time</h5>
-                                <p>Pantau 5 tahapan progres</p>
+                                <p>Pantau 5 tahapan progres perbaikan</p>
                             </div>
                         </div>
                         <div class="feat-item-mini">
                             <div class="feat-mini-icon icon-emerald-mini"><i class="fa-solid fa-file-pdf"></i></div>
                             <div class="feat-mini-text">
                                 <h5>Bukti Tiket PDF</h5>
-                                <p>Cetak bukti 1 lembar A4 QR</p>
+                                <p>Cetak bukti 1 lembar A4 QR Code resmi</p>
                             </div>
                         </div>
                         <div class="feat-item-mini">
                             <div class="feat-mini-icon icon-emerald-mini"><i class="fa-solid fa-user-lock"></i></div>
                             <div class="feat-mini-text">
                                 <h5>Kuota 3 Tiket</h5>
-                                <p>Tertib antrean kapasitas teknisi</p>
+                                <p>Antrean tertib seimbang kapasitas teknisi</p>
                             </div>
                         </div>
                     </div>
@@ -1414,56 +1484,56 @@
                         <div class="features-title-label">
                             <i class="fa-solid fa-user-gear" style="color: var(--gold-bright);"></i> Fitur Admin & Teknisi
                         </div>
-                        <span class="features-user-target">Pengelola Sarpras & Teknisi</span>
+                        <span class="features-user-target">Pengelola Sarpras & Tim Teknisi</span>
                     </div>
                     <div class="features-subgrid-six">
                         <div class="feat-item-mini">
                             <div class="feat-mini-icon icon-amber-mini"><i class="fa-solid fa-chart-pie"></i></div>
                             <div class="feat-mini-text">
                                 <h5>Dashboard Metrik</h5>
-                                <p>Monitoring volume tiket live</p>
+                                <p>Monitoring beban tiket & grafik aset</p>
                             </div>
                         </div>
                         <div class="feat-item-mini">
                             <div class="feat-mini-icon icon-amber-mini"><i class="fa-solid fa-stopwatch"></i></div>
                             <div class="feat-mini-text">
                                 <h5>Manajemen SLA</h5>
-                                <p>Batas respon 2, 6, 24, 48 jam</p>
+                                <p>Standar batas respon 2, 6, 24, 48 jam</p>
                             </div>
                         </div>
                         <div class="feat-item-mini">
                             <div class="feat-mini-icon icon-amber-mini"><i class="fa-solid fa-user-check"></i></div>
                             <div class="feat-mini-text">
                                 <h5>Disposisi Cerdas</h5>
-                                <p>Tugaskan teknisi spesialis</p>
+                                <p>Tugaskan teknisi spesialis yang sesuai</p>
                             </div>
                         </div>
                         <div class="feat-item-mini">
                             <div class="feat-mini-icon icon-amber-mini"><i class="fa-solid fa-draw-polygon"></i></div>
                             <div class="feat-mini-text">
                                 <h5>Kelola Poligon GIS</h5>
-                                <p>Atur batas radius 5 kawasan</p>
+                                <p>Atur titik koordinat radius 5 kawasan</p>
                             </div>
                         </div>
                         <div class="feat-item-mini">
                             <div class="feat-mini-icon icon-amber-mini"><i class="fa-solid fa-file-excel"></i></div>
                             <div class="feat-mini-text">
-                                <h5>Rekapitulasi Data</h5>
-                                <p>Ekspor CSV & audit pemeliharaan</p>
+                                <h5>Rekapitulasi Audit</h5>
+                                <p>Ekspor CSV & arsip pemeliharaan rutin</p>
                             </div>
                         </div>
                         <div class="feat-item-mini">
                             <div class="feat-mini-icon icon-amber-mini"><i class="fa-solid fa-camera-rotate"></i></div>
                             <div class="feat-mini-text">
                                 <h5>Verifikasi Selesai</h5>
-                                <p>Dokumentasi foto perbaikan fisik</p>
+                                <p>Wajib unggah foto hasil perbaikan fisik</p>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- ROW 5: SASARAN / TEKNOLOGI / KEUNGGULAN (3 KOLOM BAWAH) -->
+            <!-- ROW 5: SASARAN / TEKNOLOGI / KEUNGGULAN (3 KOLOM BAWAH PADAT) -->
             <div class="bottom-three-grid">
                 <!-- Sasaran -->
                 <div class="bottom-card-box">
@@ -1474,17 +1544,19 @@
                             <div class="bottom-card-title">Pengguna Sistem</div>
                         </div>
                     </div>
-                    <div class="sasaran-row-item">
-                        <div class="sasaran-badge-dot"><i class="fa-solid fa-graduation-cap"></i></div>
-                        <div><strong>Mahasiswa:</strong> Pelapor sarpras kelas & lab</div>
-                    </div>
-                    <div class="sasaran-row-item">
-                        <div class="sasaran-badge-dot"><i class="fa-solid fa-chalkboard-user"></i></div>
-                        <div><strong>Dosen & Tendik:</strong> Pelapor fasilitas kantor</div>
-                    </div>
-                    <div class="sasaran-row-item">
-                        <div class="sasaran-badge-dot"><i class="fa-solid fa-screwdriver-wrench"></i></div>
-                        <div><strong>Tim Sarpras:</strong> Pengelola & eksekutor teknis</div>
+                    <div class="sasaran-container-list">
+                        <div class="sasaran-row-item">
+                            <div class="sasaran-badge-dot"><i class="fa-solid fa-graduation-cap"></i></div>
+                            <div class="sasaran-item-text"><strong>Mahasiswa:</strong> Pelapor sarpras kelas, lab komputer, toilet & fasilitas umum.</div>
+                        </div>
+                        <div class="sasaran-row-item">
+                            <div class="sasaran-badge-dot"><i class="fa-solid fa-chalkboard-user"></i></div>
+                            <div class="sasaran-item-text"><strong>Dosen & Tendik:</strong> Pelapor sarpras ruang kantor, AC ruang kerja & ruang rapat.</div>
+                        </div>
+                        <div class="sasaran-row-item">
+                            <div class="sasaran-badge-dot"><i class="fa-solid fa-screwdriver-wrench"></i></div>
+                            <div class="sasaran-item-text"><strong>Tim Sarpras:</strong> Pengelola disposisi tugas teknisi, SLA & audit berkala.</div>
+                        </div>
                     </div>
                 </div>
 
@@ -1500,7 +1572,7 @@
                     <div class="tech-grid-2x2">
                         <div class="tech-badge-item">
                             <div class="tech-badge-name"><i class="fa-brands fa-html5"></i> PWA Web App</div>
-                            <div class="tech-badge-sub">Service Worker Caching</div>
+                            <div class="tech-badge-sub">Offline Cache & Service Worker</div>
                         </div>
                         <div class="tech-badge-item">
                             <div class="tech-badge-name"><i class="fa-solid fa-map"></i> Leaflet.js</div>
@@ -1508,11 +1580,11 @@
                         </div>
                         <div class="tech-badge-item">
                             <div class="tech-badge-name"><i class="fa-solid fa-cubes"></i> Three.js</div>
-                            <div class="tech-badge-sub">WebGL 3D Campus Tour</div>
+                            <div class="tech-badge-sub">WebGL 3D Campus Cyber</div>
                         </div>
                         <div class="tech-badge-item">
-                            <div class="tech-badge-name"><i class="fa-solid fa-shield-virus"></i> Security</div>
-                            <div class="tech-badge-sub">DOMPurify & Canvas CAPTCHA</div>
+                            <div class="tech-badge-name"><i class="fa-solid fa-shield-halved"></i> Security</div>
+                            <div class="tech-badge-sub">DOMPurify & Anti-Bot CAPTCHA</div>
                         </div>
                     </div>
                 </div>
@@ -1529,19 +1601,19 @@
                     <div class="keunggulan-4-grid">
                         <div class="val-block val-blue">
                             <h6><i class="fa-solid fa-location-crosshairs"></i> Presisi GIS</h6>
-                            <p>Validasi 5 zona koordinat</p>
+                            <p>Bebas laporan palsu luar kampus</p>
                         </div>
                         <div class="val-block val-emerald">
                             <h6><i class="fa-solid fa-eye"></i> Transparan</h6>
-                            <p>Tracking live 5 status</p>
+                            <p>Pantau 5 status perbaikan live</p>
                         </div>
                         <div class="val-block val-amber">
-                            <h6><i class="fa-solid fa-stopwatch"></i> Cepat SLA</h6>
-                            <p>Target waktu terukur</p>
+                            <h6><i class="fa-solid fa-stopwatch"></i> SLA Terukur</h6>
+                            <p>Batas respon & tindakan pasti</p>
                         </div>
                         <div class="val-block val-purple">
                             <h6><i class="fa-solid fa-file-shield"></i> Terarsip</h6>
-                            <p>Bukti PDF resmi QR Code</p>
+                            <p>Bukti PDF resmi ber-QR Code</p>
                         </div>
                     </div>
                 </div>
