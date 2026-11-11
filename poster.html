@@ -1066,7 +1066,37 @@
                 margin: 0;
             }
         }
+
+        /* Export Image Mode */
+        html.export-mode,
+        body.export-mode {
+            padding: 0 !important;
+            margin: 0 !important;
+            background: #ffffff !important;
+            overflow: hidden !important;
+        }
+
+        body.export-mode .control-toolbar {
+            display: none !important;
+        }
+
+        body.export-mode .poster-artboard {
+            width: 100vw !important;
+            height: 100vh !important;
+            max-height: 100vh !important;
+            box-shadow: none !important;
+            border-radius: 0 !important;
+            margin: 0 !important;
+        }
     </style>
+    <script>
+        if (window.location.search.indexOf('export') !== -1) {
+            document.documentElement.classList.add('export-mode');
+            window.addEventListener('DOMContentLoaded', function () {
+                document.body.classList.add('export-mode');
+            });
+        }
+    </script>
 </head>
 
 <body>
