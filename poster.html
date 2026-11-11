@@ -327,7 +327,7 @@
             margin-top: 1px;
         }
 
-        /* Right Side: Desktop / Laptop Device Mockup */
+        /* Right Side: Desktop / Laptop Device Mockup (Canva & Print Clean Vector Friendly) */
         .hero-desktop-showcase {
             position: relative;
             display: flex;
@@ -335,23 +335,24 @@
             align-items: center;
             justify-content: center;
             height: 125px;
+            background: transparent;
         }
 
         .desktop-device-frame {
             width: 100%;
-            max-width: 205px;
-            background: #0f172a;
-            border-radius: 8px 8px 2px 2px;
-            box-shadow: 0 12px 28px -5px rgba(0, 0, 0, 0.7);
-            border: 2px solid #334155;
+            max-width: 212px;
+            background: transparent;
+            border-radius: 7px 7px 0 0;
+            border: 2px solid rgba(212, 163, 67, 0.7);
             overflow: hidden;
             display: flex;
             flex-direction: column;
             position: relative;
+            box-shadow: none;
         }
 
         .desktop-browser-bar {
-            height: 11px;
+            height: 12px;
             background: #1e293b;
             display: flex;
             align-items: center;
@@ -395,8 +396,8 @@
 
         .desktop-screen-viewport {
             width: 100%;
-            height: 98px;
-            background: #000000;
+            height: 100px;
+            background: transparent;
             position: relative;
             overflow: hidden;
         }
@@ -410,12 +411,12 @@
 
         /* Laptop Bottom Base */
         .laptop-bottom-base {
-            width: 220px;
+            width: 226px;
             height: 5px;
-            background: linear-gradient(180deg, #64748b 0%, #334155 100%);
-            border-radius: 0 0 8px 8px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+            background: linear-gradient(180deg, #94a3b8 0%, #475569 100%);
+            border-radius: 0 0 7px 7px;
             position: relative;
+            box-shadow: none;
         }
 
         .laptop-notch-cut {
@@ -426,17 +427,17 @@
             border-radius: 0 0 3px 3px;
         }
 
-        /* Floating Secondary Tablet Card: GIS Map Highlight */
+        /* Secondary Badge Card: Geofencing GIS Highlight (Bebas Black Box Canva) */
         .floating-gis-badge-card {
             position: absolute;
-            bottom: -2px;
-            right: 0px;
-            width: 82px;
+            bottom: 4px;
+            right: 2px;
+            width: 84px;
             background: #ffffff;
-            border-radius: 6px;
+            border-radius: 5px;
             padding: 3px;
-            box-shadow: 0 8px 18px rgba(0, 0, 0, 0.5);
-            border: 1.5px solid var(--gold);
+            border: 2px solid var(--gold);
+            box-shadow: none;
             z-index: 5;
         }
 
@@ -1026,6 +1027,13 @@
            PRINT MEDIA QUERIES - TEPAT 1 LEMBAR A4 FULL TANPA OVERFLOW
            ========================================================================== */
         @media print {
+            * {
+                box-shadow: none !important;
+                text-shadow: none !important;
+                filter: none !important;
+                -webkit-filter: none !important;
+            }
+
             html, body {
                 background: #ffffff !important;
                 padding: 0 !important;
