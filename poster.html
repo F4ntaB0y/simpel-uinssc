@@ -133,6 +133,7 @@
             background: #f8fafc;
             display: flex;
             flex-direction: column;
+            justify-content: space-between;
             position: relative;
             box-sizing: border-box;
             border-radius: 2px;
@@ -222,7 +223,7 @@
             background-position: center;
             background-repeat: no-repeat;
             color: #ffffff;
-            padding: 8px 16px 8px;
+            padding: 9px 18px 9px;
             border-bottom: 3px solid var(--gold);
             flex-shrink: 0;
             position: relative;
@@ -231,7 +232,7 @@
         .hero-banner-inner {
             display: grid;
             grid-template-columns: 1.22fr 0.98fr;
-            gap: 12px;
+            gap: 14px;
             align-items: center;
         }
 
@@ -241,7 +242,7 @@
             gap: 5px;
             background: #d4a343;
             color: #012415;
-            font-size: 7.4px;
+            font-size: 7.6px;
             font-weight: 900;
             letter-spacing: 0.5px;
             padding: 2.5px 8px;
@@ -252,7 +253,7 @@
 
         .hero-main-title {
             font-family: 'Space Grotesk', sans-serif;
-            font-size: 20px;
+            font-size: 21px;
             font-weight: 900;
             line-height: 1.05;
             color: #ffffff;
@@ -265,7 +266,7 @@
         }
 
         .hero-app-name {
-            font-size: 9px;
+            font-size: 9.2px;
             font-weight: 700;
             color: #86efac;
             margin-bottom: 4px;
@@ -278,9 +279,9 @@
             gap: 5px;
             background: #005a36;
             border: 1px solid var(--gold);
-            padding: 2px 7px;
+            padding: 2.5px 8px;
             border-radius: 4px;
-            font-size: 7.6px;
+            font-size: 7.8px;
             font-weight: 800;
             color: #ffffff;
             margin-bottom: 5px;
@@ -291,10 +292,10 @@
         }
 
         .hero-desc-para {
-            font-size: 7.6px;
+            font-size: 7.8px;
             line-height: 1.35;
             color: #e2e8f0;
-            margin-bottom: 6px;
+            margin-bottom: 7px;
             text-align: justify;
         }
 
@@ -308,20 +309,20 @@
             background: #012415;
             border: 1px solid #059669;
             border-radius: 5px;
-            padding: 3px 4px;
+            padding: 3.5px 4px;
             text-align: center;
         }
 
         .hero-pill-num {
             font-family: 'Space Grotesk', sans-serif;
-            font-size: 11px;
+            font-size: 11.5px;
             font-weight: 900;
             color: #fef08a;
             line-height: 1;
         }
 
         .hero-pill-label {
-            font-size: 6.5px;
+            font-size: 6.6px;
             font-weight: 700;
             color: #a7f3d0;
             text-transform: uppercase;
@@ -388,7 +389,7 @@
         .browser-url-pill {
             background: #0f172a;
             color: #94a3b8;
-            font-size: 6.2px;
+            font-size: 6.4px;
             font-family: monospace;
             padding: 1px 7px;
             border-radius: 3px;
@@ -400,13 +401,13 @@
 
         .desktop-screen-viewport {
             width: 100%;
-            height: 82px;
+            height: 90px;
             background: #022c22;
         }
 
         .desktop-screen-viewport img {
             width: 100%;
-            height: 82px;
+            height: 90px;
             object-fit: cover;
             object-position: top center;
             display: block;
@@ -456,14 +457,14 @@
 
         .phone-screen-viewport {
             width: 100%;
-            height: 80px;
+            height: 88px;
             border-radius: 4px;
             background: #000;
         }
 
         .phone-screen-viewport img {
             width: 100%;
-            height: 80px;
+            height: 88px;
             object-fit: cover;
             object-position: top center;
             display: block;
@@ -479,12 +480,12 @@
         }
 
         .hero-laptop-tag {
-            margin-top: 4px;
+            margin-top: 5px;
             background: #012415;
             border: 1px solid var(--gold);
-            padding: 2px 8px;
+            padding: 2.5px 9px;
             border-radius: 4px;
-            font-size: 6.8px;
+            font-size: 7px;
             font-weight: 800;
             color: #fef08a;
             display: flex;
@@ -493,34 +494,35 @@
         }
 
         /* ==========================================================================
-           3. MAIN BODY - ASYMMETRIC DUAL-COLUMN ACADEMIC DASHBOARD
+           3. MAIN BODY - FULL PADAT DUAL-COLUMN RESEARCH DASHBOARD (NO EMPTY GAPS)
            ========================================================================== */
         .poster-dual-columns {
             flex: 1 1 auto;
-            padding: 6px 14px 4px;
+            padding: 6px 14px 5px;
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 8px;
+            gap: 7px;
             background: transparent;
+            box-sizing: border-box;
         }
 
         .poster-col {
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
-            gap: 5px;
-            background: transparent;
+            gap: 7px;
+            height: 100%;
         }
 
-        /* Generic Card Styling */
+        /* Generic Card Styling - Padat, Kokoh & Proporsional Merata */
         .academic-card {
             background: #ffffff;
             border: 1.5px solid #e2e8f0;
             border-radius: 7px;
-            padding: 5px 8px;
+            padding: 6px 9px 5px;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
+            flex: 1 1 0;
+            min-height: 0;
         }
 
         .card-header-bar {
@@ -530,17 +532,18 @@
             margin-bottom: 4px;
             padding-bottom: 2.5px;
             border-bottom: 1.5px solid #f1f5f9;
+            flex-shrink: 0;
         }
 
         .card-header-left {
             display: flex;
             align-items: center;
-            gap: 5px;
+            gap: 6px;
         }
 
         .card-icon-box {
-            width: 19px;
-            height: 19px;
+            width: 20px;
+            height: 20px;
             border-radius: 4px;
             display: flex;
             align-items: center;
@@ -555,7 +558,7 @@
         .icon-gold-tone    { background: #fef7ea; color: #92400e; }
 
         .card-tag-small {
-            font-size: 6.6px;
+            font-size: 6.8px;
             font-weight: 800;
             text-transform: uppercase;
             letter-spacing: 0.4px;
@@ -565,7 +568,7 @@
         }
 
         .card-title-main {
-            font-size: 9.8px;
+            font-size: 10.2px;
             font-weight: 900;
             color: #0f172a;
             line-height: 1.1;
@@ -574,7 +577,7 @@
         .card-pill-tag {
             font-size: 7px;
             font-weight: 800;
-            padding: 1.5px 6px;
+            padding: 2px 7px;
             border-radius: 3px;
         }
 
@@ -590,18 +593,19 @@
             border: 1px solid #fde68a;
         }
 
-        /* Photo Banner Strips */
+        /* Photo Banner Strips - Proporsional & Mengisi Ruang */
         .card-photo-strip {
-            height: 34px;
+            height: 48px;
             border-radius: 5px;
             position: relative;
             margin-bottom: 4px;
             border: 1px solid #cbd5e1;
+            flex-shrink: 0;
         }
 
         .card-photo-strip img {
             width: 100%;
-            height: 34px;
+            height: 48px;
             object-fit: cover;
             display: block;
             border-radius: 4px;
@@ -609,8 +613,8 @@
 
         .photo-overlay-tag {
             position: absolute;
-            bottom: 2.5px;
-            left: 5px;
+            bottom: 3px;
+            left: 6px;
             background: #012415;
             color: #fef08a;
             font-size: 6.8px;
@@ -628,28 +632,37 @@
             grid-template-columns: 1fr 1fr;
             gap: 4px;
             margin-bottom: 4px;
+            flex-shrink: 0;
         }
 
         .dual-photo-row .card-photo-strip {
+            height: 44px;
             margin-bottom: 0;
         }
 
-        /* Bullet List Items */
+        .dual-photo-row .card-photo-strip img {
+            height: 44px;
+        }
+
+        /* Bullet List Items - Mengisi Vertikal Penuh */
         .bullet-list-col {
             display: flex;
             flex-direction: column;
-            gap: 3px;
+            justify-content: space-between;
+            gap: 3.5px;
             flex: 1;
+            min-height: 0;
         }
 
         .bullet-item-box {
             background: #f8fafc;
             border: 1px solid #f1f5f9;
-            border-radius: 4px;
-            padding: 3px 5px;
+            border-radius: 5px;
+            padding: 4px 6.5px;
             display: flex;
             align-items: center;
-            gap: 5px;
+            gap: 6px;
+            flex: 1;
         }
 
         .bullet-item-box i {
@@ -658,9 +671,9 @@
         }
 
         .bullet-item-text {
-            font-size: 7.4px;
+            font-size: 8.2px;
             color: var(--slate-700);
-            line-height: 1.28;
+            line-height: 1.34;
         }
 
         .bullet-item-text strong {
@@ -672,26 +685,29 @@
         .bullet-green   { color: #15803d; }
         .bullet-emerald { color: #047857; }
 
-        /* Stepper 8-Grid (Cara Kerja Alur 4x2) */
+        /* Stepper 8-Grid (Cara Kerja Alur 4x2 - Mengisi Penuh) */
         .stepper-4x2-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 3.5px;
+            grid-template-rows: 1fr 1fr;
+            gap: 4px;
+            flex: 1;
+            min-height: 0;
         }
 
         .step-mini-node {
             background: #f8fafc;
             border: 1px solid #e2e8f0;
             border-radius: 5px;
-            padding: 3.5px 4px;
+            padding: 5px 4px;
             display: flex;
             align-items: center;
             gap: 5px;
         }
 
         .step-circle-badge {
-            width: 20px;
-            height: 20px;
+            width: 22px;
+            height: 22px;
             border-radius: 50%;
             background: #005a36;
             color: #ffffff;
@@ -706,10 +722,10 @@
 
         .step-num-sup {
             position: absolute;
-            top: -2px;
-            right: -2px;
-            width: 9px;
-            height: 9px;
+            top: -2.5px;
+            right: -2.5px;
+            width: 10px;
+            height: 10px;
             background: var(--gold-bright);
             color: #000;
             border-radius: 50%;
@@ -727,23 +743,24 @@
         }
 
         .step-title-text {
-            font-size: 7.8px;
+            font-size: 8.4px;
             font-weight: 900;
             color: #0f172a;
         }
 
         .step-desc-text {
-            font-size: 6.5px;
+            font-size: 7px;
             color: var(--slate-500);
         }
 
         /* Fitur Split Wrap (List + Visual Showcase) */
         .feature-split-layout {
             display: grid;
-            grid-template-columns: 1.28fr 0.92fr;
+            grid-template-columns: 1.25fr 0.95fr;
             gap: 6px;
             align-items: stretch;
             flex: 1;
+            min-height: 0;
         }
 
         .feature-mini-four {
@@ -756,41 +773,42 @@
         .feat-box-unit {
             background: #f8fafc;
             border: 1px solid #e2e8f0;
-            border-radius: 4px;
-            padding: 3px 5px;
+            border-radius: 5px;
+            padding: 3.5px 6px;
             display: flex;
             align-items: center;
-            gap: 5px;
+            gap: 6px;
         }
 
         .feat-box-unit h5 {
-            font-size: 7.8px;
+            font-size: 8.4px;
             font-weight: 900;
             color: #0f172a;
-            line-height: 1.1;
+            line-height: 1.15;
+            margin-bottom: 1px;
         }
 
         .feat-box-unit p {
-            font-size: 6.6px;
+            font-size: 7px;
             color: var(--slate-600);
-            line-height: 1.2;
+            line-height: 1.22;
         }
 
         .feat-unit-icon {
-            width: 18px;
-            height: 18px;
+            width: 19px;
+            height: 19px;
             border-radius: 4px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 8.5px;
+            font-size: 9px;
             flex-shrink: 0;
         }
 
         .ui-thumbnail-box {
             background: #f1f5f9;
             border: 1.5px solid #cbd5e1;
-            border-radius: 5px;
+            border-radius: 6px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
@@ -799,14 +817,14 @@
         .ui-thumb-top {
             background: #1e293b;
             color: #ffffff;
-            padding: 2px 5px;
-            font-size: 6.2px;
+            padding: 2.5px 5px;
+            font-size: 6.5px;
             font-weight: 800;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            border-top-left-radius: 4px;
-            border-top-right-radius: 4px;
+            border-top-left-radius: 5px;
+            border-top-right-radius: 5px;
         }
 
         .ui-thumb-top span {
@@ -815,7 +833,7 @@
 
         .ui-thumb-img-wrap {
             width: 100%;
-            height: 74px;
+            height: 108px;
             background: #ffffff;
             display: flex;
             align-items: center;
@@ -824,50 +842,54 @@
 
         .ui-thumb-img-wrap img {
             width: 100%;
-            height: 74px;
+            height: 108px;
             object-fit: cover;
             display: block;
         }
 
         .ui-thumb-caption {
             background: #ffffff;
-            padding: 2px 4px;
-            font-size: 6.2px;
+            padding: 2.5px 5px;
+            font-size: 6.5px;
             font-weight: 700;
             color: var(--slate-700);
             border-top: 1px solid #e2e8f0;
             text-align: center;
-            border-bottom-left-radius: 4px;
-            border-bottom-right-radius: 4px;
+            border-bottom-left-radius: 5px;
+            border-bottom-right-radius: 5px;
         }
 
-        /* Sasaran 3 Items */
-        .sasaran-3-row {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
+        /* Sasaran 3 Items Stack Vertikal - Mengisi Penuh */
+        .sasaran-3-rows-wrap {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
             gap: 4px;
+            flex: 1;
+            min-height: 0;
         }
 
-        .sasaran-item-unit {
+        .sasaran-row-card {
             background: #f8fafc;
             border: 1px solid #e2e8f0;
-            border-radius: 4px;
-            padding: 4px 5px;
+            border-radius: 5px;
+            padding: 5px 8px;
             display: flex;
             align-items: center;
-            gap: 5px;
+            gap: 7px;
+            flex: 1;
         }
 
         .sasaran-icon-badge {
-            width: 18px;
-            height: 18px;
-            border-radius: 4px;
+            width: 22px;
+            height: 22px;
+            border-radius: 5px;
             background: #dcfce7;
             color: var(--primary);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 8.5px;
+            font-size: 9.5px;
             flex-shrink: 0;
         }
 
@@ -882,9 +904,9 @@
         }
 
         .sasaran-unit-text {
-            font-size: 7.2px;
+            font-size: 8px;
             color: var(--slate-700);
-            line-height: 1.25;
+            line-height: 1.34;
         }
 
         .sasaran-unit-text strong {
@@ -897,13 +919,15 @@
             display: grid;
             grid-template-columns: repeat(5, 1fr);
             gap: 4px;
+            flex: 1;
+            min-height: 0;
         }
 
         .sla-mini-card {
             background: #01361f;
             border: 1.5px solid #059669;
             border-radius: 5px;
-            padding: 4px 5px;
+            padding: 6px 5px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
@@ -923,24 +947,24 @@
 
         .sla-mini-num {
             font-family: 'Space Grotesk', sans-serif;
-            font-size: 10px;
+            font-size: 11px;
             font-weight: 900;
             color: #fef08a;
             line-height: 1;
         }
 
         .sla-mini-time {
-            font-size: 5.8px;
+            font-size: 6px;
             font-weight: 800;
             background: #004d2e;
             color: #ffffff;
-            padding: 1px 4px;
+            padding: 1.5px 4.5px;
             border-radius: 2.5px;
             border: 1px solid #10b981;
         }
 
         .sla-mini-title {
-            font-size: 8px;
+            font-size: 8.6px;
             font-weight: 800;
             color: #ffffff;
             line-height: 1.15;
@@ -948,9 +972,9 @@
         }
 
         .sla-mini-desc {
-            font-size: 6.4px;
+            font-size: 7px;
             color: #d1fae5;
-            line-height: 1.22;
+            line-height: 1.25;
         }
 
         /* Teknologi & Nilai Lebih Split */
@@ -960,44 +984,46 @@
             gap: 6px;
             align-items: stretch;
             flex: 1;
+            min-height: 0;
         }
 
         .tech-2x2-box {
             display: grid;
             grid-template-columns: 1fr 1fr;
+            grid-template-rows: 1fr 1fr;
             gap: 3.5px;
         }
 
         .tech-badge-card {
             background: #f8fafc;
             border: 1px solid #e2e8f0;
-            border-radius: 4px;
-            padding: 3.5px 5px;
+            border-radius: 5px;
+            padding: 4px 6px;
             display: flex;
             flex-direction: column;
             justify-content: center;
         }
 
         .tech-badge-title {
-            font-size: 7.6px;
+            font-size: 8px;
             font-weight: 800;
             color: #0f172a;
             display: flex;
             align-items: center;
             gap: 4px;
-            margin-bottom: 1px;
+            margin-bottom: 1.5px;
         }
 
         .tech-badge-detail {
-            font-size: 6.3px;
+            font-size: 6.8px;
             color: var(--slate-600);
-            line-height: 1.15;
+            line-height: 1.2;
         }
 
         .keunggulan-right-wrap {
             display: grid;
             grid-template-columns: 0.85fr 1.15fr;
-            gap: 5px;
+            gap: 4px;
             align-items: stretch;
         }
 
@@ -1009,20 +1035,20 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 3px;
+            padding: 4px;
             text-align: center;
         }
 
         .emblem-box-unit img {
             width: 100%;
-            max-height: 48px;
+            max-height: 58px;
             object-fit: contain;
             display: block;
             margin-bottom: 2px;
         }
 
         .emblem-label {
-            font-size: 5.8px;
+            font-size: 6px;
             font-weight: 900;
             color: var(--primary);
             text-transform: uppercase;
@@ -1038,7 +1064,7 @@
 
         .val-unit-card {
             border-radius: 4px;
-            padding: 3.5px 4.5px;
+            padding: 4px 5px;
             color: #ffffff;
             display: flex;
             flex-direction: column;
@@ -1046,7 +1072,7 @@
         }
 
         .val-unit-card h6 {
-            font-size: 7.4px;
+            font-size: 7.8px;
             font-weight: 900;
             margin-bottom: 1px;
             display: flex;
@@ -1055,8 +1081,8 @@
         }
 
         .val-unit-card p {
-            font-size: 6.2px;
-            line-height: 1.15;
+            font-size: 6.6px;
+            line-height: 1.2;
             color: #f1f5f9;
         }
 
@@ -1075,7 +1101,7 @@
             justify-content: space-between;
             border-top: 2px solid var(--gold);
             flex-shrink: 0;
-            height: 34px;
+            height: 36px;
         }
 
         .footer-tagline-text {
@@ -1084,7 +1110,7 @@
         }
 
         .footer-tagline-bold {
-            font-size: 8.8px;
+            font-size: 9px;
             font-weight: 900;
             color: #fef08a;
             letter-spacing: 0.4px;
@@ -1096,7 +1122,7 @@
         }
 
         .footer-inst-name {
-            font-size: 7.2px;
+            font-size: 7.4px;
             color: #a7f3d0;
             font-weight: 500;
         }
@@ -1110,9 +1136,9 @@
         .footer-pill-item {
             background: #004d2e;
             border: 1px solid var(--gold);
-            padding: 2px 7px;
+            padding: 2.5px 8px;
             border-radius: 4px;
-            font-size: 7px;
+            font-size: 7.2px;
             font-weight: 700;
             color: #ffffff;
             display: flex;
@@ -1188,7 +1214,7 @@
     <div class="control-toolbar">
         <div class="toolbar-info">
             <h2>Poster Ilmiah SIMPEL UINSSC (Tata Letak Baru: Dual-Column Scientific Dashboard)</h2>
-            <p>Format 2 Kolom Riset Konferensi AICIS 2026, 100% Konten Utuh, Kaya Gambar, Elemen Mandiri & Siap Edit di Canva.</p>
+            <p>Format 2 Kolom Riset Konferensi AICIS 2026, 100% Konten Utuh, Penuh & Padat, Tanpa Ruang Kosong, Siap Edit Canva.</p>
         </div>
         <div class="toolbar-actions">
             <button class="btn-action btn-print" onclick="window.print()">
@@ -1491,18 +1517,18 @@
                         </div>
                         <span class="card-pill-tag tag-green-sub">Sivitas Akademika</span>
                     </div>
-                    <div class="sasaran-3-row">
-                        <div class="sasaran-item-unit">
+                    <div class="sasaran-3-rows-wrap">
+                        <div class="sasaran-row-card">
                             <div class="sasaran-icon-badge"><i class="fa-solid fa-graduation-cap"></i></div>
-                            <div class="sasaran-unit-text"><strong>Mahasiswa:</strong> Lapor sarpras kelas, lab komputer & toilet.</div>
+                            <div class="sasaran-unit-text"><strong>Mahasiswa:</strong> Pelapor sarpras kelas, lab komputer, fasilitas olahraga & toilet kampus.</div>
                         </div>
-                        <div class="sasaran-item-unit">
+                        <div class="sasaran-row-card">
                             <div class="sasaran-icon-badge gold-badge"><i class="fa-solid fa-chalkboard-user"></i></div>
-                            <div class="sasaran-unit-text"><strong>Dosen & Tendik:</strong> Lapor sarpras ruang kantor, AC & rapat.</div>
+                            <div class="sasaran-unit-text"><strong>Dosen & Tendik:</strong> Pelapor sarpras ruang kantor, ruang rapat & pendingin AC gedung.</div>
                         </div>
-                        <div class="sasaran-item-unit">
+                        <div class="sasaran-row-card">
                             <div class="sasaran-icon-badge dark-badge"><i class="fa-solid fa-screwdriver-wrench"></i></div>
-                            <div class="sasaran-unit-text"><strong>Tim Sarpras:</strong> Disposisi teknisi, kelola SLA & audit rutin.</div>
+                            <div class="sasaran-unit-text"><strong>Tim Sarpras:</strong> Pengelola disposisi tugas teknisi, kontrol SLA & audit berkala.</div>
                         </div>
                     </div>
                 </div>
@@ -1551,7 +1577,7 @@
                         </div>
                         <div class="bullet-item-box">
                             <i class="fa-solid fa-bolt bullet-emerald"></i>
-                            <div class="bullet-item-text"><strong>Kelistrikan & HVAC:</strong> Perbaikan panel MCB gedung, stopkontak kelas, AC kuliah & server lab cyber.</div>
+                            <div class="bullet-item-text"><strong>Kelistrikan & Pendingin HVAC:</strong> Panel MCB gedung, stopkontak kelas, AC kuliah & pendingin lab server cyber.</div>
                         </div>
                         <div class="bullet-item-box">
                             <i class="fa-solid fa-toolbox bullet-emerald"></i>
