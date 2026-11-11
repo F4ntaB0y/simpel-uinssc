@@ -1255,87 +1255,42 @@
             white-space: nowrap;
         }
 
-        /* Teknologi & Nilai Lebih Split 50/50 Seimbang & Harmonis */
-        .tech-clean-split {
-            display: grid;
-            grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-            gap: 5px;
-            align-items: stretch;
-            flex: 1;
-            min-height: 0;
-            min-width: 0;
-        }
-
-        .tech-col-half,
-        .value-col-half {
+        /* Teknologi & Nilai Lebih Split 50/50 Simetris & Harmonis */
+        .tech-value-container {
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
-            min-height: 0;
-            min-width: 0;
-            overflow: hidden;
-        }
-
-        .tech-2x2-box {
-            display: grid;
-            grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-            grid-template-rows: 1fr 1fr;
             gap: 3px;
             flex: 1;
             min-height: 0;
             min-width: 0;
         }
 
-        .tech-badge-card {
-            background: #f8fafc;
-            border: 1px solid #e2e8f0;
-            border-radius: 5px;
-            padding: 3.5px 5px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            min-width: 0;
-            overflow: hidden;
-        }
-
-        .tech-badge-title {
-            font-size: 7.6px;
-            font-weight: 800;
-            color: #0f172a;
-            display: flex;
-            align-items: center;
-            gap: 3.5px;
-            margin-bottom: 1px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .tech-badge-detail {
-            font-size: 6.4px;
-            color: var(--slate-600);
-            line-height: 1.16;
-            word-break: break-word;
-        }
-
-        /* Brand Banner Strip Atas */
-        .brand-official-banner {
+        /* Full-width Brand Banner Strip di bagian atas kartu R4 */
+        .tech-brand-banner {
             background: #fefce8;
             border: 1.2px solid #fde68a;
-            border-radius: 5px;
-            padding: 2.5px 5.5px;
+            border-radius: 4px;
+            padding: 2px 5.5px;
             display: flex;
             align-items: center;
-            gap: 5.5px;
-            margin-bottom: 3px;
+            justify-content: space-between;
             flex-shrink: 0;
+            min-width: 0;
+            overflow: hidden;
+            box-sizing: border-box;
+        }
+
+        .tech-brand-left {
+            display: flex;
+            align-items: center;
+            gap: 4.5px;
             min-width: 0;
             overflow: hidden;
         }
 
         .brand-mini-emblem {
-            width: 20px;
-            height: 20px;
+            width: 17px;
+            height: 17px;
             object-fit: contain;
             display: block;
             border-radius: 3px;
@@ -1351,7 +1306,7 @@
         }
 
         .brand-banner-name {
-            font-size: 7.4px;
+            font-size: 7.2px;
             font-weight: 900;
             color: #005a36;
             letter-spacing: 0.3px;
@@ -1361,7 +1316,7 @@
         }
 
         .brand-banner-desc {
-            font-size: 6px;
+            font-size: 5.6px;
             color: #92400e;
             font-weight: 600;
             white-space: nowrap;
@@ -1369,7 +1324,71 @@
             text-overflow: ellipsis;
         }
 
-        /* 4 Value Benefit Cards (Clean Academic Style) */
+        .tech-brand-tags {
+            display: flex;
+            align-items: center;
+            gap: 3px;
+            flex-shrink: 0;
+        }
+
+        .brand-sub-tag {
+            background: #ffffff;
+            border: 1px solid #fde68a;
+            color: #92400e;
+            font-size: 5.2px;
+            font-weight: 700;
+            padding: 0.8px 3px;
+            border-radius: 2px;
+            display: flex;
+            align-items: center;
+            gap: 2px;
+            line-height: 1;
+            white-space: nowrap;
+        }
+
+        /* 2 Kolom Seimbang: Sisi Kiri (Teknologi) & Sisi Kanan (Keunggulan) */
+        .tech-clean-split {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+            gap: 5px;
+            align-items: stretch;
+            flex: 1;
+            min-height: 0;
+            min-width: 0;
+        }
+
+        .tech-col-half,
+        .value-col-half {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            min-height: 0;
+            min-width: 0;
+            overflow: hidden;
+        }
+
+        .sub-column-title {
+            font-size: 6px;
+            font-weight: 800;
+            color: #005a36;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            display: flex;
+            align-items: center;
+            gap: 3px;
+            margin-bottom: 0.5px;
+            flex-shrink: 0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .sub-column-title i {
+            font-size: 6.5px;
+            color: #059669;
+        }
+
+        .tech-2x2-box,
         .val-clean-grid {
             display: grid;
             grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
@@ -1380,56 +1399,77 @@
             min-width: 0;
         }
 
+        .tech-badge-card,
         .val-clean-card {
             background: #f8fafc;
             border: 1px solid #e2e8f0;
-            border-radius: 5px;
-            padding: 3.5px 5px;
+            border-radius: 4px;
+            padding: 3px 4px 2.5px;
             display: flex;
             flex-direction: column;
-            justify-content: center;
+            justify-content: space-between;
             min-width: 0;
             overflow: hidden;
+            box-sizing: border-box;
         }
 
-        .val-border-green   { border-left: 3px solid #005a36; }
-        .val-border-emerald { border-left: 3px solid #059669; }
-        .val-border-amber   { border-left: 3px solid #d97706; }
-        .val-border-teal    { border-left: 3px solid #0d9488; }
-
-        .val-card-head {
+        .tech-badge-title,
+        .val-card-title-row {
             display: flex;
             align-items: center;
-            gap: 3.5px;
+            gap: 3px;
+            font-size: 7.2px;
+            font-weight: 900;
+            color: #0f172a;
+            line-height: 1.15;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
             margin-bottom: 1px;
-            min-width: 0;
         }
 
-        .val-card-head i {
+        .tech-badge-title i,
+        .val-card-title-row i {
             font-size: 7.2px;
             flex-shrink: 0;
         }
 
-        .val-ico-green   { color: #005a36; }
-        .val-ico-emerald { color: #059669; }
-        .val-ico-amber   { color: #d97706; }
-        .val-ico-teal    { color: #0d9488; }
-
-        .val-card-title {
-            font-size: 7.5px;
-            font-weight: 800;
-            color: #0f172a;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
+        .tech-badge-detail,
         .val-card-desc {
-            font-size: 6.3px;
+            font-size: 5.6px;
             color: var(--slate-600);
-            line-height: 1.16;
+            line-height: 1.15;
+            margin-bottom: 1.5px;
             word-break: break-word;
         }
+
+        .tech-mini-pill,
+        .val-mini-pill {
+            align-self: flex-start;
+            font-size: 5px;
+            font-weight: 800;
+            padding: 0.8px 3px;
+            border-radius: 2px;
+            line-height: 1;
+            white-space: nowrap;
+        }
+
+        .tech-mini-pill {
+            background: #ecfdf5;
+            color: #047857;
+            border: 1px solid #a7f3d0;
+        }
+
+        .val-mini-pill {
+            background: #fefce8;
+            color: #92400e;
+            border: 1px solid #fde68a;
+        }
+
+        .val-border-green   { border-left: 2.5px solid #005a36; }
+        .val-border-emerald { border-left: 2.5px solid #059669; }
+        .val-border-amber   { border-left: 2.5px solid #d97706; }
+        .val-border-teal    { border-left: 2.5px solid #0d9488; }
 
         /* 4. BOTTOM FOOTER BAR WITH INTEGRATED QR CODE SLOT */
         .poster-bottom-footer {
@@ -2253,66 +2293,91 @@
                         </div>
                         <span class="card-pill-tag tag-green-sub">Inovasi Siber UINSSC</span>
                     </div>
-                    <div class="tech-clean-split">
-                        <!-- Kolom Kiri: Teknologi 2x2 -->
-                        <div class="tech-col-half">
-                            <div class="tech-2x2-box">
-                                <div class="tech-badge-card">
-                                    <div class="tech-badge-title"><i class="fa-brands fa-html5" style="color: var(--primary);"></i> PWA Web App</div>
-                                    <div class="tech-badge-detail">Service Worker v2, offline cache &amp; mobile installable.</div>
+                    <div class="tech-value-container">
+                        <!-- Full-Width Brand Banner Strip -->
+                        <div class="tech-brand-banner">
+                            <div class="tech-brand-left">
+                                <img src="assets/img/preview_modern_elegant_1.jpg" alt="Logo Brand SIMPEL" class="brand-mini-emblem">
+                                <div class="brand-banner-text">
+                                    <span class="brand-banner-name">SIMPEL SARPRAS &mdash; Brand Resmi UIN Siber Cirebon</span>
+                                    <span class="brand-banner-desc">Sistem Informasi Pelaporan &amp; Pemeliharaan Fasilitas Digital Kampus</span>
                                 </div>
-                                <div class="tech-badge-card">
-                                    <div class="tech-badge-title"><i class="fa-solid fa-map-location-dot" style="color: var(--emerald-600);"></i> Leaflet.js GIS</div>
-                                    <div class="tech-badge-detail">Formula Haversine &amp; matriks poligon 5 kawasan.</div>
-                                </div>
-                                <div class="tech-badge-card">
-                                    <div class="tech-badge-title"><i class="fa-solid fa-cubes" style="color: var(--gold-dark);"></i> Three.js 3D</div>
-                                    <div class="tech-badge-detail">WebGL render 3D gedung cyber &amp; visualisasi aset.</div>
-                                </div>
-                                <div class="tech-badge-card">
-                                    <div class="tech-badge-title"><i class="fa-solid fa-shield-halved" style="color: var(--primary-dark);"></i> Keamanan Web</div>
-                                    <div class="tech-badge-detail">Sanitasi DOMPurify, token CSRF &amp; anti-bot CAPTCHA.</div>
-                                </div>
+                            </div>
+                            <div class="tech-brand-tags">
+                                <span class="brand-sub-tag"><i class="fa-solid fa-code"></i> PWA v2</span>
+                                <span class="brand-sub-tag"><i class="fa-solid fa-shield-halved"></i> Aman</span>
                             </div>
                         </div>
 
-                        <!-- Kolom Kanan: Brand Banner + 4 Value Cards -->
-                        <div class="value-col-half">
-                            <div class="brand-official-banner">
-                                <img src="assets/img/preview_modern_elegant_1.jpg" alt="Logo Brand SIMPEL" class="brand-mini-emblem">
-                                <div class="brand-banner-text">
-                                    <span class="brand-banner-name">SIMPEL SARPRAS</span>
-                                    <span class="brand-banner-desc">Brand Resmi Layanan Sarpras Digital UINSSC</span>
+                        <!-- Symmetrical 50/50 Dual Columns -->
+                        <div class="tech-clean-split">
+                            <!-- Kolom Kiri: 4 Komponen Teknologi PWA -->
+                            <div class="tech-col-half">
+                                <div class="sub-column-title"><i class="fa-solid fa-cubes"></i> 4 Pilar Teknologi PWA</div>
+                                <div class="tech-2x2-box">
+                                    <div class="tech-badge-card">
+                                        <div class="tech-badge-title">
+                                            <i class="fa-brands fa-html5" style="color: var(--primary);"></i> PWA Web
+                                        </div>
+                                        <div class="tech-badge-detail">Service Worker v2 &amp; cache offline.</div>
+                                        <span class="tech-mini-pill">Multi-Device</span>
+                                    </div>
+                                    <div class="tech-badge-card">
+                                        <div class="tech-badge-title">
+                                            <i class="fa-solid fa-map-location-dot" style="color: var(--emerald-600);"></i> Leaflet GIS
+                                        </div>
+                                        <div class="tech-badge-detail">Formula Haversine 5 kawasan.</div>
+                                        <span class="tech-mini-pill">Radius Presisi</span>
+                                    </div>
+                                    <div class="tech-badge-card">
+                                        <div class="tech-badge-title">
+                                            <i class="fa-solid fa-cubes" style="color: var(--gold-dark);"></i> Three.js 3D
+                                        </div>
+                                        <div class="tech-badge-detail">WebGL visual denah cyber.</div>
+                                        <span class="tech-mini-pill">Render 3D</span>
+                                    </div>
+                                    <div class="tech-badge-card">
+                                        <div class="tech-badge-title">
+                                            <i class="fa-solid fa-shield-halved" style="color: var(--primary-dark);"></i> Keamanan
+                                        </div>
+                                        <div class="tech-badge-detail">Sanitasi DOMPurify &amp; CSRF.</div>
+                                        <span class="tech-mini-pill">Proteksi Penuh</span>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="val-clean-grid">
-                                <div class="val-clean-card val-border-green">
-                                    <div class="val-card-head">
-                                        <i class="fa-solid fa-location-crosshairs val-ico-green"></i>
-                                        <span class="val-card-title">Presisi GIS</span>
+
+                            <!-- Kolom Kanan: 4 Keunggulan Nilai Tambah -->
+                            <div class="value-col-half">
+                                <div class="sub-column-title"><i class="fa-solid fa-award"></i> 4 Keunggulan Nilai Tambah</div>
+                                <div class="val-clean-grid">
+                                    <div class="val-clean-card val-border-green">
+                                        <div class="val-card-title-row">
+                                            <i class="fa-solid fa-location-crosshairs" style="color: #005a36;"></i> Presisi GIS
+                                        </div>
+                                        <div class="val-card-desc">100% valid radius GPS fisik.</div>
+                                        <span class="val-mini-pill">Anti-Fiktif</span>
                                     </div>
-                                    <div class="val-card-desc">100% valid radius Haversine 5 zona.</div>
-                                </div>
-                                <div class="val-clean-card val-border-emerald">
-                                    <div class="val-card-head">
-                                        <i class="fa-solid fa-eye val-ico-emerald"></i>
-                                        <span class="val-card-title">Transparan</span>
+                                    <div class="val-clean-card val-border-emerald">
+                                        <div class="val-card-title-row">
+                                            <i class="fa-solid fa-eye" style="color: #059669;"></i> Transparan
+                                        </div>
+                                        <div class="val-card-desc">Pantau 5 siklus tiket live.</div>
+                                        <span class="val-mini-pill">Lacak 24/7</span>
                                     </div>
-                                    <div class="val-card-desc">Pantau 5 status tiket real-time.</div>
-                                </div>
-                                <div class="val-clean-card val-border-amber">
-                                    <div class="val-card-head">
-                                        <i class="fa-solid fa-stopwatch val-ico-amber"></i>
-                                        <span class="val-card-title">SLA Terukur</span>
+                                    <div class="val-clean-card val-border-amber">
+                                        <div class="val-card-title-row">
+                                            <i class="fa-solid fa-stopwatch" style="color: #d97706;"></i> SLA Terukur
+                                        </div>
+                                        <div class="val-card-desc">Batas respon 2-48 jam kerja.</div>
+                                        <span class="val-mini-pill">Pasti Tuntas</span>
                                     </div>
-                                    <div class="val-card-desc">Batas respon terstandar 2-48 jam.</div>
-                                </div>
-                                <div class="val-clean-card val-border-teal">
-                                    <div class="val-card-head">
-                                        <i class="fa-solid fa-file-shield val-ico-teal"></i>
-                                        <span class="val-card-title">Terarsip Sah</span>
+                                    <div class="val-clean-card val-border-teal">
+                                        <div class="val-card-title-row">
+                                            <i class="fa-solid fa-file-shield" style="color: #0d9488;"></i> Terarsip Sah
+                                        </div>
+                                        <div class="val-card-desc">Bukti PDF cetak sah ber-QR.</div>
+                                        <span class="val-mini-pill">Legal Formal</span>
                                     </div>
-                                    <div class="val-card-desc">Bukti PDF cetak sah ber-QR Code.</div>
                                 </div>
                             </div>
                         </div>
