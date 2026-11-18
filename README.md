@@ -1,160 +1,169 @@
-# 🏛️ SIMPEL UINSSC - Sistem Informasi Pelaporan Fasilitas Kampus
+# SIMPEL UINSSC - Sistem Informasi Pelaporan & Pemeliharaan Fasilitas Kampus
 
 > **Sistem Informasi Manajemen Pengaduan & Layanan Sarana Prasarana Kampus**  
 > **Universitas Islam Negeri Siber Syekh Nurjati Cirebon (UINSSC)**  
-> Dibuat untuk memenuhi program **Kerja Praktik 2026** serta pemenuhan standar **6 Unit Kompetensi SKKNI BNSP (Web Developer / Junior Web Developer)**.
+> Proyek Pengembangan Sistem dalam rangka **Program Magang / Kerja Praktik (KP) 2026** pada Unit Pengelolaan Sarana dan Prasarana Kampus UINSSC.
 
 ---
 
-## 🏆 Pemenuhan 6 Unit Kompetensi SKKNI BNSP
+## 1. Latar Belakang Proyek Magang
 
-| No | Unit Kompetensi SKKNI | Kode Unit | Implementasi Pada Proyek SIMPEL UINSSC |
-| :--- | :--- | :--- | :--- |
-| **1** | **Mengimplementasikan User Interface** | `J.620100.017.02` | HTML5 Semantic Elements (`<header>`, `<main>`, `<nav>`, `<aside>`, `<form>`, `<section>`), Layout Responsif Desktop/Tablet/Mobile, Tema Branding *UINSSC Emerald Green (#005A36) & Metallic Gold (#C59235)*, kartu glassmorphism, dan PWA (*Progressive Web App*). |
-| **2** | **Menerapkan perintah eksekusi bahasa pemrograman berbasis teks, grafik, dan multimedia** | `J.620100.016.01` | Sanitasi input string & XSS prevention (`DOMPurify` & `escapeHtml`), *Dynamic Multi-Chart Analytics* menggunakan Chart.js (Grafik Tren Bulanan, Distribusi Status, Kawasan, dan Waktu SLA), Peta Interaktif `Leaflet.js`, Poligon Geofencing Dinamis, dan kompresi foto `FileReader API`. |
-| **3** | **Menyusun fungsi, file atau sumber daya pemrograman yang lain dalam organisasi yang rapih** | `J.620100.018.02` | Arsitektur modular terorganisir: `index.html` (gateway login), `pages/` (user & admin views), `css/` (user & admin stylesheets), `js/` (logic modular), `api/` (RESTful router & handlers), `config/` (koneksi database), serta `assets/` (logo & favicon). |
-| **4** | **Menulis kode dengan prinsip sesuai guidelines dan best practices** | `J.620100.019.02` | Penamaan konvensi `camelCase`, komentar dokumentasi JSDoc terstruktur, penanganan exception `try-catch`, audit trail logging, dan export berkas formal (CSV data & Lembar Rekap Cetak PDF Resmi UINSSC). |
-| **5** | **Mengimplementasikan pemrograman terstruktur** | `J.620100.021.02` | Kontrol alur terstruktur (*Sequencing, Conditional Branching, Iteration* metode array modern `filter`, `map`, `reduce`), state management modular, sinkronisasi ganda `localStorage` & MySQL PDO. |
-| **6** | **Menggunakan library atau komponen pre-existing** | `J.620100.025.01` | **Leaflet.js 1.9.4** & **Leaflet.heat** (GIS Map, Geofencing Poligon & Heatmap Kerusakan), **Chart.js** (Visualisasi Statistik), **SweetAlert2** (Modal Dialog Interaktif), **DOMPurify** (Sanitasi Keamanan), **Font Awesome 6.4.0**, dan **Google Fonts Plus Jakarta Sans**. |
+Universitas Islam Negeri Siber Syekh Nurjati Cirebon (UINSSC) sebagai pelopor perguruan tinggi keagamaan Islam berbasis siber memerlukan tata kelola sarana dan prasarana yang tanggap, transparan, dan terukur. Selama ini, proses pelaporan gangguan fasilitas kampus (seperti pendingin ruangan AC, proyektor ruang kuliah, instalasi kelistrikan, sanitasi, dan infrastruktur gedung) menghadapi sejumlah kendala operasional:
+
+1. **Kanal Pengaduan Konvensional:** Keluhan fasilitas disampaikan secara lisan atau percakapan WhatsApp personal yang rentan tercecer tanpa rekam jejak tiket resmi.
+2. **Ketiadaan Validasi Spasial:** Rentan timbul laporan bias atau salah lokasi karena pelapor tidak menyertakan bukti fisik dan titik koordinat gedung yang akurat.
+3. **Batas Waktu Respon Belum Terstandarisasi:** Belum tersedianya parameter Service Level Agreement (SLA) waktu penyelesaian terukur untuk menilai kinerja divisi pemeliharaan sarpras.
+4. **Duplikasi Laporan Kerusakan:** Satu fasilitas rusak dilaporkan berulang kali oleh pihak berbeda sehingga membebani antrean tugas teknisi.
+
+Melalui program magang/kerja praktik ini, dibangun aplikasi web terpadu **SIMPEL UINSSC** guna mengotomasi seluruh siklus pengaduan, verifikasi geofencing presisi, disposisi tugas teknisi, hingga penerbitan lembar bukti PDF ber-QR Code secara elektronik.
 
 ---
 
-## 📂 Struktur Berkas Proyek (Modular Architecture)
+## 2. Tujuan & Sasaran Proyek
+
+1. **Membangun Portal Pengaduan Publik Mandiri:** Memudahkan mahasiswa, dosen, dan tenaga kependidikan dalam menyampaikan laporan kerusakan fasilitas kampus secara terstruktur.
+2. **Menerapkan Validasi Koordinat GPS & Geofencing:** Memastikan seluruh pengaduan yang diajukan terverifikasi secara spasial berada dalam 5 kawasan resmi kampus UINSSC menggunakan formula Haversine.
+3. **Menegakkan Standarisasi Waktu Penyelesaian (SLA):** Menetapkan target waktu tanggap bertingkat (mulai dari 2 jam hingga maksimal 48 jam kerja) berdasarkan tingkat keparahan insiden.
+4. **Menyediakan Dasbor Analitik & Peta Panas (Damage Heatmap):** Membantu pimpinan unit sarpras memantau beban penanganan, sebaran titik insiden per gedung, serta tren kerusakan fasilitas secara real-time.
+5. **Mewujudkan Akuntabilitas Melalui Dokumen Digital:** Menerbitkan nomor tiket pelaporan (TRK), lembar tiket PDF resmi siap cetak, serta verifikasi pemindaian QR Code di lapangan.
+
+---
+
+## 3. Ruang Lingkup Pekerjaan Magang
+
+Selama pelaksanaan program magang, ruang lingkup pekerjaan pengembangan mencakup:
+- **Analisis Kebutuhan & Desain Alur Layanan:** Perumusan SOP 5 tahap penanganan tiket (Diajukan, Diverifikasi, Disposisi, Pengerjaan, Selesai).
+- **Pengembangan Antarmuka Pengguna (Frontend):** Implementasi desain responsif, ramah mobile, tema identitas institusi (Emerald Green & Gold), dan kapabilitas Progressive Web App (PWA).
+- **Integrasi Pemetaan Spasial (GIS):** Pembuatan peta interaktif menggunakan Leaflet.js, penentuan poligon 5 kawasan kampus, dan visualisasi Damage Heatmap.
+- **Pengembangan Backend & Basis Data:** Penyusunan endpoint RESTful API berbasis PHP PDO, skema relasional tabel MySQL, sanitasi keamanan data (anti-XSS via DOMPurify), serta pembatasan berkas unggahan maksimal 5 MB.
+- **Fitur Keamanan & Otomasi:** Penerapan sesi logout otomatis setelah 20 menit tidak ada aktivitas, mekanisme rate-limiting anti-spam, kompresi gambar berbasis Canvas, serta pembagian peran pengguna (Multi-Role Authentication).
+
+---
+
+## 4. Struktur Berkas Proyek
 
 ```
 c:\Users\ASUS\OneDrive\Desktop\Kerja Praktik 2026\
-├── README.md                     # Dokumentasi Resmi Proyek Kerja Praktik & BNSP
-├── index.html                    # Gateway Portal / Launcher Login Multi-Role
+├── README.md                     # Dokumentasi Resmi Proyek Magang SIMPEL UINSSC
+├── index.html                    # Gateway Portal / Antarmuka Login Multi-Role
 ├── manifest.json                 # Web App Manifest untuk Progressive Web App (PWA)
-├── sw.js                         # Service Worker PWA (Offline Caching & Shell Pre-cache)
-├── schema.sql                    # Skema Tabel MySQL Laragon (Reports, Zones, Staff, Categories, Audit)
-├── api.php                       # Entrypoint API Shortcut
-├── api/                          # 📁 Endpoint RESTful API Backend
-│   ├── index.php                 # Central API Router / Request Dispatcher
+├── sw.js                         # Service Worker PWA (Offline Shell & Asset Caching)
+├── schema.sql                    # Skema Basis Data Relasional MySQL
+├── api.php                       # REST API Dispatcher Shortcut
+├── api/                          # Direktori Endpoint RESTful API Backend
+│   ├── index.php                 # Central API Router
 │   ├── reports.php               # Handler CRUD & Sinkronisasi Laporan Sarpras
-│   ├── zones.php                 # Handler Geofencing Kawasan Kampus & Poligon
-│   ├── categories.php            # Handler Master Kategori & SLA Waktu Penanganan
-│   ├── staff.php                 # Handler Manajemen Akun & Penugasan Wilayah Staf
-│   └── Bridge API v2 (...).json  # Koleksi Postman / Insomnia API Test
-├── config/                       # 📁 Konfigurasi Sistem
-│   └── database.php              # Koneksi Database MySQL Laragon via PHP PDO
-├── assets/                       # 📁 Resource Media & Identitas Kampus
+│   ├── zones.php                 # Handler Koordinat Poligon Geofencing Kawasan
+│   ├── categories.php            # Handler Master Kategori Fasilitas & Waktu SLA
+│   ├── staff.php                 # Handler Personil Staf & Penugasan Wilayah Kerja
+│   └── Bridge API v2 (...).json  # Koleksi Spesifikasi API Endpoint
+├── config/                       # Konfigurasi Koneksi Sistem
+│   └── database.php              # Koneksi Basis Data MySQL via PHP PDO
+├── assets/                       # Aset Media & Identitas Kampus
 │   └── img/
-│       ├── logo.png              # Logo Resmi Universitas Islam Negeri Siber Cirebon
-│       └── favicon.png           # Favicon Tab Browser & Ikon PWA
-├── css/                          # 📁 Stylesheets Antarmuka
-│   ├── user.css                  # Styling Portal Pelapor Publik & Komponen Universal
-│   └── admin.css                 # Styling Khusus Dashboard Sarpras & Panel Admin
-├── js/                           # 📁 Script Logika Aplikasi JavaScript
-│   ├── user.js                   # Logic Portal Pelapor (GPS, Leaflet, Form, Cetak Tiket PDF)
-│   └── admin.js                  # Logic Dashboard Admin (KPI, Peta GIS, Geofence, SOC, WhatsApp)
-├── pages/                        # 📁 Halaman Modul Views
-│   ├── user.html                 # Antarmuka Pengaduan Publik & Tracking Tiket
+│       ├── logo.png              # Logo Resmi UIN Siber Cirebon
+│       └── favicon.png           # Favicon & Ikon Aplikasi PWA
+├── css/                          # Stylesheets Antarmuka Pengguna
+│   ├── user.css                  # Desain Khusus Portal Pelapor Civitas Kampus
+│   └── admin.css                 # Desain Khusus Dashboard Tata Kelola Sarpras
+├── js/                           # Skrip Logika Aplikasi Modular
+│   ├── user.js                   # Logika Portal Pelapor (GPS, Leaflet, Form, Cetak PDF, Auto-Logout)
+│   └── admin.js                  # Logika Dashboard Admin (KPI, Peta GIS, Heatmap, SOC, WhatsApp)
+├── pages/                        # Modul Halaman Antarmuka
+│   ├── user.html                 # Antarmuka Pengaduan Publik Civitas & Lacak Tiket
 │   └── admin.html                # Antarmuka Dashboard Admin Sarpras & Super Admin
-└── docs/                         # 📁 Arsip Dokumentasi, Presentasi & Diagram KP
-    ├── CHEATSHEET_BNSP.md
-    ├── DOKUMENTASI_LAYOUT.md
-    ├── DOKUMENTASI_SKKNI.md
-    ├── MATERI_PRESENTASI_PPT.md
-    ├── PANDUAN_PENGGUNAAN.md
-    ├── diagram_sistem.html
-    └── flowchart_sistem.png
+└── docs/                         # Dokumen Panduan & Materi Kerja Praktik
+    ├── DOKUMENTASI_LAYOUT.md     # Panduan Struktur Antarmuka & Tata Letak
+    ├── MATERI_PRESENTASI_PPT.md  # Materi Tayang Sidang / Presentasi Proyek
+    ├── PANDUAN_PENGGUNAAN.md     # Panduan Operasional Pengguna
+    └── diagram_sistem.html       # Visualisasi Diagram Alur Sistem
 ```
 
 ---
 
-## ✨ Fitur-Fitur Utama SIMPEL UINSSC
+## 5. Fitur Utama Sistem
 
-### 1. 🌐 Multi-Role Authentication & Gateway
-- Pemisahan hak akses: **Publik Pelapor (Mahasiswa, Dosen, Tenaga Kependidikan)**, **Admin Sarpras Wilayah**, **Super Admin**, dan **Mitra Kampus**.
-- Dilengkapi captcha interaktif dan proteksi brute-force login.
+### A. Portal Civitas Pelapor (Mahasiswa, Dosen, Tendik)
+- **Pelaporan Terstruktur:** Formulir pengaduan dengan validasi kategori sarpras, ruang/gedung spesifik, tingkat urgensi, serta deskripsi rinci kerusakan.
+- **Deteksi Koordinat GPS & Geofencing:** Peta interaktif Leaflet.js yang mendeteksi posisi pelapor dan mengunci validitas lokasi dalam radius 5 kawasan kampus resmi UINSSC.
+- **Unggah Foto Bukti Fisik:** Mendukung berkas foto berformat JPG, PNG, dan WebP dengan batas maksimal 5 MB serta kompresi otomatis berbasis Canvas.
+- **Lightbox Pratinjau Gambar:** Pratinjau foto resolusi tinggi terintegrasi tanpa risiko layar putih atau tab kosong.
+- **Lacak Progres Real-Time:** Penelusuran status 5 tahapan perkembangan tiket secara transparan.
+- **Lembar Bukti PDF & QR Code:** Ekspor berkas tiket resmi format A4 berstempel digital dan dilengkapi kode QR untuk verifikasi instan di lapangan.
+- **Keamanan Sesi Pengguna:** Otomatis keluar (logout) apabila tidak ada aktivitas selama lebih dari 20 menit guna melindungi privasi akun civitas.
 
-### 2. 🗺️ GIS Map, GPS Geolocation & Multi-Zone Geofencing
-- Peta spasial interaktif menggunakan Leaflet.js dengan penentu koordinat presisi.
-- Deteksi otomatis 5 kawasan kampus resmi:
-  1. **Kawasan Kampus Utama** (Rektorat, FITK, FUAD, FSEI, ICT Center, Perpus)
-  2. **Kawasan Gedung Cyber** (Smart Classrooms, Data Center, Multimedia Lab)
-  3. **Kawasan Kampus Sebrang** (Ormawa, Student Center, Lab Bahasa)
-  4. **Kawasan Pascasarjana & Ma'had** (Gedung Pasca, Ma'had Al-Jami'ah, Masjid)
-  5. **Kawasan Lab Saladara** (Kampus 2 Saladara, Riset Agrotek)
-- **Editor Poligon Geofencing Dinamis**: Penyesuaian titik batas kawasan secara interaktif (*draggable vertex polygon*).
-
-### 3. 👥 Penugasan Wilayah Staf & Teknisi (Staff Zone Assignment)
-- Fitur penugasan multi-wilayah bagi petugas lapangan dan admin sarpras sesuai cakupan kawasan kerjanya.
-- Filter otomatis "Wilayah Tugas Saya" untuk memfokuskan antrean tiket per teknisi.
-
-### 4. 📲 WhatsApp Work Order Dispatcher
-- Integrasi tombol satu-klik menuju WhatsApp dengan format pesan resmi Surat Perintah Kerja (SPK) ke nomor teknisi bertugas dan konfirmasi status ke pelapor.
-
-### 5. 🖨️ Cetak Bukti PDF & Rekapitulasi Resmi Sarpras
-- **Sisi Pelapor**: Cetak tiket PDF bukti pelaporan berlogo resmi kampus dan kode QR pelacakan.
-- **Sisi Admin**: Cetak Lembar Rekapitulasi Laporan Resmi Sarpras Kampus lengkap dengan Kop Surat Kemenag RI / UINSSC, KPI penanganan, tabel insiden, dan kolom pengesahan pimpinan.
-
-### 6. 📊 Multi-Chart KPI Analytics & SLA Tracker
-- Visualisasi 4 grafik terintegrasi Chart.js: Tren bulanan, status insiden, distribusi beban kawasan, dan kepatuhan SLA.
-- Indikator peringatan otomatis untuk tiket perbaikan yang melampaui batas waktu target (*overdue SLA*).
-
-### 7. 🛡️ SOC War Room & Audit Trail Surveillance
-- Panel pemantauan keamanan sistem (Security Operations Center) untuk melacak percobaan login, akses istimewa super admin, dan manipulasi data.
-
-### 8. 📱 Progressive Web App (PWA)
-- Terdaftar dengan `manifest.json` dan `sw.js` (Service Worker) yang memungkinkan instalasi aplikasi di perangkat Android/iOS/Desktop dengan performa caching offline.
+### B. Dasbor Tata Kelola Admin Sarpras & Super Admin
+- **Ringkasan Indikator Kinerja (KPI):** Panel metrik pemantauan total laporan, jumlah tiket dalam penanganan, laporan terselesaikan, dan rasio kepatuhan SLA.
+- **Peta Spasial GIS & Damage Heatmap:** Visualisasi sebaran kerusakan fasilitas dengan pendaran warna gradien (Merah/Oranye/Kuning/Biru) berdasarkan tingkat urgensi insiden.
+- **Editor Poligon Wilayah Kampus:** Kemampuan manajemen titik batas wilayah geofencing interaktif langsung dari peta admin.
+- **Penugasan Wilayah Kerja Staf:** Pembagian zonasi pengawasan bagi teknisi lapangan (Kampus Utama, Gedung Cyber, Pascasarjana, dsb.) disertai filter antrean tugas khusus.
+- **Disposisi Surat Perintah Kerja (SPK) WhatsApp:** Generator format pesan WhatsApp otomatis ke teknisi penanggung jawab spesialisasi.
+- **Pusat Rekapitulasi & Audit Trail (SOC):** Rekapitulasi data laporan ke dalam format cetak lembar resmi ber-Kop Surat atau ekspor CSV, didukung log pengawasan operasional sistem.
 
 ---
 
-## 🚀 Panduan Menjalankan Aplikasi
+## 6. Petunjuk Instalasi & Menjalankan Aplikasi
 
-### Opsi A: Menggunakan Laragon / XAMPP (Direkomendasikan - Full Backend MySQL)
-1. Letakkan folder proyek di dalam direktori root server:
+### Opsi 1: Menggunakan Web Server Lokal (Laragon / XAMPP) - Direkomendasikan
+1. Salin folder proyek ke dalam direktori publik web server:
    - Laragon: `C:\laragon\www\Kerja Praktik 2026`
    - XAMPP: `C:\xampp\htdocs\Kerja Praktik 2026`
-2. Buka **HeidiSQL** atau **phpMyAdmin**, buat database:
+2. Jalankan Apache dan MySQL pada panel server.
+3. Buka **phpMyAdmin** atau **HeidiSQL**, buat basis data baru:
    ```sql
    CREATE DATABASE db_simpel_uinssc;
    ```
-3. Import berkas `schema.sql` ke dalam database `db_simpel_uinssc`.
-4. Sesuaikan kredensial di `config/database.php` (default: host `localhost`, user `root`, password kosong).
-5. Buka peramban (browser) dan akses:
-   - **Beranda Gateway**: `http://localhost/Kerja%20Praktik%202026/index.html`
-   - **Portal Pelapor**: `http://localhost/Kerja%20Praktik%202026/pages/user.html`
-   - **Dashboard Admin**: `http://localhost/Kerja%20Praktik%202026/pages/admin.html`
+4. Impor berkas basis data `schema.sql` ke dalam database `db_simpel_uinssc`.
+5. Pastikan konfigurasi kredensial pada `config/database.php` telah sesuai:
+   ```php
+   $host = 'localhost';
+   $db   = 'db_simpel_uinssc';
+   $user = 'root';
+   $pass = '';
+   ```
+6. Buka peramban web dan akses alamat berikut:
+   - **Halaman Masuk (Gateway):** `http://localhost/Kerja%20Praktik%202026/index.html`
+   - **Portal Civitas Pelapor:** `http://localhost/Kerja%20Praktik%202026/pages/user.html`
+   - **Dashboard Admin Sarpras:** `http://localhost/Kerja%20Praktik%202026/pages/admin.html`
 
-### Opsi B: Menggunakan Local HTTP Server (Python / Node.js)
-Aplikasi mendukung mode client-side standalone dengan penyimpanan `localStorage`:
+### Opsi 2: Menggunakan Server HTTP Sederhana (Standalone Mode)
+Aplikasi mendukung penyimpanan lokal (*localStorage*) untuk pengujian mandiri tanpa konfigurasi database server:
 ```bash
-# Jalankan Python HTTP server di folder proyek
+# Menjalankan HTTP server via Python
 python -m http.server 8080
 ```
-Lalu buka: `http://localhost:8080/index.html`
+Buka peramban pada alamat: `http://localhost:8080/index.html`
 
 ---
 
-## 🔑 Akun Demo Pengujian Sistem
+## 7. Akun Pengujian Sistem (Demo Credentials)
 
-| Role | Username | Password | Wewenang & Akses |
+| Peran (Role) | Username | Kata Sandi | Cakupan Wewenang |
 | :--- | :--- | :--- | :--- |
-| **Super Admin** | `superadmin` | `admin123` | Akses penuh, manajemen akun & wewenang, editor poligon geofencing, SOC war room, audit logs |
-| **Admin Sarpras** | `admin_fauzi` | `admin123` | Pengelolaan tiket perbaikan, delegasi teknisi, cetak rekapitulasi, kawasan tugas Kampus Utama |
-| **Admin Sarpras IT** | `admin_dewi` | `admin123` | Pengelolaan tiket perbaikan, kawasan tugas Gedung Cyber & Pascasarjana |
-| **Mitra Kantin** | `mitra` | `mitra123` | Pengawasan sarana lingkungan pujasera & kantin |
-| **Pelapor Publik** | *(Tanpa Login)* | *(Form Langsung)* | Pelaporan fasilitas via form user, pelacakan tiket, cetak kartu bukti laporan |
+| **Super Admin** | `superadmin` | `admin123` | Akses penuh, manajemen akun staf, konfigurasi geofencing, audit log SOC, pengaturan SLA |
+| **Admin Sarpras Wilayah 1** | `admin_fauzi` | `admin123` | Penanganan tiket fasilitas kawasan Kampus Utama, delegasi teknisi, cetak rekap |
+| **Admin Sarpras Wilayah 2** | `admin_dewi` | `admin123` | Penanganan tiket fasilitas kawasan Gedung Cyber & Pascasarjana |
+| **Mitra Kampus** | `mitra` | `mitra123` | Pengawasan sarana dan fasilitas area kantin / pujasera |
+| **Civitas Pelapor** | *(Akses Publik / SSO)* | *(Formulir Mandiri)* | Pembuatan laporan fasilitas, pelacakan tiket, unduh berkas bukti PDF |
 
 ---
 
-## 📡 Dokumentasi Endpoint RESTful API
+## 8. Spesifikasi Endpoint RESTful API
 
-| Method | Endpoint | Keterangan |
+| Metode | Endpoint | Deskripsi Fungsi |
 | :--- | :--- | :--- |
-| `GET` | `/api/reports.php` | Mengambil seluruh data pengaduan fasilitas dari MySQL |
-| `POST` | `/api/reports.php` | Menyinkronkan dataset laporan fasilitas ke MySQL |
-| `GET` | `/api/zones.php` | Mengambil seluruh batas poligon geofencing 5 kawasan kampus |
-| `POST` | `/api/zones.php` | Memperbarui koordinat poligon batas geofencing kampus |
-| `GET` | `/api/categories.php` | Mengambil daftar master kategori fasilitas & durasi SLA |
-| `POST` | `/api/categories.php` | Menyimpan perubahan kategori fasilitas |
-| `GET` | `/api/staff.php` | Mengambil daftar akun staf/teknisi beserta zonasi wilayah tugas |
-| `POST` | `/api/staff.php` | Menyimpan penugasan wilayah dan data personil |
+| `GET` | `/api/reports.php` | Mengambil daftar seluruh pengaduan fasilitas dari database |
+| `POST` | `/api/reports.php` | Menyimpan atau memperbarui data laporan sarpras |
+| `GET` | `/api/zones.php` | Mengambil titik koordinat poligon geofencing 5 kawasan kampus |
+| `POST` | `/api/zones.php` | Menyimpan pembaruan koordinat poligon geofencing kampus |
+| `GET` | `/api/categories.php` | Mengambil daftar kategori fasilitas dan standar durasi SLA |
+| `POST` | `/api/categories.php` | Memperbarui master data kategori fasilitas |
+| `GET` | `/api/staff.php` | Mengambil data staf teknisi beserta pembagian zonasi wilayah |
+| `POST` | `/api/staff.php` | Menyimpan pembaruan personil dan wilayah penugasan |
 
 ---
 
-&copy; 2026 **UIN Siber Syekh Nurjati Cirebon (UINSSC)**. All Rights Reserved.  
-*Program Kerja Praktik & Pemenuhan Standar Sertifikasi Kompetensi SKKNI BNSP Web Developer.*
+## 9. Hak Cipta & Pengesahan
+
+&copy; 2026 **Universitas Islam Negeri Siber Syekh Nurjati Cirebon (UINSSC)**.  
+Laporan Akhir & Hasil Implementasi Sistem Informasi untuk **Program Magang / Kerja Praktik 2026**.
