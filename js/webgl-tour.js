@@ -59,10 +59,7 @@
       return null;
     }
 
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2.5));
-    if (THREE.sRGBEncoding) {
-      renderer.outputEncoding = THREE.sRGBEncoding;
-    }
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
 
     const camera = new THREE.PerspectiveCamera(45, window.innerWidth / Math.max(window.innerHeight, 1), 0.1, 1000);
     camera.position.set(0, 0, 50);
@@ -122,10 +119,8 @@
     const uMap = { value: null };
     const uCenter = { value: new THREE.Vector2(0.5, 0.5) };
     const uStrength = { value: -1 };
-    const uHeroBounds = { value: new THREE.Vector4(0, 0, 1, 1) };
-    const uBgUvScale = { value: new THREE.Vector2(1, 1) };
-    const uBgUvOffset = { value: new THREE.Vector2(0, 0) };
-    const uParallax = { value: new THREE.Vector2(0, 0) };
+    const uUVOffset = { value: new THREE.Vector2(0, 0) };
+    const uUVScale = { value: new THREE.Vector2(1, 1) };
 
     const geometry = new (THREE.PlaneGeometry || THREE.PlaneBufferGeometry)(1, 1, 1, 1);
 
@@ -135,10 +130,8 @@
         map: uMap,
         center: uCenter,
         strength: uStrength,
-        heroBounds: uHeroBounds,
-        bgUvScale: uBgUvScale,
-        bgUvOffset: uBgUvOffset,
-        parallax: uParallax
+        uvOffset: uUVOffset,
+        uvScale: uUVScale,
       },
       vertexShader: `
         varying vec2 vUv;
@@ -151,60 +144,38 @@
         uniform sampler2D map;
         uniform vec2 center;
         uniform float strength;
-        uniform vec4 heroBounds;
-        uniform vec2 bgUvScale;
-        uniform vec2 bgUvOffset;
-        uniform vec2 parallax;
+        uniform vec2 uvOffset;
+        uniform vec2 uvScale;
         varying vec2 vUv;
 
         float random(vec3 scale, float seed) {
           return fract(sin(dot(gl_FragCoord.xyz + seed, scale)) * 43758.5453 + seed);
         }
-
-        vec4 sampleZoom(sampler2D tex, vec2 uv, vec2 cntr, float str) {
-          if (abs(str) > 0.001) {
-            vec4 col = vec4(0.0);
-            float tot = 0.0;
-            vec2 toC = cntr - uv;
-            float offset = random(vec3(12.9898, 78.233, 151.7182), 0.0);
-            for (float t = 0.0; t <= 16.0; t++) {
-              float pct = (t + offset) / 16.0;
-              float weight = 2.0 * (pct - pct * pct);
-              vec4 texel = texture2D(tex, uv + toC * pct * str);
-              texel.rgb *= texel.a;
-              col += texel * weight;
-              tot += weight;
-            }
-            col = col / tot;
-            col.rgb /= (col.a + 0.00001);
-            col.a = 1.0 - abs(str);
-            return col;
-          }
-          return texture2D(tex, uv);
-        }
-
+        
         void main() {
-          // 1. Ambient Background Layer (seamless 100% full cover without distortion across all devices)
-          vec2 bgUv = clamp(vUv * bgUvScale + bgUvOffset, vec2(0.001), vec2(0.999));
-          vec2 bgCenter = center * bgUvScale + bgUvOffset;
-          vec4 bgCol = sampleZoom(map, bgUv, bgCenter, strength);
-          bgCol.rgb *= 0.58;
+          vec2 tUv = vUv * uvScale + uvOffset;
+          if (abs(strength) > 0.001) {
+            vec4 color = vec4(0.0);
+            float total = 0.0;
+            vec2 toCenter = center * uvScale + uvOffset - tUv;
+            
+            float offset = random(vec3(12.9898, 78.233, 151.7182), 0.0);
+            
+            for (float t = 0.0; t <= 20.0; t++) {
+              float percent = (t + offset) / 20.0;
+              float weight = 2.0 * (percent - percent * percent);
+              vec4 texel = texture2D(map, tUv + toCenter * percent * strength);
 
-          // 2. Sharp HD Hero Subject Layer (Framed so 100% of the building is visible without clipping)
-          vec4 curBounds = heroBounds;
-          curBounds.xy += parallax;
-          vec2 heroUv = (vUv - curBounds.xy) / curBounds.zw;
+              texel.rgb *= texel.a;
+              color += texel * weight;
+              total += weight;
+            }
 
-          if (heroUv.x >= 0.0 && heroUv.x <= 1.0 && heroUv.y >= 0.0 && heroUv.y <= 1.0) {
-            float feather = 0.04;
-            float edgeX = smoothstep(0.0, feather, heroUv.x) * (1.0 - smoothstep(1.0 - feather, 1.0, heroUv.x));
-            float edgeY = smoothstep(0.0, feather, heroUv.y) * (1.0 - smoothstep(1.0 - feather, 1.0, heroUv.y));
-            float edgeAlpha = clamp(edgeX * edgeY, 0.0, 1.0);
-
-            vec4 heroCol = sampleZoom(map, heroUv, center, strength);
-            gl_FragColor = mix(bgCol, heroCol, edgeAlpha);
+            gl_FragColor = color / total;
+            gl_FragColor.rgb /= gl_FragColor.a + 0.00001;
+            gl_FragColor.a = 1.0 - abs(strength);
           } else {
-            gl_FragColor = bgCol;
+            gl_FragColor = texture2D(map, tUv);
           }
         }
       `
@@ -218,42 +189,19 @@
       const iWidth = uMap.value.image.width || 1;
       const iHeight = uMap.value.image.height || 1;
       const iRatio = iWidth / iHeight;
-      const sRatio = three.size.ratio;
-
-      // 1. Ambient Background Cover UVs (guaranteed full screen cover without distortion)
-      if (iRatio > sRatio) {
-        uBgUvScale.value.x = sRatio / iRatio;
-        uBgUvScale.value.y = 1.0;
-        uBgUvOffset.value.x = (1.0 - uBgUvScale.value.x) / 2.0;
-        uBgUvOffset.value.y = 0.0;
+      uUVOffset.value.set(0, 0);
+      uUVScale.value.set(1, 1);
+      if (iRatio > three.size.ratio) {
+        // Layar portrait/mobile: fokuskan framing pada arsitektur utama gedung & motif batik
+        uUVScale.value.x = three.size.ratio / iRatio;
+        uUVOffset.value.x = (1 - uUVScale.value.x) * 0.45;
+        uUVOffset.value.y = 0;
       } else {
-        uBgUvScale.value.x = 1.0;
-        uBgUvScale.value.y = iRatio / sRatio;
-        uBgUvOffset.value.x = 0.0;
-        uBgUvOffset.value.y = (1.0 - uBgUvScale.value.y) / 2.0;
+        // Layar widescreen desktop/ultrawide: pertahankan atap & langit agar gedung tidak terpotong
+        uUVScale.value.y = iRatio / three.size.ratio;
+        uUVOffset.value.y = (1 - uUVScale.value.y) * 0.70;
+        uUVOffset.value.x = 0;
       }
-
-      // 2. Hero Subject Bounds (x, y, width, height) in screen UV space [0, 1]
-      // Full architectural containment so roof, spire, and wings are never cut off
-      let heroW, heroH, heroX, heroY;
-
-      if (sRatio >= iRatio) {
-        // Landscape / Widescreen / Ultrawide / Desktop
-        // Keep 96% height with 4% headroom for top navigation bar
-        heroH = 0.96;
-        heroW = heroH * (iRatio / sRatio);
-        heroX = (1.0 - heroW) / 2.0;
-        heroY = 0.01; // Anchored cleanly: top at 0.97
-      } else {
-        // Portrait / Mobile / Tablet Portrait
-        // Width fills 100% of viewport width
-        heroW = 1.0;
-        heroH = heroW * (sRatio / iRatio);
-        heroX = 0.0;
-        heroY = Math.max(0.02, (1.0 - heroH) * 0.65);
-      }
-
-      uHeroBounds.value.set(heroX, heroY, heroW, heroH);
     }
 
     function setMap(texture) {
@@ -261,7 +209,7 @@
       resize();
     }
 
-    return { geometry, material, mesh, uCenter, uStrength, uParallax, setMap, resize };
+    return { geometry, material, mesh, uCenter, uStrength, setMap, resize };
   }
 
   function initWebGLTour() {
@@ -285,15 +233,6 @@
             texture.generateMipmaps = true;
             texture.minFilter = THREE.LinearMipmapLinearFilter;
             texture.magFilter = THREE.LinearFilter;
-            if (three.renderer && three.renderer.capabilities) {
-              const maxAniso = three.renderer.capabilities.getMaxAnisotropy();
-              if (maxAniso) {
-                texture.anisotropy = Math.min(maxAniso, 16);
-              }
-            }
-            if (THREE.sRGBEncoding) {
-              texture.encoding = THREE.sRGBEncoding;
-            }
             img.texture = texture;
             resolve(texture);
           },
@@ -474,14 +413,6 @@
       center.copy(mouse).divideScalar(2).addScalar(0.5);
       lerpv2(image1.uCenter.value, center, 0.1);
       lerpv2(image2.uCenter.value, center, 0.1);
-
-      // Smooth 3D mouse parallax for hero subject
-      const targetParallaxX = mouse.x * 0.012;
-      const targetParallaxY = mouse.y * 0.008;
-      image1.uParallax.value.x = lerp(image1.uParallax.value.x, targetParallaxX, 0.08);
-      image1.uParallax.value.y = lerp(image1.uParallax.value.y, targetParallaxY, 0.08);
-      image2.uParallax.value.x = lerp(image2.uParallax.value.x, targetParallaxX, 0.08);
-      image2.uParallax.value.y = lerp(image2.uParallax.value.y, targetParallaxY, 0.08);
 
       updateProgress(validImages);
 
