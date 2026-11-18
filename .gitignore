@@ -1,2 +1,11 @@
-# Ignore local documentation folder for BNSP study
+# Dependencies & Environment
+node_modules/
+.vscode/
+.idea/
+*.log
+
+# Temporary & Scratch scripts
+scratch/
+
+# Local documents
 docs/
